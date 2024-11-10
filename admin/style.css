@@ -40,10 +40,10 @@ html {
 }
 
 body.dark {
-	--white: #0c0c1ecc;
-	--light: #0c0c1ecc;
+	--white: #111111;
+	--light: #111111;
 	--grey: #363744;
-	--dark: #FBFBFB;
+	--dark: #fffbfb;
 }
 
 body {
@@ -163,6 +163,11 @@ body {
 	display: flex;
 	justify-content: center;
 }
+
+#sidebar .side-menu.top:nth-of-type(1) {
+    margin-bottom: 125px; /* Điều chỉnh khoảng cách tùy ý */
+}
+
 /* SIDEBAR */
 
 
@@ -330,7 +335,9 @@ body {
 	background: var(--light-purple);
 	color: var(--lato);
 }
-
+.text {
+	color: var(--dark);
+}
 
 #content main .box-info li .text h3 {
 	font-size: 20px;
@@ -352,7 +359,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin-top: 28px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: var(--light);
     border-radius: 18px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     width: 550px; /* Match the width attribute */
@@ -386,7 +393,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin-top: 20px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: var(--light);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -394,14 +401,14 @@ body {
 .best-selling-products h3 {
     font-size: 1.5em;
     margin-bottom: 15px;
-    color: #333;
+    color: var(--dark);
 }
 
 /* Style for the table */
 .best-selling-products table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
+    background-color: var(--light);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -411,11 +418,12 @@ body {
     text-align: left;
     font-size: 1em;
     border-bottom: 1px solid #ddd;
+	color: var(--dark);
 }
 
 .best-selling-products th {
-    background-color: #c5e7ff75;
-    color: #555;
+    background-color: rgba(211, 211, 211, 0.263);
+    color: var(--dark);
 }
 
 /* Hover effect for table rows */
@@ -430,7 +438,7 @@ body {
     font-size: 1.2em;
     margin: 0 5px;
     cursor: pointer;
-    color: #555;
+    color:var(--dark);
     transition: color 0.3s ease;
 }
 
@@ -464,12 +472,15 @@ body {
 
 /* Định dạng cho dropdown select */
 .filter {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 10px 15px;
     font-size: 16px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #282727;
     outline: none;
     transition: border 0.3s ease;
+	background-color: var(--light);
+	color: #7d7d7d;
 }
 
 .filter:focus {
@@ -478,17 +489,25 @@ body {
 
 /* Định dạng cho input tìm kiếm */
 .search-input {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 10px 15px;
     font-size: 16px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #282727;
     outline: none;
     width: 100%;
     max-width: 300px;
     box-sizing: border-box;
     transition: border 0.3s ease;
 	margin-bottom: 10px;
+	background-color: var(--light);
+	
 }
+#search-input {
+    color: #888; /* Màu chữ mặc định */
+}
+
+
 
 .search-input:focus {
     border-color: #007BFF;

@@ -45,7 +45,7 @@ const orderChart = new Chart(ctx, {
       backgroundColor: 'rgba(60, 145, 230, 0.2)',
       borderColor: 'rgba(60, 145, 230, 1)',
       borderWidth: 2,
-      fill: true
+      fill: true,
     }, {
       label: 'Tổng số đơn hàng đã bán',
       data: [190, 210, 230, 240, 250, 270, 240, 260, 190, 270, 300, 280],
@@ -180,3 +180,35 @@ function filterTable() {
         }
     }
 }
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Fetch data from the JSON file
+    fetch('best-selling-products.json')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('product-tbody');
+            tableBody.innerHTML = ''; // Clear existing content
+
+            // Loop through the products in the JSON data and create table rows
+            data.forEach(product => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td><img src="${product.image}" alt="Best Seller" width="50"> ${product.name}</td>
+                    <td>${product.category}</td>
+                    <td>${product.subcategory}</td>
+                    <td>${product.price}</td>
+                    <td>
+                        <span class="icon-view"><i class='bx bx-low-vision'></i></span>
+                        <span class="icon-edit"><i class='bx bx-edit'></i></span>
+                        <span class="icon-delete"><i class='bx bx-trash'></i></span>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error("Error fetching product data:", error));
+});
+
+// chọn danh mục hàng -> hiển thị mặt hàng tương ứng

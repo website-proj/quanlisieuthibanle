@@ -1,0 +1,37 @@
+[
+    {
+        "image": "https://nhatthangltd.com/wp-content/uploads/2022/11/Danish-blue.jpg",
+        "name": "Bánh ngọt Danish vị trà xanh",
+        "category": "Đồ ăn",
+        "subcategory": "Bánh",
+        "price": "58.000đ"
+    },
+    {
+        "image": "https://balabala.com/cdn/shop/files/20832410520540758_1_b108acd6-f9f6-4591-85c4-0f545c4b2ea9.jpg?v=1722400671&width=600",
+        "name": "Áo khoác blabla",
+        "category": "Quần áo",
+        "subcategory": "Áo khoác",
+        "price": "258.000đ"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1562059390-a761a084768e",
+        "name": "Chảo chống dính cao cấp",
+        "category": "Đồ gia dụng",
+        "subcategory": "Dụng cụ nhà bếp",
+        "price": "200.000đ"
+    },
+    {
+        "image": "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/mceclip19_92.png",
+        "name": "Áo thun thể thao nam",
+        "category": "Quần áo",
+        "subcategory": "Áo thun",
+        "price": "150.000đ"
+    },
+    {
+        "image": "https://product.hstatic.net/200000503583/product/ao-gio-nam__1__2c28e7a6bbb8470e9f778e7ce5a2a551_master.jpg",
+        "name": "Áo khoác nam",
+        "category": "Quần áo",
+        "subcategory": "Áo khoác",
+        "price": "350.000đ"
+    }
+]

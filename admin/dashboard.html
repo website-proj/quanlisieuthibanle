@@ -15,59 +15,60 @@
 
 <!-- SIDEBAR -->
 <section id="sidebar">
-	<a href="#" class="brand">
+	<a href="../admin/dashboard.html" class="brand">
 		<i class='bx bxs-institution'></i>
-		<span class="text">Market</span>
+		<span>Market</span>
 	</a>
 	<ul class="side-menu top">
 		<li class="active">
-			<a href="#">
+			<a href="../admin/dashboard.html">
 				<i class='bx bxs-dashboard'></i>
-				<span class="text">Tổng quan</span>
+				<span>Tổng quan</span>
 			</a>
 		</li>
 		<li class="active">
 			<a href="#">
 				<i class='bx bxs-cuboid'></i>
-				<span class="text">Danh mục</span>
+				<span>Danh mục</span>
 			</a>
 		</li>
 		<li class="active">
 			<a href="#">
 				<i class='bx bxl-shopify'></i>
-				<span class="text">Sản phẩm</span>
+				<span>Sản phẩm</span>
 			</a>
 		</li>
 		<li class="active">
 			<a href="#">
 				<i class='bx bxs-basket'></i>
-				<span class="text">Đơn hàng</span>
+				<span>Đơn hàng</span>
 			</a>
 		</li>
 		<li class="active">
 			<a href="#">
 				<i class='bx bxs-store'></i>
-				<span class="text">Quản lý cửa hàng</span>
+				<span>Quản lý cửa hàng</span>
 			</a>
 		</li>
 		<li class="active">
 			<a href="#">
 				<i class='bx bxs-group'></i>
-				<span class="text">Quản lý khách hàng</span>
+				<span>Quản lý khách hàng</span>
 			</a>
 		</li>
 	</ul>
+	
 	<ul class="side-menu top">
 		<li class="active">
 			<a href="#">
 				<i class='bx bxs-cog'></i>
-				<span class="text">Cài đặt</span>
+				<span>Cài đặt</span>
 			</a>
 		</li>
 		<li class="active">
 			<a href="#" class="logout">
 				<i class='bx bxs-log-out-circle'></i>
-				<span class="text">Đăng xuất</span>
+				<span>Đăng xuất</span>
 			</a>
 		</li>
 	</ul>
@@ -138,13 +139,17 @@
 <!-- Add this HTML code below the "Người dùng" section -->
 <div class="chart-container">
 	<div class="chart-section">
+		<span class="text">
 		<h3>Thống kê mua hàng</h3>
+		</span>
 		<canvas id="order-chart" width="508" height="254"></canvas>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	
 	<div class="chart-section">
+		<span class="text">
 		<h3>Đánh giá sản phẩm</h3>
+		</span>
 		<div class="charts">
 			<!-- <div class="pie-chart">
 				<canvas id="product-category-chart" width="400" height="400"></canvas>
@@ -157,13 +162,15 @@
 </div>
 
 <div class="best-selling-products">
+	<span class="text">
     <h3>Sản phẩm bán chạy nhất</h3>
+	</span>
 	<!-- Thanh tìm kiếm -->
 <div class="filter-search">
     <select class="filter" id="category-select">
         <option value="all">Tất cả</option>
-        <option value="category1">Danh mục 1</option>
-        <option value="category2">Danh mục 2</option>
+        <option value="food">Đồ ăn</option>
+        <option value="clothes">Quần áo</option>
     </select>
     <input type="text" class="search-input" id="search-input" placeholder="Nhập nội dung tìm kiếm">
 </div>
@@ -179,32 +186,11 @@
             <th>Chức năng</th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
-            <td><img src="https://nhatthangltd.com/wp-content/uploads/2022/11/Danish-blue.jpg" alt="Best Seller" width="50"> Bánh ngọt Danish vị trà xanh</td>
-            <td>Đồ ăn</td>
-            <td>Bánh</td>
-            <td>58.000đ</td>
-            <td>
-                <span class="icon-view"><i class='bx bx-low-vision'></i></span>
-                <span class="icon-edit"><i class='bx bx-edit'></i></span>
-                <span class="icon-delete"><i class='bx bx-trash'></i></span>
-            </td>
-        </tr>
-        <!-- Thêm các sản phẩm khác ở đây -->
-		<tr>
-            <td><img src="https://balabala.com/cdn/shop/files/20832410520540758_1_b108acd6-f9f6-4591-85c4-0f545c4b2ea9.jpg?v=1722400671&width=600" alt="Best Seller" width="50"> Áo khoác blabla</td>
-            <td>Quần áo</td>
-            <td>Áo khoác</td>
-            <td>258.000đ</td>
-            <td>
-                <span class="icon-view"><i class='bx bx-low-vision'></i></span>
-                <span class="icon-edit"><i class='bx bx-edit'></i></span>
-                <span class="icon-delete"><i class='bx bx-trash'></i></span>
-            </td>
-        </tr>
+    <tbody id="product-tbody">
+        <!-- Dynamic content will be added here -->
     </tbody>
 </table>
+
 
 </div>
 
