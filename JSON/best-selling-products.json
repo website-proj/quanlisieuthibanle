@@ -4,6 +4,7 @@
         "name": "Bánh ngọt Danish vị trà xanh",
         "category": "Đồ ăn",
         "subcategory": "Bánh",
+        "date": "12/12/2024",
         "price": "58.000đ"
     },
     {
@@ -11,6 +12,7 @@
         "name": "Áo khoác blabla",
         "category": "Quần áo",
         "subcategory": "Áo khoác",
+        "date": "12/12/2024",
         "price": "258.000đ"
     },
     {
@@ -18,6 +20,7 @@
         "name": "Chảo chống dính cao cấp",
         "category": "Đồ gia dụng",
         "subcategory": "Dụng cụ nhà bếp",
+        "date": "12/12/2024",
         "price": "200.000đ"
     },
     {
@@ -25,6 +28,7 @@
         "name": "Áo thun thể thao nam",
         "category": "Quần áo",
         "subcategory": "Áo thun",
+        "date": "12/12/2024",
         "price": "150.000đ"
     },
     {
@@ -32,6 +36,7 @@
         "name": "Áo khoác nam",
         "category": "Quần áo",
         "subcategory": "Áo khoác",
+        "date": "12/12/2024",
         "price": "350.000đ"
     }
 ]

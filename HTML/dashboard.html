@@ -7,21 +7,23 @@
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<!-- My CSS -->
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="../CSS/style.css">
 
 	<title>Market</title>
 </head>
 <body>
 
 <!-- SIDEBAR -->
+
 <section id="sidebar">
-	<a href="../admin/dashboard.html" class="brand">
+	
+	<a href="../HTML/dashboard.html" class="brand">
 		<i class='bx bxs-institution'></i>
 		<span>Market</span>
 	</a>
 	<ul class="side-menu top">
 		<li class="active">
-			<a href="../admin/dashboard.html">
+			<a href="../HTML/dashboard.html">
 				<i class='bx bxs-dashboard'></i>
 				<span>Tổng quan</span>
 			</a>
@@ -33,7 +35,7 @@
 			</a>
 		</li>
 		<li class="active">
-			<a href="#">
+			<a href="../HTML/products.html">
 				<i class='bx bxl-shopify'></i>
 				<span>Sản phẩm</span>
 			</a>
@@ -101,38 +103,35 @@
 			<li>
 				<i class='bx bxs-user'></i>
 				<span class="text">
-					<h3>1020</h3>
-					<p>Người dùng</p>
+					<h3>Người dùng</h3>
+					<p>1020</p>
+					<!-- <p>Người dùng</p> -->
 				</span>
 			</li>
 			<li>
 				<i class='bx bxs-basket'></i>
 				<span class="text">
-					<h3>1020</h3>
-					<p>Đơn hàng</p>
+					<h3>Đơn hàng</h3>
+					<p>1020</p>
+					<!-- <p>Đơn hàng</p> -->
 				</span>
 			</li>
 			<li>
 				<i class='bx bxl-shopify'></i>
 				<span class="text">
-					<h3>11111</h3>
-					<p>Sản phẩm</p>
+					<h3>Sản phẩm</h3>
+					<p>11111</p>
+					<!-- <p>Sản phẩm</p> -->
 				</span>
 			</li>
 			<li>
 				<i class='bx bxs-star-half'></i>
 				<span class="text">
-					<h3>1000</h3>
-					<p>Đánh giá</p>
+					<h3>Đánh giá</h3>
+					<p>1000</p>
+					<!-- <p>Đánh giá</p> -->
 				</span>
 			</li>
-			<!-- <li>
-				<i class='bx bxs-dollar-circle'></i>
-				<span class="text">
-					<h3>254 tỷ VNĐ</h3>
-					<p>Doanh thu</p>
-				</span>
-			</li> -->
 		</ul>
 
 		
@@ -142,7 +141,9 @@
 		<span class="text">
 		<h3>Thống kê mua hàng</h3>
 		</span>
-		<canvas id="order-chart" width="508" height="254"></canvas>
+		<canvas id="order-chart"></canvas>
+		<!-- <canvas id="order-chart" width="508" height="254"></canvas> -->
+
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	
@@ -150,14 +151,16 @@
 		<span class="text">
 		<h3>Đánh giá sản phẩm</h3>
 		</span>
-		<div class="charts">
+		<!-- <div class="charts"> -->
 			<!-- <div class="pie-chart">
 				<canvas id="product-category-chart" width="400" height="400"></canvas>
 			</div> -->
-			<div class="pie-chart">
-				<canvas id="rating-chart" width="400" height="400"></canvas>
-			</div>
-		</div>
+			<!-- <div class="pie-chart"> -->
+		<canvas id="rating-chart"></canvas>
+		<!-- <canvas id="rating-chart" width="508" height="254"></canvas> -->
+
+			<!-- </div> -->
+		<!-- </div> -->
 	</div>
 </div>
 
@@ -183,6 +186,7 @@
             <th>Danh mục</th>
             <th>Danh mục con</th>
             <th>Giá</th>
+			<th>Hạn sử dụng</th>
             <th>Chức năng</th>
         </tr>
     </thead>
@@ -200,6 +204,8 @@
 </section>
 <!-- CONTENT -->
 
-<script src="script.js"></script>
+<script src="../JS/script.js"></script>
+<script src="../JS/best-selling-products.js"></script>
+<script src="../JS/previewImage.js"></script>
 </body>
 </html>

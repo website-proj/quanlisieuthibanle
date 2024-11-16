@@ -68,28 +68,35 @@ body {
 	transition: .3s ease;
 	overflow-x: hidden;
 	scrollbar-width: none;
+	/* display: grid;
+	grid-template-rows:repeat(8, 1fr);
+	grid-template-columns: repeat(4, 1fr); */
+	display: grid;
+	grid-template-rows: auto 1fr auto; /* Header, nội dung chính và footer */
+    grid-template-columns: 1fr; /* Một cột */
 }
-#sidebar::--webkit-scrollbar {
+/* #sidebar::--webkit-scrollbar {
 	display: none;
-}
+} */
 
 #sidebar.hide {
 	width: 60px;
 }
 #sidebar .brand {
-	font-size: 34px;
+	font-size: 30px;
 	font-weight: 700;
 	height: 56px;
 	display: flex;
-	align-items: center;
 	color: #0063EC;
-	position: sticky;
 	top: 10px;
 	left: 0;
 	background: var(--white);
 	z-index: 500;
-	padding-bottom: 20px;
 	box-sizing: content-box;
+}
+
+#sidebar ul.side-menu.top::before{
+	border-radius: 50%;
 }
 #sidebar .brand .bx {
 	min-width: 65px;
@@ -98,11 +105,10 @@ body {
 }
 #sidebar .side-menu {
 	width: 100%;
-	margin-top: 48px;
 }
 #sidebar .side-menu li {
 	height: 48px;
-	background: transparent;
+	/* background: transparent; */
 	margin-left: 6px;
 	border-radius: 48px 0 0 48px;
 	padding: 4px;
@@ -111,6 +117,7 @@ body {
 	background: var(--grey);
 	position: relative;
 }
+
 #sidebar .side-menu li.active::before {
 	content: '';
 	position: absolute;
@@ -291,8 +298,10 @@ body {
 
 
 #content main .box-info {
+	/* display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Mỗi cột sẽ chiếm không gian linh hoạt */
 	grid-gap: 24px;
 	margin-top: 30px;
 }
@@ -302,7 +311,7 @@ body {
 	border-radius: 20px;
 	display: flex;
 	align-items: center;
-	grid-gap: 24px;
+	grid-gap: 15px;
 }
 #content main .box-info li .bx {
 	width: 50px;
@@ -340,7 +349,7 @@ body {
 }
 
 #content main .box-info li .text h3 {
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 600;
 	color: var(--dark);
 }
@@ -362,33 +371,48 @@ body {
     background-color: var(--light);
     border-radius: 18px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    width: 550px; /* Match the width attribute */
-    height: 354px; /* Match the height attribute */
-    display: flex;
-    flex-direction: column; /* Đặt hướng cột nếu cần để biểu đồ xếp chồng lên nhau trong một vùng */
-    align-items: center; /* Căn giữa các phần tử con */
+    height: 354px;
+	/* grid-template-columns: repeat(1fr); */
+    /* flex-direction: column;  */
+    /* align-items: center;  */
+	/* justify-content: center; */
 }
 
-.charts {
+.chart-section .text {
+    align-items: center;
+	justify-content: center;
+}
+
+/* .charts {
     display: flex;
     justify-content: space-between;
     width: 85%;
-}
+} */
 
-.pie-chart {
+/* .pie-chart {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .pie-chart canvas {
     width: 80%;
     height: auto;
+} */
+
+#content .chart-container {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
 }
 
   
 /* best-selling */
 /* General styles for the best-selling products section */
+#content .best-selling-products {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+}
+
 .best-selling-products {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin-top: 20px;
@@ -523,65 +547,13 @@ body {
     color: #888;
 }
 
-/* Điều chỉnh responsive cho màn hình nhỏ */
-@media (max-width: 768px) {
-    .filter-search {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .search-input {
-        max-width: 100%;
-    }
-}
-
 /* thanh searchhhhhhhhhhhhhh */
 
-/* MAIN */
-/* CONTENT */
-
-
-
-
-@media screen and (max-width: 768px) {
-	#sidebar {
-		width: 200px;
-	}
-
-	#content {
-		width: calc(100% - 60px);
-		left: 200px;
-	}
-
-	#content nav .nav-link {
-		display: none;
-	}
-}
 
 
 
 
 
 
-@media screen and (max-width: 576px) {
-	
 
-	#content nav form.show ~ .notification,
-	#content nav form.show ~ .profile {
-		display: none;
-	}
 
-	#content main .box-info {
-		grid-template-columns: 1fr;
-	}
-
-	#content main .table-data .head {
-		min-width: 420px;
-	}
-	#content main .table-data .order table {
-		min-width: 420px;
-	}
-	#content main .table-data .todo .todo-list {
-		min-width: 420px;
-	}
-}
