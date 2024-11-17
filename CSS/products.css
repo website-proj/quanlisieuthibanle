@@ -17,7 +17,9 @@
     box-shadow: 0 4px 8px rgba(57, 128, 221, 0.1);
     text-align: center;
 }
-
+*{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 .product-info-container {
     background-color: var(--white);
     border: 1px solid #ddd;

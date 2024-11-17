@@ -121,8 +121,9 @@
                             </div>
                         </div>
                         <div class="right-section">
-                            <label for="product-image" >Ảnh sản phẩm</label>
+                            <label for="product-image">Ảnh sản phẩm</label>
                             <div class="image-upload">
+                                <!-- Thêm sự kiện onchange vào input -->
                                 <input type="file" id="product-image" accept="image/*" onchange="previewImage(event)" style="display: none;">
                                 <div class="image-preview" id="image-preview">
                                     <span>Chưa có ảnh</span>
@@ -138,8 +139,16 @@
                             <label for="category">Danh mục</label>
                             <select id="category" required>
                                 <option value="" disabled selected>Chọn danh mục</option>
-                                <option value="1">Thực phẩm</option>
-                                <option value="2">Đồ gia dụng</option>
+                                <option value="food">Thực phẩm</option>
+                                <option value="beverage">Đồ uống</option>
+                                <option value="snacks">Bánh kẹo & Đồ ăn nhẹ</option>
+                                <option value="cosmetics">Hóa mỹ phẩm</option>
+                                <option value="kitchenware">Gia dụng & Đồ dùng nhà bếp</option>
+                                <option value="seasoning">Gia vị</option>
+                                <option value="babycare">Chăm sóc bé</option>
+                                <option value="books">Sách và văn phòng phẩm</option>
+                                <option value="cleaning">Sản phẩm vệ sinh nhà cửa</option>
+
                             </select>
                         </div>
                         <div class="form-group">
@@ -148,48 +157,7 @@
                                 <option value="" disabled selected>Chọn danh mục con</option>
                             </select>
                         </div>
-                        <script>
-                            // Các tùy chọn cho danh mục con
-                            const subcategories = {
-                                1: [
-                                    { value: "meat", text: "Thịt" },
-                                    { value: "fish", text: "Cá" },
-                                ],
-                                2: [
-                                    { value: "kitchen", text: "Đồ bếp" },
-                                    { value: "cleaning", text: "Đồ dọn dẹp" },
-                                ],
-                            };
-                        
-                            // Lấy các phần tử HTML
-                            const categorySelect = document.getElementById("category");
-                            const subcategorySelect = document.getElementById("subcategory");
-                        
-                            // Lắng nghe sự kiện thay đổi trên danh mục
-                            categorySelect.addEventListener("change", function () {
-                                const selectedCategory = this.value;
-                        
-                                // Xóa các tùy chọn cũ
-                                subcategorySelect.innerHTML = '<option value="" disabled selected>Chọn danh mục con</option>';
-                        
-                                // Kiểm tra xem danh mục có giá trị trong subcategories hay không
-                                if (subcategories[selectedCategory]) {
-                                    // Bật dropdown danh mục con
-                                    subcategorySelect.disabled = false;
-                        
-                                    // Thêm các tùy chọn mới vào danh mục con
-                                    subcategories[selectedCategory].forEach((subcategory) => {
-                                        const option = document.createElement("option");
-                                        option.value = subcategory.value;
-                                        option.textContent = subcategory.text;
-                                        subcategorySelect.appendChild(option);
-                                    });
-                                } else {
-                                    // Nếu không có danh mục con, vô hiệu hóa dropdown
-                                    subcategorySelect.disabled = true;
-                                }
-                            });
-                        </script>
+                        <script src="../JS/selectcategory.js"></script>
                         <div class="form-group">
                             <label for="featured">Sản phẩm nổi bật</label>
                             <select id="featured">
@@ -237,6 +205,6 @@
 </body>
 <script src="../JS/script.js"></script>
 <script src="../JS/best-selling-products.js"></script>
-<script src="../JS/addproducts.js"></script>
+<script src="../JS/imageproducts.js"></script>
 </body>
 </html>
