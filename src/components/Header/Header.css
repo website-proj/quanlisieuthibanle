@@ -1,0 +1,60 @@
+/* Tổng thể header */
+  .header {
+    position: fixed; /* Cố định vị trí */
+    top: 0; /* Canh trên cùng */
+    left: 0; /* Canh bên trái */
+    width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
+    z-index: 1000; /* Đặt layer cao hơn các phần tử khác */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 8.5%;
+    background-color: var(--white); /* Nền sáng */
+    /* border-bottom: 1px solid var(--light-blue); */
+
+}
+  /* Phần logo */
+  .header__left .brand {
+    /* display: flex; */
+    align-items: center;
+    text-decoration: none;
+    color: var(--blue);
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-left: 30%;
+  }
+  
+  
+  /* Phần menu */
+  .header__center {
+    display: flex;
+    justify-content: left;
+    flex-grow: 1; /* Đẩy phần giữa chiếm khoảng trống */
+  }
+  
+  .header__center i {
+    cursor: pointer;
+    color: var(--dark);
+    margin-left: 12%;  }
+  
+  /* Phần icon bên phải */
+  .header__right {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Khoảng cách giữa các icon */
+  }
+  
+  .header__right a {
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+  }
+  
+  .header__right a:hover {
+    color: var(--blue); /* Màu xanh khi hover */
+  }
+  .header__center i:hover {
+    color: var(--blue); /* Màu xanh khi hover */
+  }

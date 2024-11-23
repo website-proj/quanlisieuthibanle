@@ -1,13 +1,13 @@
+.add-products main {
+    top: 4.5%;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+}
 .title-main{
-	/* font-size: 20px;
-	font-weight: 600;
-	color: var(--dark);
-    background-color: #9999;
-    display: grid;
-    grid-template-columns: auto; */
     margin-top: 1.5%;
     margin: 20px auto;  
-    font-size: 20px;
+    font-size: 1.7em;
     font-weight: 600;
     color: var(--dark);
     padding: 10px;
@@ -46,7 +46,7 @@
 /* Phần trên: Tên sản phẩm, mô tả sản phẩm và thêm ảnh */
 .top-section {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* Phần trái 2 phần, phần phải 1 phần */
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
 

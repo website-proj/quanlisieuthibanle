@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+	text-decoration: none;
+}
+
+li {
+	list-style: none;
+}
+
+:root {
+	--poppins: 'Poppins', sans-serif;
+	--lato: 'Lato', sans-serif;
+	--white: #ffffff;
+	--light: #fefefe;
+	--blue: #0063EC;
+	--light-blue: #CFE8FF;
+	--grey: #f7f7f7;
+	--dark-grey: #AAAAAA;
+	--dark: rgb(0, 0, 0);
+	--red: #DB504A;
+	--yellow: #f6ff00cd;
+	--light-yellow: #FFF2C6;
+	--orange: #FD7238;
+	--light-orange: #f8d2c2;
+	--purple: #ab57f0;
+	--pink: #f5cbf3;
+	--green: #ddffce;
+	--light-purple: #c1bcfb;
+}
+
+html {
+	overflow-x: hidden;
+}
+
+body.dark {
+	--white: #111111ec;
+	--light: #111111ec;
+	--grey: #363744;
+	--dark: #fffffff3;
+	--blue: #6eb9ff;
+	/* --light-blue: #a9cdff6b; */
+}
+
+body {
+	background: var(--grey);
+	overflow-x: hidden;
+}
+
+/* Dashboard */
+.content-wrapper {
+	position: absolute; /* Đặt vị trí tuyệt đối */
+	top: 4.5%; /* Cách phần tử bên trên 8.5% */
+	left: 18%; /* Cách phần tử bên trái 20% */
+	right: 0; /* Căn chỉnh phía bên phải */
+	bottom: 0; /* Căn chỉnh phía dưới */
+	padding: 20px; /* Thêm khoảng cách bên trong nếu cần */
+  }
+  

@@ -1,0 +1,120 @@
+/* SIDEBAR tổng thể */
+#sidebar {
+  position: fixed;
+  top: 8.5%;
+  left: 0;
+  width: 18%;
+  height: calc(100% - 8.5%);
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  font-size: 1em;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Menu chính (ở trên) */
+#sidebar .primary-menu {
+  flex-grow: 1;
+}
+
+/* Menu cuối (Cài đặt và Đăng xuất) */
+#sidebar .bottom {
+  margin-top: auto;
+}
+
+/* Kiểu dáng chung cho menu */
+#sidebar .side-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#sidebar .side-menu li {
+  position: relative; /* Quan trọng để tránh đè menu con */
+}
+
+#sidebar .side-menu li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--dark);
+  padding: 0 15px;
+  height: 50px;
+  line-height: 50px;
+}
+
+#sidebar .side-menu li a i {
+  margin-right: 10px;
+}
+
+/* Hiệu ứng hover */
+#sidebar .side-menu li a:hover {
+  color: var(--blue);
+  background-color: var(--grey);
+  border-radius: 40px;
+}
+
+/* Menu con (sub-menu) */
+#sidebar .sub-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+#sidebar .sub-menu.show {
+  display: block;
+  max-height: 500px; /* Chiều cao lớn hơn để hiện đủ menu con */
+  opacity: 1;
+}
+
+/* #sidebar .sub-menu li {
+  padding-left: 30px; 
+} */
+
+#sidebar .sub-menu li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--dark);
+  height: 50px;
+  line-height: 50px;
+}
+
+/* #sidebar .sub-menu li a:hover {
+  color: var(--blue);
+  background-color: var(--grey);
+  border-radius: 40px;
+} */
+
+/* Hiệu ứng mũi tên */
+#sidebar .side-menu li a i.bx-chevron-up,
+#sidebar .side-menu li a i.bx-chevron-down {
+  margin-left: auto; /* Đẩy mũi tên sang bên phải */
+}
+
+/* Thêm dấu gạch đứng và dịch vào trong */
+#sidebar .sub-menu li {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 25px; /* Điều chỉnh thụt lề tổng thể */
+}
+
+#sidebar .sub-menu li::before {
+  content: "";
+  position: absolute;
+  left: 10%; /* Dịch dấu gạch vào trong */
+  width: 1px; /* Độ dày dấu gạch */
+  height: 100%; /* Chiều cao gạch */
+  background-color: var(--dark); /* Màu sắc của gạch */
+}
+
+#sidebar .side-menu li a.logout {
+	color: var(--red);
+}
