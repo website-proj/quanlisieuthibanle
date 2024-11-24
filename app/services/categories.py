@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.model.models import Category
+from app.model.Products_Categories import Category
 from app.utils.responses import ResponseHandler
 
 class CategoryService:

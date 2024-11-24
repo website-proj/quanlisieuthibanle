@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Boolean, ForeignKey
+from sqlalchemy import Column, String, Boolean, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import func
@@ -54,3 +54,5 @@ class Product(Base):
 
     def __repr__(self):
         return f"<Product(product_id={self.product_id}, name={self.name}, category_id={self.category_id})>"
+
+

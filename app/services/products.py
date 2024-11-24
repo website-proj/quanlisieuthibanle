@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import or_ , and_
-from app.model.models import Product, Category
+from app.model.Products_Categories import Product, Category
 from app.utils.responses import ResponseHandler
 
 

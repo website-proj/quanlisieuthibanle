@@ -4,3 +4,7 @@ from app.Routers.categories import router as categories_router
 app = FastAPI()
 app.include_router(products_router)
 # app.include_router()
+
+
+
+

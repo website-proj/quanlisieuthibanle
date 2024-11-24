@@ -4,7 +4,7 @@ from starlette.status import HTTP_200_OK
 
 from app.db.base import get_db
 from app.services.categories import CategoryService
-from app.schemas.categories import CategoriesResponse
+from app.schemas.schema_category import CategoriesResponse
 
 router = APIRouter(tags = ["Category"]  , prefix = "/categories")
 @router.get("/top10", status_code= HTTP_200_OK  , response_model= CategoriesResponse)  # Trả về 10 category đầu tiên

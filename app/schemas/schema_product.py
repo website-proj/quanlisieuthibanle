@@ -1,7 +1,7 @@
 from pydantic import BaseModel , validator , Field
 from datetime import datetime
 from typing import List , Optional , ClassVar
-from app.schemas.categories import CategoryBase
+from app.schemas.schema_category import CategoryBase
 
 # base model
 class BaseConfig:

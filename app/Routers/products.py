@@ -4,32 +4,12 @@ from app.utils.responses import ResponseHandler
 from app.db.base import  get_db
 from app.services.products import ProductService
 from sqlalchemy.orm import Session
-from app.schemas.products import ProductResponse, ProductsResponse, ProductBase
+from app.schemas.schema_product import ProductResponse, ProductsResponse, ProductBase
 import logging
-from app.model.models import Product
+from app.model.Products_Categories import Product
 router = APIRouter(tags = ["Products"]  , prefix = "/products")
 
-# search product
-# @router.get("/search", response_model=ProductsResponse)
-# async def search_product(search: str, db: Session = Depends(get_db)):
-#     try:
-#         products = ProductService.search_products(db, search)
-#
-#         if not products:
-#             return ResponseHandler.success(f"No products found matching '{search}'", [])
-#
-#         pydantic_products = [ProductBase.from_orm(product) for product in products]
-#
-#         return ResponseHandler.success(f"Found {len(pydantic_products)} products matching '{search}'", pydantic_products)
-#
-#     except HTTPException as e:
-#         raise e
-#     except Exception as e:
-#         raise HTTPException(
-#             status_code=500,
-#             detail=f"Internal server error: {str(e)}"
-#         )
-#
+
 @router.get("/discount")
 def get_discounted_products(db: Session = Depends(get_db)):
     try:
