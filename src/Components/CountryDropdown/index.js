@@ -1,4 +1,5 @@
 import React from "react";
+// import React, { useContext } from "react";
 import Button from "@mui/material/Button";
 import { FaAngleDown } from "react-icons/fa6";
 import Dialog from "@mui/material/Dialog";
@@ -13,6 +14,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const CountryDropdown = () => {
   const [isOpenModal, setisOpenModal] = useState(false);
+
+  // const [countryList, setCountryList] = useState([])
+
+  // const [selectedTab, setselectedTab] = useState(null);
+
+  // const selectedCountry = (index) => {
+  //   setselectedTab(index);
+  //   setisOpenModal(false);
+  // };
+
+  // const context = useContext(MyContext);
+
+  // const filterList = (e) => {
+  //   const keyword = e.target.value.toLowerCase();
+
+  //   const list
 
   return (
     <>
@@ -39,12 +56,28 @@ const CountryDropdown = () => {
         </Button>
 
         <div className="headerSearch w-100">
-          <input type="text" placeholder="Nhập vị trí của bạn ..." />
+          <input
+            type="text"
+            placeholder="Nhập vị trí của bạn ..."
+            // onChange={filterList}
+          />
           <Button>
             <IoSearch />
           </Button>
         </div>
         <ul className="countryList mt-3">
+          {/* {
+            useContext.countryList?.length != 0 && useContext.countryList?Map((item, index) => {
+              return (
+                <li key = {index}>
+                <Button onClick={() => selectCountry(index)}
+                className={`${selectedTab === index ? 'active' : ''}`}
+                >{item.country}</Button>
+              </li>
+
+              )
+            })
+          } */}
           <li>
             <Button onClick={() => setisOpenModal(false)}>Hà Nội</Button>
           </li>

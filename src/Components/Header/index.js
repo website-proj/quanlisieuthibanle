@@ -6,16 +6,18 @@ import { FiUser } from "react-icons/fi";
 import { PiShoppingCart } from "react-icons/pi";
 import SearchBox from "./SearchBox";
 import Navigation from "./Navigation";
+// import { useContext } from "react";
 
 const Header = () => {
+  // const context = useContext(MyContex);
+
   return (
     <>
       <div className="headerWrapper">
         <div className="top-strip bg-blue">
           <div className="container">
             <p className="mb-0 mt-0 text-center">
-              Due to the <b>COVID 19</b> epidemic, oders my be processed with a
-              slight delay
+              Tươi ngon mỗi ngày, an tâm mỗi phút
             </p>
           </div>
         </div>
@@ -29,6 +31,8 @@ const Header = () => {
               </div>
 
               <div className="col-sm-10 d-flex align-items-center part2">
+                {/* {context.countryList.length !== 0 && <CountryDropdown />} */}
+
                 <CountryDropdown />
                 <SearchBox />
 
