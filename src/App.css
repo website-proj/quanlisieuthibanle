@@ -20,7 +20,7 @@ li {
 	--lato: 'Lato', sans-serif;
 	--white: #ffffff;
 	--light: #fefefe;
-	--blue: #0063EC;
+	--blue: #2679ee;
 	--light-blue: #CFE8FF;
 	--grey: #f7f7f7;
 	--dark-grey: #AAAAAA;
@@ -56,11 +56,11 @@ body {
 
 /* Dashboard */
 .content-wrapper {
-	position: absolute; /* Đặt vị trí tuyệt đối */
-	top: 4.5%; /* Cách phần tử bên trên 8.5% */
-	left: 18%; /* Cách phần tử bên trái 20% */
-	right: 0; /* Căn chỉnh phía bên phải */
-	bottom: 0; /* Căn chỉnh phía dưới */
-	padding: 20px; /* Thêm khoảng cách bên trong nếu cần */
+	position: absolute; 
+	top: 4.5%; 
+	left: 19%; 
+	right: 0; 
+	bottom: 0; 
+	padding: 20px;
   }
   

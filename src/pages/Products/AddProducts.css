@@ -1,12 +1,11 @@
 .add-products main {
-    top: 4.5%;
-    right: 0;
-    bottom: 0;
-    padding: 10px;
+    position: absolute; 
+    top: 12%; 
+    left: 22.5%; 
+    right: 2.5%;
 }
 .title-main{
-    margin-top: 1.5%;
-    margin: 20px auto;  
+    margin: 1% auto;  
     font-size: 1.7em;
     font-weight: 600;
     color: var(--dark);
@@ -22,7 +21,7 @@
 }
 .product-info-container {
     background-color: var(--white);
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     border-radius: 15px;
     padding: 20px;
     margin-top: 20px;

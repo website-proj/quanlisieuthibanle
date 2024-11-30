@@ -1,15 +1,14 @@
-.dashboard main {
-  top: 4.5%;
-  right: 0;
-  bottom: 0;
-  padding: 10px;
+.dashboard {
+  position: absolute; 
+  top: 12%; 
+  left: 22.5%; 
+  right: 2.5%;
 }
 
 .dashboard main .box-info {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-gap: 24px;
-  margin-top: 30px;
   transform: scale(1);
   transform-origin: top left;
 }
@@ -85,7 +84,7 @@
   padding: 20px;
   background-color: var(--light);
   border-radius: 18px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); */
   height: 354px;
 }
 
@@ -109,8 +108,8 @@
   margin-top: 20px;
   padding: 20px;
   background-color: var(--light);
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 }
 
 .best-selling-products h3 {
@@ -119,7 +118,7 @@
   color: var(--dark);
 }
 
-/* Style for the table */
+/*Table*/
 .best-selling-products table {
   width: 100%;
   border-collapse: collapse;

@@ -3,7 +3,7 @@
   position: fixed;
   top: 8.5%;
   left: 0;
-  width: 18%;
+  width: 20%;
   height: calc(100% - 8.5%);
   background: var(--white);
   display: flex;
@@ -69,13 +69,9 @@
 
 #sidebar .sub-menu.show {
   display: block;
-  max-height: 500px; /* Chiều cao lớn hơn để hiện đủ menu con */
+  max-height: 500px; 
   opacity: 1;
 }
-
-/* #sidebar .sub-menu li {
-  padding-left: 30px; 
-} */
 
 #sidebar .sub-menu li a {
   display: flex;
@@ -86,33 +82,27 @@
   line-height: 50px;
 }
 
-/* #sidebar .sub-menu li a:hover {
-  color: var(--blue);
-  background-color: var(--grey);
-  border-radius: 40px;
-} */
-
 /* Hiệu ứng mũi tên */
 #sidebar .side-menu li a i.bx-chevron-up,
 #sidebar .side-menu li a i.bx-chevron-down {
-  margin-left: auto; /* Đẩy mũi tên sang bên phải */
+  margin-left: auto; 
 }
 
-/* Thêm dấu gạch đứng và dịch vào trong */
+/* Thêm dấu gạch đứng*/
 #sidebar .sub-menu li {
   display: flex;
   align-items: center;
   position: relative;
-  padding-left: 25px; /* Điều chỉnh thụt lề tổng thể */
+  padding-left: 10%; 
 }
 
 #sidebar .sub-menu li::before {
   content: "";
   position: absolute;
-  left: 10%; /* Dịch dấu gạch vào trong */
-  width: 1px; /* Độ dày dấu gạch */
-  height: 100%; /* Chiều cao gạch */
-  background-color: var(--dark); /* Màu sắc của gạch */
+  left: 10%; 
+  width: 0.2%; 
+  height: 100%; 
+  background-color: var(--dark); 
 }
 
 #sidebar .side-menu li a.logout {

@@ -18,40 +18,6 @@ function Dashboard() {
       .catch(error => console.error("Error fetching product data:", error));
   }, []);
 
-  // useEffect(() => {
-  //   if (orderChartRef.current && ratingChartRef.current) {
-  //     // Initialize the charts after the component has rendered and canvas elements are ready
-  //     const ctxOrder = orderChartRef.current.getContext('2d');
-  //     const ctxRating = ratingChartRef.current.getContext('2d');
-
-  //     // Create chart for order statistics
-  //     new window.Chart(ctxOrder, {
-  //       type: 'line',
-  //       data: {
-  //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-  //         datasets: [{
-  //           label: 'Đơn hàng',
-  //           data: [65, 59, 80, 81, 56],
-  //           borderColor: '#4BC0C0',
-  //           fill: false
-  //         }]
-  //       }
-  //     });
-
-  //     // Create chart for product ratings
-  //     new window.Chart(ctxRating, {
-  //       type: 'pie',
-  //       data: {
-  //         labels: ['Sản phẩm A', 'Sản phẩm B', 'Sản phẩm C'],
-  //         datasets: [{
-  //           data: [300, 50, 100],
-  //           backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-  //         }]
-  //       }
-  //     });
-  //   }
-  // }, []);
-
   // Function to filter products based on search text and selected category
   const filterProducts = () => {
     return products.filter(product => {

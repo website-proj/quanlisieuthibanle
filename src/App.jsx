@@ -4,38 +4,34 @@ import Sidebar from './components/Sidebar/Sidebar';
 import Header from './components/header/Header';
 import './App.css';
 import Dashboard from './pages/Dashboard/Dashboard';
-// import Category from './pages/Category/Category'; 
 import ProductsList from './pages/Products/ProductsList';
 import AddProducts from './pages/Products/AddProducts';
+import CategoriesList from './pages/Categories/CategoriesList/CategoriesList'; 
+import AddCategories from './pages/Categories/AddCategories/AddCategories';
+import SubcategoriesList from './pages/Categories/SubcategoriesList/SubcategoriesList';
+import AddSubcategories from './pages/Categories/AddSubcategories/AddSubcategories';
 
-// import Orders from './pages/Orders/Orders';
-// import StoreManagement from './pages/StoreManagement/StoreManagement';
-// import CustomerManagement from './pages/CustomerManagement/CustomerManagement';
-// import Settings from './pages/Settings/Settings';
+
 
 function App() {
   return (
-    <Router> {/* Bọc toàn bộ ứng dụng với Router */}
+    <Router> 
       <div className="App">
         <Header />
         <Sidebar />
-        <div className="content-wrapper">
-          <Routes> {/* Sử dụng Routes thay cho Switch */}
-            {/* Route mặc định để chuyển đến /dashboard khi vào trang chủ */}
-            <Route path="/" element={<Navigate to="/dashboard" />} /> {/* Redirect từ / đến /dashboard */}
+        {/* <div className="content-wrapper"> */}
+          <Routes> 
+            <Route path="/" element={<Navigate to="/dashboard" />} /> 
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/products-list" element={<ProductsList />} />
             <Route path="/add-products" element={<AddProducts />} />
+            <Route path="/categories-list" element={<CategoriesList />} />
+            <Route path="/add-categories" element={<AddCategories />} />
+            <Route path="/subcategories-list" element={<SubcategoriesList/>} />
+            <Route path="/add-subcategories" element={<AddSubcategories/>} />
 
-            {/* Các route khác */}
-            {/* <Route path="/category" element={<Category />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/store-management" element={<StoreManagement />} />
-            <Route path="/customer-management" element={<CustomerManagement />} />
-            <Route path="/settings" element={<Settings />} /> */}
           </Routes>
-        </div>
+        {/* </div> */}
       </div>
     </Router>
   );

@@ -4,9 +4,15 @@ import { Link } from 'react-router-dom';
 
 function Sidebar() {
   const [showProductsMenu, setShowProductsMenu] = useState(false);
+  const [showCategoriesMenu, setShowCategoriesMenu] = useState(false);
 
   const toggleProductsMenu = () => {
     setShowProductsMenu(!showProductsMenu);
+
+  };
+  const toggleCategoriesMenu = () => {
+    setShowCategoriesMenu(!showCategoriesMenu);
+
   };
 
   return (
@@ -20,10 +26,33 @@ function Sidebar() {
             </Link>
           </li>
           <li className="active">
-            <Link to="/category">
+            <a href='#' onClick={toggleCategoriesMenu}>
               <i className="bx bxs-cuboid"></i>
               <span>Danh mục</span>
-            </Link>
+              <i className={`bx bx-chevron-${showCategoriesMenu ? 'up' : 'down'}`} />
+            </a>
+            <ul className={`sub-menu ${showCategoriesMenu ? 'show' : ''}`}>
+              <li>
+                <Link to="/categories-list">
+                    <span>Danh sách danh mục</span>
+                  </Link>
+              </li>
+              <li>
+                <Link to="/add-categories">
+                  <span>Thêm danh mục</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/subcategories-list">
+                  <span>Danh sách danh mục con</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/add-subcategories">
+                  <span>Thêm danh mục con</span>
+                </Link>
+              </li>
+            </ul>
           </li>
           <li className="active">
             <a href="#" onClick={toggleProductsMenu}>
