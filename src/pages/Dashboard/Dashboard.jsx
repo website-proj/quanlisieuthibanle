@@ -1,5 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Line } from 'react-chartjs-2';
 import './Dashboard.css';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function Dashboard() {
   const orderChartRef = useRef(null);
@@ -8,7 +20,6 @@ function Dashboard() {
   const [searchText, setSearchText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // Fetch product data after the component mounts
   useEffect(() => {
     fetch('/src/pages/Dashboard/best-selling-products.json')
       .then(response => response.json())
@@ -18,7 +29,6 @@ function Dashboard() {
       .catch(error => console.error("Error fetching product data:", error));
   }, []);
 
-  // Function to filter products based on search text and selected category
   const filterProducts = () => {
     return products.filter(product => {
       const matchesSearchText = product.name.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -29,6 +39,30 @@ function Dashboard() {
 
       return matchesSearchText && matchesCategory;
     });
+  };
+
+  const orderChartData = {
+    labels: ['01/12', '02/12', '03/12', '04/12', '05/12', '06/12'],
+    datasets: [
+      {
+        label: 'Tổng đơn hàng',
+        data: [12, 19, 3, 5, 2, 3],
+        borderColor: 'rgb(75, 192, 192)',
+        fill: false,
+      }
+    ]
+  };  
+
+  const ratingChartData = {
+    labels: ['Thực phẩm', 'Đồ uống', 'Hóa mỹ phẩm', 'Gia vị'],
+    datasets: [
+      {
+        label: 'Đánh giá',
+        data: [4.5, 3.8, 4.0, 4.2],
+        borderColor: 'rgb(255, 99, 132)',
+        fill: false,
+      }
+    ]
   };
 
   return (
@@ -70,14 +104,14 @@ function Dashboard() {
             <span className="text">
               <h3>Thống kê mua hàng</h3>
             </span>
-            <canvas ref={orderChartRef}></canvas> {/* Tham chiếu canvas */}
+            <Line data={orderChartData} ref={orderChartRef} />
           </div>
 
           <div className="chart-section">
             <span className="text">
               <h3>Đánh giá sản phẩm</h3>
             </span>
-            <canvas ref={ratingChartRef}></canvas> {/* Tham chiếu canvas */}
+            <Line data={ratingChartData} ref={ratingChartRef} />
           </div>
         </div>
 

@@ -23,7 +23,7 @@
   border-collapse: separate; 
   border-spacing: 0; 
   table-layout: fixed; 
-  border-radius: 15px; 
+  /* border-radius: 15px;  */
   overflow: hidden; 
 }
 
@@ -32,12 +32,12 @@
   padding: 10px 15px;
   text-align: center;
   word-wrap: break-word; 
-  border: 1px solid #ddd; 
+  border: 0.1px solid #ddd; 
   
 }
 
 #categories-table th {
-  background-color: var(--grey);
+  background-color: var(--blue-table);
   font-weight: bold;
 }
 

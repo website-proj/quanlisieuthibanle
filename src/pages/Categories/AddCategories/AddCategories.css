@@ -28,8 +28,7 @@
     gap: 20px;
   }
   
-  .text {
-    font-weight: bold;
+  #img {
     margin-top: 10px;
   }
   
@@ -44,7 +43,7 @@
   
   .upload-container {
     width: 100%;
-    height: 150px;
+    height: 200px;
     background-color: #ccc;
     border-radius: 10px;
     display: flex;
@@ -57,18 +56,18 @@
   .upload-icon {
     width: 50px;
     height: 50px;
-    background-color: #475569;
+    background-color: var(--dark);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: var(--light);
     font-size: 24px;
   }
   
   .submit-button {
     background-color: var(--blue);
-    color: white;
+    color: var(--light);
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -77,13 +76,13 @@
   }
   
   .submit-button:hover {
-    background-color: #237dfc;
+    background-color: #454545;
   }
   
   .upload-container img {
-    max-width: 100%;  /* Hình ảnh sẽ tự động thu nhỏ nếu vượt quá chiều rộng container */
-    max-height: 100%; /* Hình ảnh sẽ tự động thu nhỏ nếu vượt quá chiều cao container */
-    object-fit: contain; /* Giữ tỷ lệ hình ảnh */
+    max-width: 100%; 
+    max-height: 100%; 
+    object-fit: contain;
     border-radius: 5px;
   }
 

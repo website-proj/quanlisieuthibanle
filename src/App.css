@@ -34,6 +34,7 @@ li {
 	--pink: #f5cbf3;
 	--green: #ddffce;
 	--light-purple: #c1bcfb;
+	--blue-table: #7ab1ff;
 }
 
 html {
@@ -46,7 +47,7 @@ body.dark {
 	--grey: #363744;
 	--dark: #fffffff3;
 	--blue: #6eb9ff;
-	/* --light-blue: #a9cdff6b; */
+	--blue-table: #3184f7;
 }
 
 body {
