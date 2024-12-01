@@ -46,7 +46,7 @@ function AddSubcategories() {
         <div className="title-main">Thêm danh mục con</div>
         <div className="add-subcategories-info-container">
           <div className="input-container">
-            <label htmlFor="category">Danh mục</label>
+            <label className='text' htmlFor="category">Danh mục</label>
             <select
               id="category"
               value={category}
@@ -67,7 +67,7 @@ function AddSubcategories() {
           </div>
 
           <div className="input-container">
-            <label htmlFor="subCategory">Tên danh mục con</label>
+            <label className='text' htmlFor="subCategory">Tên danh mục con</label>
             <input
               type="text"
               id="subCategory"

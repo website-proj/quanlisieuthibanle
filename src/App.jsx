@@ -19,7 +19,6 @@ function App() {
       <div className="App">
         <Header />
         <Sidebar />
-        {/* <div className="content-wrapper"> */}
           <Routes> 
             <Route path="/" element={<Navigate to="/dashboard" />} /> 
             <Route path="/dashboard" element={<Dashboard />} />
@@ -31,7 +30,6 @@ function App() {
             <Route path="/add-subcategories" element={<AddSubcategories/>} />
 
           </Routes>
-        {/* </div> */}
       </div>
     </Router>
   );
