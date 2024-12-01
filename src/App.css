@@ -7,6 +7,8 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css");
 body {
   font-family: "Lato", sans-serif;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.8);
 }
 .bg-blue {
   background: rgb(15, 91, 205);
@@ -20,6 +22,15 @@ body {
   container-xl {
     max-width: 1200px;
   }
+}
+.cursor {
+  cursor: pointer;
+}
+.text-light {
+  color: #8b8b8b !important;
+}
+.text-sml {
+  font-size: 14px;
 }
 
 ::-webkit-scrollbar {
@@ -92,12 +103,12 @@ body {
 }
 
 .headerSearch {
-  width: 60%;
+  width: 800px;
   height: 60px;
   background: #f3f4f7;
   padding: 5px;
   position: relative;
-  border-radius: 10px;
+  border-radius: 25px;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 .headerSearch input {
@@ -115,7 +126,7 @@ body {
 }
 .headerSearch button {
   position: absolute;
-  top: 5px;
+  top: 9px;
   right: 10px;
   z-index: 100;
   min-width: 40px !important;
@@ -227,7 +238,7 @@ nav .navPart1 .catWrapper .sidebarNav {
   top: 125%;
   left: 0px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 15px 0px;
+  padding: 10px 0px;
   transition: all 0.2s;
   visibility: hidden;
   z-index: 100;
@@ -241,7 +252,7 @@ nav .navPart1 .catWrapper .sidebarNav ul li {
   width: 100%;
   list-style: none;
   font-size: 18px;
-  padding: 0px 15px;
+  padding: 0px 10px;
 }
 nav .navPart1 .catWrapper .sidebarNav ul li button {
   color: #000;
@@ -249,8 +260,41 @@ nav .navPart1 .catWrapper .sidebarNav ul li button {
   justify-content: flex-start;
   text-transform: capitalize !important;
 }
+
+nav .navPart1 .catWrapper .sidebarNav ul li button svg {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
 nav .navPart1 .catWrapper .sidebarNav ul li button :hover {
   background: transparent !important;
+}
+
+nav .navPart1 .catWrapper .sidebarNav ul li {
+  position: static;
+}
+nav .navPart1 .catWrapper .sidebarNav ul li .submenu {
+  position: absolute;
+  top: -1px;
+  left: 101%;
+  width: 250px;
+  height: 100.5%;
+  background: #fff;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease-in-out;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+nav .navPart1 .catWrapper .sidebarNav ul li:hover .submenu {
+  opacity: 1;
+  visibility: inherit;
+  left: 100%;
+  padding: 15px;
+}
+nav .navPart1 .catWrapper .sidebarNav ul li:hover .submenu button {
+  border-radius: 0px !important;
 }
 
 nav .allCatTab {
@@ -276,6 +320,8 @@ nav .allCatTab .icon1 svg {
 nav .allCatTab .icon2 svg {
   font-size: 15px !important;
 }
+
+/* Khuyến mại, bán chạy nhất, giá siêu tốt, mới nhất  */
 
 nav .navPart2 ul {
   margin-bottom: 0px;
@@ -303,12 +349,13 @@ nav .navPart2 ul li a:hover {
   color: #2bbef9;
 }
 
+/* Banner */
 .homeBannerSection {
   position: relative;
   overflow: hidden;
 }
 .homeBannerSection * {
-  opacity: none !important;
+  outline: none !important;
 }
 .homeBannerSection .slick-arrow {
   position: absolute;
@@ -319,23 +366,129 @@ nav .navPart2 ul li a:hover {
   justify-content: center;
   width: 40px !important;
   height: 40px !important;
-  background: #000;
+  background: #444444;
   border-radius: 100%;
   font-family: FontAwesome !important;
   font-weight: bold;
+  box-shadow: 0 1px 3px rgb(0 0 0 /12%), 0 1px 2px rgb(0 0 0 / 24%) !important;
 }
 .homeBannerSection .slick-arrow.slick-next {
-  right: 25px !important;
+  right: 35px !important;
 }
 .homeBannerSection .slick-arrow.slick-prev {
-  left: 25px !important;
+  left: 35px !important;
+}
+.homeBannerSection .swiper-wrapper {
+  color: #000;
 }
 
-.homeBannerSection .slick-arrow.slick-next::before {
+/* .slick-next::before,
+.slick-prev::before {
+  color: #000 !important;
   font-family: FontAwesome !important;
-  color: #fff;
+  opacity: 0.8;
+  
+} */
+
+.homeBannerSection .slick-arrow.slick-next::before {
+  /* content: "\f105" !important; */
+  color: #fff !important;
+  font-family: FontAwesome !important;
 }
 .homeBannerSection .slick-arrow.slick-prev::before {
+  /* content: "\f104" !important; */
+  color: #fff !important;
   font-family: FontAwesome !important;
-  color: #fff;
+}
+
+.homeBannerSection {
+  cursor: pointer;
+}
+
+/* Sản phẩm  */
+
+.homeProducts {
+  padding: 25px 0px;
+  width: 100%;
+}
+
+.homeProducts .banner {
+  width: 100%;
+  border-radius: 7px;
+  overflow: hidden;
+  padding-bottom: 5px;
+}
+.homeProducts .banner img {
+  height: 450px;
+}
+
+.productRow .hd {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.productItem {
+  width: 100%;
+  height: auto;
+  /* border: 1px solid rgba(0, 0, 0, 0.1); */
+  cursor: pointer;
+}
+
+.productItem .info {
+  padding: 10px;
+  background: #f9f5f5;
+  border-radius: 10px;
+}
+
+.productItem h4 {
+  font-size: 15px;
+  font-weight: 500;
+}
+.productItem .info span {
+  font-size: 16px;
+}
+
+.productItem .info .add-item-card {
+  background-color: #ffffff !important;
+  color: #2bbef9;
+  text-transform: inherit;
+  border-radius: 10px;
+  border: 1px solid #2bbef9;
+
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+.productItem .info .add-item-card:hover {
+  background: #f0faff;
+  color: #2bbef9;
+  transform: scale(1.1);
+}
+
+/* .product_row .swiper-slide:last-child .productItem {
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+} */
+
+.swiper {
+  padding-right: 1px !important;
+}
+
+.productItem .imgWrapper {
+  overflow: hidden;
+  border-radius: 30px;
+}
+.productItem .imgWrapper img {
+  transition: all 0.3s ease-in-out;
+}
+
+.productItem .imgWrapper:hover {
+  right: 10px;
+  opacity: 1;
+}
+.productItem .imgWrapper:hover img {
+  transform: scale(1.1);
+}
+.productItem .pro {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
