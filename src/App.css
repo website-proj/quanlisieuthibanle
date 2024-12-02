@@ -71,6 +71,7 @@ body {
   width: 100%;
   height: auto;
   padding: 25px 0px;
+  background-color: #3366cc;
 }
 .logoWrapper img {
   width: 100%;
@@ -232,6 +233,7 @@ nav .navPart2 {
 
 nav .navPart1 .catWrapper {
   position: relative;
+  margin-top: 5px;
 }
 nav .navPart1 .catWrapper .sidebarNav {
   width: 75%;

@@ -14,13 +14,13 @@ const Header = () => {
   return (
     <>
       <div className="headerWrapper">
-        <div className="top-strip bg-blue">
+        {/* <div className="top-strip bg-blue">
           <div className="container">
             <p className="mb-0 mt-0 text-center">
-              Tươi ngon mỗi ngày, an tâm mỗi phút
+              Tươi ngon mỗi ngày, an tâm mỗi phút.
             </p>
           </div>
-        </div>
+        </div> */}
         <header className="header">
           <div className="container">
             <div className="row">
