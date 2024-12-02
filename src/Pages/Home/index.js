@@ -15,6 +15,7 @@ import ProductSale from "../../Components/Product_Sale";
 import ProductItem from "../../Components/ProductItem";
 import Banner1 from "../../assets/imgages/banner3.jpg";
 import Banner2 from "../../assets/imgages/banner4.jpg";
+import BackToTop from "../../Components/ScrollTop";
 
 const Home = () => {
   var productSliderOptions = {
@@ -27,6 +28,10 @@ const Home = () => {
 
   return (
     <>
+      <div>
+        <BackToTop />
+        {/* Các nội dung khác của trang có thể thêm sau này */}
+      </div>
       <HomeBanner />
 
       <Timer duration={2 * 24 * 60 * 60 * 1000} />
