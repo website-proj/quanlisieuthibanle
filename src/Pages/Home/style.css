@@ -1,0 +1,62 @@
+.bestSeller {
+  display: flex; /* Dùng Flexbox */
+  justify-content: space-between; /* Cách đều hai phần tử theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+
+  padding: 10px 20px;
+  font-family: "Arial", sans-serif;
+  margin: 20px 0 0;
+}
+.bestSeller .best {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
+  text-transform: uppercase; /* Viết hoa chữ */
+  letter-spacing: 2px; /* Khoảng cách giữa các chữ */
+  position: relative;
+}
+.best::after {
+  content: ""; /* Tạo một đường dưới chữ */
+  position: absolute;
+  bottom: -5px; /* Đặt đường dưới một chút so với chữ */
+  left: 0;
+  width: 100%;
+  height: 3px; /* Độ dày của đường dưới */
+  background-color: #000; /* Màu đường dưới */
+  border-radius: 2px; /* Bo tròn các góc của đường */
+}
+
+/* Style for banner row */
+.san-pham-items.banner-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.san-pham-item-banner {
+  position: relative;
+}
+
+.san-pham-item-banner img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+.banner-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.san-pham-item-banner a {
+  display: block;
+  text-decoration: none;
+}
+
+.san-pham-item-banner a:hover img {
+  opacity: 0.8;
+}

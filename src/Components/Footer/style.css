@@ -1,0 +1,88 @@
+footer {
+  border-top: 1px solid #2bbef9;
+  width: 100%;
+  height: 500px;
+  margin: auto;
+  background: #fff;
+  padding: 35px 0px;
+}
+.topInfo {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  text-align: center;
+}
+
+/* Định dạng từng cột */
+.footer-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+}
+
+.footer-item img {
+  width: 150px; /* Kích thước ảnh */
+  height: 150px;
+  margin-bottom: 10px;
+}
+
+.footer-item span {
+  font-size: 16px;
+  color: #000;
+  margin-top: 5px;
+}
+
+/* Định dạng cho phần footer-info */
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Căn lề trái */
+  text-align: left; /* Văn bản lề trái */
+  gap: 10px;
+}
+
+.footer-info h5 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #000; /* Màu chữ tiêu đề */
+  font-weight: 600px;
+  text-align: left !important;
+  margin-top: 20px;
+}
+
+.footer-info ul {
+  list-style-type: none; /* Xóa dấu đầu dòng */
+  padding: 0;
+  margin: 0;
+}
+
+.footer-info ul li {
+  margin-bottom: 5px;
+}
+
+.footer-info ul li a {
+  text-decoration: none; /* Xóa gạch chân */
+  color: #000;
+  font-size: 16px;
+}
+
+.footer-info ul li a:hover {
+  /* Bỏ gạch chân khi hover */
+  text-decoration: none;
+  color: #2bbef9; /* Đổi màu chữ khi hover */
+}
+
+/* Responsive: Điều chỉnh khi màn hình nhỏ */
+@media (max-width: 768px) {
+  .topInfo {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-item {
+    margin-bottom: 10px;
+  }
+}

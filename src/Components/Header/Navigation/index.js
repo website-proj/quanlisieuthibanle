@@ -207,7 +207,7 @@ const Navigation = () => {
             </div>
           </div>
 
-          <div className="col-sm-10  navPart2 d-flex align-items-center">
+          <div className="col-sm-4  navPart2 d-flex align-items-center">
             <ul className="list list-inline ml-auBto">
               <li className="list-inline-item">
                 <Link to="/">

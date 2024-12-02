@@ -339,7 +339,7 @@ nav .navPart2 ul li a button {
   text-transform: uppercase; /*  Viết hoa*/
   display: flex;
   align-items: center;
-  padding: 10px 50px;
+  padding: 10px 46px;
   transition: all 0.2s ease-in-out;
   border-radius: 25px;
 }
@@ -407,34 +407,34 @@ nav .navPart2 ul li a:hover {
 
 /* Sản phẩm  */
 
-.homeProducts {
+/* .homeProducts {
   padding: 25px 0px;
   width: 100%;
-}
+} */
 
-.homeProducts .banner {
+/* .homeProducts .banner {
   width: 100%;
   border-radius: 7px;
   overflow: hidden;
   padding-bottom: 5px;
-}
-.homeProducts .banner img {
+} */
+/* .homeProducts .banner img {
   height: 450px;
 }
 
 .productRow .hd {
   font-size: 25px;
   font-weight: 600;
-}
+} */
 
-.productItem {
+/* .productItem {
   width: 100%;
   height: auto;
   /* border: 1px solid rgba(0, 0, 0, 0.1); */
-  cursor: pointer;
-}
+/* cursor: pointer;
+} */
 
-.productItem .info {
+/* .productItem .info {
   padding: 10px;
   background: #f9f5f5;
   border-radius: 10px;
@@ -463,13 +463,13 @@ nav .navPart2 ul li a:hover {
   background: #f0faff;
   color: #2bbef9;
   transform: scale(1.1);
-}
-
+} */
+/* cái dưới chú thích trước đó roi */
 /* .product_row .swiper-slide:last-child .productItem {
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
 } */
 
-.swiper {
+/* .swiper {
   padding-right: 1px !important;
 }
 
@@ -491,4 +491,4 @@ nav .navPart2 ul li a:hover {
 .productItem .pro {
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-}
+} */
