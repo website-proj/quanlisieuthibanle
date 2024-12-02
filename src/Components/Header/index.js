@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { FiUser } from "react-icons/fi";
 import { PiShoppingCart } from "react-icons/pi";
 import SearchBox from "./SearchBox";
-import Navigation from "./Navigation";
+// import Navigation from "../Navigation/Navigation_home";
 // import { useContext } from "react";
 
 const Header = () => {
@@ -56,7 +56,7 @@ const Header = () => {
           </div>
         </header>
 
-        <Navigation />
+        {/* <Navigation /> */}
       </div>
     </>
   );

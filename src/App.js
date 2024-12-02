@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./Pages/Home";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
+import Products from "./Pages/Products";
 // import { createContext, useEffect, useState } from "react";
 // import axios from "axios";
 
@@ -33,6 +34,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" exact={true} element={<Home />} />
+        <Route path="/cat/:id" exact={true} element={<Products />} />
       </Routes>
       <Footer />
       {/* </MyContext.Provider> */}

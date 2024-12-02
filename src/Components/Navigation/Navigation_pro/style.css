@@ -1,0 +1,60 @@
+.navPart1 {
+  margin-bottom: 8px; /* Tạo khoảng cách giữa nội dung và đường kẻ */
+}
+
+.navPart_pro {
+  align-items: center;
+}
+
+.newsapaper {
+  margin-left: auto; /* Đẩy cả ul sang bên phải */
+  height: 100%;
+}
+
+.newsapaper ul {
+  display: flex;
+  justify-content: flex-end; /* Đẩy toàn bộ ul sang bên phải */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.newsapaper ul li {
+  display: flex;
+  align-items: center;
+  margin-left: 40px; /* Khoảng cách giữa các li */
+  font-size: 16px;
+  color: #333;
+  text-align: left; /* Đảm bảo nội dung trong li căn trái */
+}
+.newsapaper ul li span {
+  margin-left: 8px; /* Khoảng cách chỉ áp dụng cho văn bản */
+}
+
+.newsapaper ul li svg {
+  font-size: 20px;
+  margin: 0; /* Loại bỏ mọi margin của SVG */
+  padding: 0;
+}
+
+.newsapaper ul li a {
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.newsapaper ul li:hover span,
+.newsapaper ul li a:hover {
+  color: #007bff; /* Thay đổi màu khi hover */
+}
+
+.divider {
+  width: 100vw; /* Chiều rộng đầy đủ của viewport */
+  height: 1px; /* Độ dày của đường kẻ */
+  background-color: #2bbef9; /* Màu sắc của đường kẻ */
+  position: relative;
+  top: 0; /* Đảm bảo đường kẻ nằm ngay phía dưới */
+  left: 50%; /* Đưa thẻ vào giữa */
+  margin-left: -50vw; /* Đẩy thẻ về phía bên trái để phủ hết chiều ngang */
+}
