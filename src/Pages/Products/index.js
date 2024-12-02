@@ -36,7 +36,7 @@ const Products = () => {
               <Pro_Fillter />
               <Pro_Fillter />
             </div>
-            
+          </div>
 
           <div className="bestSeller">
             <span className="best">Sản phẩm nổi bật</span>
