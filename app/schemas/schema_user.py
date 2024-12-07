@@ -16,7 +16,16 @@ class userBase(BaseModel):
     updated_at : datetime
     class Config :
         from_attributes = True
-class UserCreateRequest(userBase):
+class admin_update(BaseModel):
+    user_id : str
+    username : str
+    email : str
+    phone_number : str
+    membership_status : str
+    address : str
+    class Config(BaseConfig) :
+        pass
+class UserCreateRequest(BaseModel):
     username :str
     email :str
     password : str
@@ -34,11 +43,16 @@ class UserRegisterRequest(BaseModel):
     # address : str
 class UserOut(BaseModel):
     # message :str
-    data : userBase
+    user_id : str
+    username : str
+    email : str
+    phone_number : str
+    address : str
+    membership_status : str
     class Config(BaseConfig):
         pass
 class login(BaseModel):
-    email : str
+    username : str
     password: str
     class Config(BaseConfig):
         pass
@@ -49,3 +63,6 @@ class userUpdateRequest(BaseModel):
     address : str
     class Config(BaseConfig):
         pass
+class passwordChangeRequest(BaseModel):
+    old_password : str
+    new_password : str
