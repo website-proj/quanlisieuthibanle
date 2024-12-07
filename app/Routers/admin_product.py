@@ -12,16 +12,14 @@ import logging
 from app.model.Products_Categories import Product
 from app.helper.login_manager import check_admin_role
 router = APIRouter()
-@router.post("/admin",  dependencies=[Depends(check_admin_role)])
-def create_category(category : CategoryCreate , db : Session = Depends(get_db) ):
-    return CategoryService.create_category(category, db)
+
 @router.post("/products", dependencies=[Depends(check_admin_role)])
 def create_product(product : ProductCreate , db : Session = Depends(get_db) ):
     return ProductService.creat_product(product , db)
 @router.get("/products" , dependencies=[Depends(check_admin_role)])
 async  def get_all_product(db : Session = Depends(get_db)):
     try :
-        products = ProductService.get_all_product(db)
+        products = ProductService.get_all_products(db)
         if not products:
             raise HTTPException(status_code= 404 , detail="No products found")
         return ResponseHandler.success("success query" , products)
@@ -35,19 +33,34 @@ def update_product(product : ProductUpdate , db : Session = Depends(get_db) ):
     except HTTPException as e:
         raise e
 @router.delete("/product" , dependencies = [Depends(check_admin_role)])
-def delete_product_byID(product_id : str, db : Session = Depends(get_db)):
+def delete_product_by_ID(product_id : str, db : Session = Depends(get_db)):
     try :
         ProductService.delete_product(product_id , db)
         return ResponseHandler.success("success delete",product_id)
     except HTTPException as e:
         raise e
-@router.get("/product/category" , dependencies=[Depends(check_admin_role)])
-def get_product_by_Category(category_id : str , db : Session = Depends(get_db)):
+@router.get("/product/parent_category" , dependencies=[Depends(check_admin_role)])
+def get_products_by_Parent_Category(parent_category_id : str , db : Session = Depends(get_db)):
     try :
-        products = ProductService.get_product_by_sub_category(category_id, db)
+        products = ProductService.get_product_by_parent_category(parent_category_id, db)
         if not products:
             raise HTTPException(status_code= 404 , detail="No products found")
         return ResponseHandler.success("success query" , products)
     except HTTPException as e:
         raise e
-
+@router.get("/product/subCategory" , dependencies=[Depends(check_admin_role)])
+def get_products_by_SubCategory(subcategory_id : str, db : Session = Depends(get_db)):
+    products = ProductService.get_product_by_sub_category(subcategory_id, db)
+    return ResponseHandler.success("success query" , products)
+@router.get("/product/discounted" , dependencies=[Depends(check_admin_role)])
+def get_discounted_product(db : Session = Depends(get_db)):
+    products = ProductService.get_discounted_products(db)
+    if not products:
+        raise HTTPException(status_code= 404 , detail="No products found")
+    return ResponseHandler.success("success query" , products)
+@router.get("/product/expiring" , dependencies=[Depends(check_admin_role)])
+def get_expiring_product(db : Session = Depends(get_db)):
+    products = ProductService.get_expiring_products(db)
+    if not products:
+        raise HTTPException(status_code= 404 , detail="No products found")
+    return ResponseHandler.success("success query" , products)
