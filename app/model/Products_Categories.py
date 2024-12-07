@@ -1,22 +1,33 @@
-from sqlalchemy import Column, String, Boolean, ForeignKey, Enum
+import uuid
+from sqlalchemy import Column, String, Float, Text, DateTime, Date, Boolean, Integer, Enum, Sequence, CheckConstraint, \
+    ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import func
-from sqlalchemy import Column, String, Integer, Float, Text, DateTime, Date, Boolean, ForeignKey, CheckConstraint
-from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import ENUM
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import func
 from datetime import datetime
+from sqlalchemy import func
 
 Base = declarative_base()
 
-class Category(Base):
-    __tablename__ = 'Categories'
+# Định nghĩa Enum cho các loại danh mục và trạng thái sản phẩm
+class CategoryType(str, Enum):
+    Primary = "Primary"
+    Secondary = "Secondary"
 
-    category_id = Column(String(50), primary_key=True, unique=True, default=func.concat('cat', func.nextval('category_id_seq')))
+class ProductStatus(str, Enum):
+    Active = "Active"
+    Inactive = "Inactive"
+
+# Định nghĩa Sequence cho category_id và product_id
+category_id_seq = Sequence('category_id_seq', metadata=Base.metadata)
+product_id_seq = Sequence('product_id_seq', metadata=Base.metadata)
+
+class Category(Base):
+    __tablename__ = 'categories'
+
+    # Sử dụng UUID cho category_id
+    category_id = Column(String(50), primary_key=True, unique=True, default=lambda: f"cat{uuid.uuid4().hex[:8]}")
     category_name = Column(String(100), nullable=False)
-    parent_category_id = Column(String(50), ForeignKey('Categories.category_id'))
+    parent_category_id = Column(String(50), ForeignKey('categories.category_id'))
     star_category = Column(Boolean, default=False)
 
     # Sửa lại relationship và thêm primaryjoin
@@ -31,8 +42,8 @@ class Category(Base):
 class Product(Base):
     __tablename__ = 'products'
 
-    product_id = Column(String(50), primary_key=True, unique=True,
-                            default=func.concat('prod', func.nextval('product_id_seq')))
+    # Sử dụng UUID cho product_id
+    product_id = Column(String(50), primary_key=True, unique=True, default=lambda: f"prod{uuid.uuid4().hex[:8]}")
     name = Column(String(100), nullable=False)
     name_brand = Column(String(100))
     description = Column(Text)
@@ -42,17 +53,14 @@ class Product(Base):
     unit = Column(String(50))
     stock_quantity = Column(Integer, default=0)
     image = Column(String(255))
-    is_active = Column(Boolean, default=True)
-    star_product = Column(Boolean, default=False)
     date_created = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
     expiration_date = Column(Date)
-    category_id = Column(String(50), ForeignKey('Categories.category_id'))
+    star_product = Column(Boolean , default=False)
+    category_id = Column(String(50), ForeignKey('categories.category_id'))
 
     category = relationship("Category", backref="products")
 
     def __repr__(self):
         return f"<Product(product_id={self.product_id}, name={self.name}, category_id={self.category_id})>"
-
 
