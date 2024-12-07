@@ -25,7 +25,7 @@ def get_parent_category(cat_id : str , db : Session = Depends(get_db)):
 @router.get("/subcategories" , dependencies=[Depends(check_admin_role)])
 def get_sub_category(cat_id : str , db : Session = Depends(get_db)):
     sub_cat = CategoryService.get_sub_categories(cat_id, db)
-    return {"type":type(sub_cat)}
+    return ResponseHandler.success("query Success" ,sub_cat)
 @router.put("/category" , dependencies=[Depends(check_admin_role)])
 def update_category(cat_form_update : CategoryUpdate , db : Session = Depends(get_db) ):
     cat_update = CategoryService.update_category(cat_form_update, db)
