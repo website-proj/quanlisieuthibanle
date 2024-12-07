@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_ , and_
 from app.model.Products_Categories import Product, Category
 from app.utils.responses import ResponseHandler
+from app.schemas.schema_product import ProductCreate, ProductUpdate
 
 
 class ProductService:
@@ -63,16 +64,16 @@ class ProductService:
         return ResponseHandler.success("found product ", products)
     # GET /products/category/{category_id}/subcategory/{subcategory_id}: Lấy danh sách sản phẩm theo danh mục con
     @staticmethod
-    def get_product_by_subcategory(category_id : str , subcategory_id :str  , db:Session):
+    def get_product_by_parent_category( parent_category_id :str  , db:Session):
         try:
             products = db.query(Product).join(Category , Product.category_id==Category.category_id).filter(
                 and_(
-                    Product.category_id == category_id,
-                    Category.parent_category_id == subcategory_id
+                    # Product.category_id == category_id,
+                    Category.parent_category_id == parent_category_id
                 )).all()
             if not products:
                 raise HTTPException(status_code=404, detail="No products found")
-            return ResponseHandler.success("found product ", products)
+            return products
         except Exception as e:
             raise HTTPException(status_code=404, detail=str(e))
 #   # GET /products/{product_id}: Lấy thông tin chi tiết sản phẩm
@@ -89,3 +90,79 @@ class ProductService:
         if not products:
             raise HTTPException(status_code=404, detail="No products found")
         return ResponseHandler.success("found product ", products)
+
+    @staticmethod
+    def creat_product(product : ProductCreate  , db : Session):
+        new_product = Product(
+            name=product.name,
+            name_brand=product.name_brand,
+            description=product.description,
+            price=product.price,
+            old_price=product.old_price,
+            discount=product.discount,
+            unit=product.unit,
+            stock_quantity=product.stock_quantity,
+            image=product.image,
+            star_product=product.star_product,
+            expiration_date=product.expiration_date,
+            category_id=product.category_id  # Giả sử có category_id trong ProductCreate
+        )
+
+        # Thêm sản phẩm vào cơ sở dữ liệu
+        db.add(new_product)
+        db.commit()
+        db.refresh(new_product)
+        return new_product
+    @staticmethod
+    def get_all_products(db : Session):
+        products = db.query(Product).all()
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+        return products
+    @staticmethod
+    def update_product(product : ProductUpdate , db : Session):
+        pro = db.query(Product).filter(Product.product_id == product.product_id).first()
+        if not pro:
+            raise HTTPException(status_code=404, detail="No products found")
+        pro.name = product.name
+        pro.name_brand = product.name_brand
+        pro.description = product.description
+        pro.price = product.price
+        pro.old_price = product.old_price if product.old_price is not None else pro.old_price  # Đảm bảo không ghi đè nếu old_price không được cập nhật
+        pro.discount = product.discount
+        pro.unit = product.unit
+        pro.stock_quantity = product.stock_quantity
+        pro.image = product.image
+        pro.star_product = product.star_product
+        pro.expiration_date = product.expiration_date
+        pro.category_id = product.category_id
+
+        # Commit thay đổi vào cơ sở dữ liệu
+        db.commit()
+        db.refresh(pro)
+        return pro
+    @staticmethod
+    def delete_product(product_id , db : Session):
+        pro = db.query(Product).filter(Product.product_id == product_id).first()
+        if not pro:
+            raise HTTPException(status_code=404, detail="No products found")
+        db.delete(pro)
+        db.commit()
+    @staticmethod
+    def get_product_by_sub_category( subcategory_id , db : Session):
+        products = db.query(Product).filter(Product.category_id == subcategory_id).all()
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+        return products
+    @staticmethod
+    def get_product_discount_for_sub_category(subcategory_id , db : Session ):
+        products = db.query(Product).filter(Product.category_id == subcategory_id , Product.discount > 0 ).all()
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+        return products
+    @staticmethod
+    def get_expiring_products(db : Session):
+        products = db.query(Product).order_by(Product.expiration_date).all()
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+        return products
