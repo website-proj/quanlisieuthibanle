@@ -17,13 +17,12 @@ class ProductBase(BaseModel ):
     unit :str
     stock_quantity : int = Field(0)
     image : str
-    is_active: bool = Field(True )
     star_product : bool = Field(False)
-    date_create :datetime
-    update_at : datetime
+    # date_create :datetime
+    # update_at : datetime
     expiration_date : datetime
     category_id : str
-    category : CategoryBase
+    # category : CategoryBase
 
     @validator('discount', pre=True)
     def validate_discount(cls, v):
@@ -33,8 +32,19 @@ class ProductBase(BaseModel ):
     class Config:
         # orm_mode = True
         from_attributes = True
-class ProductCreate(ProductBase):
-    pass
+class ProductCreate(BaseModel):
+    name: str
+    name_brand: str
+    description: str
+    price: float
+    old_price: Optional[float] = None
+    discount: float
+    unit: str
+    stock_quantity: int = Field(0)
+    image: str
+    star_product: bool = Field(False)
+    expiration_date: datetime
+    category_id: str
 class ProductResponse(BaseModel):
     message:str
     data : ProductBase
@@ -44,4 +54,17 @@ class ProductsResponse(BaseModel):
 
     class Config:
         from_attributes = True
-# class ProductUpdate(BaseModel):
+class ProductUpdate(BaseModel):
+    product_id: str
+    name: str
+    name_brand: str
+    description: str
+    price: float
+    old_price: Optional[float] = None
+    discount: float
+    unit: str
+    stock_quantity: int = Field(0)
+    image: str
+    star_product: bool = Field(False)
+    expiration_date: datetime
+    category_id: str
