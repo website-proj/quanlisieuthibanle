@@ -1,11 +1,19 @@
 from fastapi import HTTPException, Depends
+from sqlalchemy.orm import Session
 
+from app.db.base import get_db
 from app.model.users import User
+from app.services.auth import AuthService
 from app.services.users import UserService
 
 
-def login_required(http_authorization_credentials=Depends(UserService().reusable_oauth2)):
-    return UserService().get_current_user(http_authorization_credentials)
+def login_required(token : str  =  Depends(AuthService.oauth2_scheme) , db : Session  = Depends(get_db)):
+    return AuthService.get_current_user(token  , db)
+def check_admin_role(token : str = Depends(AuthService.oauth2_scheme) , db : Session = Depends(get_db)):
+    current = AuthService.get_current_user(token , db)
+    user = db.query(User).filter(User.user_id == current.user_id).first()
+    if user.account_type != "Admin":
+        raise HTTPException(status_code=403 , detail = "Admin role required")
 
 
 class PermissionRequired:
