@@ -54,25 +54,25 @@
   font-weight: 400 !important; 
 }
 
-.chart-container {
+/* .chart-container {
   margin-top: 1.5% !important;
   width: 100%; 
   background-color: var(--white);
   border-radius: 20px;
   box-sizing: border-box;
   padding: 0;
-}
+} */
 
-.chart-container canvas {
+/* .chart-container canvas {
   width: 100% !important; 
   height: auto !important; 
-}
+} */
 
-.chart-container .chart-title {
+/* .chart-container .chart-title {
   font-size: 1.5em !important;
   font-weight: bold !important;
   color: #222 !important;
-}
+} */
 
 .css-1pv42cs-MuiTypography-root {
   color: var(--dark) !important;
