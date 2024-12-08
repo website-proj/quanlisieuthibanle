@@ -1,0 +1,15 @@
+nav {
+  background: #ffffff;
+  border-bottom: 1px solid #000;
+  height: 3em;
+  margin-bottom: 2em;
+}
+.navPart2 {
+  margin-right: 6%;
+}
+.css-1588512-MuiButtonBase-root-MuiButton-root {
+  color: #000 !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  margin-left: 13% !important;
+}

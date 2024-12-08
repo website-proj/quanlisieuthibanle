@@ -1,0 +1,26 @@
+.searchBox input::placeholder {
+  color: #000;
+}
+
+.searchBox input::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+.searchBox {
+  padding: 0px 6px;
+}
+
+.searchBox button {
+  position: absolute;
+  top: 0.1em;
+  right: 10px;
+  z-index: 100;
+  min-width: 2.5em !important;
+  height: 2.5em !important;
+  width: 2.5em !important;
+  border-radius: 50% !important;
+}
+.searchBox button svg {
+  width: 1.6em;
+  height: 1.6em;
+  color: #757575;
+}

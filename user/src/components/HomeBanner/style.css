@@ -1,0 +1,30 @@
+.sliderHome {
+  overflow: inherit !important;
+}
+.bannerImg {
+  border-radius: 0.625em;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 100%;
+  width: 2.8125em;
+  height: 2.8125em;
+  min-width: 2.8125em;
+  box-shadow: 0 1px 3px #0000001f, 0 1px 2px #0000003f !important;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background: #ccc;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 1.25em !important;
+  color: #000;
+}

@@ -1,0 +1,46 @@
+.proCard {
+  margin-left: 3.5%;
+  margin-right: 5%;
+  background: #ffffff;
+}
+
+.proImg {
+  border: 1px solid #9a6b6b;
+  border-radius: 1.25em;
+}
+.proImg img {
+  border-radius: 1.25em;
+}
+.upCount {
+  margin-left: 11.3em !important;
+}
+.upCount .css-1588512-MuiButtonBase-root-MuiButton-root {
+  margin-left: 0em !important;
+  justify-content: center !important;
+  min-width: 2.5em !important;
+}
+.addPro {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background: #1a73e8 !important;
+  color: #ffffff !important;
+  margin-top: 2em !important;
+  font-size: 1em !important;
+  height: 3.125em;
+  border-radius: 1em !important;
+  margin-left: 0em !important;
+  width: 60% !important;
+}
+/* .addPro:hover {
+  transform: scale(1.05) !important; 
+}
+
+.addPro:active {
+  transform: scale(1) !important;
+} */
+.addPro svg {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-right: 0.5em;
+}

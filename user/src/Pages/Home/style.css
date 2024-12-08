@@ -1,0 +1,114 @@
+.homeProducts {
+  padding-left: 3%;
+  margin-bottom: 1em;
+  cursor: pointer;
+  margin-top: 1em;
+  margin-right: 3%;
+}
+.banner {
+  overflow: hidden;
+}
+.banner img {
+  height: 41.5em;
+  border-radius: 0.5em;
+}
+
+.productSale {
+  padding-left: 2%;
+}
+.productList {
+  margin-top: 1em;
+}
+.productList .product_item {
+  background: #ffffff;
+  height: 100% !important;
+}
+
+.product_item:hover {
+  border: 1px solid #1a73e8;
+}
+
+.productCart {
+  background: #1a73e8 !important;
+  color: #ffffff !important;
+  margin-top: 0.5em !important;
+  width: 100% !important;
+  margin-left: 0em !important;
+  justify-content: center !important;
+  font-size: 1em !important;
+}
+
+.text_list {
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 2.25em;
+}
+.all_pro button {
+  background-image: linear-gradient(to right, #2d19e4, #2bbef985);
+  border-radius: 1em;
+}
+.all_pro button:hover {
+  background-image: linear-gradient(to bottom, #1a73e8, #2bbef985);
+}
+
+.productListSale {
+  margin-left: 4%;
+  margin-right: 4%;
+}
+
+.productListSale .product_item {
+  background: #ffffff;
+}
+
+.all_pro_bot {
+  margin-top: 2em;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+.all_pro_bot button {
+  background: #1a73e8;
+  font-size: 1.25em;
+  justify-content: center !important;
+  align-items: center !important;
+  color: #ffffff !important;
+  border-radius: 1em;
+  width: 20%;
+}
+.all_pro_bot .css-1588512-MuiButtonBase-root-MuiButton-root {
+  margin-left: 0em !important;
+}
+
+.botBanner {
+  padding-left: 4%;
+  padding-right: 4%;
+  margin-top: 3em;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.scroll-to-top:hover {
+  background-color: #1558b0;
+  transform: scale(1.1);
+}
+
+.scroll-to-top svg {
+  width: 24px;
+  height: 24px;
+}

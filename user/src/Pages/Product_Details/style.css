@@ -1,0 +1,40 @@
+/* .text_describe {
+  box-shadow: 0px 4px 2px -2px rgba(0, 0, 0, 0.25);
+  
+  text-align: left;
+  font-weight: bold;
+  color: black;
+} */
+
+.relatedPro {
+  margin-left: 3%;
+  margin-right: 5%;
+}
+
+.relatedPro_item {
+  margin-top: 0.8em;
+  margin-bottom: 3em;
+  background: #ffffff;
+}
+
+.relatedPro .swiper-button-prev {
+  width: 1.5em;
+  height: 1.5em;
+  min-width: 1.5em;
+}
+
+.relatedPro .swiper-button-prev:after {
+  font-size: 0.75em !important;
+}
+.relatedPro .swiper-button-next {
+  width: 1.5em;
+  height: 1.5em;
+  min-width: 1.5em;
+}
+
+.relatedPro .swiper-button-next:after {
+  font-size: 0.75em !important;
+}
+/* .relatedPro .swiper-button-prev {
+  left: -1em !important;
+} */

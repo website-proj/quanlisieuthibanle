@@ -1,0 +1,13 @@
+.scroll-to-top {
+  opacity: 0.8;
+}
+
+.scroll-to-top:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.scroll-to-top svg {
+  width: 1.5em;
+  height: 1.5em;
+}

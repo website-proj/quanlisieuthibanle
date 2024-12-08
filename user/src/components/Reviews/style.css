@@ -1,0 +1,7 @@
+.pagination nav {
+  border-bottom: 0em !important;
+}
+.pagination nav ul {
+  justify-content: end !important;
+  margin-right: 2em;
+}
