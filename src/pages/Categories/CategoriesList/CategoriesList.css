@@ -1,10 +1,10 @@
-.categories-list main {
+/* .categories-list main {
   position: absolute; 
   top: 12%; 
   left: 22.5%; 
   right: 2.5%;
   
-}
+} */
 
 .categories-info-container {
   background-color: var(--white);

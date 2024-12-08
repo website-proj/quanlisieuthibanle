@@ -1,232 +1,83 @@
-.dashboard {
-  position: absolute; 
-  top: 12%; 
-  left: 22.5%; 
-  right: 2.5%;
-}
-
-.dashboard main .box-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  grid-gap: 24px;
-  transform: scale(1);
-  transform-origin: top left;
-}
-
-.dashboard main .box-info li {
-  padding: 15px;
-  background: var(--white);
-  border-radius: 20px;
+.stats-header-container {
   display: flex;
-  align-items: center;
-  grid-gap: 15px;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px; 
+  margin-top: 0.4%; 
 }
 
-.dashboard main .box-info li .bx {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
-  font-size: 25px;
+.info-box {
   display: flex;
-  justify-content: center;
+  flex-direction: row; 
   align-items: center;
+  padding: 14px;
+  flex: 1;
+  border-radius: 20px; 
 }
 
-.dashboard main .box-info li:nth-child(1) .bx {
+.info-box:nth-child(1) {
   background: var(--light-blue);
   color: var(--blue);
 }
 
-.dashboard main .box-info li:nth-child(2) .bx {
+.info-box:nth-child(2) {
   background: var(--light-yellow);
   color: var(--purple);
 }
 
-.dashboard main .box-info li:nth-child(3) .bx {
+.info-box:nth-child(3) {
   background: var(--green);
   color: var(--orange);
 }
 
-.dashboard main .box-info li:nth-child(4) .bx {
+.info-box:nth-child(4) {
   background: var(--light-orange);
   color: var(--yellow);
 }
 
-.dashboard main .box-info li:nth-child(5) .bx {
-  background: var(--light-purple);
-  color: var(--lato);
+.icon {
+  font-size: 1.8em; 
+  margin-right: 10%;
+  margin-left: 8%;
 }
 
-.text {
-  color: var(--dark);
+.info-title {
+  color: black !important;
+  font-size: 1em !important;
+  font-weight: 500 !important;
+  margin-bottom: 5px;
 }
 
-.dashboard main .box-info li .text h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--dark);
+.info-count {
+  color: black;
+  font-size: 1em !important; 
+  font-weight: 400 !important; 
 }
 
-.dashboard main .box-info li .text p {
-  color: var(--dark);
-}
-
-/* best-selling */
 .chart-container {
-  display: flex;
-  justify-content: space-around;
-  gap: 20px;
+  margin-top: 1.5% !important;
+  width: 100%; 
+  background-color: var(--white);
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 0;
 }
 
-.chart-section {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-top: 28px;
-  padding: 20px;
-  background-color: var(--light);
-  border-radius: 18px;
-  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); */
-  height: 354px;
+.chart-container canvas {
+  width: 100% !important; 
+  height: auto !important; 
 }
 
-.chart-section .text {
-  align-items: center;
-  justify-content: center;
+.chart-container .chart-title {
+  font-size: 1.5em !important;
+  font-weight: bold !important;
+  color: #222 !important;
 }
 
-.dashboard .chart-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.css-1pv42cs-MuiTypography-root {
+  color: var(--dark) !important;
 }
 
-.dashboard .best-selling-products {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-}
-
-.best-selling-products {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-top: 20px;
-  padding: 20px;
-  background-color: var(--light);
-  border-radius: 15px;
-  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
-}
-
-.best-selling-products h3 {
-  font-size: 1.5em;
-  margin-bottom: 15px;
-  color: var(--dark);
-}
-
-/*Table*/
-.best-selling-products table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: var(--light);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.best-selling-products th,
-.best-selling-products td {
-  padding: 12px 15px;
-  text-align: left;
-  font-size: 1em;
-  border-bottom: 1px solid #ddd;
-  color: var(--dark);
-}
-
-.best-selling-products th {
-  background-color: rgba(211, 211, 211, 0.263);
-  color: var(--dark);
-}
-
-/* Hover effect for table rows */
-.best-selling-products tr:hover {
-  background-color: #ddf0ff41;
-}
-
-/* Style for the icons in the action column */
-.best-selling-products .icon-view,
-.best-selling-products .icon-edit,
-.best-selling-products .icon-delete {
-  font-size: 1.2em;
-  margin: 0 5px;
-  cursor: pointer;
-  color: var(--dark);
-  transition: color 0.3s ease;
-}
-
-/* Icon hover effects */
-.best-selling-products .icon-view:hover {
-  color: #4CAF50;
-}
-
-.best-selling-products .icon-edit:hover {
-  color: #FFC107;
-}
-
-.best-selling-products .icon-delete:hover {
-  color: #F44336;
-}
-
-/* Image styling */
-.best-selling-products img {
-  border-radius: 50%;
-  margin-right: 10px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* thanh searchhhhhhhhhhhhhh */
-/* General styles for the search section */
-.filter-search {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.filter,
-.search-input {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 10px 15px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #282727;
-  outline: none;
-  transition: border 0.3s ease;
-  color: #888;
-  background-color: var(--light);
-}
-
-.filter:focus,
-.search-input:focus {
-  border-color: #007BFF;
-}
-
-/* Ensure both input fields have consistent sizing */
-.filter {
-  width: 150px; /* Cùng chiều rộng cho filter */
-}
-
-.search-input {
-  flex: 1;
-  width: 100%;
-  max-width: 300px;
-}
-
-.search-input::placeholder {
-  color: #888;
-}
-
-/* Hover effect for both input fields */
-.search-input:hover,
-.filter:hover {
-  border-color: #007BFF;
-}
-
-/* Specific styles for the input placeholder and search icon */
-#search-input {
-  color: #888;
+.css-1yqzad6 {
+  margin-top: 2%;
 }

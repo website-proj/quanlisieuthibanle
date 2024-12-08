@@ -1,0 +1,10 @@
+{
+    "labels": ["A", "A1", "B", "C", "D1"],
+    "datasets": [
+      {
+        "data": [40, 20, 15, 10, 15],
+        "backgroundColor": ["#4e73df", "#1cc88a", "#36b9cc", "#f6c23e", "#e74a3b"]
+      }
+    ]
+  }
+  

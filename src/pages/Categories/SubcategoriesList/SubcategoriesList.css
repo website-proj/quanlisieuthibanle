@@ -1,9 +1,9 @@
-.subcategories-list main {
+/* .subcategories-list main {
   position: absolute;
   top: 12%;
   left: 22.5%;
   right: 2.5%;
-}
+} */
 
 .subcategories-info-container {
   background-color: var(--white);

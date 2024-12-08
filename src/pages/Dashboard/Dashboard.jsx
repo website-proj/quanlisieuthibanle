@@ -1,185 +1,153 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import React from "react";
+import { Box, Typography } from "@mui/material";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, ArcElement } from "chart.js";
+import { Chart } from "react-chartjs-2";
+import combinedData from "./revenue-statistics.json"; // Dữ liệu thống kê doanh thu
+import usersData from "./users-data.json"; // Dữ liệu số lượng người dùng
+import categoriesData from "./categories-data.json"; // Dữ liệu danh mục phần trăm
+
+import { FiUser, FiShoppingCart } from "react-icons/fi";
+import { FaRegStar } from "react-icons/fa";
+import { GrBasket } from "react-icons/gr";
 import './Dashboard.css';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
+  BarElement,
   LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ArcElement // Để sử dụng cho biểu đồ tròn
 );
 
-function Dashboard() {
-  const orderChartRef = useRef(null);
-  const ratingChartRef = useRef(null);
-  const [products, setProducts] = useState([]);  // State to store the fetched products
-  const [searchText, setSearchText] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-
-  useEffect(() => {
-    fetch('/src/pages/Dashboard/best-selling-products.json')
-      .then(response => response.json())
-      .then(data => {
-        setProducts(data);
-      })
-      .catch(error => console.error("Error fetching product data:", error));
-  }, []);
-
-  const filterProducts = () => {
-    return products.filter(product => {
-      const matchesSearchText = product.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                                product.category.toLowerCase().includes(searchText.toLowerCase()) ||
-                                product.subcategory.toLowerCase().includes(searchText.toLowerCase());
-
-      const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-
-      return matchesSearchText && matchesCategory;
-    });
-  };
-
-  const orderChartData = {
-    labels: ['01/12', '02/12', '03/12', '04/12', '05/12', '06/12'],
-    datasets: [
-      {
-        label: 'Tổng đơn hàng',
-        data: [12, 19, 3, 5, 2, 3],
-        borderColor: 'rgb(75, 192, 192)',
-        fill: false,
-      }
-    ]
-  };  
-
-  const ratingChartData = {
-    labels: ['Thực phẩm', 'Đồ uống', 'Hóa mỹ phẩm', 'Gia vị'],
-    datasets: [
-      {
-        label: 'Đánh giá',
-        data: [4.5, 3.8, 4.0, 4.2],
-        borderColor: 'rgb(255, 99, 132)',
-        fill: false,
-      }
-    ]
-  };
+const Dashboard = () => {
+  const stats = [
+    { icon: <FiUser className="icon" />, title: "Người dùng", count: 1020 },
+    { icon: <GrBasket className="icon" />, title: "Đơn hàng", count: 1020 },
+    { icon: <FiShoppingCart className="icon" />, title: "Sản phẩm", count: 11111 },
+    { icon: <FaRegStar className="icon" />, title: "Đánh giá", count: 1000 },
+  ];
 
   return (
-    <div className="dashboard">
-      <main>
-        <ul className="box-info">
-          <li>
-            <i className='bx bxs-user'></i>
-            <span className="text">
-              <h3>Người dùng</h3>
-              <p>1020</p>
-            </span>
-          </li>
-          <li>
-            <i className='bx bxs-basket'></i>
-            <span className="text">
-              <h3>Đơn hàng</h3>
-              <p>1020</p>
-            </span>
-          </li>
-          <li>
-            <i className='bx bxl-shopify'></i>
-            <span className="text">
-              <h3>Sản phẩm</h3>
-              <p>11111</p>
-            </span>
-          </li>
-          <li>
-            <i className='bx bxs-star-half'></i>
-            <span className="text">
-              <h3>Đánh giá</h3>
-              <p>1000</p>
-            </span>
-          </li>
-        </ul>
+    <>
+      {/* Hiển thị các thống kê */}
+      <Box className="stats-header-container">
+        {stats.map((item, index) => (
+          <Box key={index} className="info-box">
+            {item.icon}
+            <Box>
+              <Typography className="info-title">{item.title}</Typography>
+              <Typography className="info-count">{item.count}</Typography>
+            </Box>
+          </Box>
+        ))}
+      </Box>
 
-        <div className="chart-container">
-          <div className="chart-section">
-            <span className="text">
-              <h3>Thống kê mua hàng</h3>
-            </span>
-            <Line data={orderChartData} ref={orderChartRef} />
-          </div>
+{/* Biểu đồ doanh thu */}
+<Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
+        <Typography variant="h6" sx={{ marginBottom: "1%", fontSize: '1em', fontWeight: 500 }}>
+          Thống kê doanh thu
+        </Typography>
+        <Chart
+          type="line"
+          data={combinedData}
+          options={{
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "top",
+                labels: {
+                  font: { family: "Segoe UI", size: 13 },
+                }
+              },
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: "Tháng",
+                  font: { family: "Segoe UI", size: 13 }
+                },
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: "Giá trị (triệu đồng)",
+                  font: { family: "Segoe UI", size: 13 }
+                },
+              }
+            }
+          }}
+        />
+      </Box>
 
-          <div className="chart-section">
-            <span className="text">
-              <h3>Đánh giá sản phẩm</h3>
-            </span>
-            <Line data={ratingChartData} ref={ratingChartRef} />
-          </div>
-        </div>
+      {/* Biểu đồ thống kê kinh doanh và biểu đồ số lượng người dùng */}
+      <Box sx={{ display: "flex", gap: "20px", justifyContent: "space-between" }}>
+        {/* Biểu đồ số lượng người dùng chiếm 2/3 chiều ngang */}
+        <Box sx={{ flex: 2, padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0 }}>
+          <Typography variant="h6" sx={{ marginBottom: "1%", fontSize: '1em', fontWeight: 500 }}>
+            Số lượng người dùng
+          </Typography>
+          <Chart
+            type="line"
+            data={usersData}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "top",
+                  labels: {
+                    font: { family: "Segoe UI", size: 13 },
+                  }
+                },
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: "Ngày",
+                    font: { family: "Segoe UI", size: 13 }
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: "Số lượng người dùng",
+                    font: { family: "Segoe UI", size: 13 }
+                  },
+                }
+              }
+            }}
+          />
+        </Box>
 
-        <div className="best-selling-products">
-          <span className="text">
-            <h3>Sản phẩm bán chạy nhất</h3>
-          </span>
-
-          <div className="filter-search">
-            <select
-              className="filter"
-              id="category-select"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="all">Tất cả</option>
-              <option value="food">Thực phẩm</option>
-              <option value="beverage">Đồ uống</option>
-              <option value="snacks">Bánh kẹo & Đồ ăn nhẹ</option>
-              <option value="cosmetics">Hóa mỹ phẩm</option>
-              <option value="kitchenware">Gia dụng & Đồ dùng nhà bếp</option>
-              <option value="seasoning">Gia vị</option>
-              <option value="babycare">Chăm sóc bé</option>
-              <option value="books">Sách và văn phòng phẩm</option>
-              <option value="cleaning">Sản phẩm vệ sinh nhà cửa</option>
-            </select>
-            <input
-              type="text"
-              className="search-input"
-              id="search-input"
-              placeholder="Nhập nội dung tìm kiếm"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
-          </div>
-
-          <table id="product-table">
-            <thead>
-              <tr>
-                <th>Sản phẩm</th>
-                <th>Danh mục</th>
-                <th>Danh mục con</th>
-                <th>Giá</th>
-                <th>Hạn sử dụng</th>
-                <th>Chức năng</th>
-              </tr>
-            </thead>
-            <tbody id="product-tbody">
-              {filterProducts().map((product, index) => (
-                <tr key={index}>
-                  <td><img src={product.image} alt="Best Seller" width="30" /> {product.name}</td>
-                  <td>{product.category}</td>
-                  <td>{product.subcategory}</td>
-                  <td>{product.price}</td>
-                  <td>{product.date}</td>
-                  <td>
-                    <span className="icon-view"><i className='bx bx-low-vision'></i></span>
-                    <span className="icon-edit"><i className='bx bx-edit'></i></span>
-                    <span className="icon-delete"><i className='bx bx-trash'></i></span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </main>
-    </div>
+        {/* Biểu đồ danh mục phần trăm chiếm 1/3 chiều ngang */}
+        <Box sx={{ flex: 1, padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0 }}>
+          <Typography variant="h6" sx={{ marginBottom: "1%", fontSize: '1em', fontWeight: 500 }}>
+            Tỷ lệ phần trăm các danh mục
+          </Typography>
+          <Chart
+            type="pie"
+            data={categoriesData}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "top",
+                  labels: {
+                    font: { family: "Segoe UI", size: 13 },
+                  }
+                },
+              }
+            }}
+          />
+        </Box>
+      </Box>
+    </>
   );
-}
+};
 
 export default Dashboard;

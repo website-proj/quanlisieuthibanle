@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Mua xong đánh giá 1 sao",
+    "email": "nguoidung1@gmail.com",
+    "phone": "0123456789",
+    "createdAt": "02/12/2024",
+    "status": "Đang hoạt động"
+  },
+  {
+    "name": "Mua xong đánh giá 2 sao",
+    "email": "nguoidung2@gmail.com",
+    "phone": "0123456790",
+    "createdAt": "03/12/2024",
+    "status": "Đang hoạt động"
+  },
+  {
+    "name": "Mua xong đánh giá 3 sao",
+    "email": "nguoidung3@gmail.com",
+    "phone": "0123456791",
+    "createdAt": "04/12/2024",
+    "status": "Đang hoạt động"
+  },
+  {
+    "name": "Mua xong đánh giá 4 sao",
+    "email": "nguoidung4@gmail.com",
+    "phone": "0123456792",
+    "createdAt": "05/12/2024",
+    "status": "Đang hoạt động"
+  },
+  {
+    "name": "Mua xong đánh giá 5 sao",
+    "email": "nguoidung5@gmail.com",
+    "phone": "0123456793",
+    "createdAt": "06/12/2024",
+    "status": "Đang hoạt động"
+  },
+  {
+    "name": "Mua xong đánh giá 1 sao",
+    "email": "nguoidung6@gmail.com",
+    "phone": "0123456794",
+    "createdAt": "07/12/2024",
+    "status": "Đang hoạt động"
+  },
+  {
+    "name": "Mua xong đánh giá 2 sao",
+    "email": "nguoidung7@gmail.com",
+    "phone": "0123456795",
+    "createdAt": "08/12/2024",
+    "status": "Đang hoạt động"
+  },
+  {
+    "name": "Mua xong đánh giá 3 sao",
+    "email": "nguoidung8@gmail.com",
+    "phone": "0123456796",
+    "createdAt": "09/12/2024",
+    "status": "Đang hoạt động"
+  },
+  {
+    "name": "Mua xong đánh giá 4 sao",
+    "email": "nguoidung9@gmail.com",
+    "phone": "0123456797",
+    "createdAt": "10/12/2024",
+    "status": "Đang hoạt động"
+  },
+  {
+    "name": "Mua xong đánh giá 5 sao",
+    "email": "nguoidung10@gmail.com",
+    "phone": "0123456798",
+    "createdAt": "11/12/2024",
+    "status": "Đang hoạt động"
+  }
+]

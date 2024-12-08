@@ -1,110 +1,56 @@
-/* SIDEBAR tổng thể */
-#sidebar {
-  position: fixed;
-  top: 8.5%;
-  left: 0;
-  width: 20%;
-  height: calc(100% - 8.5%);
-  background: var(--white);
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  font-size: 1em;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+.custom-list-item-text {
+    color: var(--dark);
+    transition: color 0s;
+  }
 
-/* Menu chính (ở trên) */
-#sidebar .primary-menu {
-  flex-grow: 1;
-}
+  .css-rizt0-MuiTypography-root {
+    font-weight: 500 !important;
+  }
+  
+  .custom-list-item-icon {
+    color: var(--dark) !important;
+    font-size: 1.4em;
+    min-width: 40px;
+    justify-content: center;
+    transition: color 0s;
+  }
+  
+  .submenu-text {
+    color: var(--dark);
+    margin-left: 10px;
+  }
+  
+  .submenu-text span {
+    font-size: 0.9em !important;
+  }
 
-/* Menu cuối (Cài đặt và Đăng xuất) */
-#sidebar .bottom {
-  margin-top: auto;
-}
+  .custom-list-item.active {
+    background-color: var(--grey);
+    border-radius: 15px !important;
 
-/* Kiểu dáng chung cho menu */
-#sidebar .side-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+  }
+  
+  .custom-list-item:hover {
+    background-color: var(--grey) !important;
+    border-radius: 15px !important;
+  }
+  
+  .submenu-list-item.active {
+    background-color: var(--grey);
+    color: #000;
+    font-weight: bold;
+    border-radius: 15px !important;
 
-#sidebar .side-menu li {
-  position: relative; /* Quan trọng để tránh đè menu con */
-}
-
-#sidebar .side-menu li a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: var(--dark);
-  padding: 0 15px;
-  height: 50px;
-  line-height: 50px;
-}
-
-#sidebar .side-menu li a i {
-  margin-right: 10px;
-}
-
-/* Hiệu ứng hover */
-#sidebar .side-menu li a:hover {
-  color: var(--blue);
-  background-color: var(--grey);
-  border-radius: 40px;
-}
-
-/* Menu con (sub-menu) */
-#sidebar .sub-menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: none;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, opacity 0.3s ease;
-  opacity: 0;
-}
-
-#sidebar .sub-menu.show {
-  display: block;
-  max-height: 500px; 
-  opacity: 1;
-}
-
-#sidebar .sub-menu li a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: var(--dark);
-  height: 50px;
-  line-height: 50px;
-}
-
-/* Hiệu ứng mũi tên */
-#sidebar .side-menu li a i.bx-chevron-up,
-#sidebar .side-menu li a i.bx-chevron-down {
-  margin-left: auto; 
-}
-
-/* Thêm dấu gạch đứng*/
-#sidebar .sub-menu li {
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding-left: 10%; 
-}
-
-#sidebar .sub-menu li::before {
-  content: "";
-  position: absolute;
-  left: 10%; 
-  width: 0.2%; 
-  height: 100%; 
-  background-color: var(--dark); 
-}
-
-#sidebar .side-menu li a.logout {
-	color: var(--red);
-}
+  }
+  
+  .submenu-list-item:hover {
+    background-color: var(--grey) !important;
+    border-radius: 15px !important;
+  }
+  
+  .css-z2qibm-MuiListItem-root,
+  .css-66b8d4-MuiListItem-root {
+    -webkit-transition: none !important;
+    transition: none !important;
+  }
+  
