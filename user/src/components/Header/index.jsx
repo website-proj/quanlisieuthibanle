@@ -35,7 +35,7 @@ const Header = () => {
                       <span className="ml-2">Tài khoản</span>
                     </MenuButton>
                   </div>
-                  <MenuItems className="absolute right-0 z-10  w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 profile">
+                  <MenuItems className="absolute  right-0 z-10  w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 profile">
                     <MenuItem>
                       <Link
                         to="/Account"

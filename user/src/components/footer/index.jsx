@@ -10,7 +10,7 @@ import { MdOutlineMailOutline } from "react-icons/md";
 import Logo from "../../assets/footer/Logo.png";
 import { TbBrandFacebook } from "react-icons/tb";
 import { FiYoutube } from "react-icons/fi";
-// import Zalo from "../../assets/footer/zalo.png";
+
 import { SiZalo } from "react-icons/si";
 
 const Footer = () => {

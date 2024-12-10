@@ -70,7 +70,7 @@ const Home = () => {
             {/* Timer chiếm 4/5 chiều rộng */}
             <div className="w-4/5  productSale">
               <Timer duration={2 * 24 * 60 * 60 * 1000} />
-              <div className="grid grid-cols-4 gap-4 productList">
+              <div className="grid grid-cols-4 gap-8 productList">
                 {products.slice(0, 8).map((product) => {
                   // Hàm định dạng số tiền
                   const formatCurrency = (value) => {
@@ -81,19 +81,19 @@ const Home = () => {
                     <Link to="/product_detials/:id" key={product.product_id}>
                       {" "}
                       {/* Bao bọc mỗi phần tử product_item trong Link */}
-                      <div className="border rounded-lg p-4 shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out transform product_item">
+                      <div className="border rounded-lg p-4 shadow-sm hover:shadow-lg  transition-all duration-300 ease-in-out transform product_item">
                         <div className="relative overflow-hidden rounded-lg">
                           <img
                             src={product.image}
                             alt={product.name}
                             className="w-full object-cover transition-transform duration-300 hover:scale-110"
                           />
-                          {product.discount && (
-                            <span className="absolute top-2 left-2 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                              {product.discount}
-                            </span>
-                          )}
                         </div>
+                        {product.discount && (
+                          <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                            {product.discount}
+                          </span>
+                        )}
                         <div className="mt-4">
                           <h5 className="text-lg font-[400] text-left">
                             {product.name}
@@ -140,7 +140,7 @@ const Home = () => {
           </Button>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 productListSale">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 productListSale">
         {products.slice(0, 10).map((product) => {
           // Hàm định dạng số tiền
           const formatCurrency = (value) => {
@@ -151,19 +151,19 @@ const Home = () => {
             <Link to="/product_detials" key={product.product_id}>
               {" "}
               {/* Thêm Link bao quanh mỗi sản phẩm */}
-              <div className="border rounded-lg p-4 shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out transform product_item">
+              <div className="border rounded-lg p-4 shadow-sm hover:shadow-lg  transition-all duration-300 ease-in-out transform product_item">
                 <div className="relative overflow-hidden rounded-lg">
                   <img
                     src={product.image}
                     alt={product.name}
                     className="w-full object-cover transition-transform duration-300 hover:scale-110"
                   />
-                  {product.discount && (
-                    <span className="absolute top-2 left-2 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                      {product.discount}
-                    </span>
-                  )}
                 </div>
+                {product.discount && (
+                  <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                    {product.discount}
+                  </span>
+                )}
                 <div className="mt-4">
                   <h5 className="text-lg font-[400] text-left">
                     {product.name}
@@ -180,7 +180,7 @@ const Home = () => {
                     </span>
                   </div>
                   <Button className="productCart">
-                    <LuShoppingCart className="text-[2em] pr-2" />
+                    <LuShoppingCart className="text-[2em] pr-2 " />
                     Thêm vào giỏ hàng
                   </Button>
                 </div>
@@ -211,7 +211,7 @@ const Home = () => {
           </Button>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 productListSale">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 productListSale">
         {products.slice(0, 10).map((product) => {
           // Hàm định dạng số tiền
           const formatCurrency = (value) => {
@@ -226,19 +226,19 @@ const Home = () => {
             >
               {" "}
               {/* Thêm Link ở đây */}
-              <div className="border rounded-lg p-4 shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out transform product_item">
+              <div className="border rounded-lg p-4 shadow-sm hover:shadow-lg  transition-all duration-300 ease-in-out transform product_item">
                 <div className="relative overflow-hidden rounded-lg">
                   <img
                     src={product.image}
                     alt={product.name}
                     className="w-full object-cover transition-transform duration-300 hover:scale-110"
                   />
-                  {product.discount && (
-                    <span className="absolute top-2 left-2 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                      {product.discount}
-                    </span>
-                  )}
                 </div>
+                {product.discount && (
+                  <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                    {product.discount}
+                  </span>
+                )}
                 <div className="mt-4">
                   <h5 className="text-lg font-[400] text-left">
                     {product.name}
@@ -276,7 +276,7 @@ const Home = () => {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 productListSale">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 productListSale">
         {products.slice(0, 10).map((product) => {
           // Hàm định dạng số tiền
           const formatCurrency = (value) => {
@@ -287,19 +287,19 @@ const Home = () => {
             <Link to="/product_detials/:id" key={product.product_id}>
               {" "}
               {/* Bao bọc mỗi phần tử product_item trong Link */}
-              <div className="border rounded-lg p-4 shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out transform product_item">
+              <div className="border rounded-lg p-4 shadow-sm hover:shadow-lg  transition-all duration-300 ease-in-out transform product_item">
                 <div className="relative overflow-hidden rounded-lg">
                   <img
                     src={product.image}
                     alt={product.name}
                     className="w-full object-cover transition-transform duration-300 hover:scale-110"
                   />
-                  {product.discount && (
-                    <span className="absolute top-2 left-2 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                      {product.discount}
-                    </span>
-                  )}
                 </div>
+                {product.discount && (
+                  <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                    {product.discount}
+                  </span>
+                )}
                 <div className="mt-4">
                   <h5 className="text-lg font-[400] text-left">
                     {product.name}

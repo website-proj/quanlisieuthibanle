@@ -1,7 +1,7 @@
 header {
   background-color: #1a73e8;
   width: 100%;
-  height: 5em;
+  height: auto;
   opacity: 80%;
 
   /* position: fixed; 
@@ -18,7 +18,7 @@ header a img {
   display: flex;
   justify-content: flex-end;
   width: 70%;
-  height: 5em;
+  /* height: 4em; */
   margin-left: 20%;
 }
 .p-2 {

@@ -334,7 +334,7 @@ const Navigation = () => {
               </Button>
               <div
                 ref={sidebarRef} // Thêm ref cho div chứa sidebar
-                className={`absolute top-[119%] left-[10%] w-[60%] bg-white p-2 border border-gray-200 transition-all duration-200 z-10 ${
+                className={`absolute top-[119%] left-[14%] w-[60%] bg-white p-2 border border-gray-200 transition-all duration-200 z-10 ${
                   isopenSidebarVal
                     ? "opacity-100 visible"
                     : "opacity-0 invisible"
@@ -355,12 +355,12 @@ const Navigation = () => {
                   ].map((category, index) => (
                     <li key={index} className="group mb-2 relative">
                       <Link to="/products" onClick={handleCategoryClick}>
-                        <Button className="w-full flex items-center justify-between">
+                        <Button className="w-full flex items-center justify-between navigationMenu">
                           <span className="text-left">{category}</span>
-                          <FaAngleRight className="ml-auto mr-[8%]" />
+                          <FaAngleRight className="ml-auto" />
                         </Button>
                       </Link>
-                      <div className="absolute left-[102%] top-0 w-[250px] bg-white p-3 border-0 border-gray-200 opacity-0 invisible transition-all duration-200 group-hover:opacity-100 group-hover:visible">
+                      <div className="absolute left-[102%] top-0 w-[250px] bg-white p-3 border-0 border-gray-200 opacity-0 invisible transition-all duration-200 group-hover:opacity-100 group-hover:visible navigationMenuList">
                         {/* Submenu items */}
                         {category === "Thực phẩm" && (
                           <>
