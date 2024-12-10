@@ -53,7 +53,7 @@ const Product = () => {
             <div className="w-4/5 pl-4 Cart">
               {/* Danh sách nút */}
               <div className="flex items-center space-x-4 mb-4 Cart">
-                <Link to="/#bestseller">
+                <Link to="">
                   <Button
                     variant="contained"
                     sx={{
@@ -86,7 +86,7 @@ const Product = () => {
                   </Button>
                 </Link> */}
 
-                <Link to="/#flashseller">
+                <Link to="">
                   <Button
                     variant="contained"
                     sx={{
@@ -105,7 +105,7 @@ const Product = () => {
               </div>
 
               {/* Các nội dung khác */}
-              <div className="grid grid-cols-4 gap-4 productList">
+              <div className="grid grid-cols-4 gap-8 productList">
                 {products.slice(0, visibleProducts).map((product) => {
                   // Hàm định dạng số tiền
                   const formatCurrency = (value) => {
@@ -117,7 +117,7 @@ const Product = () => {
                     <Link
                       key={product.product_id}
                       to={`/product_details/${product.product_id}`} // Truyền product_id vào URL
-                      className="border rounded-lg p-4 shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out transform product_item"
+                      className="border rounded-lg p-4 shadow-sm hover:shadow-lg  transition-all duration-300 ease-in-out transform product_item"
                     >
                       <div className="relative overflow-hidden rounded-lg">
                         <img

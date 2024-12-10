@@ -131,7 +131,7 @@ const Footer = () => {
                 </ul>
                 <h4>Kết nối với chúng tôi</h4>
                 <div className="social">
-                  <Link to={"/"}>
+                  <Link to={"https://www.facebook.com/nguyen.ba.thonq"}>
                     <TbBrandFacebook className="bg-blue-500 text-white p-2 rounded-full text-2xl" />
                   </Link>
                   <Link to={"/"}>

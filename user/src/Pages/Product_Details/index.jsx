@@ -47,23 +47,32 @@ Sữa chua không đường Vinamilk được đóng hộp nhỏ gọn, tiện d
     <>
       <IconBreadcrumbs />
       <div className="container mx-auto p-4">
-        <ProductCard />
-        <div className="flex flex-col ml-[6%] mr-[5%] mt-5 mb-5">
-          <h3 className="text-lg font-bold text-black text-left text-shadow text_describe">
-            Mô tả sản phẩm
-          </h3>
-        </div>
-        <div className="proCard border rounded-lg p-4 shadow-lg">
-          <div className="text-left text-black">
-            {sentences.map((sentence, index) => (
-              <p key={index} className="mb-2">
-                {sentence}.
-              </p>
-            ))}
+        <ProductCard className="mr-[6%]" />
+
+        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-5  ml-[3%] mr-[3%]">
+          <div className="mota ">
+            {" "}
+            {/* Thêm margin vào div chứa mô tả */}
+            <div className="flex flex-col mt-5 mb-5">
+              <h3 className="text-lg font-bold text-black text-left text-shadow text_describe ml-[1em]">
+                Mô tả sản phẩm
+              </h3>
+            </div>
+            <div className=" border bg-[#ffffff] rounded-lg p-4 shadow-lg">
+              <div className="text-left text-black">
+                {sentences.map((sentence, index) => (
+                  <p key={index} className="mb-2">
+                    {sentence}.
+                  </p>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <Reviews />
           </div>
         </div>
-
-        <Reviews />
 
         <div className="flex flex-col ml-[6%] mr-[5%] mt-5 mb-5">
           <h3 className="text-lg font-bold text-black text-left text-shadow text_describe">
@@ -73,14 +82,14 @@ Sữa chua không đường Vinamilk được đóng hộp nhỏ gọn, tiện d
 
         <Swiper
           slidesPerView={5}
-          spaceBetween={20}
+          spaceBetween={30}
           navigation={true}
           modules={[Navigation]}
           className="mySwiper relatedPro "
         >
           {relatedProducts.map((product) => (
             <SwiperSlide key={product.id}>
-              <div className="relatedPro_item border rounded-lg p-4 shadow-lg w-full transition-transform duration-300 hover:scale-102 hover:border-blue-500 hover:shadow-xl">
+              <div className="relatedPro_item border rounded-lg p-4 shadow-lg w-full transition-transform duration-300  hover:border-blue-500 hover:shadow-xl">
                 <div className="relative">
                   <img
                     src={product.image}
