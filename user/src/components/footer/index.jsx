@@ -132,13 +132,13 @@ const Footer = () => {
                 <h4>Kết nối với chúng tôi</h4>
                 <div className="social">
                   <Link to={"/"}>
-                    <TbBrandFacebook />
+                    <TbBrandFacebook className="bg-blue-500 text-white p-2 rounded-full text-2xl" />
                   </Link>
                   <Link to={"/"}>
-                    <FiYoutube />
+                    <FiYoutube className="bg-red-500 text-white p-2 rounded-full text-2xl" />
                   </Link>
                   <Link to={"/"}>
-                    <SiZalo />
+                    <SiZalo className="bg-blue-500 text-white p-2 rounded-full text-2xl" />
                   </Link>
                 </div>
               </div>
