@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel
-from app.model.users import account_type , membership_status
+# from app.model.users import account_type , membership_status
 class BaseConfig:
     from_attributes = True
 class userBase(BaseModel):
