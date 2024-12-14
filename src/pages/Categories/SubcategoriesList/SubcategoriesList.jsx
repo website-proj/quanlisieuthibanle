@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './SubcategoriesList.css';
 import categoryData from '/src/pages/Categories/SubcategoriesList/SubcategoriesList.json'; // Đường dẫn cần kiểm tra lại
+import Box from "@mui/material/Box";
 
 export default function SubcategoriesList() {
   const [subcategories, setSubcategories] = useState([]);
@@ -29,6 +30,8 @@ export default function SubcategoriesList() {
     <div className='subcategories-list'>
       <main>
         <div className="title-main">Danh sách danh mục con</div>
+        <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
+
         <div className='subcategories-info-container'>
           <table id="subcategories-table">
             <thead>
@@ -66,6 +69,7 @@ export default function SubcategoriesList() {
             </tbody>
           </table>
         </div>
+        </Box>
       </main>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './CategoriesList.css';
 import categoryData from './CategoriesList.json'; 
-
+import Box from "@mui/material/Box";
 function CategoriesList() {
   const [categories, setCategories] = useState([]);
 
@@ -21,7 +21,8 @@ function CategoriesList() {
     <div className="categories-list">
       <main>
         <div className="title-main">Danh sách danh mục</div>
-        <div className="categories-info-container">
+        <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
+        {/* <div className="categories-info-container"> */}
           <table id="categories-table">
             <thead>
               <tr>
@@ -53,7 +54,8 @@ function CategoriesList() {
               ))}
             </tbody>
           </table>
-        </div>
+        {/* </div> */}
+        </Box>
       </main>
     </div>
   );

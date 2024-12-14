@@ -1,7 +1,6 @@
 import React from 'react';
 import { Typography, TextField, Button, Box } from '@mui/material';
 import './AddUser.css';
-
 function AddUser() {
   return (
     <div className="add-user">
@@ -11,6 +10,8 @@ function AddUser() {
           <Typography className="header-breadcrumb">Trang chủ / Người dùng / Thêm người dùng</Typography>
         </div>
       </div>
+
+      <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
 
       <div className="add-user-container">
         {/* Form */}
@@ -69,6 +70,7 @@ function AddUser() {
           </Button>
         </Box>
       </div>
+      </Box>
     </div>
   );
 }

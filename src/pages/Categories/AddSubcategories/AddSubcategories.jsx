@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './AddSubcategories.css';
+import Box from "@mui/material/Box";
 
 function AddSubcategories() {
   const [category, setCategory] = useState('');
@@ -44,7 +45,9 @@ function AddSubcategories() {
     <div className='add-subcategories'>
       <main>
         <div className="title-main">Thêm danh mục con</div>
-        <div className="add-subcategories-info-container">
+        <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
+
+        {/* <div className="add-subcategories-info-container"> */}
           <div className="input-container">
             <label htmlFor="category">Danh mục</label>
             <select
@@ -83,7 +86,8 @@ function AddSubcategories() {
           <button className="add-button" onClick={handleAdd}>
             Thêm
           </button>
-        </div>
+        {/* </div> */}
+          </Box>
       </main>
     </div>
   );

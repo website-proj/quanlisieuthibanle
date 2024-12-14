@@ -110,5 +110,53 @@
         "subcategory": "Áo thun",
         "date": "12/12/2024",
         "price": "150.000đ"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1562059390-a761a084768e",
+        "name": "Chảo chống dính cao cấp",
+        "category": "Đồ gia dụng",
+        "subcategory": "Dụng cụ nhà bếp",
+        "date": "12/12/2024",
+        "price": "200.000đ"
+    },
+    {
+        "image": "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/mceclip19_92.png",
+        "name": "Áo thun thể thao nam",
+        "category": "Quần áo",
+        "subcategory": "Áo thun",
+        "date": "12/12/2024",
+        "price": "150.000đ"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1562059390-a761a084768e",
+        "name": "Chảo chống dính cao cấp",
+        "category": "Đồ gia dụng",
+        "subcategory": "Dụng cụ nhà bếp",
+        "date": "12/12/2024",
+        "price": "200.000đ"
+    },
+    {
+        "image": "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/mceclip19_92.png",
+        "name": "Áo thun thể thao nam",
+        "category": "Quần áo",
+        "subcategory": "Áo thun",
+        "date": "12/12/2024",
+        "price": "150.000đ"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1562059390-a761a084768e",
+        "name": "Chảo chống dính cao cấp",
+        "category": "Đồ gia dụng",
+        "subcategory": "Dụng cụ nhà bếp",
+        "date": "12/12/2024",
+        "price": "200.000đ"
+    },
+    {
+        "image": "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/mceclip19_92.png",
+        "name": "Áo thun thể thao nam",
+        "category": "Quần áo",
+        "subcategory": "Áo thun",
+        "date": "12/12/2024",
+        "price": "150.000đ"
     }
 ]

@@ -81,3 +81,33 @@
 .css-1yqzad6 {
   margin-top: 2%;
 }
+
+.icon-button-small {
+  font-size: 1.2rem !important; 
+}
+
+.icon-button-small {
+  margin: 0 5px; 
+  transition: transform 0.2s ease-in-out;
+}
+
+.icon-button-small:hover {
+  transform: scale(1.2); 
+}
+
+.custom-table {
+  background-color: var(--light) !important; 
+  border-radius: 15px !important; 
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+
+.custom-table .MuiTableHead-root th {
+  color: var(--dark); 
+  font-weight: bold;
+  text-align: center;
+}
+
+.custom-table .MuiTableRow-root:hover {
+  background-color: #e3f2fd54;
+}

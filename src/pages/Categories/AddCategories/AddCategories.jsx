@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './AddCategories.css';
+import Box from "@mui/material/Box";
 
 function AddCategories() {
   const [categoryName, setCategoryName] = useState('');
@@ -49,6 +50,8 @@ function AddCategories() {
     <div className='add-categories'>
       <main>
         <div className="title-main">Thêm danh mục</div>
+        <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
+
         <div className="add-categories-info-container">
           <div className="text">Tên danh mục</div>
           <input
@@ -93,6 +96,7 @@ function AddCategories() {
             Thêm
           </button>
         </div>
+        </Box>
       </main>
     </div>
   );
