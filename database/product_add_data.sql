@@ -1,92 +1,24 @@
--- Thực phẩm: Rau củ quả
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Rau muống', 'Local Farm', 'Rau muống tươi, sạch và an toàn', 15000, 20000, 25, 'bó', 100, 'cat1', 'images/rau_muong.jpg', TRUE, FALSE),
-('Táo đỏ', 'Imported', 'Táo đỏ nhập khẩu tươi ngon', 50000, 60000, 20, 'kg', 50, 'cat1', 'images/tao_do.jpg', TRUE, TRUE);
-
--- Thực phẩm: Thịt & Hải sản
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Thịt bò Úc', 'Premium Meat', 'Thịt bò Úc cao cấp', 300000, 350000, 14.29, 'kg', 30, 'cat2', 'images/thit_bo_uc.jpg', TRUE, TRUE),
-('Cá hồi phi lê', 'Sea Fresh', 'Cá hồi phi lê tươi ngon, nhập khẩu', 450000, 500000, 10, 'kg', 20, 'cat2', 'images/ca_hoi_file.jpg', TRUE, FALSE);
-
--- Đồ uống: Nước giải khát
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Nước ngọt Coca-Cola', 'Coca-Cola', 'Nước ngọt Coca-Cola lon 330ml', 10000, 12000, 16.67, 'lon', 500, 'cat6', 'images/coca_cola.jpg', TRUE, FALSE),
-('Nước khoáng Lavie', 'Lavie', 'Nước khoáng Lavie chai 1.5L', 8000, 10000, 20, 'chai', 300, 'cat6', 'images/lavie.jpg', TRUE, FALSE);
-
--- Bánh kẹo: Kẹo
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Kẹo sô-cô-la', 'ChocoDelight', 'Kẹo sô-cô-la thơm ngon', 20000, 25000, 20, 'hộp', 200, 'cat3', 'images/keo_chocolate.jpg', TRUE, FALSE),
-('Bánh quy bơ', 'Danish Butter Cookies', 'Bánh quy bơ cao cấp', 75000, 85000, 11.76, 'hộp', 100, 'cat3', 'images/banh_quy_bo.jpg', TRUE, TRUE);
-
--- Gia vị: Dầu ăn
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Dầu ăn Simply', 'Simply', 'Dầu ăn thực vật cao cấp', 100000, 120000, 16.67, 'chai', 200, 'cat8', 'images/dau_an_simply.jpg', TRUE, TRUE);
-
--- Gia dụng: Đồ dùng nhà bếp
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Nồi chống dính', 'Sunhouse', 'Nồi chống dính cao cấp', 300000, 350000, 14.29, 'chiếc', 50, 'cat5', 'images/noi_chong_dinh.jpg', TRUE, FALSE);
--- Thực phẩm: Rau củ quả
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Cà rốt', 'Local Farm', 'Cà rốt tươi, sạch và an toàn', 12000, 15000, 20, 'kg', 150, 'cat1', 'images/ca_rot.jpg', TRUE, FALSE),
-('Dưa leo', 'Fresh Veg', 'Dưa leo tươi ngon', 10000, 12000, 16.67, 'kg', 100, 'cat1', 'images/dua_leo.jpg', TRUE, FALSE);
-
--- Thực phẩm: Thịt & Hải sản
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Tôm sú', 'Sea Fresh', 'Tôm sú tươi ngon, nhập khẩu', 350000, 400000, 12.5, 'kg', 80, 'cat2', 'images/tom_su.jpg', TRUE, FALSE),
-('Thịt gà ta', 'Organic Farm', 'Thịt gà ta, sạch và an toàn', 120000, 150000, 20, 'kg', 60, 'cat2', 'images/ga_ta.jpg', TRUE, TRUE);
-
--- Đồ uống: Nước giải khát
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Nước ép cam', 'Pure Juice', 'Nước ép cam tươi nguyên chất', 25000, 30000, 16.67, 'chai', 150, 'cat6', 'images/nuoc_ep_cam.jpg', TRUE, TRUE),
-('Nước dừa Titi', 'Titi', 'Nước dừa Titi chai 1L', 20000, 25000, 20, 'chai', 120, 'cat6', 'images/nuoc_dua_titi.jpg', TRUE, FALSE);
-
--- Bánh kẹo: Kẹo
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Kẹo dẻo', 'Sugar Bliss', 'Kẹo dẻo ngọt ngào', 15000, 20000, 25, 'hộp', 180, 'cat3', 'images/keo_deo.jpg', TRUE, FALSE),
-('Bánh su kem', 'Pastry Delight', 'Bánh su kem ngon miệng', 25000, 30000, 16.67, 'hộp', 120, 'cat3', 'images/banh_su_kem.jpg', TRUE, TRUE);
-
--- Gia vị: Dầu ăn
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Dầu ăn Olive', 'Oliva', 'Dầu ăn Olive nguyên chất', 120000, 150000, 20, 'chai', 200, 'cat8', 'images/dau_an_olive.jpg', TRUE, TRUE),
-('Dầu ăn đậu nành', 'Soybean', 'Dầu ăn đậu nành nguyên chất', 90000, 110000, 18.18, 'chai', 250, 'cat8', 'images/dau_an_dau_nanh.jpg', TRUE, FALSE);
-
--- Gia dụng: Đồ dùng nhà bếp
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Bộ nồi inox', 'Inox Master', 'Bộ nồi inox cao cấp', 500000, 600000, 16.67, 'bộ', 40, 'cat5', 'images/bo_noi_inox.jpg', TRUE, TRUE),
-('Máy xay sinh tố', 'BlenderPro', 'Máy xay sinh tố mạnh mẽ', 350000, 400000, 12.5, 'chiếc', 70, 'cat5', 'images/may_xay_sinh_to.jpg', TRUE, FALSE);
-
--- Sản phẩm vệ sinh nhà cửa: Chất tẩy rửa
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Nước tẩy rửa đa năng', 'CleanMaster', 'Nước tẩy rửa đa năng', 30000, 35000, 14.29, 'chai', 150, 'cat10', 'images/nuoc_tay_ra.jpg', TRUE, FALSE),
-('Nước lau kính', 'Crystal Shine', 'Nước lau kính trong suốt', 25000, 30000, 16.67, 'chai', 100, 'cat10', 'images/nuoc_lau_kinh.jpg', TRUE, TRUE);
-
--- Chăm sóc bé: Sản phẩm cho bé
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Bỉm tã cho bé', 'BabyCare', 'Bỉm tã siêu mềm', 150000, 180000, 16.67, 'gói', 200, 'cat17', 'images/bim_ta.jpg', TRUE, TRUE),
-('Sữa bột cho bé', 'Nestle', 'Sữa bột cho bé Nestle', 250000, 300000, 16.67, 'hộp', 150, 'cat17', 'images/sua_bot_be.jpg', TRUE, FALSE);
-
--- Sách và văn phòng phẩm: Sách
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Sách học lập trình', 'CodeMaster', 'Sách học lập trình cơ bản', 100000, 120000, 16.67, 'cuốn', 50, 'cat19', 'images/sach_lap_trinh.jpg', TRUE, FALSE),
-('Sách kỹ năng mềm', 'SkillUp', 'Sách kỹ năng mềm cho cuộc sống', 80000, 100000, 20, 'cuốn', 200, 'cat19', 'images/sach_ky_nang_mem.jpg', TRUE, TRUE);
-
--- Đồ uống: Đồ uống có cồn
-INSERT INTO Products (name, name_brand, description, price, old_price, discount, unit, stock_quantity, category_id, image, is_active, star_product)
-VALUES
-('Rượu vang đỏ', 'Vino', 'Rượu vang đỏ nhập khẩu', 400000, 500000, 20, 'chai', 80, 'cat12', 'images/ruou_vang_do.jpg', TRUE, TRUE),
-('Bia Heineken', 'Heineken', 'Bia Heineken lon 500ml', 15000, 20000, 25, 'lon', 300, 'cat12', 'images/bia_heineken.jpg', TRUE, FALSE);
+INSERT INTO Products (
+    product_id, name, name_brand, description, price, old_price, discount,
+    unit, stock_quantity, category_id, image, is_active, star_product, date_created, updated_at, expiration_date
+) VALUES
+('profc1c71cf', 'Rau muống', 'Local Farm', 'Rau muống tươi, sạch và an toàn', 15000.00, 20000.00, 25.00, 'bó', 100, 'cat87c37b0d', 'images/rau_muong.jpg', false, false, '2024-12-06 06:56:02.681064', '2024-12-06 06:56:02.681064', NULL),
+('proaa167535', 'Táo đỏ', 'Imported', 'Táo đỏ nhập khẩu tươi ngon', 50000.00, 60000.00, 20.00, 'kg', 50, 'cat87c37b0d', 'images/tao_do.jpg', true, false, '2024-12-06 06:56:28.381511', '2024-12-06 06:56:28.381511', NULL),
+('proa9a738ef', 'Nước giải khát Coca Cola', 'Coca Cola', 'Nước giải khát có gas vị coca truyền thống', 10000.00, 12000.00, 16.00, 'chai', 200, 'cat319a4951', 'images/coca_cola.jpg', false, false, '2024-12-06 06:56:44.198185', '2024-12-06 06:56:44.198185', NULL),
+('procab9ffa9', 'Bột giặt Omo', 'Unilever', 'Bột giặt tẩy sạch vết bẩn cứng đầu', 45000.00, 50000.00, 10.00, 'gói', 120, 'cat2991f416', 'images/omo.jpg', false, false, '2024-12-06 06:58:13.156947', '2024-12-06 06:58:13.156947', NULL),
+('pro60d64a0e', 'Bánh quy Oreo', 'Oreo', 'Bánh quy sữa nhân kem thơm ngon', 35000.00, 40000.00, 12.50, 'hộp', 150, 'cat9619acef', 'images/oreo.jpg', false, false, '2024-12-06 06:58:47.624266', '2024-12-06 06:58:47.624266', NULL),
+('proe7247a9d', 'Sữa tươi Vinamilk', 'Vinamilk', 'Sữa tươi nguyên chất, dinh dưỡng cao', 22000.00, 25000.00, 12.00, 'chai', 300, 'cat07fcb8e3', 'images/sua_vinamilk.jpg', true, false, '2024-12-06 06:59:15.02874', '2024-12-06 06:59:15.02874', NULL),
+('pro4c713659', 'Nước tương Maggi', 'Maggi', 'Nước tương đậm đà, không màu', 18000.00, 20000.00, 10.00, 'chai', 100, 'cat2d2e9090', 'images/nuoc_tuong_maggi.jpg', false, false, '2024-12-06 06:59:36.169123', '2024-12-06 06:59:36.169123', NULL),
+('proa28301c9', 'Tã giấy Huggies', 'Huggies', 'Tã giấy cho bé, siêu thấm, mềm mại', 120000.00, 140000.00, 14.30, 'bịch', 80, 'cat3434754a', 'images/ta_huggies.jpg', false, false, '2024-12-06 06:59:50.869016', '2024-12-06 06:59:50.869016', NULL),
+('pro45903374', 'Chất tẩy rửa Sunlight', 'Sunlight', 'Chất tẩy rửa đa năng, hiệu quả cao', 28000.00, 32000.00, 12.50, 'chai', 200, 'cat2991f416', 'images/sunlight.jpg', true, false, '2024-12-06 07:00:06.553339', '2024-12-06 07:00:06.553339', NULL),
+('pro72f062d8', 'Máy xay sinh tố Philips', 'Philips', 'Máy xay sinh tố cao cấp, dễ dàng sử dụng', 850000.00, 1000000.00, 15.00, 'chiếc', 60, 'catc32b5f24', 'images/may_xay_sinh_to.jpg', false, false, '2024-12-06 07:00:21.424917', '2024-12-06 07:00:21.424917', NULL),
+('pro63b6ea09', 'Đồ hộp Heo xào nấm', 'Cá tra', 'Đồ hộp tiện lợi, sẵn sàng ăn ngay', 35000.00, 38000.00, 7.90, 'hộp', 120, 'cat41e27761', 'images/do_hop_heo_xao_nam.jpg', false, false, '2024-12-06 07:02:41.257532', '2024-12-06 07:02:41.257532', NULL),
+('pro27927bcf', 'Thực phẩm khô Mì ăn liền', 'Vifon', 'Mì ăn liền Vifon, nhanh gọn tiện lợi', 5000.00, 6000.00, 16.70, 'gói', 500, 'cat11dc5d03', 'images/mi_an_lien_vifon.jpg', false, false, '2024-12-06 07:02:57.204952', '2024-12-06 07:02:57.204952', NULL),
+('pro74365ca6', 'Sữa đậu nành Fami', 'Fami', 'Sữa đậu nành thanh mát, bổ dưỡng', 12000.00, 13000.00, 7.70, 'chai', 200, 'cat07fcb8e3', 'images/sua_dau_nanh_fami.jpg', true, false, '2024-12-06 07:03:10.66309', '2024-12-06 07:03:10.66309', NULL),
+('prodd62f43a', 'Bánh Pocky', 'Glico', 'Bánh quy vị sô cô la giòn tan', 22000.00, 25000.00, 12.00, 'hộp', 180, 'cat9619acef', 'images/banh_pocky.jpg', false, false, '2024-12-06 07:03:25.48762', '2024-12-06 07:03:25.48762', NULL),
+('procdd6fd62', 'Nước giặt Ariel', 'Ariel', 'Nước giặt làm sạch hiệu quả, hương thơm lâu', 75000.00, 80000.00, 6.30, 'chai', 300, 'cat2991f416', 'images/nuoc_giat_ariel.jpg', true, false, '2024-12-06 07:03:40.374364', '2024-12-06 07:03:40.374364', NULL),
+('prode87183e', 'Bình giữ nhiệt Thermos', 'Thermos', 'Bình giữ nhiệt chất lượng, giữ nhiệt lâu', 400000.00, 450000.00, 11.10, 'chiếc', 90, 'cat6f5a48af', 'images/binh_giu_nhiet_thermos.jpg', false, false, '2024-12-06 07:03:52.098419', '2024-12-06 07:03:52.098419', NULL),
+('pro3edc4488', 'Dầu ăn Tường An', 'Tường An', 'Dầu ăn tinh khiết, tốt cho sức khỏe', 45000.00, 50000.00, 10.00, 'chai', 250, 'cat67630b32', 'images/dau_an_tuong_an.jpg', false, false, '2024-12-06 07:04:59.104133', '2024-12-06 07:04:59.104133', NULL),
+('pro396c0cd5', 'Nước mắm Phú Quốc', 'Phú Quốc', 'Nước mắm hương vị đậm đà, truyền thống', 35000.00, 40000.00, 12.50, 'chai', 300, 'cat1624741c', 'images/nuoc_mam_phu_quoc.jpg', false, false, '2024-12-06 07:05:08.842055', '2024-12-06 07:05:08.842055', NULL),
+('prod42e3682', 'Sữa bột Meiji', 'Meiji', 'Sữa bột cho trẻ em, bổ sung dưỡng chất', 280000.00, 300000.00, 6.70, 'hộp', 150, 'cat07fcb8e3', 'images/sua_bot_meiji.jpg', true, false, '2024-12-06 07:05:26.019179', '2024-12-06 07:05:26.019179', NULL),
+('prod49e8cea6', 'Bánh mỳ Đồng Tài', 'Đồng Tài', 'Ngon khó cưỡng', 10000.00, 8000.00, 10.00, 'chiếc', 100, 'cat9619acef', 'banhmy.img', true, false, '2024-12-07 13:03:46.635121', '2024-12-07 13:03:46.635121', NULL);
