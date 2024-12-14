@@ -1,0 +1,56 @@
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from app.db.base import get_db
+from app.helper.login_manager import login_required
+from app.services.auth import AuthService
+from app.services.cart import CartService
+from app.utils.responses import ResponseHandler
+from app.schemas.schema_cart import CartItemCreate
+
+router = APIRouter()
+@router.post("/create_cart" , dependencies=[Depends(login_required)])
+def create_cart(token : str = Depends(AuthService.oauth2_scheme) , db : Session = Depends(get_db)):
+    """"
+    create a new cart
+    """
+    new_cart = CartService.create_cart(token , db )
+    return ResponseHandler.success("created cart" , new_cart)
+
+@router.post("/" , dependencies=[Depends(login_required )])
+def add_product_to_cart(cart_item : CartItemCreate , db : Session = Depends(get_db)):
+    cart_item = CartService.add_product_to_cart(cart_item , db)
+    return ResponseHandler.success("added product to cart" , cart_item)
+@router.get("/carts" , dependencies=[Depends(login_required )])
+def get_all_cart_items(token : str = Depends(AuthService.oauth2_scheme),db  : Session = Depends(get_db)):
+    """
+    get all cart items
+    """
+    cart_items = CartService.get_all_cart_items(token , db)
+    return ResponseHandler.success("success" , cart_items)
+@router.put("/" , dependencies=[Depends(login_required )])
+def update_product_quantity(  cart_id: str,
+    product_id: str,
+    quantity: int,
+    db: Session = Depends(get_db)):
+    cart_item = CartService.update_product_quantity(cart_id, product_id, quantity, db)
+    return ResponseHandler.success("updated cart item" , cart_item)
+@router.delete("/cart_item" , dependencies=[Depends(login_required )])
+def delete_cart_item(cart_id , product_id , db : Session = Depends(get_db)):
+    """
+    xóa sản phẩm khỏi giỏ hàng
+    """
+    cart_item = CartService.delete_cart_item(cart_id , product_id , db)
+    return ResponseHandler.success("deleted cart item" , cart_item)
+@router.delete("/cart" , dependencies=[Depends(login_required )])
+def delete_cart(cart_id , db : Session = Depends(get_db)):
+    cart = CartService.create_cart(cart_id , db)
+    return ResponseHandler.success("deleted cart" , cart)
+@router.get("/totalPrice" , dependencies=[Depends(login_required )])
+def get_total_price(cart_id , db : Session = Depends(get_db)):
+    total = CartService.total_price(cart_id , db)
+    return ResponseHandler.success("total price" , total)
+
+
+
+
