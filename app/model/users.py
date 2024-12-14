@@ -1,26 +1,23 @@
 import uuid
-
 from sqlalchemy import Column, String, DateTime , Boolean, ForeignKey, Enum, Sequence
-# from sqlalchemy.dialects.mssql import TIMESTAMP
-from sqlalchemy.orm import relationship
-from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import func
 from datetime import datetime
+from sqlalchemy.dialects.postgresql import ENUM
+from sqlalchemy.orm import relationship
 
-Base = declarative_base()
+from app.model.model_base import Base
 
-# Định nghĩa Sequence cho user_id
-user_id_seq = Sequence('user_id_seq', metadata=Base.metadata)
+# Base = model_base.Base
 
-class account_type(str, Enum):
-    Customer = "Customer"
-    Admin = "Admin"
 
-class membership_status(str, Enum):
-    Gold = "Gold"
-    Diamond = "Diamond"
-    Silver = "Silver"
+# class account_type(str, Enum):
+#     Customer = "Customer"
+#     Admin = "Admin"
+#
+# class membership_status(str, Enum):
+#     Gold = "Gold"
+#     Diamond = "Diamond"
+#     Silver = "Silver"
 
 
 class User(Base):
@@ -33,7 +30,9 @@ class User(Base):
     email = Column(String(50), nullable=False)
     phone_number = Column(String(50), nullable = True)
     address = Column(String(50) , nullable = True)
-    account_type = Column(Enum(account_type.Customer , account_type.Admin ), default=account_type.Customer)
-    membership_status = Column(Enum(membership_status.Silver,membership_status.Gold,membership_status.Diamond), default=membership_status.Silver)
+    account_type = Column(Enum("Admin" , "Customer" , name = "account_type"), default="Customer")
+    membership_status = Column(Enum("Gold" , "Diamond" , "Silver", name="membership_status_enum"), default="Silver")
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at =  Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    cart = relationship("Cart" , back_populates="user")
