@@ -28,8 +28,12 @@ body.dark {
 	--grey: #363744;
 	--dark: #ffffffe0;
 	--blue: #6eb9ff;
-	--light-blue: #438bf1;
+	--light-blue: #438bf1e1;
 	--sidebar: #96c0fb94;
+	--light-yellow: #ffdf75d5;
+	--green: #ddffcecc;
+	--light-orange: #f8d2c2bf;
+
 }
 
 body {

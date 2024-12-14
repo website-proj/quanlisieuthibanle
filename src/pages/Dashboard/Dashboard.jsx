@@ -2,9 +2,10 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, ArcElement } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import combinedData from "./revenue-statistics.json"; // Dữ liệu thống kê doanh thu
-import usersData from "./users-data.json"; // Dữ liệu số lượng người dùng
-import categoriesData from "./categories-data.json"; // Dữ liệu danh mục phần trăm
+import combinedData from "./revenue-statistics.json";
+import usersData from "./users-data.json";
+import categoriesData from "./categories-data.json";
+import bestSellingProducts from "./best-selling-products.json"; // Import JSON file
 
 import { FiUser, FiShoppingCart } from "react-icons/fi";
 import { FaRegStar } from "react-icons/fa";
@@ -20,7 +21,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  ArcElement // Để sử dụng cho biểu đồ tròn
+  ArcElement
 );
 
 const Dashboard = () => {
@@ -46,8 +47,8 @@ const Dashboard = () => {
         ))}
       </Box>
 
-{/* Biểu đồ doanh thu */}
-<Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
+      {/* Biểu đồ doanh thu */}
+      <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
         <Typography variant="h6" sx={{ marginBottom: "1%", fontSize: '1em', fontWeight: 500 }}>
           Thống kê doanh thu
         </Typography>
@@ -85,10 +86,27 @@ const Dashboard = () => {
       </Box>
 
       {/* Biểu đồ thống kê kinh doanh và biểu đồ số lượng người dùng */}
-      <Box sx={{ display: "flex", gap: "20px", justifyContent: "space-between" }}>
-        {/* Biểu đồ số lượng người dùng chiếm 2/3 chiều ngang */}
-        <Box sx={{ flex: 2, padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0 }}>
-          <Typography variant="h6" sx={{ marginBottom: "1%", fontSize: '1em', fontWeight: 500 }}>
+      <Box
+        sx={{
+          marginTop: "2%",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "20px",
+          justifyContent: "space-between",
+        }}
+      >
+        {/* Biểu đồ số lượng người dùng */}
+        <Box
+          sx={{
+            flex: 2,
+            minWidth: "300px",
+            padding: "20px",
+            backgroundColor: "var(--white)",
+            borderRadius: "20px",
+            boxShadow: 0,
+          }}
+        >
+          <Typography variant="h6" sx={{ marginBottom: "1%", fontSize: "1em", fontWeight: 500 }}>
             Số lượng người dùng
           </Typography>
           <Chart
@@ -101,7 +119,7 @@ const Dashboard = () => {
                   position: "top",
                   labels: {
                     font: { family: "Segoe UI", size: 13 },
-                  }
+                  },
                 },
               },
               scales: {
@@ -109,25 +127,34 @@ const Dashboard = () => {
                   title: {
                     display: true,
                     text: "Ngày",
-                    font: { family: "Segoe UI", size: 13 }
+                    font: { family: "Segoe UI", size: 13 },
                   },
                 },
                 y: {
                   title: {
                     display: true,
                     text: "Số lượng người dùng",
-                    font: { family: "Segoe UI", size: 13 }
+                    font: { family: "Segoe UI", size: 13 },
                   },
-                }
-              }
+                },
+              },
             }}
           />
         </Box>
 
-        {/* Biểu đồ danh mục phần trăm chiếm 1/3 chiều ngang */}
-        <Box sx={{ flex: 1, padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0 }}>
-          <Typography variant="h6" sx={{ marginBottom: "1%", fontSize: '1em', fontWeight: 500 }}>
-            Tỷ lệ phần trăm các danh mục
+        {/* Biểu đồ tỷ lệ các danh mục */}
+        <Box
+          sx={{
+            flex: 1,
+            minWidth: "300px",
+            padding: "20px",
+            backgroundColor: "var(--white)",
+            borderRadius: "20px",
+            boxShadow: 0,
+          }}
+        >
+          <Typography variant="h6" sx={{ marginBottom: "1%", fontSize: "1em", fontWeight: 500 }}>
+            Tỷ lệ các danh mục
           </Typography>
           <Chart
             type="pie"
@@ -136,16 +163,69 @@ const Dashboard = () => {
               responsive: true,
               plugins: {
                 legend: {
-                  position: "top",
+                  position: "bottom",
                   labels: {
                     font: { family: "Segoe UI", size: 13 },
-                  }
+                    color: "grey", // Đổi màu chữ chú thích thành màu xanh
+                    padding: 10,
+                    boxWidth: 12,
+                    boxHeight: 12,
+                    generateLabels: function (chart) {
+                      const labels = chart.data.labels;
+                      return labels.map((label) => {
+                        const maxLength = 150;
+                        if (label.length > maxLength) {
+                          return {
+                            text: label.substring(0, maxLength) + "...",
+                            fillStyle: chart.data.datasets[0].backgroundColor[labels.indexOf(label)],
+                            fontColor: "grey", // Màu chữ khi cắt dài
+                          };
+                        }
+                        return {
+                          text: label,
+                          fillStyle: chart.data.datasets[0].backgroundColor[labels.indexOf(label)],
+                          fontColor: "grey", // Màu chữ thông thường
+                        };
+                      });
+                    },
+                  },
                 },
-              }
+                
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      const label = context.label || "";
+                      const value = context.raw || 0;
+                      const total = context.dataset.data.reduce((sum, val) => sum + val, 0);
+                      const percentage = ((value / total) * 100).toFixed(1) + "%";
+                      return `${label}: ${value} (${percentage})`;
+                    },
+                  },
+                },
+                datalabels: {
+                  color: "red",
+                  font: { family: "Segoe UI", size: 12, weight: "bold" },
+                  formatter: (value, context) => {
+                    const total = context.chart.data.datasets[0].data.reduce(
+                      (sum, val) => sum + val,
+                      0
+                    );
+                    const percentage = ((value / total) * 100).toFixed(1);
+                    return `${percentage}%`;
+                  },
+                },
+              },
+              layout: {
+                padding: {
+                  top: 10,
+                  bottom: 10,
+                },
+              },
             }}
           />
         </Box>
       </Box>
+      
     </>
   );
 };

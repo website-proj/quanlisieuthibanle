@@ -19,9 +19,7 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       <AppBar position="fixed" sx={{ backgroundColor: "var(--white)", boxShadow: 0 }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <IconButton onClick={toggleSidebar} className="custom-icon-button">
-              {isSidebarOpen ? <MdMenuOpen style={{ fontSize: "110%" }} /> : <MdOutlineMenu style={{ fontSize: "110%" }} />}
-            </IconButton>
+            
                         {/* Logo */}
                         <Box
               component={Link}
@@ -37,6 +35,9 @@ function Header({ toggleSidebar, isSidebarOpen }) {
               }}
             >
               <img src="https://s.pro.vn/IB7y" alt="Market Logo" />
+              <IconButton onClick={toggleSidebar} className="custom-icon-button">
+              {isSidebarOpen ? <MdMenuOpen style={{ fontSize: "110%" }} /> : <MdOutlineMenu style={{ fontSize: "110%" }} />}
+            </IconButton>
             </Box>
           </Box>
 
