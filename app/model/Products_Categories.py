@@ -6,20 +6,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 from sqlalchemy import func
 
-Base = declarative_base()
+from app.model.model_base import Base
 
-# Định nghĩa Enum cho các loại danh mục và trạng thái sản phẩm
-class CategoryType(str, Enum):
-    Primary = "Primary"
-    Secondary = "Secondary"
 
-class ProductStatus(str, Enum):
-    Active = "Active"
-    Inactive = "Inactive"
 
-# Định nghĩa Sequence cho category_id và product_id
-category_id_seq = Sequence('category_id_seq', metadata=Base.metadata)
-product_id_seq = Sequence('product_id_seq', metadata=Base.metadata)
+
 
 class Category(Base):
     __tablename__ = 'categories'
@@ -31,11 +22,7 @@ class Category(Base):
     star_category = Column(Boolean, default=False)
 
     # Sửa lại relationship và thêm primaryjoin
-    parent_category = relationship("Category",
-                                   backref="subcategories",
-                                   remote_side=[category_id],
-                                   primaryjoin="Category.parent_category_id == Category.category_id")
-
+    products = relationship("Product" , back_populates= "category")
     def __repr__(self):
         return f"<Category(category_id={self.category_id}, category_name={self.category_name})>"
 
@@ -59,8 +46,8 @@ class Product(Base):
     star_product = Column(Boolean , default=False)
     category_id = Column(String(50), ForeignKey('categories.category_id'))
 
-    category = relationship("Category", backref="products")
-
+    category = relationship("Category", back_populates="products")
+    cart_items  =  relationship("CartItem", back_populates="products")
     def __repr__(self):
         return f"<Product(product_id={self.product_id}, name={self.name}, category_id={self.category_id})>"
 
