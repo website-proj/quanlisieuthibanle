@@ -35,7 +35,7 @@ class CategoryService:
 
     @staticmethod
     def get_sub_categories (cat_id, db):
-        sub_categories = db.query(Category).filter(Category.parent_category_id == cat_id).all()
+        sub_categories = db.query(Category).filter(Category.category_id == cat_id).first()
         if not sub_categories:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         return sub_categories
@@ -52,6 +52,32 @@ class CategoryService:
         db.commit()
         db.refresh(category)
         return category
+    @staticmethod
+    def get_sub_category_of_parent_category( cat_id : str , db : Session):
+        cats = db.query(Category).filter(Category.parent_category_id == cat_id).all
+        if not cats:
+            raise HTTPException(status_code= 404 , detail="Category not found")
+        return cats
+    @staticmethod
+    def delete_sub_category(sub_category_id : str, db : Session):
+        cat = db.query(Category).filter(Category.category_id == sub_category_id).first()
+        if not cat:
+            raise HTTPException(status_code = 404 , detail="Category not found")
+        db.delete(cat)
+        db.commit()
+        return cat
+    @staticmethod
+    def delete_parent_category(parent_category_id : str , db : Session ):
+        parent_category = db.query(Category).filter(Category.category_id== parent_category_id).first()
+        if not parent_category:
+            raise HTTPException(status_code = 404 , detail="Category not found")
+        sub_category = db.query(Category).filter(Category.parent_category_id == parent_category_id).all()
+        db.delete(parent_category)
+        db.delete(sub_category)
+        db.commit()
+        return parent_category , sub_category
+
+
 
 
 
