@@ -16,23 +16,23 @@
 }
 
 .info-box:nth-child(1) {
-  background: var(--light-blue);
-  color: var(--blue);
+  background: #f5d5cbdc; /* Soft Coral */
+  color: #b23a2e;    /* Deep Coral */
 }
 
 .info-box:nth-child(2) {
-  background: var(--light-yellow);
-  color: var(--purple);
+  background: #d3ecca; /* Light Green */
+  color: #4b8f29;     /* Forest Green */
 }
 
 .info-box:nth-child(3) {
-  background: var(--green);
-  color: var(--orange);
+  background: #ffe9b2; /* Soft Yellow */
+  color: #c7891c;      /* Golden Yellow */
 }
 
 .info-box:nth-child(4) {
-  background: var(--light-orange);
-  color: var(--yellow);
+  background: #f8d3e9; /* Soft Pink */
+  color: #b12a74;      /* Deep Pink */
 }
 
 .icon {
@@ -110,4 +110,8 @@
 
 .custom-table .MuiTableRow-root:hover {
   background-color: #e3f2fd54;
+}
+
+.MuiTableCell-head {
+  background-color: #42a7ff8d !important;
 }

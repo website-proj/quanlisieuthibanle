@@ -1,0 +1,14 @@
+body, html {
+    margin: 0;
+    padding: 0;
+  }
+  
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  
+  .content-container {
+    border-top-left-radius: 16px;
+    overflow: hidden; 
+  }
+  

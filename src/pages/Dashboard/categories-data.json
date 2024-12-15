@@ -1,18 +1,19 @@
 {
-    "labels": ["Thực phẩm", "Đồ uống", "Bánh kẹo & Đồ ăn nhẹ", "Hóa mỹ phẩm", "Gia dụng & Đồ dùng nhà bếp", "Gia vị", "Chăm sóc bé", "Sách & Văn phòng phẩm", "Sản phẩm vệ sinh nhà cửa"],
-    "datasets": [
-      {
-        "data": [40, 20, 15, 10, 15, 40, 20, 15, 10],
-        "backgroundColor": [
-            "#A8DADC",  
-            "#457B9D",  
-            "#74C6D4", 
-            "#BFDFF6",  
-            "#A3CEF1", 
-            "#92A8D1",  
-            "#CEE7F8" 
-        ]
-      }
-    ]
-  }
-  
+  "labels": ["Thực phẩm", "Đồ uống", "Bánh kẹo & Đồ ăn nhẹ", "Hóa mỹ phẩm", "Gia dụng & Đồ dùng nhà bếp", "Gia vị", "Chăm sóc bé", "Sách & Văn phòng phẩm", "Sản phẩm vệ sinh nhà cửa"],
+  "datasets": [
+    {
+      "data": [40, 20, 15, 10, 15, 40, 20, 15, 10],
+      "backgroundColor": [
+          "#B39DDB",
+          "#7986CB",
+          "#64B5F6",
+          "#4DD0E1",
+          "#81C784",
+          "#FFF176",
+          "#FF8A65",
+          "#A1887F",
+          "#DCE775"
+      ]
+    }
+  ]
+}

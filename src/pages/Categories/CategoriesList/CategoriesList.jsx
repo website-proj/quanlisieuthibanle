@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './CategoriesList.css';
 import categoryData from './CategoriesList.json'; 
-import Box from "@mui/material/Box";
+import { Typography, Box, Breadcrumbs, Link } from '@mui/material';
+
 function CategoriesList() {
   const [categories, setCategories] = useState([]);
 
@@ -20,9 +21,33 @@ function CategoriesList() {
   return (
     <div className="categories-list">
       <main>
-        <div className="title-main">Danh sách danh mục</div>
+      <Box
+          sx={{
+            padding: '10px 20px',
+            backgroundColor: 'var(--white)',
+            borderRadius: '15px',
+            boxShadow: 0,
+            marginTop: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" component="h1" sx={{ fontWeight: 'bold' }}>
+            Danh sách danh mục
+          </Typography>
+
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" href="/">
+              Tổng quan
+            </Link>
+            <Link underline="hover" color="inherit" href="/categories-list">
+              Danh mục
+            </Link>
+            <Typography color="text.primary">Danh sách danh mục</Typography>
+          </Breadcrumbs>
+        </Box>
         <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
-        {/* <div className="categories-info-container"> */}
           <table id="categories-table">
             <thead>
               <tr>

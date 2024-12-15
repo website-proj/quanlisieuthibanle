@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import './AddCategories.css';
-import Box from "@mui/material/Box";
+import { Typography, Box, Breadcrumbs, Link } from '@mui/material';
 
 function AddCategories() {
   const [categoryName, setCategoryName] = useState('');
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({}); // Lưu lỗi
 
-  // Xử lý khi chọn ảnh
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -20,23 +19,19 @@ function AddCategories() {
     }
   };
 
-  // Xử lý khi nhấn nút "Thêm"
   const handleAdd = () => {
     const newErrors = {};
 
-    // Kiểm tra trường tên danh mục
     if (!categoryName.trim()) {
       newErrors.categoryName = 'Vui lòng nhập tên danh mục.';
     }
 
-    // Kiểm tra ảnh
     if (!image) {
       newErrors.image = 'Vui lòng tải lên hình ảnh.';
     }
 
     setErrors(newErrors);
 
-    // Nếu không có lỗi, xử lý logic thêm
     if (Object.keys(newErrors).length === 0) {
       console.log('Tên danh mục:', categoryName);
       console.log('Hình ảnh:', image);
@@ -49,7 +44,33 @@ function AddCategories() {
   return (
     <div className='add-categories'>
       <main>
-        <div className="title-main">Thêm danh mục</div>
+      <Box
+          sx={{
+            padding: '10px 20px',
+            backgroundColor: 'var(--white)',
+            borderRadius: '15px',
+            boxShadow: 0,
+            marginTop: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" component="h1" sx={{ fontWeight: 'bold' }}>
+            Thêm danh mục
+          </Typography>
+
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" href="/">
+              Tổng quan
+            </Link>
+            <Link underline="hover" color="inherit" href="/categories-list">
+              Danh mục
+            </Link>
+            <Typography color="text.primary">Thêm danh mục</Typography>
+          </Breadcrumbs>
+        </Box>
+
         <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
 
         <div className="add-categories-info-container">

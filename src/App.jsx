@@ -15,7 +15,7 @@ import SubcategoriesList from './pages/Categories/SubcategoriesList/Subcategorie
 import AddSubcategories from './pages/Categories/AddSubcategories/AddSubcategories';
 import UserManagement from "./pages/User/UserManagement/UserManagement";
 import AddUser from "./pages/User/AddUser/AddUser";
-
+import Orders from "./pages/Orders/Orders"
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); 
@@ -48,6 +48,7 @@ function App() {
                 <Route path="/add-subcategories" element={<AddSubcategories/>} />
                 <Route path="/user-management" element={<UserManagement/>} />
                 <Route path="/add-user" element={<AddUser/>} />
+                <Route path="/orders" element={<Orders/>} />
               </Routes>
             </div>
           </Content>

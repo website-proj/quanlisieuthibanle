@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './AddProducts.css';
+import { Typography, Box, Breadcrumbs, Link } from '@mui/material';
+
 
 function AddProducts() {
   const [imagePreview, setImagePreview] = useState(''); // Lưu giá trị preview ảnh
@@ -8,7 +10,6 @@ function AddProducts() {
   const [price, setPrice] = useState(0); // Thêm state cho giá
   const [expiryDate, setExpiryDate] = useState(''); // State cho ngày hết hạn
 
-  // Hàm để xử lý sự kiện khi chọn ảnh
   const previewImage = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -18,16 +19,14 @@ function AddProducts() {
       };
       reader.readAsDataURL(file);
     } else {
-      setImagePreview(''); // Nếu không có ảnh, xóa giá trị preview
+      setImagePreview(''); 
     }
   };
 
-  // Hàm thay đổi danh mục để cập nhật danh mục con
   const handleCategoryChange = (event) => {
     const selectedCategory = event.target.value;
     setCategory(selectedCategory);
 
-    // Cập nhật các danh mục con theo danh mục được chọn
     if (selectedCategory === 'food') {
       setSubcategoryOptions(['Món ăn', 'Đồ hộp', 'Thực phẩm tươi']);
     } else if (selectedCategory === 'beverage') {
@@ -37,17 +36,14 @@ function AddProducts() {
     }
   };
 
-  // Hàm để thay đổi giá trị của giá khi nhấn mũi tên
   const handlePriceChange = (event) => {
     let newPrice = event.target.value;
-    // Kiểm tra nếu giá trị nhập vào là âm thì đặt lại giá trị bằng 0
     if (newPrice < 0) {
       newPrice = 0;
     }
     setPrice(newPrice);
   };
 
-  // Hàm xử lý thay đổi ngày hết hạn
   const handleExpiryDateChange = (event) => {
     const date = event.target.value;
     setExpiryDate(date);
@@ -56,8 +52,33 @@ function AddProducts() {
   return (
     <div className='add-products'>
       <main>
-        <div className="title-main">Thêm sản phẩm</div>
-        <div className="product-info-container">
+      <Box
+          sx={{
+            padding: '10px 20px',
+            backgroundColor: 'var(--white)',
+            borderRadius: '15px',
+            boxShadow: 0,
+            marginTop: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" component="h1" sx={{ fontWeight: 'bold' }}>
+            Thêm sản phẩm
+          </Typography>
+
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" href="/">
+              Tổng quan
+            </Link>
+            <Link underline="hover" color="inherit" href="/products-list">
+              Sản phẩm
+            </Link>
+            <Typography color="text.primary">Thêm sản phẩm</Typography>
+          </Breadcrumbs>
+        </Box>
+          <div className="product-info-container">
           <h2>Thông tin sản phẩm</h2>
           <form className="product-info-form" encType="multipart/form-data">
             {/* Phần trên: Tên sản phẩm, mô tả và thêm ảnh */}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './SubcategoriesList.css';
 import categoryData from '/src/pages/Categories/SubcategoriesList/SubcategoriesList.json'; // Đường dẫn cần kiểm tra lại
-import Box from "@mui/material/Box";
+import { Typography, Box, Breadcrumbs, Link } from '@mui/material';
 
 export default function SubcategoriesList() {
   const [subcategories, setSubcategories] = useState([]);
@@ -29,7 +29,33 @@ export default function SubcategoriesList() {
   return (
     <div className='subcategories-list'>
       <main>
-        <div className="title-main">Danh sách danh mục con</div>
+      <Box
+          sx={{
+            padding: '10px 20px',
+            backgroundColor: 'var(--white)',
+            borderRadius: '15px',
+            boxShadow: 0,
+            marginTop: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" component="h1" sx={{ fontWeight: 'bold' }}>
+            Danh sách danh mục con
+          </Typography>
+
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" href="/">
+              Tổng quan
+            </Link>
+            <Link underline="hover" color="inherit" href="/categories-list">
+              Danh mục
+            </Link>
+            <Typography color="text.primary">Danh sách danh mục con</Typography>
+          </Breadcrumbs>
+        </Box>
+  
         <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
 
         <div className='subcategories-info-container'>

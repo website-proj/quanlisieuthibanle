@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './AddSubcategories.css';
-import Box from "@mui/material/Box";
+import { Typography, Box, Breadcrumbs, Link } from '@mui/material';
 
 function AddSubcategories() {
   const [category, setCategory] = useState('');
@@ -20,7 +20,6 @@ function AddSubcategories() {
   ];
 
   const handleAdd = () => {
-    // Reset lỗi
     const newErrors = {};
 
     if (!category) {
@@ -32,11 +31,9 @@ function AddSubcategories() {
 
     setErrors(newErrors);
 
-    // Nếu không có lỗi, xử lý logic thêm
     if (Object.keys(newErrors).length === 0) {
       console.log('Danh mục:', category);
       console.log('Tên danh mục con:', subCategory);
-      // Xử lý thêm danh mục con ở đây
       alert('Thêm danh mục con thành công!');
     }
   };
@@ -44,7 +41,32 @@ function AddSubcategories() {
   return (
     <div className='add-subcategories'>
       <main>
-        <div className="title-main">Thêm danh mục con</div>
+      <Box
+          sx={{
+            padding: '10px 20px',
+            backgroundColor: 'var(--white)',
+            borderRadius: '15px',
+            boxShadow: 0,
+            marginTop: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" component="h1" sx={{ fontWeight: 'bold' }}>
+            Thêm danh mục con
+          </Typography>
+
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" href="/">
+              Tổng quan
+            </Link>
+            <Link underline="hover" color="inherit" href="/categories-list">
+              Danh mục
+            </Link>
+            <Typography color="text.primary">Thêm danh mục con</Typography>
+          </Breadcrumbs>
+        </Box>
         <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
 
         {/* <div className="add-subcategories-info-container"> */}

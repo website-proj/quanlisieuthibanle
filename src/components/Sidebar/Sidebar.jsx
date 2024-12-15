@@ -61,7 +61,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
             paddingBottom: 0,
             display: "flex",
             flexDirection: "column",
-            gap: 0.5,
+            gap: 0.35,
           }}
         >
           {/* Tổng quan */}

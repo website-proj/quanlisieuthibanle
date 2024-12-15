@@ -1,15 +1,37 @@
 import React from 'react';
 import { Typography, TextField, Button, Box } from '@mui/material';
+import {Breadcrumbs, Link } from '@mui/material';
+
 import './AddUser.css';
 function AddUser() {
   return (
     <div className="add-user">
-      <div className="header-container">
-        <Typography className="header-title">Thêm người dùng</Typography>
-        <div className="header-content">
-          <Typography className="header-breadcrumb">Trang chủ / Người dùng / Thêm người dùng</Typography>
-        </div>
-      </div>
+      <Box
+          sx={{
+            padding: '10px 20px',
+            backgroundColor: 'var(--white)',
+            borderRadius: '15px',
+            boxShadow: 0,
+            marginTop: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" component="h1" sx={{ fontWeight: 'bold' }}>
+            Thêm người dùng
+          </Typography>
+
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" href="/">
+              Tổng quan
+            </Link>
+            <Link underline="hover" color="inherit" href="/add-user">
+              Người dùng
+            </Link>
+            <Typography color="text.primary">Thêm người dùng</Typography>
+          </Breadcrumbs>
+        </Box>
 
       <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
 

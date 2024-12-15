@@ -13,14 +13,14 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai"; // Thay đổi icon tại đây
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai"; 
+import { useNavigate } from "react-router-dom"; 
+import {Breadcrumbs, Link } from '@mui/material';
 
 function UserManagement() {
   const [users, setUsers] = useState([]);
-  const navigate = useNavigate(); // Khởi tạo navigate để chuyển hướng
+  const navigate = useNavigate(); 
 
-  // Fetch data from JSON file
   useEffect(() => {
     fetch("/src/pages/User/UserManagement/users.json")
       .then((response) => response.json())
@@ -28,23 +28,40 @@ function UserManagement() {
       .catch((error) => console.error("Error loading user data:", error));
   }, []);
 
-  // Hàm xử lý sự kiện khi nhấn nút "Thêm người dùng"
   const handleAddUser = () => {
-    navigate("/add-user"); // Chuyển hướng đến trang AddUser
+    navigate("/add-user"); 
   };
 
   return (
     <div className="user-management">
-      <div className="header-container">
-        <Typography className="header-title">Quản lí người dùng</Typography>
-        <div className="header-content">
-          <Typography className="header-breadcrumb">Trang chủ / Người dùng / Quản lí người dùng</Typography>
-          <Button variant="contained" className="add-user-btn" onClick={handleAddUser}>
-            Thêm người dùng
-          </Button>
-        </div>
-      </div>
+      <Box
+          sx={{
+            padding: '10px 20px',
+            backgroundColor: 'var(--white)',
+            borderRadius: '15px',
+            boxShadow: 0,
+            marginTop: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" component="h1" sx={{ fontWeight: 'bold' }}>
+            Quản lý người dùng
+          </Typography>
 
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" href="/">
+              Tổng quan
+            </Link>
+            <Link underline="hover" color="inherit" href="/add-user">
+              Người dùng
+            </Link>
+            <Typography color="text.primary">Quản lý người dùng</Typography>
+          </Breadcrumbs>
+        </Box>
+
+      <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -78,6 +95,7 @@ function UserManagement() {
           </TableBody>
         </Table>
       </TableContainer>
+      </Box>
     </div>
   );
 }

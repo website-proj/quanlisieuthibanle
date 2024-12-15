@@ -35,13 +35,16 @@ function Header({ toggleSidebar, isSidebarOpen }) {
               }}
             >
               <img src="https://s.pro.vn/IB7y" alt="Market Logo" />
-              <IconButton onClick={toggleSidebar} className="custom-icon-button">
-              {isSidebarOpen ? <MdMenuOpen style={{ fontSize: "110%" }} /> : <MdOutlineMenu style={{ fontSize: "110%" }} />}
+              
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, paddingLeft: "20%"}}>
+            <IconButton onClick={toggleSidebar} className="custom-icon-button">
+              {isSidebarOpen ? <MdMenuOpen style={{ fontSize: "130%" }} /> : <MdOutlineMenu style={{ fontSize: "130%" }} />}
             </IconButton>
             </Box>
-          </Box>
+            </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, paddingRight: "5%" }}>
             <IconButton onClick={handleThemeToggle} className="custom-icon-button">
               {isDarkMode ? <LuSun /> : <LuMoon />}
             </IconButton>

@@ -1,12 +1,25 @@
 .custom-icon-button {
-    color: var(--dark) !important;
-}
-  
-.custom-icon-button:hover {
     color: var(--blue) !important;
-    background-color: var(--grey) !important;
+    background-color: var(--hover-sidebar) !important;
+    border-radius: 20% !important;  
+    padding: 5% 5% !important;  
 }
+
+.custom-icon-button:hover {
+    color: var(--white) !important;
+    background-color: var(--blue) !important;
+}
+
 
 .css-1cn1074 img {
     margin-left: 15%;
+    margin-right: 6% !important;
 }
+.AppBar .MuiToolbar-root > .MuiBox-root:last-child {
+    padding-right: 100px !important; 
+}
+
+.custom-icon-button svg {
+    transform: scale(0.85);
+}
+
