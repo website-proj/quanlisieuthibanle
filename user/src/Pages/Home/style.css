@@ -45,7 +45,7 @@
   margin-top: 2.25em;
 }
 .all_pro button {
-  background-image: linear-gradient(to right, #2d19e4, #2bbef985);
+  background-color: #ffffff;
   border-radius: 1em;
 }
 .all_pro button:hover {

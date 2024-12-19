@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 import "./style.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import TextField from "@mui/material/TextField";
 const Account = () => {
   // State để điều khiển hiển thị form
   const [activePage, setActivePage] = useState("account");
@@ -166,53 +167,14 @@ const Account = () => {
                 </div>
               </div>
 
-              {/* Tỉnh/Thành phố */}
-              <div className="flex items-center mb-4">
-                <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                  Tỉnh/Thành phố
-                </label>
-                <select className="w-3/4 text-left border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12">
-                  <option>Chọn tỉnh/thành phố</option>
-                  {provinces.map((province, index) => (
-                    <option key={index}>{province}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Quận/Huyện */}
-              <div className="flex items-center mb-4">
-                <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                  Quận/Huyện
-                </label>
-                <select className="w-3/4 text-left border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12">
-                  <option>Chọn quận/huyện</option>
-                  {districts.map((district, index) => (
-                    <option key={index}>{district}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Phường/Xã */}
-              <div className="flex items-center mb-4">
-                <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                  Phường/Xã
-                </label>
-                <select className="w-3/4 text-left border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12">
-                  <option>Chọn phường/xã</option>
-                  {wards.map((ward, index) => (
-                    <option key={index}>{ward}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Số nhà */}
+              {/* Địa chỉ */}
               <div className="flex items-center mb-4">
                 <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
                   Số nhà
                 </label>
                 <input
                   type="text"
-                  placeholder="Nhập số nhà"
+                  placeholder="Địa chỉ"
                   className="w-3/4 border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12"
                 />
               </div>

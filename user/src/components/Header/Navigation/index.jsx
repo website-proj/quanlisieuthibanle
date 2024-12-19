@@ -282,6 +282,7 @@ import { LuHeadphones } from "react-icons/lu";
 import { FaListUl } from "react-icons/fa";
 import "./style.css";
 import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
 
 const Navigation = () => {
   const [isopenSidebarVal, setisopenSidebarVal] = useState(false);
@@ -360,32 +361,32 @@ const Navigation = () => {
                           <FaAngleRight className="ml-auto" />
                         </Button>
                       </Link>
-                      <div className="absolute left-[102%] top-0 w-[250px] bg-white p-3 border-0 border-gray-200 opacity-0 invisible transition-all duration-200 group-hover:opacity-100 group-hover:visible navigationMenuList">
+                      <div className="absolute left-[102%] top-0 w-[250px] bg-white p-3 border-0 border-gray-200 opacity-0 invisible transition-all duration-200 group-hover:opacity-100 group-hover:visible ">
                         {/* Submenu items */}
                         {category === "Thực phẩm" && (
                           <>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Rau củ quả
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Thịt & Hải sản
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Đồ đông lạnh
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Thực phẩm khô
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Đồ hộp
                               </Button>
                             </Link>
@@ -394,17 +395,17 @@ const Navigation = () => {
                         {category === "Đồ uống" && (
                           <>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Nước giải khát
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Sữa & các sản phẩm từ sữa
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Đồ uống có cồn
                               </Button>
                             </Link>
@@ -413,12 +414,12 @@ const Navigation = () => {
                         {category === "Bánh kẹo & Đồ ăn nhẹ" && (
                           <>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Bánh kẹo
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Đồ ăn nhẹ
                               </Button>
                             </Link>
@@ -427,22 +428,22 @@ const Navigation = () => {
                         {category === "Hóa mỹ phẩm" && (
                           <>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Chăm sóc cá nhân
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Chăm sóc da
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Chăm sóc tóc
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Trang điểm
                               </Button>
                             </Link>
@@ -451,17 +452,17 @@ const Navigation = () => {
                         {category === "Gia dụng & Đồ dùng nhà bếp" && (
                           <>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Đồ dùng nhà bếp
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Thiết bị điện gia dụng
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Đồ dùng dọn dẹp
                               </Button>
                             </Link>
@@ -470,27 +471,27 @@ const Navigation = () => {
                         {category === "Gia vị" && (
                           <>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Dầu ăn
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Nước chấm và nước mắm
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Nước tương (xì dầu)
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Hạt nêm
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Tương các loại
                               </Button>
                             </Link>
@@ -499,12 +500,12 @@ const Navigation = () => {
                         {category === "Chăm sóc bé" && (
                           <>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Sản phẩm cho bé
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Đồ chơi trẻ em
                               </Button>
                             </Link>
@@ -513,10 +514,12 @@ const Navigation = () => {
                         {category === "Sách và văn phòng phẩm" && (
                           <>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">Sách</Button>
+                              <Button className="w-full text-left nav_menu">
+                                Sách
+                              </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Văn phòng phẩm
                               </Button>
                             </Link>
@@ -525,12 +528,12 @@ const Navigation = () => {
                         {category === "Sản phẩm vệ sinh nhà cửa" && (
                           <>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Dụng cụ vệ sinh
                               </Button>
                             </Link>
                             <Link to="/products" onClick={handleCategoryClick}>
-                              <Button className="w-full text-left">
+                              <Button className="w-full text-left nav_menu">
                                 Hóa chất tẩy rửa
                               </Button>
                             </Link>
@@ -544,25 +547,29 @@ const Navigation = () => {
             </div>
           </div>
 
-          <div className="w-5/12"></div>
+          {/* <div className="5/12"></div> */}
 
           {/* Part 2 */}
-          <div className=" w-1/4 flex justify-end items-center mx-[6%]">
+          <div className="w-2/3 flex justify-end items-center mx-[6%]">
             <ul className="flex space-x-10">
               <li>
-                <div className="flex items-center">
-                  <Link to="/">
+                <div className="flex items-center h-full">
+                  <Link to="/" className="flex items-center gap-2">
                     <BiMessage className="text-xl" />
+                    <span className="text-base">Tin tức</span>
                   </Link>
-                  <span className="ml-2">Tin tức</span>
                 </div>
               </li>
               <li>
                 <div className="flex items-center">
                   <Link to="#">
-                    <LuHeadphones className="text-xl" />
+                    <Tooltip title="123456789" arrow>
+                      <Button className="flex items-center gap-2 whitespace-nowrap">
+                        <LuHeadphones className="text-xl" />
+                        <span>Chăm sóc khách hàng</span>
+                      </Button>
+                    </Tooltip>
                   </Link>
-                  <span className="ml-2">Chăm sóc khách hàng</span>
                 </div>
               </li>
             </ul>

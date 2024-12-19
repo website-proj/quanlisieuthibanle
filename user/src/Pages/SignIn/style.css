@@ -1,0 +1,100 @@
+.section {
+  padding: 2.9em 0em;
+}
+.signInPage {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.signInPage .shape-bottom {
+  position: absolute;
+  top: auto;
+  bottom: -0.375em;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+.signInPage::after {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(#1a37e8, #7bb6ff);
+  opacity: 0.9;
+  z-index: -1;
+}
+
+.signInPage .box {
+  width: 25%;
+  height: 40em;
+  background-color: #ffffff;
+
+  align-items: center;
+  justify-content: center;
+  border-radius: 1em;
+  position: relative;
+  z-index: 100;
+}
+
+.signInPage .box form {
+  padding: 1.25em 1.5em;
+}
+
+.signInPage .box .form-group {
+  margin-bottom: 1.25em;
+}
+.border-effect {
+  position: relative;
+  color: #337ab7;
+  text-decoration: none;
+}
+.border-effect:after {
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -0.125em;
+  width: 0;
+  height: 1px;
+  background-color: #102a44;
+  content: "";
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+.border-effect:hover {
+  text-decoration: none;
+  color: #000;
+}
+.border-effect:hover:after {
+  width: 100%;
+}
+
+.signInPage .box form .hrLine {
+  border-top: 1px solid #ccc;
+  position: relative;
+  width: 100%;
+  height: 1.875em;
+  display: flex;
+  justify-content: center;
+}
+
+.signInPage .box form .orText {
+  background: #ffffff;
+  position: absolute;
+  width: 3.5em;
+  top: -0.8em;
+}
+.loginWithGoogle {
+  width: 100%;
+  font-weight: 600 !important;
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.loginWithGoogle img {
+  width: 1.5em;
+  margin-right: 0.5em;
+}

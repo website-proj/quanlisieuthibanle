@@ -6,26 +6,51 @@ import Product from "./Pages/Product";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Product_Details from "./Pages/Product_Details";
 import Account from "./Pages/Account";
+import Cart from "./Pages/Cart";
+import SignIn from "./Pages/SignIn";
+import { createContext, useState } from "react";
+import SignUp from "./Pages/SignUp";
+
+const MyContext = createContext();
 
 function App() {
+  const [isHeaderFooterShow, setisHeaderFooterShow] = useState(true);
+
+  const [isLogin, setIsLogin] = useState(false);
+
+  const values = {
+    isHeaderFooterShow,
+    setisHeaderFooterShow,
+    isLogin,
+    setIsLogin,
+  };
+
   return (
     <>
       <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path={"/"} exact={true} element={<Home />} />
-          <Route path="/products" exact={true} element={<Product />} />
-          <Route path="/Account" exact={true} element={<Account />} />
-          <Route
-            path="/product_detials/:id"
-            exact={true}
-            element={<Product_Details />}
-          />
-        </Routes>
-        <Footer />
+        <MyContext.Provider value={values}>
+          {isHeaderFooterShow === true && <Header />}
+
+          <Routes>
+            <Route path={"/"} exact={true} element={<Home />} />
+            <Route path="/products" exact={true} element={<Product />} />
+            <Route path="/Account" exact={true} element={<Account />} />
+            <Route
+              path="/product_detials/:id"
+              exact={true}
+              element={<Product_Details />}
+            />
+            <Route path={"/cart"} exact={true} element={<Cart />} />
+            <Route path="/signIn" exact={true} element={<SignIn />} />
+            <Route path="/signUp" exact={true} element={<SignUp />} />
+          </Routes>
+          {isHeaderFooterShow === true && <Footer />}
+        </MyContext.Provider>
       </BrowserRouter>
     </>
   );
 }
 
 export default App;
+
+export { MyContext };

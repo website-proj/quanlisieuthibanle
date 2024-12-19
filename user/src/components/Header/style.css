@@ -1,16 +1,16 @@
 header {
   background-color: #1a73e8;
   width: 100%;
-  height: auto;
+  height: 5em;
   opacity: 80%;
 
-  /* position: fixed; 
-  top: 0; 
+  /* position: fixed;
+  top: 0;
   left: 0;
   right: 0;
-  bottom: 3.253m;
-  z-index: 1000;  */
-  /* margin-bottom: 3em; */
+  bottom: 3.253em;
+  z-index: 1000; */
+  /* margin-bottom: 3.5em; */
 }
 
 header a img {
@@ -18,8 +18,13 @@ header a img {
   display: flex;
   justify-content: flex-end;
   width: 70%;
-  /* height: 4em; */
+  height: 5em;
   margin-left: 20%;
+}
+.user button {
+  color: #fff !important;
+  display: inline-block;
+  font-size: 1em;
 }
 .p-2 {
   padding: 0.35rem;
@@ -28,16 +33,14 @@ header .carTab {
   margin-right: 5%;
   margin-left: 3em;
 }
-header .user {
+header .cart {
   min-width: 2.8em !important;
   height: 2.8em !important;
   border-radius: 50% !important;
   padding: 0px;
   color: #000;
 }
-header .user button svg {
-  width: 2.4em;
-  height: 2.5em;
+header .cart button svg {
   top: 0em;
   color: #ffffff;
 }
@@ -47,17 +50,17 @@ header .user button svg {
   text-transform: unset !important;
 }
 
-header .user span {
-  font-size: 0.875em;
+header .cart span {
+  font-size: 1em;
   line-height: 0.875em;
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 500;
   margin-left: 5px;
 }
-header .user .count {
+header .cart .count {
   position: absolute;
-  top: 0.6em;
-  left: -1.5em;
+  top: 0.8em;
+  left: -1.8em;
   background: rgb(255, 66, 79);
   border-radius: 50%;
   color: #fff;

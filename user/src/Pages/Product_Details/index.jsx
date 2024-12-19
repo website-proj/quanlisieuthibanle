@@ -58,7 +58,7 @@ Sữa chua không đường Vinamilk được đóng hộp nhỏ gọn, tiện d
                 Mô tả sản phẩm
               </h3>
             </div>
-            <div className=" border bg-[#ffffff] rounded-lg p-4 shadow-lg">
+            <div className=" border bg-[#ffffff] rounded-lg p-4 shadow-lg ml-[1%] h-[90.5%]">
               <div className="text-left text-black">
                 {sentences.map((sentence, index) => (
                   <p key={index} className="mb-2">
@@ -74,7 +74,7 @@ Sữa chua không đường Vinamilk được đóng hộp nhỏ gọn, tiện d
           </div>
         </div>
 
-        <div className="flex flex-col ml-[6%] mr-[5%] mt-5 mb-5">
+        <div className="flex flex-col ml-[4%] mr-[5%] mt-5 mb-5">
           <h3 className="text-lg font-bold text-black text-left text-shadow text_describe">
             Sản phẩm liên quan
           </h3>
