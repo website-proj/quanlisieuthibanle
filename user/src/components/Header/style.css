@@ -55,17 +55,18 @@ header .cart span {
   line-height: 0.875em;
   color: #ffffff;
   font-weight: 500;
-  margin-left: 5px;
+  margin-left: 1px;
 }
 header .cart .count {
   position: absolute;
-  top: 0.8em;
-  left: -1.8em;
+  top: 1em;
+  left: -2.6em;
   background: rgb(255, 66, 79);
   border-radius: 50%;
   color: #fff;
   width: 0.94em;
   height: 0.94em;
+  font-size: 0.8em !important;
 }
 .bg-gray-800 {
   --tw-bg-opacity: 1;

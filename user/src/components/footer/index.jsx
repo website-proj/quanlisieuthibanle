@@ -11,9 +11,17 @@ import Logo from "../../assets/footer/Logo.png";
 import { TbBrandFacebook } from "react-icons/tb";
 import { FiYoutube } from "react-icons/fi";
 
+import Drawer from "@mui/material/Drawer";
+import { IoCloseSharp } from "react-icons/io5";
+import CartPanel from "../CartPanel";
+
 import { SiZalo } from "react-icons/si";
+import { useContext } from "react";
+import { MyContext } from "../../App";
 
 const Footer = () => {
+  const context = useContext(MyContext);
+
   return (
     <>
       <footer>
@@ -146,6 +154,25 @@ const Footer = () => {
           </div>
         </div>
       </footer>
+
+      {/* Cart Panel */}
+
+      <Drawer
+        open={context.openCartPanel}
+        onClose={context.toggleCartPanel(false)}
+        anchor="right"
+        className="w-[30em] cartPanel"
+      >
+        <div className="flex items-center justify-between py-3 px-4 gap-3 border-b overflow-hidden">
+          <h4 className="font-[600] text-lg uppercase">Giỏ hàng (1)</h4>
+          <IoCloseSharp
+            className="text-[1.5em] cursor-pointer"
+            onClick={context.toggleCartPanel(false)}
+          />
+        </div>
+
+        <CartPanel />
+      </Drawer>
     </>
   );
 };

@@ -34,3 +34,7 @@ body {
   width: 90%;
   margin: 0em;
 } */
+.cartPanel .MuiPaper-root {
+  width: 25em;
+  overflow: hidden;
+}

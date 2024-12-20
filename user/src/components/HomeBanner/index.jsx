@@ -29,7 +29,7 @@ const HomeBanner = () => {
                 <img
                   src="https://res.cloudinary.com/dkgonwhvj/image/upload/v1731427522/1731427519864_New_Project_11.jpg"
                   alt="Banner 1"
-                  className="w-full h-[500px] object-cover bannerImg"
+                  className="w-full h-[25em] object-cover bannerImg"
                 />
                 <div className="absolute bottom-10 left-10">
                   <a
@@ -51,7 +51,7 @@ const HomeBanner = () => {
                 <img
                   src="https://res.cloudinary.com/dkgonwhvj/image/upload/v1731427470/1731427468095_New_Project_13.jpg"
                   alt="Banner 2"
-                  className="w-full h-[500px] object-cover bannerImg"
+                  className="w-full h-[25em] object-cover bannerImg"
                 />
                 <div className="absolute bottom-10 left-10">
                   <a
@@ -73,7 +73,7 @@ const HomeBanner = () => {
                 <img
                   src={slideBanner1}
                   alt="Banner 3"
-                  className="w-full h-[500px] object-cover bannerImg"
+                  className="w-full h-[25em] object-cover bannerImg"
                 />
                 <div className="absolute bottom-10 left-10">
                   <a
@@ -95,7 +95,7 @@ const HomeBanner = () => {
                 <img
                   src={slideBanner2}
                   alt="Banner 4"
-                  className="w-full h-[500px] object-cover bannerImg"
+                  className="w-full h-[25em] object-cover bannerImg"
                 />
                 <div className="absolute bottom-10 left-10">
                   <a

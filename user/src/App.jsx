@@ -1,4 +1,5 @@
 import "./App.css";
+import "./index.css";
 import Footer from "./components/footer";
 import Header from "./components/Header";
 import Home from "./Pages/Home";
@@ -10,6 +11,7 @@ import Cart from "./Pages/Cart";
 import SignIn from "./Pages/SignIn";
 import { createContext, useState } from "react";
 import SignUp from "./Pages/SignUp";
+import Success from "./Pages/Success";
 
 const MyContext = createContext();
 
@@ -18,11 +20,20 @@ function App() {
 
   const [isLogin, setIsLogin] = useState(false);
 
+  const [openCartPanel, setOpenCartPanel] = useState(false);
+
+  const toggleCartPanel = (newOpen) => () => {
+    setOpenCartPanel(newOpen);
+  };
+
   const values = {
     isHeaderFooterShow,
     setisHeaderFooterShow,
     isLogin,
     setIsLogin,
+    setOpenCartPanel,
+    toggleCartPanel,
+    openCartPanel,
   };
 
   return (
@@ -43,6 +54,7 @@ function App() {
             <Route path={"/cart"} exact={true} element={<Cart />} />
             <Route path="/signIn" exact={true} element={<SignIn />} />
             <Route path="/signUp" exact={true} element={<SignUp />} />
+            <Route path="/success" exact={true} element={<Success />} />
           </Routes>
           {isHeaderFooterShow === true && <Footer />}
         </MyContext.Provider>

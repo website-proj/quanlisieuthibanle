@@ -81,7 +81,10 @@ const Header = () => {
               </div>
 
               {/* Shopping cart */}
-              <div className="cart ml-3 flex items-center">
+              <div
+                className="cart ml-3 flex items-center"
+                onClick={() => context.setOpenCartPanel(true)}
+              >
                 <Button className="circle ml-2">
                   <LuShoppingCart className="mr-2 h-10 w-10" />
                   <span className="ml-2 whitespace-nowrap">Giỏ hàng</span>
