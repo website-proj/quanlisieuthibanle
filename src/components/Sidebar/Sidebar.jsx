@@ -12,12 +12,10 @@ import {
 import {
   MdOutlineCategory,
   MdOutlineShoppingBag,
-  MdStore,
   MdSettings,
   MdLogout,
   MdExpandLess,
   MdExpandMore,
-  MdGroup,
   MdOutlineShoppingCart,
   MdPerson,
 } from "react-icons/md";
@@ -62,6 +60,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
             display: "flex",
             flexDirection: "column",
             gap: 0.35,
+            margin: "0 0.5em",
           }}
         >
           {/* Tổng quan */}

@@ -1,7 +1,6 @@
 .custom-list-item-text {
   color: var(--dark-grey);
   font-size: 0.4em !important;
-  /* transition: color 0.3s ease; */
 }
 
 .custom-list-item-icon {
@@ -67,7 +66,7 @@
 }
 
 .MuiDrawer-paper::-webkit-scrollbar-thumb {
-  background-color: #d8d8d8d4 !important;
+  background-color: #d8d8d877 !important;
   border-radius: 3px;
   height: 0.1em !important;
 }

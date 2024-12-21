@@ -104,6 +104,10 @@ const Dashboard = () => {
             },
             scales: {
               x: {
+                grid: {
+                  drawBorder: false,
+                  display: false,
+                },
                 title: {
                   display: true,
                   text: "Tháng",
@@ -111,6 +115,10 @@ const Dashboard = () => {
                 },
               },
               y: {
+                grid: {
+                  drawBorder: false,
+                  drawOnChartArea: true,
+                },
                 title: {
                   display: true,
                   text: "Giá trị (triệu đồng)",
