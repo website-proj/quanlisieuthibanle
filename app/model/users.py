@@ -1,27 +1,11 @@
 import uuid
-from sqlalchemy import Column, String, DateTime , Boolean, ForeignKey, Enum, Sequence
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, DateTime ,  Enum
 from datetime import datetime
-from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.orm import relationship
-
 from app.model.model_base import Base
 
-# Base = model_base.Base
-
-
-# class account_type(str, Enum):
-#     Customer = "Customer"
-#     Admin = "Admin"
-#
-# class membership_status(str, Enum):
-#     Gold = "Gold"
-#     Diamond = "Diamond"
-#     Silver = "Silver"
-
-
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     # Sử dụng func.concat để kết hợp tiền tố "user" với giá trị tự động tăng
     user_id = Column(String(50), primary_key=True, unique=True, default=lambda: f"user{uuid.uuid4().hex[:8]}")
@@ -36,3 +20,5 @@ class User(Base):
     updated_at =  Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     cart = relationship("Cart" , back_populates="user")
+    orders = relationship("Orders" , back_populates="user")
+    addresses = relationship("Address" , back_populates="user")
