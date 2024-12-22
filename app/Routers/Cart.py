@@ -36,15 +36,15 @@ def update_product_quantity(  cart_update: CartItemUpdate,
     cart_item = CartService.update_product_quantity(cart_update, db , token)
     return ResponseHandler.success("updated cart item" , cart_item)
 @router.delete("/cart_item" , dependencies=[Depends(login_required )])
-def delete_cart_item(cart_id , product_id , db : Session = Depends(get_db)):
+def delete_cart_item( product_id , db : Session = Depends(get_db) , token  :str = Depends(AuthService.oauth2_scheme)):
     """
     xóa sản phẩm khỏi giỏ hàng
     """
-    cart_item = CartService.delete_cart_item(cart_id , product_id , db)
+    cart_item = CartService.delete_cart_item( product_id , db , token )
     return ResponseHandler.success("deleted cart item" , cart_item)
-@router.delete("/cart" , dependencies=[Depends(login_required )])
-def delete_cart(cart_id , db : Session = Depends(get_db)):
-    cart = CartService.create_cart(cart_id , db)
+@router.delete("/cart" , dependencies=[Depends(login_required)])
+def delete_cart( db : Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme)):
+    cart = CartService.deletet_all_items(db , token)
     return ResponseHandler.success("deleted cart" , cart)
 @router.get("/totalPrice" , dependencies=[Depends(login_required )])
 def get_total_price( db : Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme)):
