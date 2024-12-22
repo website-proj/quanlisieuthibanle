@@ -1,10 +1,6 @@
 import uuid
-
-from pyparsing import oneOf
 from sqlalchemy import Column, String, Integer, Float, DateTime, func, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-
 from app.model.model_base import Base
 
 # Base = model_base.Base
