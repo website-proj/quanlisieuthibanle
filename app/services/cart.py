@@ -14,7 +14,7 @@ from app.services.auth import AuthService
 class CartService:
     @staticmethod
     def create_cart( token : str = Depends(AuthService.oauth2_scheme) , db : Session = Depends(get_db) ) :
-        user = AuthService.get_current_user(token ,  db )
+        user = AuthService.get_current_user(db , token  )
         cart = Cart(user_id=user.user_id)
         db.add(cart)
         db.commit()
@@ -22,13 +22,13 @@ class CartService:
         return cart
     @staticmethod
     def add_product_to_cart(cart_item : CartItemCreate ,  db : Session , token : str = Depends(AuthService.oauth2_scheme)) :
-        current_user = AuthService.get_current_user(token , db)
+        current_user = AuthService.get_current_user(db , token )
         exist_cart = db.query(Cart).filter(Cart.user_id == current_user.user_id).first()
         if not exist_cart:
             exist_cart = CartService.create_cart( token , db )
         exist_cart_item= db.query(CartItem).filter(CartItem.cart_id == exist_cart.cart_id , CartItem.product_id == cart_item.product_id).first()
-        if not exist_cart_item:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='CartItem not found')
+        # if  exist_cart_item:
+        #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='CartItem not found')
         product = db.query(Product).filter(Product.product_id == cart_item.product_id).first()
         product_price = product.price * cart_item.quantity
         if exist_cart_item:
@@ -45,7 +45,7 @@ class CartService:
         return cart_item
     @staticmethod
     def get_all_cart_items(  token : str = Depends(AuthService.oauth2_scheme) ,db : Session = Depends(get_db) ) :
-        current_user =  AuthService.get_current_user(token , db)
+        current_user =  AuthService.get_current_user(db , token)
         cart_items  = (db.query(CartItem).join(Cart , Cart.cart_id == CartItem.cart_id)
                        .filter(Cart.user_id == current_user.user_id).all())
         if not cart_items:
@@ -55,7 +55,7 @@ class CartService:
 
     @staticmethod
     def update_product_quantity(cart_update : CartItemUpdate, db : Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme) ) :
-        current_user = AuthService.get_current_user(token , db)
+        current_user = AuthService.get_current_user(db , token )
         exist_cart = db.query(Cart).filter(Cart.user_id == current_user.user_id).first()
         if not exist_cart:
             raise HTTPException(status_code=404 , detail = "no cart found")
@@ -70,16 +70,22 @@ class CartService:
         db.refresh(cart_item)
         return cart_item
     @staticmethod
-    def delete_cart_item(cart_id : str  , product_id : str , db : Session):
-        cart_item = db.query(CartItem).filter(CartItem.cart_id == cart_id , CartItem.product_id == product_id).first()
+    def delete_cart_item(product_id : str , db : Session , token : str = Depends(AuthService.oauth2_scheme)) :
+        cur_user = AuthService.get_current_user(db , token)
+        cart_exist = db.query(Cart).filter(Cart.user_id == cur_user.user_id).first()
+        if not cart_exist:
+            raise HTTPException(status_code=404 , detail="no cart found")
+        cart_item = db.query(CartItem).filter(CartItem.product_id == product_id , CartItem.cart_id == cart_exist.cart_id ).first()
         if not cart_item:
             raise HTTPException(status_code = 404 , detail = "No product found ")
         db.delete(cart_item)
         db.commit()
         return cart_item
     @staticmethod
-    def deletet_all_items(cart_id : str , db : Session):
-        cart_items = db.query(CartItem).filter(CartItem.cart_id == cart_id).all()
+    def deletet_all_items( db : Session  , token : str = Depends(AuthService.oauth2_scheme)) :
+        cur_user = AuthService.get_current_user(db , token)
+        cart_exist = db.query(Cart).filter(Cart.user_id == cur_user.user_id).first()
+        cart_items = db.query(CartItem).filter(CartItem.cart_id == cart_exist.cart_id).all()
         if not cart_items:
             raise HTTPException(status_code = 404 , detail = "No products found")
         for cart_item in cart_items:
@@ -88,7 +94,7 @@ class CartService:
         return cart_items
     @staticmethod
     def total_price( db: Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme)) :
-        current_user = AuthService.get_current_user(token , db)
+        current_user = AuthService.get_current_user(db , token )
         cart = db.query(Cart).filter(Cart.user_id == current_user.user_id).first()
         if not cart :
             raise HTTPException(status_code=404 , detail = "no cart found")
