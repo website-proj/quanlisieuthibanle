@@ -6,6 +6,7 @@ from jose import JWTError, jwt
 from app.core.security import get_password_hash, verify_password
 from app.db.base import get_db
 from app.model.users import User
+from app.model .model_orders import Orders
 from app.schemas.schema_token import TokenPayload
 from app.schemas.schema_user import UserRegisterRequest, login
 from app.core.config import  settings
@@ -43,7 +44,7 @@ class AuthService :
         if not check_password :
             return None
         return user
-    def get_current_user(token: str = Depends(oauth2_scheme) , db : Session = Depends(get_db)):
+    def get_current_user(db : Session = Depends(get_db),token: str = Depends(oauth2_scheme)  ):
         credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                              detail="Could not validate credentials", headers={"WWW-Authenticate": "Bearer"})
         try :
