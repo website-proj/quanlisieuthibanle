@@ -8,14 +8,14 @@ from app.services.users import UserService
 
 
 def login_required(token : str  =  Depends(AuthService.oauth2_scheme) , db : Session  = Depends(get_db)):
-    return AuthService.get_current_user(token  , db)
+    return AuthService.get_current_user(db , token)
 def check_admin_role(token : str = Depends(AuthService.oauth2_scheme) , db : Session = Depends(get_db)):
-    current = AuthService.get_current_user(token , db)
+    current = AuthService.get_current_user(db , token)
     user = db.query(User).filter(User.user_id == current.user_id).first()
     if user.account_type != "Admin":
         raise HTTPException(status_code=403 , detail = "Admin role required")
 def check_super_admin_role(token : str =Depends(AuthService.oauth2_scheme), db : Session = Depends(get_db)):
-    current = AuthService.get_current_user(token , db)
+    current = AuthService.get_current_user(db , token )
     user = db.query(User).filter(User.user_id == current.user_id).first()
     if user.account_type != "SuperAdmin":
         raise HTTPException(status_code=403 , detail = "SuperAdmin role required")
