@@ -5,7 +5,7 @@ import { Typography, Box, Breadcrumbs, Link } from '@mui/material';
 function AddCategories() {
   const [categoryName, setCategoryName] = useState('');
   const [image, setImage] = useState(null);
-  const [errors, setErrors] = useState({}); // Lưu lỗi
+  const [errors, setErrors] = useState({});
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -15,7 +15,7 @@ function AddCategories() {
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
-      setErrors((prev) => ({ ...prev, image: '' })); // Xóa lỗi khi người dùng tải ảnh
+      setErrors((prev) => ({ ...prev, image: '' })); 
     }
   };
 
@@ -82,7 +82,7 @@ function AddCategories() {
             value={categoryName}
             onChange={(e) => {
               setCategoryName(e.target.value);
-              setErrors((prev) => ({ ...prev, categoryName: '' })); // Xóa lỗi khi người dùng nhập
+              setErrors((prev) => ({ ...prev, categoryName: '' })); 
             }}
           />
           {errors.categoryName && (

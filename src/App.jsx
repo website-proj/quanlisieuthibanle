@@ -16,6 +16,8 @@ import AddSubcategories from './pages/Categories/AddSubcategories/AddSubcategori
 import UserManagement from "./pages/User/UserManagement/UserManagement";
 import AddUser from "./pages/User/AddUser/AddUser";
 import Orders from "./pages/Orders/Orders"
+import BannersList from "./pages/Banners/BannersList/BannersList"
+import AddBanner from "./pages/Banners/AddBanner/AddBanner"
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); 
@@ -49,6 +51,9 @@ function App() {
                 <Route path="/user-management" element={<UserManagement/>} />
                 <Route path="/add-user" element={<AddUser/>} />
                 <Route path="/orders" element={<Orders/>} />
+                <Route path="/banners-list" element={<BannersList/>} />
+                <Route path="/add-banner" element={<AddBanner/>} />
+                
               </Routes>
             </div>
           </Content>

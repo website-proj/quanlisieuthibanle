@@ -9,6 +9,9 @@ import {
   Collapse,
   Box,
 } from "@mui/material";
+import { PiFlagBannerFold } from "react-icons/pi";
+import { LuUser } from "react-icons/lu";
+
 import {
   MdOutlineCategory,
   MdOutlineShoppingBag,
@@ -17,7 +20,6 @@ import {
   MdExpandLess,
   MdExpandMore,
   MdOutlineShoppingCart,
-  MdPerson,
 } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
 import { Link, useLocation } from "react-router-dom";
@@ -26,6 +28,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
   const [openCategories, setOpenCategories] = React.useState(false);
   const [openProducts, setOpenProducts] = React.useState(false);
   const [openUsers, setOpenUsers] = React.useState(false);
+  const [openBanners, setOpenBanners] = React.useState(false);
 
   const location = useLocation();
   const isActive = (path) => location.pathname === path;
@@ -33,6 +36,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
   const handleCategoriesClick = () => setOpenCategories(!openCategories);
   const handleProductsClick = () => setOpenProducts(!openProducts);
   const handleUsersClick = () => setOpenUsers(!openUsers);
+  const handleBannersClick = () => setOpenBanners(!openBanners);
 
   return (
     <Drawer
@@ -221,7 +225,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
             }`}
           >
             <ListItemIcon className="custom-list-item-icon">
-              <MdPerson />
+              <LuUser   />
             </ListItemIcon>
             <ListItemText className="custom-list-item-text" primary="Người dùng" />
             {openUsers ? (
@@ -258,6 +262,57 @@ function Sidebar({ isOpen, toggleSidebar }) {
                 sx={{ paddingLeft: 2 }}
               >
                 <ListItemText className="submenu-text" primary="Thêm người dùng" />
+              </ListItem>
+            </Box>
+          </Collapse>
+
+          
+        {/* Quản lý banner */}
+        <ListItem
+            button
+            onClick={handleBannersClick}
+            className={`custom-list-item ${
+              isActive("/banners-list") || isActive("/add-banner") ? "active" : ""
+            }`}
+          >
+            <ListItemIcon className="custom-list-item-icon">
+            <PiFlagBannerFold />
+            </ListItemIcon>
+            <ListItemText className="custom-list-item-text" primary="Banner" />
+            {openBanners ? (
+              <MdExpandLess className="custom-list-item-icon" />
+            ) : (
+              <MdExpandMore className="custom-list-item-icon" />
+            )}
+          </ListItem>
+          <Collapse in={openBanners} timeout="auto" unmountOnExit>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 0,
+                paddingLeft: 0,
+                borderLeft: "1px solid var(--dark)",
+                marginLeft: 5.5,
+              }}
+            >
+              <ListItem
+                button
+                component={Link}
+                to="/banners-list"
+                className={`submenu-list-item ${isActive("/banners-list") ? "active" : ""}`}
+                sx={{ paddingLeft: 2 }}
+              >
+                <ListItemText className="submenu-text" primary="Danh sách banner" />
+              </ListItem>
+              <ListItem
+                button
+                component={Link}
+                to="/add-banner"
+                className={`submenu-list-item ${isActive("/add-banner") ? "active" : ""}`}
+                sx={{ paddingLeft: 2 }}
+              >
+                <ListItemText className="submenu-text" primary="Thêm banner" />
               </ListItem>
             </Box>
           </Collapse>

@@ -29,7 +29,6 @@ function Orders() {
   const [orderBy, setOrderBy] = useState("id");
 
   useEffect(() => {
-    // Thay đường dẫn này bằng JSON hoặc API của bạn
     fetch("/src/pages/Orders/orders.json")
       .then((response) => response.json())
       .then((data) => {
@@ -38,7 +37,6 @@ function Orders() {
       });
   }, []);
 
-  // Hàm tìm kiếm nâng cao
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearch(value);
@@ -48,7 +46,7 @@ function Orders() {
       )
     );
     setFilteredOrders(filtered);
-    setPage(0); // Reset về trang đầu khi tìm kiếm
+    setPage(0); 
   };
 
   // Hàm sắp xếp dữ liệu
@@ -82,7 +80,6 @@ function Orders() {
 
   return (
     <div className="orders">
-      <main>
         {/* Header */}
         <Box
           sx={{
@@ -251,7 +248,6 @@ function Orders() {
             />
           </Box>
         </Box>
-      </main>
     </div>
   );
 }

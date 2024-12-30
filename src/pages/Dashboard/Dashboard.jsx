@@ -10,6 +10,7 @@ import { FiUser, FiShoppingCart, FiEye, FiEdit2, FiTrash2 } from "react-icons/fi
 import { FaRegStar } from "react-icons/fa";
 import { GrBasket } from "react-icons/gr";
 import './Dashboard.css';
+import { Link } from "react-router-dom";
 
 ChartJS.register(
   CategoryScale,
@@ -25,10 +26,10 @@ ChartJS.register(
 
 const Dashboard = () => {
   const stats = [
-    { icon: <FiUser className="icon" />, title: "Người dùng", count: 1020 },
-    { icon: <GrBasket className="icon" />, title: "Đơn hàng", count: 1020 },
-    { icon: <FiShoppingCart className="icon" />, title: "Sản phẩm", count: 11111 },
-    { icon: <FaRegStar className="icon" />, title: "Đánh giá", count: 1000 },
+    { icon: <FiUser className="icon" />, title: "Người dùng", count: 1020, link: "/user-management" },
+    { icon: <GrBasket className="icon" />, title: "Đơn hàng", count: 1020, link: "/orders-management" },
+    { icon: <FiShoppingCart className="icon" />, title: "Sản phẩm", count: 11111, link: "/products-management" },
+    { icon: <FaRegStar className="icon" />, title: "Đánh giá", count: 1000, link: "/reviews-management" },
   ];
 
   const [page, setPage] = useState(0);
@@ -83,6 +84,19 @@ const Dashboard = () => {
           </Box>
         ))}
       </Box>
+      {/* <Box className="stats-header-container">
+        {stats.map((item, index) => (
+          <Link to={item.link} key={index} style={{ textDecoration: "none" }}>
+            <Box className="info-box" sx={{ cursor: "pointer" }}>
+              {item.icon}
+              <Box>
+                <Typography className="info-title">{item.title}</Typography>
+                <Typography className="info-count">{item.count}</Typography>
+              </Box>
+            </Box>
+          </Link>
+        ))}
+      </Box> */}
 
       {/* Biểu đồ doanh thu */}
       <Box sx={{ padding: "20px", backgroundColor: "var(--white)", borderRadius: "20px", boxShadow: 0, marginTop: "20px" }}>
