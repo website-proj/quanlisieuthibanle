@@ -64,3 +64,7 @@ def get_expiring_product(db : Session = Depends(get_db)):
     if not products:
         raise HTTPException(status_code= 404 , detail="No products found")
     return ResponseHandler.success("success query" , products)
+@router.get("/product/detail" , dependencies=[Depends(check_admin_role)])
+def get_detail_product(product_id : str, db : Session = Depends(get_db)):
+    product = ProductService.get_detail_product_by_admin(product_id , db)
+    return ResponseHandler.success("product detail" , product)
