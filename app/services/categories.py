@@ -76,7 +76,12 @@ class CategoryService:
         db.delete(sub_category)
         db.commit()
         return parent_category , sub_category
-
+    @staticmethod
+    def count_category(db : Session):
+        return db.query(Category).filter(Category.parent_category_id == None).count()
+    @staticmethod
+    def count_sub_category( db : Session):
+        return db.query(Category).filter(Category.parent_category_id != None).count()
 
 
 
