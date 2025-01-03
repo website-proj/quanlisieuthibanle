@@ -16,6 +16,10 @@ def get_discounted_products(db: Session = Depends(get_db)):
         return ProductService.get_discounted_products(db)
     except HTTPException as e:
         raise e
+@router.get("/flash_sale")
+def get_flash_sale_products(db: Session = Depends(get_db)):
+    products = ProductService.get_flash_sale(db)
+    return ResponseHandler.success("flashSale products" , products )
 @router.get("/search")
 def get_search_products(search , db: Session = Depends(get_db)):
     try:
@@ -75,3 +79,24 @@ def    get_product_bestsellers_for_subcategory(subcategory_id : str , db: Sessio
     return {
         "đang cập nhập"
     }
+@router.get("/count_product")
+def get_product_count(db: Session = Depends(get_db)):
+    number_of_products = ProductService.count_product(db)
+    return ResponseHandler.success("Products", number_of_products)
+@router.get("/relevant_products")
+def get_relevant_products(product_id : str , db: Session = Depends(get_db)):
+    products = ProductService.relevant_products(product_id,db)
+    return ResponseHandler.success("products relevant", products)
+@router.get("/get_product_filter_by_price")
+def get_product_of_sub_category_filter_by_price(category_id : str , bottom_price : float ,
+                                                up_price : float , db: Session = Depends(get_db)):
+    products = ProductService.filter_product_of_category_by_price(category_id,bottom_price,up_price,db)
+    return ResponseHandler.success("products filtered", products)
+@router.get("best_sellers")
+def get_best_seller_products(db: Session = Depends(get_db)):
+    product = ProductService.get_best_seller_v1(db)
+    return ResponseHandler.success("products best seller", product)
+@router.get("best_sellers_for_sub_category")
+def get_best_sellers_for_sub_category(subcategory_id : str , db: Session = Depends(get_db)):
+    product = ProductService.get_best_seller_for_sub_category(subcategory_id,db)
+    return ResponseHandler.success("best seller for category", product)
