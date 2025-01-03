@@ -2,9 +2,12 @@ from datetime import datetime, timedelta
 
 
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
-from sqlalchemy import or_ , and_
+from sqlalchemy.orm import Session, aliased
+from sqlalchemy import or_, and_, func, desc
 from app.model.Products_Categories import Product, Category
+from app.model.model_orders import Orders, OrderItems
+from app.model.reviews import Reviews
+from app.schemas.schema_order import OrderItem
 from app.utils.responses import ResponseHandler
 from app.schemas.schema_product import ProductCreate, ProductUpdate
 
@@ -15,9 +18,15 @@ class ProductService:
     @staticmethod
     def search_products(db: Session, search: str):
         # Tìm kiếm theo từ khóa trong tên hoặc mô tả sản phẩm
+        search_lower = search.lower()
+
+        # Thực hiện tìm kiếm không phân biệt hoa thường
         products = db.query(Product).filter(
-            or_(Product.name.contains(search), Product.description.contains(search))
-        ).order_by(Product.product_id.asc()).all()  #
+            or_(
+                func.lower(Product.name).contains(search_lower),
+                func.lower(Product.description).contains(search_lower)
+            )
+        ).order_by(Product.product_id.asc()).all()
 
         if not products:
             # ResponseHandler.not_found_error("Product", search)
@@ -28,7 +37,8 @@ class ProductService:
     @staticmethod
     def get_discounted_products(db: Session):
         # Giả sử trường `discount` là tỷ lệ giảm giá, có thể là số thập phân (ví dụ 0.2 = 20%)
-        discounted_products = db.query(Product).filter(Product.discount > 0).all()  # Lọc sản phẩm có giảm giá
+        discounted_products = db.query(Product).filter(Product.discount > 0 ,
+                                                       Product.discount < 50).all()  # Lọc sản phẩm có giảm giá
 
         if not discounted_products:
             # Nếu không có sản phẩm nào có giảm giá, trả về lỗi
@@ -38,6 +48,12 @@ class ProductService:
         return ResponseHandler.success("Found discounted products", discounted_products)
     # GET /products/best-sellers: Lấy danh sách sản phẩm bán chạy nhất
     @staticmethod
+    def get_flash_sale(db : Session):
+        discounted_products = db.query(Product).filter(Product.discount > 50).all()
+        if not discounted_products:
+            raise HTTPException(status_code=404, detail="No flash sale products found")
+        return discounted_products
+    @staticmethod
     def get_star_product(db:Session):
         star_product = db.query(Product).filter(Product.star_product == True).all()
         if not star_product:
@@ -46,16 +62,16 @@ class ProductService:
     # get new arrivals products # như thế nào là mới nhất
     @staticmethod
     def get_new_arrival(db:Session):
-        # arg limit :int
-        # limit = 7
-        current_date = datetime.now()
-        one_week_ago = current_date - timedelta(days=7)
-
-        products_new_arrival  = db.query(Product).filter(Product.date_created >=one_week_ago).all()
-        if not products_new_arrival:
-            raise HTTPException(status_code=404, detail="No new arrival products found")
-        return ResponseHandler.success("Found new arrival products", products_new_arrival)
-#     GET /products/category/{category_id}: Lấy danh sách sản phẩm theo danh mục
+        products = db.query(Product).order_by(desc(Product.date_created)).all()
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+        result = []
+        i = 0
+        for product in products:
+            if i > 20 :
+                break
+            result.append(product)
+        return result
     @staticmethod
     def get_product_by_cateId(cate_id , db:Session):
         products = db.query(Product).filter(Product.category_id == cate_id).all()
@@ -116,9 +132,19 @@ class ProductService:
     @staticmethod
     def get_all_products(db : Session):
         products = db.query(Product).all()
+        data = []
         if not products:
             raise HTTPException(status_code=404, detail="No products found")
-        return products
+        for product in products :
+            cat_of_product  = db.query(Category).filter(Category.category_id == product.category_id).first()
+            parent_cat = db.query(Category).filter(Category.category_id == cat_of_product.parent_category_id).first()
+
+            data.append({
+                "product" : product.__dict__ if product else None,
+                "category_of_product" : cat_of_product.__dict__ if cat_of_product else None,
+                "parent_of_category"    : parent_cat.__dict__ if parent_cat else None,
+            })
+        return data
     @staticmethod
     def update_product(product : ProductUpdate , db : Session):
         pro = db.query(Product).filter(Product.product_id == product.product_id).first()
@@ -166,3 +192,158 @@ class ProductService:
         if not products:
             raise HTTPException(status_code=404, detail="No products found")
         return products
+    @staticmethod
+    def count_product(db : Session):
+        products = db.query(Product).all()
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+        number_of_products = len(products)
+        return number_of_products
+    @staticmethod
+    def relevant_products(product_id : str , db : Session):
+        category_id = db.query(Product).filter(Product.product_id == product_id).first().category_id
+        product = db.query(Product).filter(Product.category_id == category_id).all()
+        if not product:
+            raise HTTPException(status_code=404, detail="No products found")
+        data = []
+        for product in product:
+            if product.product_id == product_id:
+                continue
+            data.append(product)
+        return data
+    @staticmethod
+    def filter_product_of_category_by_price(category_id , bottom_price : float ,
+                                            up_price : float , db : Session):
+        products = db.query(Product).filter(Product.category_id == category_id , Product.price < up_price , Product.price > bottom_price ).all()
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+        return products
+    @staticmethod
+    def get_detail_product_by_admin(product_id : str , db : Session):
+        product = db.query(Product).filter(Product.product_id == product_id).first()
+        if not product:
+            raise HTTPException(status_code=404, detail="No products found")
+        reviews = db.query(Reviews).filter(Reviews.product_id == product_id).all()
+        # if not reviews:
+        #     raise HTTPException(status_code=404, detail="No reviews found")
+        number_of_reviews = len(reviews)
+        data = [{
+            "product" : product.__dict__ if product else None ,
+            "number_of_reviews" : number_of_reviews,
+            "reviews" : reviews.__dict__ if reviews else None ,
+        }]
+        return data
+    @staticmethod
+    def get_best_seller_v0(db:Session):
+        orders_pass = db.query(Orders).filter(Orders.status == "Delivered").all()
+        order_items_pass = []
+        if not orders_pass:
+            raise HTTPException(status_code = 404 , detail = "no orders found")
+        for order in orders_pass:
+            order_items = db.query(OrderItems).filter(OrderItems.order_id == order.order_id).all()
+            for order_item in order_items:
+                order_items_pass.append(order_item)
+        result = dict()
+        if not order_items_pass:
+            raise HTTPException(status_code=404, detail="No order_items found")
+        for order_item in order_items_pass:
+            quantity = order_item.quantity
+            product_id = order_item.product_id
+            if product_id not in result:
+                result[product_id] = quantity
+            else :
+                result[product_id] += quantity
+        datas = []
+        result = sorted(result.items(), key=lambda item: item[1], reverse=True)
+        result = dict(result)
+        for product_id in result:
+            product = db.query(Product).filter(Product.product_id == product_id).first()
+            category = db.query(Category).filter(Category.category_id == product.category_id).first()
+            parent_cat = db.query(Category).filter(Category.category_id == category.parent_category_id).first()
+            data = {
+                "sold": result[product_id],
+                "product": product.__dict__ if product else None,
+                "Category of product" : category.__dict__ if category else None,
+                "Parent Category of Product" : parent_cat.__dict__ if parent_cat else None,
+            }
+            datas.append(data)
+        if not datas :
+            raise HTTPException(status_code=404, detail="No products found")
+        return datas
+    @staticmethod
+    def get_best_seller_v1(db:Session):
+        order_items_pass = db.query(OrderItems , Orders ).join(Orders ,Orders.order_id == OrderItems.order_id).filter(Orders.status == "Delivered").all()
+        if not order_items_pass:
+            raise HTTPException(status_code=404 , detail = "no order_items_pass found")
+        products = dict()
+        for order_item ,_ in order_items_pass:
+            product_id = order_item.product_id
+            quantity = order_item.quantity
+            if product_id not in products:
+                products[product_id] = quantity
+            else :
+                products[product_id] += quantity
+        data = []
+        products = sorted(products.items(), key=lambda item: item[1], reverse=True)
+        products =  dict(products)
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+        alias_product = aliased(Product)
+        alias_category = aliased(Category)
+        parent_category = aliased(Category)
+
+        for product_id in products:
+            product, category, parent_cat = db.query(
+                alias_product,
+                alias_category,
+                parent_category
+            ).join(
+                alias_category, alias_product.category_id == alias_category.category_id
+            ).join(
+                parent_category, alias_category.parent_category_id == parent_category.category_id ,  isouter=True
+            ).filter(
+                alias_product.product_id == product_id
+            ).first()
+            detail_product = {
+                "sold": products[product_id],
+                "product": product.__dict__ if product else None,
+                "Category of product" : category.__dict__ if category else None,
+                "Parent Category of Product" : parent_cat.__dict__ if parent_cat else None,
+            }
+            data.append(detail_product)
+        return data
+    @staticmethod
+    def get_best_seller_for_sub_category(sub_category_id : str , db:Session):
+        order_items_pass = (db.query(OrderItems, Orders ,Product)
+                            .join(Orders, Orders.order_id == OrderItems.order_id)
+                            .join(Product , Product.product_id == OrderItems.product_id)
+                            .filter(Orders.status == "Delivered" , Product.category_id == sub_category_id).all())
+        if not order_items_pass:
+            raise HTTPException(status_code=404, detail="no order_items_pass found")
+        products = dict()
+        for order_item, _ , _ in order_items_pass:
+            product_id = order_item.product_id
+            quantity = order_item.quantity
+            if product_id not in products:
+                products[product_id] = quantity
+            else:
+                products[product_id] += quantity
+        data = []
+        products = sorted(products.items(), key=lambda item: item[1], reverse=True)
+        products = dict(products)
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+        for product_id in products:
+            product = db.query(Product).filter(Product.product_id == product_id).first()
+            category = db.query(Category).filter(Category.category_id == product.category_id).first()
+            parent_cat = db.query(Category).filter(Category.category_id == category.parent_category_id).first()
+            detail_product = {
+                "sold": products[product_id],
+                "product": product.__dict__ if product else None,
+                "Category of product": category.__dict__ if category else None,
+                "Parent Category of Product": parent_cat.__dict__ if parent_cat else None,
+            }
+            data.append(detail_product)
+        return data
+
+
