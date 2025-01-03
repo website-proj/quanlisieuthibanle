@@ -29,10 +29,10 @@ async def register_user(user : UserRegisterRequest  , user_service : UserService
 
 @router.post("/login" )
 def login_access_token(data : OAuth2PasswordRequestForm =Depends() , db : Session = Depends(get_db) ):
-    login_form = login(username=data.username, password=data.password)
+    login_form = login(email=data.username, password=data.password)
     user = AuthService.authenticate_user( login_form , db)
     if not user :
-        raise (HTTPException(status_code=400, detail="Incorrect username or password"))
+        raise (HTTPException(status_code=400, detail="Incorrect email or password"))
     return {
         'access_token': create_access_token(user_id=user.user_id) , "token_type": "bearer"
     }
