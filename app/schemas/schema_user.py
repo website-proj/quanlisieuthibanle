@@ -52,7 +52,7 @@ class UserOut(BaseModel):
     class Config(BaseConfig):
         pass
 class login(BaseModel):
-    username : str
+    email : str
     password: str
     class Config(BaseConfig):
         pass

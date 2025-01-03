@@ -37,7 +37,7 @@ class AuthService :
         """"
         check username and password
         """
-        user = db.query(User).filter(User.username == login_form.username).first()
+        user = db.query(User).filter(User.email == login_form.email).first()
         if not user:
             return None
         check_password = verify_password(login_form.password, user.password)
