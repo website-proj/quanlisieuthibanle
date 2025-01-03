@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.Routers import admin_user, admin_category, admin_product, categories, products, users, super_admin, Cart, \
-    Order, Order_admin
+    Order, Order_admin, ReviewRouter, BannerRouter, PopUpRouter, PaymentRouter
 
 router = APIRouter()
 
@@ -14,3 +14,7 @@ router.include_router(super_admin.router, tags=["super_admin"], prefix="/super_a
 router.include_router(Cart.router , tags=["Cart"], prefix="/cart")
 router.include_router(Order.router , tags=["Order"], prefix="/order")
 router.include_router(Order_admin.router, tags=["Order_admin"], prefix="/order_admin")
+router.include_router(ReviewRouter.router, tags=["ReviewRouter"], prefix="/review")
+router.include_router(BannerRouter.router, tags=["BannerRouter"], prefix="/banner")
+router.include_router(PopUpRouter.router, tags=["PopUpRouter"], prefix="/popup")
+router.include_router(PaymentRouter.router , tags=["PaymentRouter"], prefix="/payment")
