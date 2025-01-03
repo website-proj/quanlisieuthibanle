@@ -56,4 +56,9 @@ def delete_parent_category(parent_category_id : str, db : Session = Depends(get_
     cat = CategoryService.delete_parent_category(parent_category_id, db)
     return ResponseHandler.success("delete Success" ,cat)
 
-
+@router.get("count_category")
+def count_category(db : Session = Depends(get_db)):
+    return CategoryService.count_category(db)
+@router.get("sub_category")
+def count_sub_category(db : Session = Depends(get_db)):
+    return CategoryService.count_sub_category(db)
