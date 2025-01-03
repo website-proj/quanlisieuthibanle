@@ -15,7 +15,8 @@ class Orders(Base):
     # relationship
     user = relationship("User", back_populates="orders")
     order_items = relationship("OrderItems", back_populates="orders")
-
+    reviews = relationship("Reviews", back_populates="orders")
+    payments = relationship("Payment", back_populates="orders")
 class OrderItems(Base):
     __tablename__ = "order_items"
     order_item_id = Column(String(50), primary_key=True, unique=True, default=lambda: f"order_item{uuid.uuid4().hex[:8]}")

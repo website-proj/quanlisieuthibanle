@@ -3,14 +3,12 @@ from sqlalchemy import Column, String, Integer, Float, DateTime, func, ForeignKe
 from sqlalchemy.orm import relationship
 from app.model.model_base import Base
 
-# Base = model_base.Base
 class Cart(Base):
     __tablename__ = "cart"
     cart_id = Column(String(50) , primary_key = True , unique = True , default=lambda: f"cart{uuid.uuid4().hex[:8]}")
     user_id  = Column(String(50) ,  ForeignKey("users.user_id" , ondelete= "CASCADE") , nullable = False)
 
     user = relationship("User" , back_populates = "cart" )
-
     cart_items = relationship("CartItem" , back_populates = "cart")
 class CartItem(Base):
     __tablename__ = "cart_items"

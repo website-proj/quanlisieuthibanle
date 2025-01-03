@@ -14,11 +14,14 @@ class User(Base):
     email = Column(String(50), nullable=False)
     phone_number = Column(String(50), nullable = True)
     address = Column(String(50) , nullable = True)
+    gender = Column(String(50) , nullable = True)
     account_type = Column(Enum("Admin" , "Customer" , name = "account_type"), default="Customer")
     membership_status = Column(Enum("Gold" , "Diamond" , "Silver", name="membership_status_enum"), default="Silver")
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at =  Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
+    #relationship
     cart = relationship("Cart" , back_populates="user")
     orders = relationship("Orders" , back_populates="user")
     addresses = relationship("Address" , back_populates="user")
+    reviews = relationship("Reviews" , back_populates="user")
+    payments = relationship("Payment" , back_populates="user")

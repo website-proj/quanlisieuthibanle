@@ -44,12 +44,14 @@ class Product(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     expiration_date = Column(Date)
     star_product = Column(Boolean , default=False)
+
     category_id = Column(String(50), ForeignKey('categories.category_id'))
 
     #relationship
     category = relationship("Category", back_populates="products")
     cart_items  =  relationship("CartItem", back_populates="products")
     order_items = relationship("OrderItems", back_populates="products")
+    reviews = relationship("Reviews", back_populates="products")
     def __repr__(self):
         return f"<Product(product_id={self.product_id}, name={self.name}, category_id={self.category_id})>"
 
