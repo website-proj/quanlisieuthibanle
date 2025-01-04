@@ -88,13 +88,3 @@
   width: 3.5em;
   top: -0.8em;
 }
-.loginWithGoogle {
-  width: 100%;
-  font-weight: 600 !important;
-  color: rgba(0, 0, 0, 0.8) !important;
-}
-
-.loginWithGoogle img {
-  width: 1.5em;
-  margin-right: 0.5em;
-}

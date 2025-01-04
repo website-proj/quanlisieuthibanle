@@ -11,7 +11,10 @@ import Cart from "./Pages/Cart";
 import SignIn from "./Pages/SignIn";
 import { createContext, useState } from "react";
 import SignUp from "./Pages/SignUp";
+import Verify from "./Pages/Verify";
 import Success from "./Pages/Success";
+import ForgotPassword from "./Pages/ForgotPassword";
+import Payment from "./Pages/Payment";
 
 const MyContext = createContext();
 
@@ -52,9 +55,16 @@ function App() {
               element={<Product_Details />}
             />
             <Route path={"/cart"} exact={true} element={<Cart />} />
+            <Route path={"/payment"} exact={true} element={<Payment />} />
             <Route path="/signIn" exact={true} element={<SignIn />} />
             <Route path="/signUp" exact={true} element={<SignUp />} />
+            <Route path="/verify" exact={true} element={<Verify />} />
             <Route path="/success" exact={true} element={<Success />} />
+            <Route
+              path="/forgotPassword"
+              exact={true}
+              element={<ForgotPassword />}
+            />
           </Routes>
           {isHeaderFooterShow === true && <Footer />}
         </MyContext.Provider>

@@ -29,7 +29,7 @@ const SignIn = () => {
   };
   return (
     <>
-      <section className="section signInPage">
+      <section className="section signInPage forgot">
         <div class="shape-bottom">
           {" "}
           <svg
@@ -51,29 +51,16 @@ const SignIn = () => {
           <div className="box card p-3 shadow ">
             <div className="text-center">
               <img className=" flex justify-center items-center " src={Logo} />
-              {/* <Link to={"/"}>
-                <BiHome className="text-left " />
-              </Link> */}
             </div>
 
             <form className="mt-3">
-              <h2 className="text-2xl font-[600] text-left">Đăng nhập</h2>
-              <div className="form-group">
-                <TextField
-                  id="standard-basic"
-                  label="Email"
-                  type="email"
-                  required
-                  variant="standard"
-                  className="w-full text-left"
-                />
-              </div>
+              <h2 className="text-2xl font-[600] text-left">Quên mật khẩu</h2>
 
               {/* Mật khẩu với chức năng ẩn/hiện */}
               <div className="form-group relative">
                 <TextField
                   id="password"
-                  label="Mật khẩu"
+                  label="Mật khẩu mới"
                   type={showPassword ? "text" : "password"} // Thay đổi type giữa text và password
                   required
                   variant="standard"
@@ -88,47 +75,31 @@ const SignIn = () => {
                 </button>
               </div>
 
-              <Link to={"/verify"} className="border-effect cursor text-left">
-                Quên mật khẩu?
-              </Link>
+              <div className="form-group relative">
+                <TextField
+                  id="password"
+                  label="Xác nhận mật khẩu"
+                  type={showPassword ? "text" : "password"} // Thay đổi type giữa text và password
+                  required
+                  variant="standard"
+                  className="w-full text-left"
+                />
+                <button
+                  type="button"
+                  onClick={handleTogglePasswordVisibility}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl"
+                >
+                  {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                </button>
+              </div>
 
-              <div className="flex space-x-6 mt-1 mb-1">
+              <div className="flex space-x-6 mt-3 mb-1">
                 <div className="flex-1">
                   <Button className="w-full" variant="contained">
-                    Đăng nhập
+                    Đổi mật khẩu
                   </Button>
                 </div>
-
-                <div className="flex-1">
-                  <Link to={"/"} className="w-full block">
-                    <Button
-                      className="w-full"
-                      variant="outlined"
-                      onClick={() => context.setisHeaderFooterShow(true)}
-                    >
-                      Hủy
-                    </Button>
-                  </Link>
-                </div>
               </div>
-
-              <div class="hrLine mt-8">
-                <div class="orText">Hoặc</div>
-              </div>
-              <Link
-                to={"/signUp"}
-                className="border-effect cursor text-left font-weight-bold"
-              >
-                Đăng ký
-              </Link>
-              <h3 className="mt-2 mb-3 text-center font-weight-bold">
-                Tiếp tục với Google
-              </h3>
-
-              <Button className="loginWithGoogle" variant="outlined">
-                <FcGoogle className="text-[1.5em] mr-[0.5em]" /> Đăng nhập bằng
-                Google
-              </Button>
             </form>
           </div>
         </div>

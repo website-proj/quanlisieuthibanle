@@ -4,7 +4,7 @@ import { MyContext } from "../../App";
 import Logo from "../../assets/footer/Logo.png";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
-import Google from "../../assets/images/google.png";
+import { FcGoogle } from "react-icons/fc";
 import { TextField } from "@mui/material";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Import mắt xem
 
@@ -134,7 +134,8 @@ const SignUp = () => {
               </h3>
 
               <Button className="loginWithGoogle" variant="outlined">
-                <img src={Google} alt="google" /> Đăng nhập bằng Google
+                <FcGoogle className="text-[1.5em] mr-[0.5em]" /> Đăng nhập bằng
+                Google
               </Button>
             </form>
           </div>
