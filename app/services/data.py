@@ -7,7 +7,7 @@ from enum import Enum
 import unicodedata
 from fastapi import Depends
 from sqlalchemy.orm import Session
-
+from app.services.address_data import AddressData
 from app.db.base import get_db
 from app.model.model_base import Base
 from app.model.cart_model import Cart,CartItem
@@ -18,7 +18,8 @@ from app.model.addres_model import Address
 from app.model.users import User
 from app.schemas.schema_order import Order
 from app.model.voucher_payment import Payment,Voucher
-
+from app.core.security import get_password_hash
+# from app.
 class Status(Enum):
     Processing = "Processing"
     Delivery = "Delivery"
@@ -62,56 +63,8 @@ class DataService:
             db.commit()
 
         return 1
-    def read_file_address(self):
-        result = []
-        filepath = r"/database/address_data.sql"
-        with (open(filepath , "rt" , encoding = "utf-8") as f) :
-            lines = f.readlines()[2:]
-            for line in lines:
-                line = [str(i) for  i in line.strip().split(",")]
-                newline = []
-
-                for i in line :
-                    a = ""
-                    for j in i :
-                        if j == "'"  or j == ")":
-                            continue
-                        a += j
-                    newline.append(a)
-                result.append(newline)
-        return result
-    def create_data_address(self , db : Session):
-        # Addresses(address_id, user_id, house_number, street.txt, ward, district, city, state, phone_number)
-        addresses = self.read_file_address()
-        users = db.query(User).all()
-        for user in users:
-            # username = user.username
-            for address in addresses:
-                # if user.user_id == address[1]:
-                user_address_id = address[1]
-                username = user.username
-                address_exist = db.query(Address).filter(Address.user_id == user_address_id).first()
-                if address_exist:
-                    continue
-
-                address_id = f"address_{uuid.uuid4().hex[:8]}"
-                house_number = address[2]
-                street = address[3]
-                ward = address[4]
-                # district = address[5]
-                city = address[6]
-                state = address[7]
-                phone_number = address[8]
-                address = Address(
-                    address_id=address_id, user_id=user_address_id, user_name=username, house_number=house_number,
-                    street=street, ward=ward, city=city, state=state,
-                    phone_number=phone_number
-                )
-                db.add(address)
-                db.commit()
-                break
     def read_user_data(self):
-        file_path = r"/database/hoten.txt"
+        file_path = r"D:\code\python\fastapi-base\database\hoten.txt"
         sur_name  = []
         middle_name = []
         name  = []
@@ -129,17 +82,17 @@ class DataService:
         sur_name = random.choice(sur_name)
         middle_name = random.choice(middle_name)
         name = random.choice(name)
-        full_name = sur_name + middle_name + name
+        full_name = sur_name +" " + middle_name +" "+ name
         return full_name
     def remove_vietnamese_accents(self , text ):
         text = unicodedata.normalize('NFD', text)
         text = ''.join(char for char in text if unicodedata.category(char) != 'Mn')
         return text
-    def email_random(self , name):
-        name_processed = self.remove_vietnamese_accents(name).replace(' ','').lower()
+    def email_random(self, name):
+        name_processed = self.remove_vietnamese_accents(name).replace(' ', '').lower()
         random_str = "".join(random.choices(string.ascii_lowercase + string.digits, k=5))
-        domain  = "gmail.com"
-        email = f"{name_processed}.{random_str}.{domain}"
+        domain  = "@gmail.com"
+        email = f"{name_processed}{random_str}{domain}"  # Loại bỏ dấu chấm
         return email
     def password_random(self ):
         all_characters = string.ascii_letters + string.digits + string.punctuation
@@ -167,16 +120,113 @@ class DataService:
         suffix = ''.join(random.choices("0123456789", k=7))
         phone_number = prefix + suffix
         return phone_number
-    # def create_user_data(self):
+    def create_user_data(self , db:Session):
+        for i in range(10000):
+            user_id = f"user{uuid.uuid4().hex[:8]}"
+            user_name = self.name_random()
+            password = self.password_random()
+            password_hashed = get_password_hash(password)
+            email = self.email_random(user_name)
+            gender = random.choice(["male" , "female"])
+            phone_number = self.phone_number_random()
+            address = "Hà Nội"
+            start_date = datetime(2022 ,1,1)
+            end_date = datetime(2024 ,12,31)
+            date = self.random_date(start_date, end_date)
+            user = User(
+                user_id = user_id , username = user_name, password = password_hashed,
+                email = email , gender = gender , phone_number = phone_number ,
+                address = address , created_at = date
+            )
+            db.add(user)
+            db.commit()
+    def create_address_data(self , db:Session):
+        users = db.query(User).all()
+        for user in users :
+            address_id = f"address_{uuid.uuid4().hex[:8]}"
+            user_id = user.user_id
+            user_name = user.username
+            address_obj  = AddressData()
+            address = address_obj.random_address()
+            house_number = address.house_number
+            street = address.street_name
+            ward = address.ward_name
+            district = address.district_name
+            state = "Hà Nội"
+            phone_number = self.phone_number_random()
+            result = Address(
+                address_id = address_id , user_id = user_id , user_name = user_name ,
+                house_number = house_number ,
+                street = street , ward = ward , district = district , state = state ,
+                phone_number = phone_number
+            )
+            db.add(result)
+            db.commit()
+    def update_origin_price_of_product(self , db : Session):
+        products = db.query(Product).all()
+        for product in products:
+            price = product.price
+            bottom_price = price - price*0.4
+            origin_price_random = random.choice([bottom_price, price])
 
+            product.original_price = origin_price_random
+            db.commit()
+    # def add_cart_data(self , db : Session):
+    #
+    def add_reviews_data(self , db:Session):
+        comments = [
+            "Sản phẩm tuyệt vời, rất hài lòng!",
+            "Giao hàng nhanh chóng, đóng gói cẩn thận.",
+            "Chất lượng vượt xa mong đợi.",
+            "Giá cả hợp lý, chất lượng xứng đáng.",
+            "Sản phẩm đẹp, dùng rất thích.",
+            "Sản phẩm chất lượng tốt, sẽ mua lại.",
+            "Đóng gói chắc chắn, không bị hư hỏng.",
+            "Màu sắc đẹp như trong hình ảnh.",
+            "Chất liệu cao cấp, rất bền.",
+            "Dễ sử dụng, tiện lợi cho công việc.",
+            "Dịch vụ chăm sóc khách hàng tuyệt vời.",
+            "Giao hàng đúng hẹn, rất hài lòng.",
+            "Như mong đợi, chắc chắn sẽ giới thiệu cho bạn bè.",
+            "Sản phẩm này xứng đáng với số tiền bỏ ra.",
+            "Có thể cải thiện thêm về thiết kế, nhưng chất lượng tốt.",
+            "Rất ưng ý với sản phẩm, sẽ ủng hộ lâu dài.",
+            "Dễ dàng sử dụng và hiệu quả cao.",
+            "Không có gì để phàn nàn, sản phẩm tuyệt vời.",
+            "Mình đã thử qua nhiều sản phẩm nhưng đây là tốt nhất.",
+            "Sản phẩm rất đáng tiền, tôi rất hài lòng."
+        ]
+        order_items_delivered = db.query(OrderItems ).join(
+            Orders , Orders.order_id == OrderItems.order_id
+        ).filter(Orders.status=="Delivered").all()
+        for order_item in order_items_delivered:
+            review_id = f"review{uuid.uuid4().hex[:8]}"
+            product_id  = order_item.product_id
+            order = db.query(Orders).filter(Orders.order_id == order_item.order_id).first()
+            user_id = order.user_id
+            rating = random.randint(1, 5)
+            comment = random.choice(comments)
+            start_date = datetime(2022 ,1,1)
+            end_date = datetime(2024 ,12,31)
+            review_date = self.random_date(start_date, end_date)
+            review = Reviews(
+                review_id = review_id , order_id = order.order_id ,
+                product_id = product_id , user_id = user_id ,
+                rating = rating , comment = comment , review_date = review_date
+            )
+            if not review :
+                print("error")
+                break
+            db.add(review)
+            db.commit()
     def main(self):
         with next(get_db()) as db :
-            # a = self.create_order(db)
-            # self.create_data_address(db)
-            # data = self.read_file_address()
-            # print(data)
-            sur_name, middle_name, name = self.read_user_data()
-            print(sur_name, middle_name, name)
+            # self.create_user_data(db)
+            # self.create_address_data(db)
+            # self.create_order(db)
+            # self.update_origin_price_of_product(db)
+            self.add_reviews_data(db)
+            # print("hello world")
 if __name__ == '__main__':
     data = DataService()
     data.main()
