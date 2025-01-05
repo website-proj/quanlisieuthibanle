@@ -15,7 +15,7 @@ class Address(Base):
     house_number = Column(String(50) , nullable=False)
     street = Column(String(50) , nullable=False)
     ward : Optional[str] = Column(String(50) , nullable=False)
-    city = Column(String(50) , nullable=False)
+    district = Column(String(50) , nullable=False)
     state = Column(String(50) , nullable=False)
     phone_number = Column(String(50) , nullable=False)
 
