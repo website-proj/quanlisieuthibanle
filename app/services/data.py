@@ -219,13 +219,33 @@ class DataService:
                 break
             db.add(review)
             db.commit()
+    def add_voucher_data(self , db : Session):
+        for i in range(1000):
+            voucher_id = f"voucher{uuid.uuid4().hex[:8]}"
+            code = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
+            discount_rate = random.randint(0,25)
+            membership_required = random.choice(["Silver" , "Gold" , "Diamond"])
+            start_date  = self.random_date(datetime(2024 ,1,1), datetime(2024 ,6,29))
+            expiration_date = self.random_date(datetime(2025 ,6,6), datetime(2025 ,12,31))
+            usage_limit = random.randint(50,100)
+            times_used = 0
+            status = random.choice(["Active" , "Inactive"])
+            voucher = Voucher(
+                voucher_id = voucher_id , code = code ,discount_rate  = discount_rate ,
+                membership_required = membership_required  , start_date = start_date ,
+                expiration_date= expiration_date , usage_limit = usage_limit ,
+                times_used = times_used , status = status
+            )
+            db.add(voucher)
+            db.commit()
     def main(self):
         with next(get_db()) as db :
             # self.create_user_data(db)
             # self.create_address_data(db)
             # self.create_order(db)
             # self.update_origin_price_of_product(db)
-            self.add_reviews_data(db)
+            # self.add_reviews_data(db)
+            self.add_voucher_data(db)
             # print("hello world")
 if __name__ == '__main__':
     data = DataService()
