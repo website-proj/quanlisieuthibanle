@@ -19,7 +19,6 @@ class Category(Base):
     category_id = Column(String(50), primary_key=True, unique=True, default=lambda: f"cat{uuid.uuid4().hex[:8]}")
     category_name = Column(String(100), nullable=False)
     parent_category_id = Column(String(50), ForeignKey('categories.category_id'))
-    star_category = Column(Boolean, default=False)
 
     # Sửa lại relationship và thêm primaryjoin
     products = relationship("Product" , back_populates= "category")
@@ -40,6 +39,7 @@ class Product(Base):
     unit = Column(String(50))
     stock_quantity = Column(Integer, default=0)
     image = Column(String(255))
+    original_price = Column(Float)
     date_created = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     expiration_date = Column(Date)
