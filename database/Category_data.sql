@@ -37,5 +37,4 @@ INSERT INTO Categories (category_id, category_name, parent_category_id, star_cat
 ('cat2991f416', 'Chất tẩy rửa', 'cat0b804dc4', false),
 ('catf3492699', 'Dụng cụ vệ sinh', 'cat0b804dc4', false),
 ('cat87c37b0d', 'Rau củ quả', 'catebd19734', true),
-('cat5aaf8732', 'Thức ăn nhanh', 'catebd19734', false),
 ('cata003459e', 'Thịt & Hải sản', 'catebd19734', true);
