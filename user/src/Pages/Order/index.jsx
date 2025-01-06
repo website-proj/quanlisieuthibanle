@@ -142,7 +142,7 @@ const Order = () => {
                                   : order.status === "Đã hủy"
                                   ? "text-red-500"
                                   : "text-gray-600"
-                              } font-medium text-sm`}
+                              } font-medium text-sm italic`}
                             >
                               {order.status === "Giao hàng thành công"
                                 ? "Hoàn thành"
@@ -176,7 +176,7 @@ const Order = () => {
                             {/* Thông tin giá */}
                             <div className="flex flex-col items-end">
                               <div>
-                                <span className="line-through text-gray-400 text-sm mr-2">
+                                <span className="line-through text-gray-400 text-sm mr-5">
                                   {order.product.price_original.toLocaleString()}
                                   đ
                                 </span>
