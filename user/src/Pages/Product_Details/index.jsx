@@ -45,90 +45,93 @@ Sữa chua không đường Vinamilk được đóng hộp nhỏ gọn, tiện d
 
   return (
     <>
-      <IconBreadcrumbs />
-      <div className="container mx-auto p-4">
-        <ProductCard className="mr-[6%]" />
+      {" "}
+      <div className="mt-36">
+        <IconBreadcrumbs />
+        <div className="container mx-auto p-4">
+          <ProductCard className="mr-[6%]" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-5  ml-[3%] mr-[3%]">
-          <div className="mota ">
-            {" "}
-            {/* Thêm margin vào div chứa mô tả */}
-            <div className="flex flex-col mt-5 mb-5">
-              <h3 className="text-lg font-bold text-black text-left text-shadow text_describe ml-[1em]">
-                Mô tả sản phẩm
-              </h3>
-            </div>
-            <div className=" border bg-[#ffffff] rounded-lg p-4 shadow-lg ml-[1%] h-[90.5%]">
-              <div className="text-left text-black">
-                {sentences.map((sentence, index) => (
-                  <p key={index} className="mb-2">
-                    {sentence}.
-                  </p>
-                ))}
+          <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-5  ml-[3%] mr-[3%]">
+            <div className="mota ">
+              {" "}
+              {/* Thêm margin vào div chứa mô tả */}
+              <div className="flex flex-col mt-5 mb-5">
+                <h3 className="text-lg font-bold text-black text-left text-shadow text_describe ml-[1em]">
+                  Mô tả sản phẩm
+                </h3>
+              </div>
+              <div className=" border bg-[#ffffff] rounded-lg p-4 shadow-lg ml-[1%] h-[90.5%]">
+                <div className="text-left text-black">
+                  {sentences.map((sentence, index) => (
+                    <p key={index} className="mb-2">
+                      {sentence}.
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
+
+            <div>
+              <Reviews />
+            </div>
           </div>
 
-          <div>
-            <Reviews />
+          <div className="flex flex-col ml-[4%] mr-[5%] mt-5 mb-5">
+            <h3 className="text-lg font-bold text-black text-left text-shadow text_describe">
+              Sản phẩm liên quan
+            </h3>
           </div>
-        </div>
 
-        <div className="flex flex-col ml-[4%] mr-[5%] mt-5 mb-5">
-          <h3 className="text-lg font-bold text-black text-left text-shadow text_describe">
-            Sản phẩm liên quan
-          </h3>
-        </div>
-
-        <Swiper
-          slidesPerView={5}
-          spaceBetween={30}
-          navigation={true}
-          modules={[Navigation]}
-          className="mySwiper relatedPro "
-        >
-          {relatedProducts.map((product) => (
-            <SwiperSlide key={product.id}>
-              <div className="relatedPro_item border rounded-lg p-4 shadow-lg w-full transition-transform duration-300  hover:border-blue-500 hover:shadow-xl">
-                <div className="relative">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="rounded-t-lg w-full"
-                  />
-                  {product.discount && (
-                    <span className="absolute top-2 left-2 bg-blue-500 text-white text-sm font-bold px-2 py-1 rounded">
-                      {product.discount}
-                    </span>
-                  )}
-                </div>
-                <div className="mt-4 text-left">
-                  <h4 className="text-base font-semibold">{product.name}</h4>
-                  <p className="text-sm text-gray-500">ĐVT: {product.unit}</p>
-
-                  {/* Hiển thị giá sản phẩm và giá cũ */}
-                  <div className="flex items-center justify-between mt-2 space-x-2">
-                    <span className="text-red-500 text-base font-bold">
-                      {product.price.toLocaleString()}đ
-                    </span>
-                    {product.old_price && (
-                      <span className="line-through text-sm text-gray-400 mr-6">
-                        {product.old_price.toLocaleString()}đ
+          <Swiper
+            slidesPerView={5}
+            spaceBetween={30}
+            navigation={true}
+            modules={[Navigation]}
+            className="mySwiper relatedPro "
+          >
+            {relatedProducts.map((product) => (
+              <SwiperSlide key={product.id}>
+                <div className="relatedPro_item border rounded-lg p-4 shadow-lg w-full transition-transform duration-300  hover:border-blue-500 hover:shadow-xl">
+                  <div className="relative">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="rounded-t-lg w-full"
+                    />
+                    {product.discount && (
+                      <span className="absolute top-2 left-2 bg-blue-500 text-white text-sm font-bold px-2 py-1 rounded">
+                        {product.discount}
                       </span>
                     )}
                   </div>
+                  <div className="mt-4 text-left">
+                    <h4 className="text-base font-semibold">{product.name}</h4>
+                    <p className="text-sm text-gray-500">ĐVT: {product.unit}</p>
 
-                  <button className="mt-2 w-full bg-blue-500 text-white py-2 rounded-md flex items-center justify-center">
-                    <LuShoppingCart className="text-2xl mr-4" />
-                    Thêm vào giỏ hàng
-                  </button>
+                    {/* Hiển thị giá sản phẩm và giá cũ */}
+                    <div className="flex items-center justify-between mt-2 space-x-2">
+                      <span className="text-red-500 text-base font-bold">
+                        {product.price.toLocaleString()}đ
+                      </span>
+                      {product.old_price && (
+                        <span className="line-through text-sm text-gray-400 mr-6">
+                          {product.old_price.toLocaleString()}đ
+                        </span>
+                      )}
+                    </div>
+
+                    <button className="mt-2 w-full bg-blue-500 text-white py-2 rounded-md flex items-center justify-center">
+                      <LuShoppingCart className="text-2xl mr-4" />
+                      Thêm vào giỏ hàng
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+        <ScrollToTopButton />
       </div>
-      <ScrollToTopButton />
     </>
   );
 };

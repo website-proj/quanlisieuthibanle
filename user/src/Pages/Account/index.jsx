@@ -2,35 +2,16 @@ import { useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 import "./style.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import TextField from "@mui/material/TextField";
+import { TbCheckupList } from "react-icons/tb";
+import { Link } from "react-router-dom";
+
 const Account = () => {
   // State để điều khiển hiển thị form
-  const [activePage, setActivePage] = useState("account");
+  const [activePage, setActivePage] = useState("profile");
 
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  // Danh sách tỉnh/thành phố
-  const provinces = [
-    "Hà Nội",
-    "Hồ Chí Minh",
-    "Đà Nẵng",
-    "Hải Phòng",
-    "Cần Thơ",
-  ];
-
-  // Danh sách quận/huyện (mặc định không phụ thuộc tỉnh)
-  const districts = [
-    "Quận Ba Đình",
-    "Quận Hoàn Kiếm",
-    "Quận 1",
-    "Quận 2",
-    "Quận 3",
-  ];
-
-  // Danh sách xã/phường
-  const wards = ["Phường 1", "Phường 2", "Phường 3", "Phường 4", "Phường 5"];
 
   // Hàm xử lý khi nhấn vào "Hồ sơ"
   const handlePageChange = (page) => {
@@ -38,21 +19,13 @@ const Account = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex mt-36 mb-4">
       {/* Sidebar */}
       <aside className="w-1/5 setting ">
         <ul className="space-y-4">
-          <li>
-            <a
-              href="/Account"
-              className={`flex items-center text-black-800 font-[1.5em] ${
-                activePage === "account" ? "text-blue-600" : ""
-              }`}
-              onClick={() => handlePageChange("account")}
-            >
-              <FaRegUser className="mr-2 text-white bg-blue-500 rounded-full p-2 text-[2em]" />
-              Tài khoản
-            </a>
+          <li className="flex items-center text-black-800 font-[1.5em]">
+            <FaRegUser className="mr-2 text-white bg-blue-500 rounded-full p-2 text-[2em]" />
+            Tài khoản
           </li>
           <li>
             <a
@@ -77,6 +50,15 @@ const Account = () => {
             >
               Đổi mật khẩu
             </a>
+          </li>
+          <li>
+            <Link
+              to="/order"
+              className="flex items-center text-black-800 font-[1.5em] "
+            >
+              <TbCheckupList className="mr-2 text-white bg-blue-500 rounded-full p-2 text-[2em]" />
+              Quản lý đơn hàng
+            </Link>
           </li>
         </ul>
       </aside>

@@ -31,7 +31,7 @@ function InvoiceForm() {
               htmlFor="companyName"
               className="block text-sm font-medium text-left w-1/4"
             >
-              Tên công ty *
+              Tên công ty <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -48,7 +48,7 @@ function InvoiceForm() {
               htmlFor="email"
               className="block text-sm font-medium text-left w-1/4"
             >
-              Email *
+              Email <span className="text-red-500">*</span>
             </label>
             <input
               type="email"
@@ -65,7 +65,7 @@ function InvoiceForm() {
               htmlFor="taxCode"
               className="block text-sm font-medium text-left w-1/4"
             >
-              Mã số thuế *
+              Mã số thuế <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -82,7 +82,7 @@ function InvoiceForm() {
               htmlFor="companyAddress"
               className="block text-sm font-medium text-left w-1/4"
             >
-              Địa chỉ công ty *
+              Địa chỉ công ty <span className="text-red-500">*</span>
             </label>
             <input
               type="text"

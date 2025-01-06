@@ -15,6 +15,7 @@ import Verify from "./Pages/Verify";
 import Success from "./Pages/Success";
 import ForgotPassword from "./Pages/ForgotPassword";
 import Payment from "./Pages/Payment";
+import Order from "./Pages/Order";
 
 const MyContext = createContext();
 
@@ -60,6 +61,7 @@ function App() {
             <Route path="/signUp" exact={true} element={<SignUp />} />
             <Route path="/verify" exact={true} element={<Verify />} />
             <Route path="/success" exact={true} element={<Success />} />
+            <Route path="/order" exact={true} element={<Order />} />
             <Route
               path="/forgotPassword"
               exact={true}

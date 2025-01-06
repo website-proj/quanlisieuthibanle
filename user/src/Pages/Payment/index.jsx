@@ -1,11 +1,13 @@
 import React from "react";
 import "./style.css";
 import InvoiceForm from "../../components/InvoiceForm";
+import PaymentMethod from "../../components/PaymentMethod";
+import { Link } from "react-router-dom";
 
 const Payment = () => {
   return (
     <>
-      <section className="mt-0 mb-2">
+      <section className="mt-36 mb-2">
         <div className="container mx-auto flex flex-col items-center">
           {/* Tiêu đề */}
           <h1 className="text-3xl font-[600] text-center mb-6">Thanh toán</h1>
@@ -41,7 +43,7 @@ const Payment = () => {
             </div>
           </div>
         </div>
-        <div className="shadow-lg p-6 rounded-lg ml-[5%] mr-[5%] mx-auto mt-5 bg-white">
+        <div className="shadow-lg p-6 rounded-lg ml-[5%] mr-[5%] mx-auto mt-5 mb-5 bg-white">
           <h2 className="text-lg font-[600] mb-6 text-left">
             Thông tin đặt hàng
           </h2>
@@ -52,7 +54,7 @@ const Payment = () => {
                 htmlFor="recipientName"
                 className="block text-sm font-medium text-left w-1/4"
               >
-                Họ tên người nhận *
+                Họ tên người nhận <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -69,7 +71,7 @@ const Payment = () => {
                 htmlFor="phoneNumber"
                 className="block text-sm font-medium text-left w-1/4"
               >
-                Số điện thoại *
+                Số điện thoại <span className="text-red-500">*</span>
               </label>
               <input
                 type="tel"
@@ -86,7 +88,7 @@ const Payment = () => {
                 htmlFor="city"
                 className="block text-sm font-medium text-left w-1/4"
               >
-                Tỉnh / Thành phố *
+                Tỉnh / Thành phố <span className="text-red-500">*</span>
               </label>
               <select
                 id="city"
@@ -113,7 +115,7 @@ const Payment = () => {
                 htmlFor="district"
                 className="block text-sm font-medium text-left w-1/4"
               >
-                Quận / Huyện *
+                Quận / Huyện <span className="text-red-500">*</span>
               </label>
               <select
                 id="district"
@@ -135,7 +137,7 @@ const Payment = () => {
                 htmlFor="ward"
                 className="block text-sm font-medium text-left w-1/4"
               >
-                Phường / Xã *
+                Phường / Xã <span className="text-red-500">*</span>
               </label>
               <select
                 id="ward"
@@ -153,7 +155,7 @@ const Payment = () => {
                 htmlFor="address"
                 className="block text-sm font-medium text-left w-1/4"
               >
-                Số nhà *
+                Số nhà <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -165,9 +167,64 @@ const Payment = () => {
             </div>
           </form>
           <InvoiceForm />
+          <PaymentMethod />
+
+          {/* Tổng tiền và nút Đặt hàng */}
+          <div className="mt-8 p-6  rounded-lg bg-white flex flex-col items-end">
+            <div className="w-full">
+              <table className="w-full text-right mb-6 border-separate border-spacing-y-2">
+                <tbody>
+                  <tr>
+                    <td className="w-[60%]"></td>
+                    <td className="text-base text-black text-left w-[20%]">
+                      Tổng tiền hàng
+                    </td>
+                    <td className="text-base font-semibold w-[20%]">
+                      400.000đ
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="w-[60%]"></td>
+                    <td className="text-base text-black text-left w-[20%]">
+                      Phí vận chuyển
+                    </td>
+                    <td className="text-base font-semibold w-[20%]">0đ</td>
+                  </tr>
+                  <tr>
+                    <td className="w-[60%]"></td>
+                    <td className="text-base text-black text-left w-[20%]">
+                      Khuyến mại
+                    </td>
+                    <td className="text-base font-semibold text-red-500 w-[20%]">
+                      0đ
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="w-[60%]"></td>
+                    <td className="text-lg font-semibold text-left w-[20%]">
+                      Tổng thanh toán
+                    </td>
+                    <td className="text-lg font-semibold text-red-500 w-[20%]">
+                      400.000đ
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <Link to={"/success"}>
+              <button className="bg-blue-500 text-white w-full px-8 py-3 rounded-lg text-base font-medium">
+                Đặt hàng
+              </button>
+            </Link>
+            <p className="text-gray-500 text-sm mt-4 text-left">
+              Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân thủ theo điều
+              khoản của chúng tôi.
+            </p>
+          </div>
         </div>
       </section>
     </>
   );
 };
+
 export default Payment;

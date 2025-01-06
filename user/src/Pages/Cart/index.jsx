@@ -112,7 +112,7 @@ const Cart = () => {
   };
 
   return (
-    <section className="mt-0 mb-3">
+    <section className="mt-36 mb-3">
       <div className="container mx-auto flex flex-col items-center">
         {/* Tiêu đề */}
         <h1 className="text-3xl font-[600] text-center mb-6">Giỏ hàng</h1>
