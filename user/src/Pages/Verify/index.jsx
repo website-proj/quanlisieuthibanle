@@ -5,6 +5,7 @@ import { MyContext } from "../../App";
 
 import OtpBox from "../../components/OtpBox";
 import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Verify = () => {
   const context = useContext(MyContext);
@@ -23,7 +24,7 @@ const Verify = () => {
 
   return (
     <>
-      <section className="section signInPage  py-10">
+      <section className="section signInPage mt-[-5em]">
         <div className="shape-bottom">
           <svg
             fill="#fff"
@@ -55,9 +56,11 @@ const Verify = () => {
               <OtpBox length={6} onChange={handleOtpChange} />
 
               <div className="flex items-center justify-center mt-5">
-                <Button className="w-full" variant="contained">
-                  Xác thực OTP
-                </Button>
+                <Link to={"/forgotPassword"} className="w-full">
+                  <Button className="w-full" variant="contained">
+                    Xác thực OTP
+                  </Button>
+                </Link>
               </div>
             </form>
           </div>

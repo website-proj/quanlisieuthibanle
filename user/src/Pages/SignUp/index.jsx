@@ -25,7 +25,7 @@ const SignUp = () => {
 
   return (
     <>
-      <section className="section signInPage signUpPage">
+      <section className="section signInPage signUpPage mt-[-5em]">
         <div className="shape-bottom">
           <svg
             fill="#fff"

@@ -3,12 +3,11 @@ import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import { MyContext } from "../../App";
 import Logo from "../../assets/footer/Logo.png";
-// import { BiHome } from "react-icons/bi";
-// import { Link } from "react-router-dom";
-import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
+import TextField from "@mui/material/TextField";
+
 import Button from "@mui/material/Button";
-import { FcGoogle } from "react-icons/fc";
+
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Import mắt xem
 
 const SignIn = () => {
@@ -29,7 +28,7 @@ const SignIn = () => {
   };
   return (
     <>
-      <section className="section signInPage forgot">
+      <section className="section signInPage forgot mt-[-5em]">
         <div class="shape-bottom">
           {" "}
           <svg
@@ -95,9 +94,11 @@ const SignIn = () => {
 
               <div className="flex space-x-6 mt-3 mb-1">
                 <div className="flex-1">
-                  <Button className="w-full" variant="contained">
-                    Đổi mật khẩu
-                  </Button>
+                  <Link to={"/signIn"} className="w-full">
+                    <Button className="w-full" variant="contained">
+                      Đổi mật khẩu
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </form>
