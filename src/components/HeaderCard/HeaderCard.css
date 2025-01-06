@@ -1,0 +1,27 @@
+.headerCard {
+    padding: 7px 7px;
+    /* background: linear-gradient(to right, #0e83ea, #dff0ff);  */
+    background: linear-gradient(175deg, #0080f0, #e8f4ff); 
+    border-radius: 12px;
+    margin-top: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .headerTitle {
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-size: 1.1em !important;
+    margin-left: 0.5em !important;
+}
+  
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-right: 0.5em !important;
+    font-size: 0.85em !important;
+  
+}
+  

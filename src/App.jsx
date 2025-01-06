@@ -5,14 +5,20 @@ import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Header from "./components/Header/Header";
 import Content from "./components/Content/Content";
+import Dashboard from "./pages/Admin/Dashboard/Dashboard.jsx";
+import CategoriesList from './pages/Admin/Categories/CategoriesList/CategoriesList.jsx'; 
+// import AddCategories from './pages/Categories/AddCategories/AddCategories';
+// import SubcategoriesList from './pages/Categories/SubcategoriesList/SubcategoriesList';
+// import AddSubcategories from './pages/Categories/AddSubcategories/AddSubcategories';
 
-import Dashboard from "./pages/Dashboard/Dashboard";
+
+// import Dashboard from "./pages/Dashboard/Dashboard";
 import ProductsList from './pages/Products/ProductsList';
 import AddProducts from './pages/Products/AddProducts';
-import CategoriesList from './pages/Categories/CategoriesList/CategoriesList'; 
-import AddCategories from './pages/Categories/AddCategories/AddCategories';
-import SubcategoriesList from './pages/Categories/SubcategoriesList/SubcategoriesList';
-import AddSubcategories from './pages/Categories/AddSubcategories/AddSubcategories';
+// import CategoriesList from './pages/Categories/CategoriesList/CategoriesList'; 
+// import AddCategories from './pages/Categories/AddCategories/AddCategories';
+// import SubcategoriesList from './pages/Categories/SubcategoriesList/SubcategoriesList';
+// import AddSubcategories from './pages/Categories/AddSubcategories/AddSubcategories';
 import UserManagement from "./pages/User/UserManagement/UserManagement";
 import AddUser from "./pages/User/AddUser/AddUser";
 import Orders from "./pages/Orders/Orders"
@@ -45,9 +51,9 @@ function App() {
                 <Route path="/products-list" element={<ProductsList />} />
                 <Route path="/add-products" element={<AddProducts />} />
                 <Route path="/categories-list" element={<CategoriesList />} />
-                <Route path="/add-categories" element={<AddCategories />} />
+                {/*<Route path="/add-categories" element={<AddCategories />} />
                 <Route path="/subcategories-list" element={<SubcategoriesList/>} />
-                <Route path="/add-subcategories" element={<AddSubcategories/>} />
+                <Route path="/add-subcategories" element={<AddSubcategories/>} /> */}
                 <Route path="/user-management" element={<UserManagement/>} />
                 <Route path="/add-user" element={<AddUser/>} />
                 <Route path="/orders" element={<Orders/>} />

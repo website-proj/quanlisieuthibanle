@@ -1,26 +1,15 @@
 import React from 'react';
 import { Box, Typography, Breadcrumbs, Link } from '@mui/material';
+import './HeaderCard.css'; 
 
 function HeaderCard({ title, breadcrumbs }) {
   return (
-    <Box
-      sx={{
-        padding: "10px 20px",
-        backgroundColor: "#fff",
-        borderRadius: "15px",
-        marginTop: "10px",
-        display: "flex",
-        justifyContent: "space-between", 
-        alignItems: "center",
-      }}
-    >
-      {/* Tiêu đề */}
-      <Typography variant="h6" component="h1" sx={{ fontWeight: "bold" }}>
+    <Box className="headerCard">
+      <Typography variant="h6" component="h1" className="headerTitle">
         {title}
       </Typography>
 
-      {/* Breadcrumbs */}
-      <Breadcrumbs separator="›" aria-label="breadcrumb">
+      <Breadcrumbs separator="›" aria-label="breadcrumb" className="breadcrumbs">
         {breadcrumbs.map((breadcrumb, index) => (
           <Link
             key={index}

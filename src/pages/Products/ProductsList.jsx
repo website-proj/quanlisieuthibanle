@@ -3,6 +3,8 @@ import './ProductsList.css';
 import { Breadcrumbs, Link } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Avatar, IconButton, Box, Paper, Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
 import { FiUser, FiShoppingCart, FiEye, FiEdit2, FiTrash2 } from 'react-icons/fi'; // Đã import các biểu tượng
+import BestSellingProductsTable from '/src/pages/Admin/Products/List/BestSellingProducts/Table';
+import CustomContent from '/src/components/ContentCard/CustomContent';
 
 function ProductsList() {
   const stats = [
@@ -106,7 +108,7 @@ function ProductsList() {
           ))}
         </Box>
 
-        <Box
+        {/* <Box
           sx={{
             padding: '20px',
             backgroundColor: 'var(--white)',
@@ -177,10 +179,10 @@ function ProductsList() {
             onRowsPerPageChange={handleChangeRowsPerPage}
             labelRowsPerPage="Số dòng mỗi trang"
           />
-        </Box>
+        </Box> */}
 
         {/* Dialog xác nhận xóa sản phẩm */}
-        <Dialog open={openDeleteDialog} onClose={cancelDelete}>
+        {/* <Dialog open={openDeleteDialog} onClose={cancelDelete}>
           <DialogTitle>Xác nhận xóa sản phẩm</DialogTitle>
           <DialogContent>
             <Typography>Bạn có chắc chắn muốn xóa sản phẩm "{productToDelete?.name}" không?</Typography>
@@ -193,7 +195,10 @@ function ProductsList() {
               Xóa
             </Button>
           </DialogActions>
-        </Dialog>
+        </Dialog> */}
+        <CustomContent>
+            <BestSellingProductsTable></BestSellingProductsTable>
+        </CustomContent>
       </main>
     </div>
   );
