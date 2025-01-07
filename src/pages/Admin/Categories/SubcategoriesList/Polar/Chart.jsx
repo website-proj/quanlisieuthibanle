@@ -11,10 +11,8 @@ import {
 import { saveAs } from "file-saver";
 import DownloadMenu from "/src/components/Admin/Download/CsvJsonPng"; // Chắc chắn rằng bạn đã có component này
 
-// Đăng ký các thành phần cần thiết của Chart.js
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
-// Dữ liệu JSON (giả sử được import từ tệp)
 import subcategoriesData from '/src/pages/Admin/Categories/SubcategoriesList/Subcategories.json';
 
 function PolarAreaChart() {
@@ -22,7 +20,6 @@ function PolarAreaChart() {
   const [downloadAnchorEl, setDownloadAnchorEl] = useState(null);
 
   useEffect(() => {
-    // Xử lý dữ liệu từ JSON
     const labels = subcategoriesData.map((item) => item.category);
     const values = subcategoriesData.map((item) => item.subcategories.length);
 
@@ -43,8 +40,7 @@ function PolarAreaChart() {
             "rgba(95, 158, 160, 0.6)", // CadetBlue
             "rgba(123, 104, 238, 0.6)", // MediumSlateBlue
             "rgba(72, 61, 139, 0.6)",  // DarkSlateBlue
-          ]          
-          ,
+          ],
           borderWidth: 0.5,
         },
       ],
@@ -53,6 +49,7 @@ function PolarAreaChart() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false, // Cho phép co dãn biểu đồ
     plugins: {
       legend: {
         position: "right",
@@ -77,7 +74,6 @@ function PolarAreaChart() {
     saveAs(blob, "du_lieu_danh_muc.csv");
   };
 
-  // Xử lý tải xuống JSON
   const handleDownloadJSON = () => {
     const jsonData = subcategoriesData.map((item) => ({
       category: item.category,
@@ -87,7 +83,6 @@ function PolarAreaChart() {
     saveAs(blob, "du_lieu_danh_muc.json");
   };
 
-  // Xử lý tải xuống PNG
   const handleDownloadPNG = () => {
     const canvas = document.querySelector("canvas");
     canvas.toBlob((blob) => {
@@ -119,7 +114,7 @@ function PolarAreaChart() {
         </Box>
       </Box>
 
-      <Box height="400px" display="flex" justifyContent="center" alignItems="center">
+      <Box height="300px" display="flex" justifyContent="center" alignItems="center">
         {chartData ? (
           <PolarArea data={chartData} options={options} />
         ) : (

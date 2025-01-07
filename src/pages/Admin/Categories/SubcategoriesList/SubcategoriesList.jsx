@@ -5,6 +5,8 @@ import ContentCard from "/src/components/ContentCard/ContentCard";
 import CustomContent from '/src/components/ContentCard/CustomContent';
 
 import Polar from '/src/pages/Admin/Categories/SubcategoriesList/Polar/Chart.jsx'
+import Bar from '/src/pages/Admin/Categories/SubcategoriesList/Bar/Chart.jsx'
+import Table from '/src/pages/Admin/Categories/SubcategoriesList/SubcategoriesTable/Table.jsx'
 function SubcategoriesList() {
     const breadcrumbs = [
         {label: "Tổng quan", link: "/dashboard"},
@@ -21,17 +23,20 @@ function SubcategoriesList() {
           gap: "20px",
         }}
       >
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ flex: 1}}>
             <CustomContent>
                 <Polar></Polar>
             </CustomContent>
         </Box>
         <Box sx={{flex: 1}}>
             <CustomContent>
-              <Polar></Polar>
+              <Bar></Bar>
             </CustomContent>
         </Box>
       </Box>
+      <ContentCard>
+        <Table></Table>
+      </ContentCard>
     </div>
   )
 }
