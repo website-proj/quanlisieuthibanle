@@ -7,6 +7,13 @@ import Header from "./components/Header/Header";
 import Content from "./components/Content/Content";
 import Dashboard from "./pages/Admin/Dashboard/Dashboard.jsx";
 import CategoriesList from './pages/Admin/Categories/CategoriesList/CategoriesList.jsx'; 
+import AddCategories from './pages/Admin/Categories/AddCategories/AddCategories.jsx'; 
+import SubcategoriesList from './pages/Admin/Categories/SubcategoriesList/SubcategoriesList.jsx'; 
+
+import Settings from './pages/Admin/Settings/Settings.jsx'; 
+
+
+
 // import AddCategories from './pages/Categories/AddCategories/AddCategories';
 // import SubcategoriesList from './pages/Categories/SubcategoriesList/SubcategoriesList';
 // import AddSubcategories from './pages/Categories/AddSubcategories/AddSubcategories';
@@ -51,6 +58,8 @@ function App() {
                 <Route path="/products-list" element={<ProductsList />} />
                 <Route path="/add-products" element={<AddProducts />} />
                 <Route path="/categories-list" element={<CategoriesList />} />
+                <Route path="/add-categories" element={<AddCategories />} />
+                <Route path="/subcategories-list" element={<SubcategoriesList />} />
                 {/*<Route path="/add-categories" element={<AddCategories />} />
                 <Route path="/subcategories-list" element={<SubcategoriesList/>} />
                 <Route path="/add-subcategories" element={<AddSubcategories/>} /> */}
@@ -59,7 +68,7 @@ function App() {
                 <Route path="/orders" element={<Orders/>} />
                 <Route path="/banners-list" element={<BannersList/>} />
                 <Route path="/add-banner" element={<AddBanner/>} />
-                
+                <Route path="/settings" element={<Settings/>} />
               </Routes>
             </div>
           </Content>

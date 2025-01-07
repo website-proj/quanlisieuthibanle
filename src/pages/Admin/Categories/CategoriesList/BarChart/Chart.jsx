@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend } from "chart.js";
 import { saveAs } from "file-saver";
 import DownloadMenu from "/src/components/Admin/Download/CsvJsonPng";
 
@@ -11,7 +11,7 @@ const materialColors = [
   "#4169E1", "#6A5ACD", "#7B68EE", "#4169E1",
 ];
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const CategoryChart = () => {
   const [categories, setCategories] = useState([]);
@@ -47,32 +47,39 @@ const CategoryChart = () => {
   };
 
   const options = {
+    indexAxis: "y",
     responsive: true,
     plugins: {
       legend: {
-        position: "bottom",
-        labels: {
-          usePointStyle: true,
-          boxWidth: 8,
-          font: {
-            size: 12,
-          },
-        },
+        display: false,
       },
       tooltip: {
         callbacks: {
           label: function (context) {
-            const total = context.dataset.data.reduce((sum, value) => sum + value, 0);
-            const percentage = ((context.raw / total) * 100).toFixed(2);
-            return `${context.label}: ${context.raw} (${percentage}%)`;
+            return `${context.label}: ${context.raw}`;
           },
+        },
+      },
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: {
+            display: true,
+            color: "rgba(0, 0, 0, 0.06)",
+            lineWidth: 1,
+          },
+      },
+      y: {
+        grid: {
+          display: false,
         },
       },
     },
   };
 
   const handleDownloadCSV = () => {
-    let csv = "Danh mục,Doanh thu\n";
+    let csv = "Danh mục,Số lượng\n";
     categories.forEach((category, index) => {
       csv += `${category},${values[index]}\n`;
     });
@@ -83,7 +90,7 @@ const CategoryChart = () => {
   const handleDownloadJSON = () => {
     const jsonData = categories.map((category, index) => ({
       category,
-      revenue: values[index],
+      quantity: values[index],
     }));
     const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: "application/json" });
     saveAs(blob, "du_lieu_danh_muc.json");
@@ -107,7 +114,7 @@ const CategoryChart = () => {
   return (
     <Box>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h6">Tỉ lệ các danh mục</Typography>
+        <Typography variant="h6">Số lượng sản phẩm theo danh mục</Typography>
         <Box display="flex" gap={2}>
           <DownloadMenu
             handleDownloadCSV={handleDownloadCSV}
@@ -127,7 +134,7 @@ const CategoryChart = () => {
         alignItems="center"
       >
         {categories.length > 0 ? (
-          <Pie data={data} options={options} />
+          <Bar data={data} options={options} />
         ) : (
           <Typography>Đang tải dữ liệu...</Typography>
         )}

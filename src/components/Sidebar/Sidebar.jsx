@@ -29,6 +29,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
   const [openProducts, setOpenProducts] = React.useState(false);
   const [openUsers, setOpenUsers] = React.useState(false);
   const [openBanners, setOpenBanners] = React.useState(false);
+  const [openSettings, setSettings] = React.useState(false);
 
   const location = useLocation();
   const isActive = (path) => location.pathname === path;
@@ -37,6 +38,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
   const handleProductsClick = () => setOpenProducts(!openProducts);
   const handleUsersClick = () => setOpenUsers(!openUsers);
   const handleBannersClick = () => setOpenBanners(!openBanners);
+  const handleSettingsClick = () => setOpenSettings(!openSettings);
 
   return (
     <Drawer

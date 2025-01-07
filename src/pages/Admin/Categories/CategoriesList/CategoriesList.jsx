@@ -4,7 +4,9 @@ import "./CategoriesList.css"
 import HeaderCard from "/src/components/HeaderCard/HeaderCard";
 import ContentCard from "/src/components/ContentCard/ContentCard";
 import CustomContent from '/src/components/ContentCard/CustomContent';
-import PieCategoryChart from '/src/pages/Admin/Categories/CategoriesList/PieChart/Chart';
+import BarCategoryChart from '/src/pages/Admin/Categories/CategoriesList/BarChart/Chart.jsx';
+import PieCategoryChart from '/src/pages/Admin/Categories/CategoriesList/PieChart/Chart.jsx';
+import TableCategories from '/src/pages/Admin/Categories/CategoriesList/TableCategories/Table.jsx';
 
 import { Box } from '@mui/material';
 function CategoriesList() {
@@ -24,8 +26,9 @@ function CategoriesList() {
           gap: "20px",
         }}
       >
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ flex: 1.75 }}>
           <CustomContent>
+            <BarCategoryChart></BarCategoryChart>
           </CustomContent>
         </Box>
         <Box sx={{ flex: 1 }}>
@@ -35,7 +38,7 @@ function CategoriesList() {
         </Box>
       </Box>
       
-      <ContentCard></ContentCard>
+      <ContentCard><TableCategories></TableCategories></ContentCard>
       
       </div>
   )

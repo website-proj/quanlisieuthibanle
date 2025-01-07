@@ -132,7 +132,7 @@ function BestSellingProductsTable() {
             borderRadius: "15px",
             boxShadow: "none",
             fontFamily: "Roboto",
-            minHeight: "400px", // Ensure table container has fixed height
+            minHeight: "400px", 
           }}
         >
           <Table>
