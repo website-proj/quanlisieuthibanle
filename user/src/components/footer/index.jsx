@@ -49,7 +49,7 @@ const Footer = () => {
               <img src={Logo} />
 
               <span>
-                <FaLocationDot />
+                <FaLocationDot className="text-sm text-red-500 mr-2" />
                 Số 334 Nguyễn Trãi, Thanh Xuân, Hà Nội
               </span>
             </div>

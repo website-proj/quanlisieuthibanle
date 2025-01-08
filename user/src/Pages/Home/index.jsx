@@ -71,7 +71,7 @@ const Home = () => {
             <div className="w-3/4  productSale">
               <Timer duration={2 * 24 * 60 * 60 * 1000} />
               <div className="grid grid-cols-4 gap-8 productList">
-                {products.slice(0, 8).map((product) => {
+                {products.slice(0, 12).map((product) => {
                   // Hàm định dạng số tiền
                   const formatCurrency = (value) => {
                     return value.toLocaleString("vi-VN") + "đ";

@@ -5,8 +5,8 @@ import Search from "../Search";
 import "./style.css";
 import { Button } from "@mui/material";
 import { FaUserCircle } from "react-icons/fa";
-import { LuShoppingCart } from "react-icons/lu";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { BsCart4 } from "react-icons/bs";
+
 import Navigation from "./Navigation";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { TbFileSpreadsheet } from "react-icons/tb";
@@ -78,7 +78,7 @@ const Header = () => {
                 onClick={() => context.setOpenCartPanel(true)}
               >
                 <Button className="circle ml-2">
-                  <LuShoppingCart className="mr-2 h-9 w-9" />
+                  <BsCart4 className="mr-2 h-9 w-9" />
                   <span className="ml-2 whitespace-nowrap">Giỏ hàng</span>
                   <span
                     className="count d-flex align-items-center justify-content-center"
