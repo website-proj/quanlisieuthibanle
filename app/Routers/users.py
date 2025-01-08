@@ -27,16 +27,24 @@ async def register_user(user : UserRegisterRequest  , user_service : UserService
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.post("/login" )
-def login_access_token(data : OAuth2PasswordRequestForm =Depends() , db : Session = Depends(get_db) ):
+@router.post("/login/email")
+async def login_check_email_and_password(data : OAuth2PasswordRequestForm =Depends() , db : Session = Depends(get_db) ):
+    """
+    check email and password
+    """
     login_form = login(email=data.username, password=data.password)
     user = AuthService.authenticate_user( login_form , db)
     if not user :
         raise (HTTPException(status_code=400, detail="Incorrect email or password"))
-    return {
-        'access_token': create_access_token(user_id=user.user_id) , "token_type": "bearer"
-    }
-
+    auth = AuthService()
+    auth.send_verification_email(user.email)
+    return {"message": f"Verification code sent to {user.email}. Please check your email."}
+@router.post("/login")
+def check_code_verification(user_email : str , code : str , db : Session = Depends(get_db) ):
+    auth = AuthService()
+    auth.verify_code(user_email , code)
+    token = create_access_token(user_email)
+    return {"access_token": token, "token_type": "bearer"}
 @router.put("/profile" , dependencies = [Depends(login_required)])
 def update_profile(user_data : userUpdateRequest , current_user = Depends(AuthService.get_current_user) ,user_service :UserService = Depends(), db : Session = Depends(get_db) ):
     """"
@@ -52,8 +60,3 @@ def update_profile(user_data : userUpdateRequest , current_user = Depends(AuthSe
 def change_password(pass_word_form : passwordChangeRequest , current_user = Depends(AuthService.get_current_user), db : Session = Depends(get_db) ):
     user =  UserService.change_password(pass_word_form,current_user, db)
     return ResponseHandler.success("change_password_success" ,user)
-@router.get("/profile", dependencies = [Depends(login_required)])
-def get_profile( current_user = Depends(AuthService.get_current_user) , db : Session = Depends(get_db) ):
-    user = UserService.get_infor( current_user , db)
-    return ResponseHandler.success("user profile" ,user)
-
