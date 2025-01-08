@@ -12,6 +12,10 @@ const Navigation = () => {
   const [activeCategory, setActiveCategory] = useState(null); // Trạng thái danh mục đang mở
   const [isHovered, setIsHovered] = useState(false); // Trạng thái hover tổng thể
   const [categories, setCategories] = useState([]); // Trạng thái danh mục sản phẩm từ API
+  const handleCategoryClick = () => {
+    setActiveCategory(null); // Đặt trạng thái danh mục đang mở về null
+    setIsHovered(false); // Tắt trạng thái hover
+  };
 
   // Gọi API lấy danh mục sản phẩm
   useEffect(() => {
@@ -21,7 +25,7 @@ const Navigation = () => {
         const data = await response.json();
         setCategories(data); // Cập nhật danh mục sản phẩm
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Lỗi khi tìm danh mục:", error);
       }
     };
 
@@ -63,7 +67,7 @@ const Navigation = () => {
 
                   {/* Dropdown menu */}
                   <div
-                    className={`absolute top-[2.65em] left-20 w-72 bg-white shadow-lg p-2 border border-gray-200 transition-all duration-300 ${
+                    className={`absolute top-[2.65em] left-20 w-68 bg-white shadow-lg p-2 border border-gray-200 transition-all duration-300 ${
                       isHovered ? "opacity-100 visible" : "opacity-0 invisible"
                     }`}
                   >
@@ -74,15 +78,19 @@ const Navigation = () => {
                           className="relative group mb-2"
                           onMouseEnter={() => handleMouseEnter(category.name)}
                           onMouseLeave={handleMouseLeave}
+                          onClick={handleCategoryClick} // Ẩn hộp thoại khi nhấp
                         >
-                          <Button className="w-full flex items-center justify-between navigationMenu">
-                            <span>{category.name}</span>
-                            <FaAngleRight className="text-right" />
-                          </Button>
-
+                          <Link to="/products">
+                            <Button className="w-full flex items-center navigationMenu group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
+                              <span className="text-left flex-1 group-hover:text-white">
+                                {category.name}
+                              </span>
+                              <FaAngleRight className="ml-2 group-hover:text-white" />
+                            </Button>
+                          </Link>
                           {/* Sub-submenu */}
                           <div
-                            className={`absolute left-full top-0 w-64 bg-white shadow-lg p-2 border border-gray-200 transition-all duration-300 ${
+                            className={`absolute left-[102.5%] top-0 w-64 bg-white shadow-lg p-2 border border-gray-200 transition-all duration-300 ${
                               activeCategory === category.name
                                 ? "opacity-100 visible"
                                 : "opacity-0 invisible"
@@ -92,7 +100,7 @@ const Navigation = () => {
                               {category.subcategories.map((sub, idx) => (
                                 <li key={idx} className="mb-2">
                                   <Link to="/products">
-                                    <Button className="w-full text-left">
+                                    <Button className="w-full text-left nav_menu">
                                       {sub}
                                     </Button>
                                   </Link>

@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import "../Search/style.css";
 const Search = () => {
   return (
-    <div className="searchBox w-[100%] h-[2.5em] bg-[#FFFFFF] rounded-[1.25rem] relative p-2">
+    <div className="searchBox w-[80%] h-[2.5em] bg-[#FFFFFF] rounded-[1.25rem] relative p-2 ">
       <input
         type="text"
         placeholder="Nhập nội dung tìm kiếm"

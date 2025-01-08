@@ -27,7 +27,7 @@ const Header = () => {
               </Link>
             </div>
 
-            <div className="col2 w-3/5">
+            <div className="col2 w-3/5 flex items-center justify-center">
               <Search />
             </div>
 
@@ -47,7 +47,7 @@ const Header = () => {
                       <FaUserCircle className="h-6 w-6" />
                       <span className="ml-2 whitespace-nowrap">Tài khoản</span>
                     </div>
-                    <div className="profile-menu hidden absolute right-0 z-10 w-40 bg-white shadow-lg rounded-md">
+                    <div className="profile-menu hidden absolute right-[-1em] z-10 w-32 bg-white shadow-lg rounded-md">
                       <Link
                         to="/Account"
                         className="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 flex items-center gap-x-2 rounded-md"
