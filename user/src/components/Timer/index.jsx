@@ -22,8 +22,10 @@ const Timer = ({ duration }) => {
   const [hours, minutes, seconds] = getFormattedTime(time);
 
   return (
-    <div className="flex justify-between items-center bg-gradient-to-r from-blue-600 to-blue-400 text-white py-2 px-4 rounded-lg">
-      <div className="text-xl font-bold">Duy nhất hôm nay</div>
+    <div className="flex justify-between items-center bg-gradient-to-br from-blue-800 to-blue-300 text-white py-2 px-4 rounded-lg">
+      <div className="text-xl font-extrabold animate-bounce">
+        Duy nhất hôm nay
+      </div>
       <div className="flex items-center gap-2">
         <span>Kết thúc trong</span>
         <div className="flex gap-2">

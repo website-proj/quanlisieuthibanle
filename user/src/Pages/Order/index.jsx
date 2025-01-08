@@ -1,5 +1,5 @@
 import { FaRegUser } from "react-icons/fa";
-import { TbCheckupList } from "react-icons/tb";
+import { TbFileSpreadsheet } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import {
@@ -85,7 +85,7 @@ const Order = () => {
                   to="#"
                   className="flex items-center text-black-800 font-[1.5em]"
                 >
-                  <TbCheckupList className="mr-2 text-white bg-blue-500 rounded-full p-2 text-[2em]" />
+                  <TbFileSpreadsheet className="mr-2 text-white bg-blue-500 rounded-full p-2 text-[2em]" />
                   <span className="text-blue-500">Quản lý đơn hàng</span>
                 </Link>
               </li>

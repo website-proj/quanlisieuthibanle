@@ -30,7 +30,7 @@ header a img {
 
 .user button {
   color: #fff !important;
-  display: inline-block;
+
   font-size: 1em;
 }
 
@@ -84,4 +84,38 @@ body {
   padding: 6px 8px !important;
   min-width: 1.25 !important;
   text-transform: unset !important;
+}
+.account-menu {
+  position: relative;
+}
+
+.account-menu:hover .profile-menu {
+  display: block; /* Hiển thị nội dung khi di chuột */
+}
+
+.profile-menu {
+  display: none; /* Ẩn nội dung mặc định */
+  position: absolute;
+  top: 100%; /* Hiển thị bên dưới nút "Tài khoản" */
+  right: 0;
+  width: 10rem;
+  background: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.375rem; /* Bo góc */
+  z-index: 10;
+}
+
+.profile-menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #000;
+  text-decoration: none;
+  border-radius: 0.375rem;
+}
+
+.profile-menu a:hover {
+  background-color: #f5f5f5; /* Màu nền khi di chuột */
 }

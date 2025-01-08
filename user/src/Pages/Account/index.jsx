@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 import "./style.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { TbCheckupList } from "react-icons/tb";
+import { TbFileSpreadsheet } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
 const Account = () => {
@@ -56,7 +56,7 @@ const Account = () => {
               to="/order"
               className="flex items-center text-black-800 font-[1.5em] "
             >
-              <TbCheckupList className="mr-2 text-white bg-blue-500 rounded-full p-2 text-[2em]" />
+              <TbFileSpreadsheet className="mr-2 text-white bg-blue-500 rounded-full p-2 text-[2em]" />
               Quản lý đơn hàng
             </Link>
           </li>

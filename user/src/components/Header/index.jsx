@@ -10,8 +10,9 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import Navigation from "./Navigation";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { TbFileSpreadsheet } from "react-icons/tb";
-import { CgLogIn } from "react-icons/cg";
+import { IoIosLogOut } from "react-icons/io";
 import { MyContext } from "../../App";
+import { IoLogInOutline } from "react-icons/io5";
 
 const Header = () => {
   const context = useContext(MyContext);
@@ -32,51 +33,42 @@ const Header = () => {
 
             <div className="col3 carTab w-1/5 flex items-center">
               {/* Profile dropdown */}
-              <div className="user">
-                {context.isLogin !== true ? (
+              <div className="user relative ml-3">
+                {context.isLogin !== false ? (
                   <Link to={"/signIn"}>
                     <Button className="mr-3 whitespace-nowrap">
+                      <IoLogInOutline className="text-xl font-[600] mr-1" />
                       Đăng nhập
                     </Button>
                   </Link>
                 ) : (
-                  <Menu as="div" className="relative ml-3">
-                    <div>
-                      <MenuButton className="relative flex items-center rounded-full  text-white p-2 focus:outline-none">
-                        <FaUserCircle className="h-6 w-6" />
-                        <span className="ml-2 whitespace-nowrap">
-                          Tài khoản
-                        </span>
-                      </MenuButton>
+                  <div className="account-menu relative">
+                    <div className="account-button flex items-center rounded-full text-white p-2 cursor-pointer">
+                      <FaUserCircle className="h-6 w-6" />
+                      <span className="ml-2 whitespace-nowrap">Tài khoản</span>
                     </div>
-                    <MenuItems className="absolute right-0 z-10  w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 profile ">
-                      <MenuItem>
-                        <Link
-                          to="/Account"
-                          className="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 flex items-center gap-x-2 rounded-md"
-                        >
-                          <MdOutlineManageAccounts className="text-lg" /> Tài
-                          khoản
-                        </Link>
-                      </MenuItem>
-                      <MenuItem>
-                        <Link
-                          to="#"
-                          className="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 flex items-center gap-x-2 rounded-md "
-                        >
-                          <TbFileSpreadsheet className="text-lg" /> Quản lý đơn
-                        </Link>
-                      </MenuItem>
-                      <MenuItem>
-                        <Link
-                          to="/signIn"
-                          className="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 flex items-center gap-x-2 rounded-md"
-                        >
-                          <CgLogIn className="text-lg" /> Đăng xuất
-                        </Link>
-                      </MenuItem>
-                    </MenuItems>
-                  </Menu>
+                    <div className="profile-menu hidden absolute right-0 z-10 w-40 bg-white shadow-lg rounded-md">
+                      <Link
+                        to="/Account"
+                        className="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 flex items-center gap-x-2 rounded-md"
+                      >
+                        <MdOutlineManageAccounts className="text-lg" /> Tài
+                        khoản
+                      </Link>
+                      <Link
+                        to="/order"
+                        className="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 flex items-center gap-x-2 rounded-md"
+                      >
+                        <TbFileSpreadsheet className="text-lg" /> Quản lý đơn
+                      </Link>
+                      <Link
+                        to="/signIn"
+                        className="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 flex items-center gap-x-2 rounded-md"
+                      >
+                        <IoIosLogOut className="text-lg" /> Đăng xuất
+                      </Link>
+                    </div>
+                  </div>
                 )}
               </div>
 
@@ -86,7 +78,7 @@ const Header = () => {
                 onClick={() => context.setOpenCartPanel(true)}
               >
                 <Button className="circle ml-2">
-                  <LuShoppingCart className="mr-2 h-10 w-10" />
+                  <LuShoppingCart className="mr-2 h-9 w-9" />
                   <span className="ml-2 whitespace-nowrap">Giỏ hàng</span>
                   <span
                     className="count d-flex align-items-center justify-content-center"

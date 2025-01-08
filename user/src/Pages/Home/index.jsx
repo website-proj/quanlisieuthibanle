@@ -63,12 +63,12 @@ const Home = () => {
         <div className="container mx-auto px-4 ">
           <div className="flex w-full">
             {/* Banner chiếm 1/5 chiều rộng */}
-            <div className="w-1/5 p-2 banner sticky top-0 h-screen">
+            <div className="w-1/4 p-2 banner sticky top-0 h-screen">
               <img src={Banner} className="cursor-pointer" alt="banner" />
             </div>
 
             {/* Timer chiếm 4/5 chiều rộng */}
-            <div className="w-4/5  productSale">
+            <div className="w-3/4  productSale">
               <Timer duration={2 * 24 * 60 * 60 * 1000} />
               <div className="grid grid-cols-4 gap-8 productList">
                 {products.slice(0, 8).map((product) => {
@@ -81,12 +81,12 @@ const Home = () => {
                     <Link to="/product_detials/:id" key={product.product_id}>
                       {" "}
                       {/* Bao bọc mỗi phần tử product_item trong Link */}
-                      <div className="border rounded-lg p-4 shadow-sm hover:shadow-lg  transition-all duration-300 ease-in-out transform product_item">
+                      <div className="border rounded-lg p-4 shadow hover:shadow-lg  transition-all duration-300 ease-in-out transform product_item">
                         <div className="relative overflow-hidden rounded-lg">
                           <img
                             src={product.image}
                             alt={product.name}
-                            className="w-full object-cover transition-transform duration-300 hover:scale-110"
+                            className="w-full h-32 object-cover transition-transform duration-300 hover:scale-110"
                           />
                         </div>
                         {product.discount && (
@@ -95,10 +95,10 @@ const Home = () => {
                           </span>
                         )}
                         <div className="mt-4">
-                          <h5 className="text-lg font-[400] text-left">
+                          <h5 className="text-[0.9em] text-left">
                             {product.name}
                           </h5>
-                          <p className="text-sm text-black-500 text-left">
+                          <p className="text-[0.72em] text-black-500 text-left">
                             ĐVT: {product.unit}
                           </p>
                           <div className="flex items-center justify-between mt-2 space-x-2">
@@ -123,72 +123,76 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <div className="flex items-center justify-between bg-gray-100 px-6 py-4 rounded-lg text_list">
-        {/* Text Section */}
-        <div className="flex flex-col ">
-          <h3 className="text-lg font-bold text-black text-left">Giảm giá</h3>
-          <p className="text-sm text-gray-500">Sản phẩm với mức giá tốt nhất</p>
-        </div>
+      <section className="bg-[]">
+        <div className="flex items-center justify-between  px-6 py-4 rounded-lg text_list">
+          {/* Text Section */}
+          <div className="flex flex-col ">
+            <h3 className="text-lg font-bold text-black text-left">Giảm giá</h3>
+            <p className="text-sm text-gray-500">
+              Sản phẩm với mức giá tốt nhất
+            </p>
+          </div>
 
-        {/* Button Section */}
-        <div className="flex items-center all_pro">
-          <Button
-            onClick={handleShowAll}
-            className="flex items-center whitespace-nowrap min-w-[200px] text-sm font-semibold text-black hover:text-gray-600"
-          >
-            Xem tất cả <FaArrowRight className="ml-1 w-6 h-6" />
-          </Button>
+          {/* Button Section */}
+          <div className="flex items-center all_pro">
+            <Button
+              onClick={handleShowAll}
+              className="flex items-center whitespace-nowrap min-w-[200px] text-sm font-semibold text-black hover:text-gray-600"
+            >
+              Xem tất cả <FaArrowRight className="ml-1 w-6 h-6" />
+            </Button>
+          </div>
         </div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 productListSale">
-        {products.slice(0, 10).map((product) => {
-          // Hàm định dạng số tiền
-          const formatCurrency = (value) => {
-            return value.toLocaleString("vi-VN") + "đ";
-          };
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 productListSale">
+          {products.slice(0, 10).map((product) => {
+            // Hàm định dạng số tiền
+            const formatCurrency = (value) => {
+              return value.toLocaleString("vi-VN") + "đ";
+            };
 
-          return (
-            <Link to="/product_detials" key={product.product_id}>
-              {" "}
-              {/* Thêm Link bao quanh mỗi sản phẩm */}
-              <div className="border rounded-lg p-4 shadow-sm hover:shadow-lg  transition-all duration-300 ease-in-out transform product_item">
-                <div className="relative overflow-hidden rounded-lg">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full object-cover transition-transform duration-300 hover:scale-110"
-                  />
-                </div>
-                {product.discount && (
-                  <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                    {product.discount}
-                  </span>
-                )}
-                <div className="mt-4">
-                  <h5 className="text-lg font-[400] text-left">
-                    {product.name}
-                  </h5>
-                  <p className="text-sm text-black-500 text-left">
-                    ĐVT: {product.unit}
-                  </p>
-                  <div className="flex items-center justify-between mt-2 space-x-2">
-                    <span className="text-red-500 text-base font-bold">
-                      {formatCurrency(product.price)}
-                    </span>
-                    <span className="line-through text-sm text-gray-400">
-                      {formatCurrency(product.old_price)}
-                    </span>
+            return (
+              <Link to="/product_detials" key={product.product_id}>
+                {" "}
+                {/* Thêm Link bao quanh mỗi sản phẩm */}
+                <div className="border rounded-lg p-4 shadow-sm hover:shadow-lg  transition-all duration-300 ease-in-out transform product_item">
+                  <div className="relative overflow-hidden rounded-lg">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full object-cover transition-transform duration-300 hover:scale-110"
+                    />
                   </div>
-                  <Button className="productCart">
-                    <LuShoppingCart className="text-[2em] pr-2 " />
-                    Thêm vào giỏ hàng
-                  </Button>
+                  {product.discount && (
+                    <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                      {product.discount}
+                    </span>
+                  )}
+                  <div className="mt-4">
+                    <h5 className="text-lg font-[400] text-left">
+                      {product.name}
+                    </h5>
+                    <p className="text-sm text-black-500 text-left">
+                      ĐVT: {product.unit}
+                    </p>
+                    <div className="flex items-center justify-between mt-2 space-x-2">
+                      <span className="text-red-500 text-base font-bold">
+                        {formatCurrency(product.price)}
+                      </span>
+                      <span className="line-through text-sm text-gray-400">
+                        {formatCurrency(product.old_price)}
+                      </span>
+                    </div>
+                    <Button className="productCart">
+                      <LuShoppingCart className="text-[2em] pr-2 " />
+                      Thêm vào giỏ hàng
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
 
       <div className="flex items-center justify-between bg-gray-100 px-6 py-4 rounded-lg text_list">
         {/* Text Section */}
