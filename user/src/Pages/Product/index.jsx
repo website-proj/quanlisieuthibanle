@@ -69,22 +69,6 @@ const Product = () => {
                     Bán chạy
                   </Button>
                 </Link>
-                {/* <Link to="/">
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "#FFFFFF",
-                      color: "#000000",
-                      borderRadius: "10px",
-                      "&:hover": {
-                        backgroundColor: "#F0F0F0", // Màu khi hover
-                      },
-                    }}
-                    className="capitalize"
-                  >
-                    Khuyến mại
-                  </Button>
-                </Link> */}
 
                 <Link to="">
                   <Button

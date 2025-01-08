@@ -48,7 +48,11 @@ function App() {
 
           <Routes>
             <Route path={"/"} exact={true} element={<Home />} />
-            <Route path="/products" exact={true} element={<Product />} />
+            <Route
+              path="/products/:categoryName"
+              exact={true}
+              element={<Product />}
+            />
             <Route path="/Account" exact={true} element={<Account />} />
             <Route
               path="/product_detials/:id"

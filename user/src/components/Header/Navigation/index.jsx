@@ -80,7 +80,7 @@ const Navigation = () => {
                           onMouseLeave={handleMouseLeave}
                           onClick={handleCategoryClick} // Ẩn hộp thoại khi nhấp
                         >
-                          <Link to="/products">
+                          <Link to={`/products/${category.name}`}>
                             <Button className="w-full flex items-center navigationMenu group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
                               <span className="text-left flex-1 group-hover:text-white">
                                 {category.name}
@@ -99,7 +99,7 @@ const Navigation = () => {
                             <ul>
                               {category.subcategories.map((sub, idx) => (
                                 <li key={idx} className="mb-2">
-                                  <Link to="/products">
+                                  <Link to={`/products/${category.name}`}>
                                     <Button className="w-full text-left nav_menu">
                                       {sub}
                                     </Button>
