@@ -8,10 +8,6 @@ from sqlalchemy import func
 
 from app.model.model_base import Base
 
-
-
-
-
 class Category(Base):
     __tablename__ = 'categories'
 
@@ -19,7 +15,7 @@ class Category(Base):
     category_id = Column(String(50), primary_key=True, unique=True, default=lambda: f"cat{uuid.uuid4().hex[:8]}")
     category_name = Column(String(100), nullable=False)
     parent_category_id = Column(String(50), ForeignKey('categories.category_id'))
-
+    image = Column(String(100), nullable=False)
     # Sửa lại relationship và thêm primaryjoin
     products = relationship("Product" , back_populates= "category")
     def __repr__(self):
@@ -43,8 +39,7 @@ class Product(Base):
     date_created = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     expiration_date = Column(Date)
-    star_product = Column(Boolean , default=False)
-
+    featured_product = Column(Boolean , default=False)
     category_id = Column(String(50), ForeignKey('categories.category_id'))
 
     #relationship
