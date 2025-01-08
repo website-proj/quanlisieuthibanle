@@ -17,7 +17,12 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_SECONDS: int = 60 * 60 * 24 * 7  # 7 ngày
     SECURITY_ALGORITHM: str = "HS256"
     LOGGING_CONFIG_FILE: str = os.path.join(BASE_DIR, "logging.ini")
-
+    Client_id :str
+    Client_secret :str
+    email : str
+    password_email : str
+    REDIS_HOST : str
+    REDIS_PORT : str
     class Config:
         env_file = os.path.join(BASE_DIR, ".env")  # Chỉ định file .env
         env_file_encoding = "utf-8"
