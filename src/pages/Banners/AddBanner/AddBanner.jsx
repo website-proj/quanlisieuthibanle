@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import HeaderCard from "/src/components/HeaderCard/HeaderCard";
-import ContentCard from "/src/components/ContentCard/ContentCard";
+import HeaderCard from "/src/components/Admin/HeaderCard/HeaderCard";
+import ContentCard from "/src/components/Admin/ContentCard/ContentCard";
 import { TextField, MenuItem, Select, InputLabel, FormControl, Button, Typography, Box } from '@mui/material';
 
 function AddBanner() {

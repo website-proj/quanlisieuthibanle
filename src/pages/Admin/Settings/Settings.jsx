@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Settings.css";
 
-import HeaderCard from "/src/components/HeaderCard/HeaderCard";
-import ContentCard from "/src/components/ContentCard/ContentCard";
+import HeaderCard from "/src/components/Admin/HeaderCard/HeaderCard";
+import ContentCard from "/src/components/Admin/ContentCard/ContentCard";
 import Account from "./Account.jsx";
 
 function Settings() {

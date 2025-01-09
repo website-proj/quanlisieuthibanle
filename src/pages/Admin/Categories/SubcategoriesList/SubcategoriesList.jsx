@@ -1,8 +1,8 @@
 import React from 'react'
 import { Box } from '@mui/material';
-import HeaderCard from "/src/components/HeaderCard/HeaderCard";
-import ContentCard from "/src/components/ContentCard/ContentCard";
-import CustomContent from '/src/components/ContentCard/CustomContent';
+import HeaderCard from "/src/components/Admin/HeaderCard/HeaderCard";
+import ContentCard from "/src/components/Admin/ContentCard/ContentCard";
+import CustomContent from '/src/components/Admin/ContentCard/CustomContent';
 
 import Polar from '/src/pages/Admin/Categories/SubcategoriesList/Polar/Chart.jsx'
 import Bar from '/src/pages/Admin/Categories/SubcategoriesList/Bar/Chart.jsx'

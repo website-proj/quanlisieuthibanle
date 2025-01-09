@@ -2,17 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Stats.css';
 import { Box, Typography } from '@mui/material';
-import { FiUser, FiShoppingCart } from 'react-icons/fi';
-import { GrBasket } from 'react-icons/gr';
-import { FaRegStar } from 'react-icons/fa';
+import {FiShoppingCart } from 'react-icons/fi';
+import { MdOutlineCategory } from "react-icons/md";
+import { PiSubtractSquareBold } from "react-icons/pi";
 import statsData from './Stats.json';
 
 const Stats = () => {
   const [stats, setStats] = useState({
-    usersCount: 0,
-    ordersCount: 0,
     productsCount: 0,
-    reviewsCount: 0,
+    ordersCount: 0,
+    usersCount: 0,
   });
 
   const navigate = useNavigate();
@@ -55,33 +54,27 @@ const Stats = () => {
 
   const statsItems = [
     {
-      icon: <FiUser className="icon" />,
-      title: 'Người dùng',
-      count: stats.usersCount,
-      path: '/user-management',
-    },
+        icon: <FiShoppingCart className="icon" />,
+        title: 'Sản phẩm',
+        count: stats.productsCount,
+        path: '/products-list',
+      },
     {
-      icon: <GrBasket className="icon" />,
-      title: 'Đơn hàng',
+      icon: <MdOutlineCategory className="icon" />,
+      title: 'Danh mục',
       count: stats.ordersCount,
-      path: '/orders',
+      path: '/categories-list',
     },
     {
-      icon: <FiShoppingCart className="icon" />,
-      title: 'Sản phẩm',
+      icon: <PiSubtractSquareBold  className="icon" />,
+      title: 'Danh mục con',
       count: stats.productsCount,
-      path: '/products-list',
-    },
-    {
-      icon: <FaRegStar className="icon" />,
-      title: 'Đánh giá',
-      count: stats.reviewsCount,
-      path: '/reviews',
+      path: '/subcategories-list',
     },
   ];
 
   return (
-    <Box className="stats-header-container">
+    <Box className="stats-header-container2">
       {statsItems.map((item, index) => (
         <Box
           key={index}

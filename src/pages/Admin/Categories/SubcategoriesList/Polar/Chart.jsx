@@ -9,7 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { saveAs } from "file-saver";
-import DownloadMenu from "/src/components/Admin/Download/CsvJsonPng"; // Chắc chắn rằng bạn đã có component này
+import DownloadMenu from "/src/components/Admin/Download/CsvJsonPng"; 
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 

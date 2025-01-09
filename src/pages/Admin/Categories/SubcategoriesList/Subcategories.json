@@ -5,6 +5,8 @@
     "subcategories": [
       { "name": "Rau củ quả", "revenue": 520000 },
       { "name": "Đồ đông lạnh", "revenue": 300000 },
+      { "name": "Thịt & hải sản", "revenue": 800000 },      
+      { "name": "Đồ đông lạnh", "revenue": 300000 },
       { "name": "Thịt & hải sản", "revenue": 800000 },
       { "name": "Thực phẩm khô", "revenue": 450000 }
     ]

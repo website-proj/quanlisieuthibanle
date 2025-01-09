@@ -139,7 +139,7 @@ function BestSellingProductsTable() {
             <TableHead>
               <TableRow className="table-header">
                 <TableCell sx={{ textAlign: "center" }}>Hình ảnh</TableCell>
-                {[{ label: "Tên sản phẩm", key: "name" }, { label: "Danh mục", key: "category" }, { label: "Ngày", key: "date" }, { label: "Giá", key: "price" }].map((column) => (
+                {[{ label: "Tên sản phẩm", key: "name" }, { label: "Danh mục", key: "category" }, { label: "Ngày hết hạn", key: "date" }, { label: "Giá", key: "price" }].map((column) => (
                   <TableCell key={column.key} sx={{ textAlign: "center" }}>
                     <TableSortLabel
                       active={orderBy === column.key}
@@ -156,13 +156,13 @@ function BestSellingProductsTable() {
             <TableBody>
               {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
                 <TableRow key={index} className="table-row">
-                  <TableCell>
+                  <TableCell sx={{ textAlign: "center"}}>
                     <img src={product.image} alt={product.name} style={{ width: "50px", height: "50px", borderRadius: "10px" }} />
                   </TableCell>
                   <TableCell>{product.name}</TableCell>
                   <TableCell>{product.category}</TableCell>
-                  <TableCell>{product.date}</TableCell>
-                  <TableCell>{product.price.toString().replace(/\./g, ",")}</TableCell>
+                  <TableCell sx={{textAlign: "center"}}>{product.date}</TableCell>
+                  <TableCell >{product.price.toString().replace(/\./g, ",")}</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     <IconButton color="info">
                       <AiOutlineEye />
@@ -192,6 +192,7 @@ function BestSellingProductsTable() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           labelRowsPerPage="Số hàng mỗi trang:"
+          labelDisplayedRows={({ from, to, count }) => `${from}-${to} trên ${count}`}
         />
       </Box>
     </Box>

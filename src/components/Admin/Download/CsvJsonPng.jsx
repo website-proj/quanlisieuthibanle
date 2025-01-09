@@ -17,7 +17,7 @@ const CsvJsonPng = ({
       <Button 
         variant="contained" 
         onClick={handleDownloadMenuClick} 
-        ref={buttonRef} // Sử dụng ref để lấy chiều rộng thực tế của nút
+        ref={buttonRef} 
         sx={{
           height: 30,
           borderRadius: '10px',
@@ -36,15 +36,15 @@ const CsvJsonPng = ({
           '& .MuiPaper-root': {
             borderRadius: '10px',
             boxShadow: 2,
-            width: buttonRef.current?.offsetWidth || 50, // Đảm bảo menu có chiều rộng khớp với nút
+            width: buttonRef.current?.offsetWidth || 50, 
           },
           '& .MuiMenuItem-root': {
             display: 'flex',
-            justifyContent: 'center', // Căn giữa chữ theo chiều ngang
-            alignItems: 'center', // Căn giữa chữ theo chiều dọc
+            justifyContent: 'center', 
+            alignItems: 'center', 
             fontFamily: 'Arial, sans-serif',
             fontSize: '14px',
-            padding: '8px 16px', // Đảm bảo khoảng cách đồng đều
+            padding: '8px 16px',
             borderRadius: '8px',
             transition: 'background-color 0.2s',
             '&:hover': {

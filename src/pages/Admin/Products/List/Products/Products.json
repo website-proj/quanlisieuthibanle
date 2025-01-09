@@ -1,0 +1,168 @@
+{
+  "categories": [
+    {
+      "category": "Thực phẩm",
+      "subcategories": [
+        {
+          "subcategory": "Thịt và hải sản",
+          "products": [
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Thịt bò tươi",
+              "expiryDate": "10/01/2025",
+              "price": 250000,
+              "quantity": 150
+            },
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Cá hồi",
+              "expiryDate": "15/01/2025",
+              "price": 400000,
+              "quantity": 80
+            },
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Tôm sú",
+              "expiryDate": "12/01/2025",
+              "price": 300000,
+              "quantity": 120
+            },
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Mực ống",
+              "expiryDate": "18/01/2025",
+              "price": 200000,
+              "quantity": 90
+            }
+          ]
+        },
+        {
+          "subcategory": "Rau củ quả",
+          "products": [
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Cà rốt",
+              "expiryDate": "20/01/2025",
+              "price": 50000,
+              "quantity": 200
+            },
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Khoai tây",
+              "expiryDate": "22/01/2025",
+              "price": 60000,
+              "quantity": 180
+            },
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Bí đỏ",
+              "expiryDate": "25/01/2025",
+              "price": 70000,
+              "quantity": 220
+            },
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Súp lơ",
+              "expiryDate": "19/01/2025",
+              "price": 60000,
+              "quantity": 150
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Đồ uống",
+      "subcategories": [
+        {
+          "subcategory": "Nước giải khát",
+          "products": [
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Nước ngọt Coca Cola",
+              "expiryDate": "30/06/2025",
+              "price": 15000,
+              "quantity": 500
+            },
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Nước ép trái cây",
+              "expiryDate": "28/06/2025",
+              "price": 25000,
+              "quantity": 300
+            },
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Pepsi",
+              "expiryDate": "05/07/2025",
+              "price": 15000,
+              "quantity": 400
+            }
+          ]
+        },
+        {
+          "subcategory": "Cà phê và trà",
+          "products": [
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Cà phê hòa tan",
+              "expiryDate": "10/06/2025",
+              "price": 35000,
+              "quantity": 250
+            },
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Trà Lipton",
+              "expiryDate": "15/06/2025",
+              "price": 20000,
+              "quantity": 400
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Gia dụng",
+      "subcategories": [
+        {
+          "subcategory": "Dụng cụ nấu ăn",
+          "products": [
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Chảo chống dính",
+              "expiryDate": "N/A",
+              "price": 350000,
+              "quantity": 50
+            },
+            {
+              "image": "https://www.thuongdo.com/sites/default/files/u165605/do-uong-trung-quoc-3.jpg",
+              "name": "Nồi cơm điện",
+              "expiryDate": "N/A",
+              "price": 750000,
+              "quantity": 60
+            }
+          ]
+        },
+        {
+          "subcategory": "Đồ dùng gia đình",
+          "products": [
+            {
+              "image": "https://example.com/image16.jpg",
+              "name": "Bàn là hơi nước",
+              "expiryDate": "N/A",
+              "price": 200000,
+              "quantity": 80
+            },
+            {
+              "image": "https://example.com/image17.jpg",
+              "name": "Quạt điện",
+              "expiryDate": "N/A",
+              "price": 400000,
+              "quantity": 100
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

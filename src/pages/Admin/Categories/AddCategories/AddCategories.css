@@ -1,5 +1,8 @@
 .css-1miy0lu-MuiTypography-root {
-  font-size: 1.1em !important;
+  font-size: 1.2em !important;
+}
+.css-1wmifpn-MuiTypography-root {
+  font-size: 1.2em !important;
 }
 .upload-container {
     width: 100%;
@@ -22,7 +25,7 @@
     justify-content: center;
     align-items: center;
     color: var(--light);
-    font-size: 2em !important;
+    font-size: 1.2em !important;
   }
   
   .submit-button {
@@ -30,7 +33,7 @@
     color: var(--light) !important;
     border: none !important;
     border-radius: 15px !important;
-    font-size: 16px !important;
+    font-size: 1.1em !important;
     cursor: pointer;
   }
   
@@ -60,4 +63,8 @@
 .css-er619e-MuiFormHelperText-root.Mui-error {
   font-size: 0.85rem !important;  
   color: #f44336 !important;     
+}
+
+.title-add-categories {
+  font-size: 1.05em !important;
 }

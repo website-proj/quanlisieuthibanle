@@ -11,8 +11,8 @@ import {
   Legend,
 } from "chart.js";
 import { MenuItem, Select, FormControl, Box, Typography } from "@mui/material";
-import { saveAs } from "file-saver"; // Để xử lý tải xuống
-import DownloadMenu from "/src/components/Admin/Download/CsvJsonPng"; // Chắc chắn bạn có component này
+import { saveAs } from "file-saver"; 
+import DownloadMenu from "/src/components/Admin/Download/CsvJsonPng"; 
 
 import subcategoriesData from "/src/pages/Admin/Categories/SubcategoriesList/Subcategories.json";
 
@@ -21,7 +21,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 function Chart() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [downloadAnchorEl, setDownloadAnchorEl] = useState(null); // Thêm state cho menu tải xuống
+  const [downloadAnchorEl, setDownloadAnchorEl] = useState(null); 
 
   useEffect(() => {
     const loadedCategories = subcategoriesData.map((item) => ({
@@ -98,7 +98,6 @@ function Chart() {
     },
   };
 
-  // Xử lý tải xuống CSV
   const handleDownloadCSV = () => {
     let csv = "Danh mục,Số lượng\n";
     subcategoriesData.forEach((item) => {
@@ -154,8 +153,6 @@ function Chart() {
           value={selectedCategory?.category || ""}
           onChange={handleCategoryChange}
           sx={{
-            "&:hover": {
-            },
             borderRadius: "10px",
             height: "35px", 
           }}

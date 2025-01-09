@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 
-import Sidebar from "./components/Sidebar/Sidebar";
-import Header from "./components/Header/Header";
-import Content from "./components/Content/Content";
+import Sidebar from "./components/Admin/Layout/Sidebar/Sidebar.jsx";
+import Header from "./components/Admin/Layout/Header/Header.jsx";
+import Content from "./components/Admin/Layout/Content/Content.jsx";
+
 import Dashboard from "./pages/Admin/Dashboard/Dashboard.jsx";
+
 import CategoriesList from './pages/Admin/Categories/CategoriesList/CategoriesList.jsx'; 
 import AddCategories from './pages/Admin/Categories/AddCategories/AddCategories.jsx'; 
 import SubcategoriesList from './pages/Admin/Categories/SubcategoriesList/SubcategoriesList.jsx'; 
+import AddSubcategories from './pages/Admin/Categories/AddSubcategories/AddSubcategories.jsx'; 
+
+import ProductsList from './pages/Admin/Products/List/List.jsx'; 
+import AddProducts from './pages/Admin/Products/Add/AddProducts.jsx'; 
+
 
 import Settings from './pages/Admin/Settings/Settings.jsx'; 
 
@@ -20,8 +27,8 @@ import Settings from './pages/Admin/Settings/Settings.jsx';
 
 
 // import Dashboard from "./pages/Dashboard/Dashboard";
-import ProductsList from './pages/Products/ProductsList';
-import AddProducts from './pages/Products/AddProducts';
+// import ProductsList from './pages/Products/ProductsList';
+// import AddProducts from './pages/Products/AddProducts';
 // import CategoriesList from './pages/Categories/CategoriesList/CategoriesList'; 
 // import AddCategories from './pages/Categories/AddCategories/AddCategories';
 // import SubcategoriesList from './pages/Categories/SubcategoriesList/SubcategoriesList';
@@ -60,6 +67,7 @@ function App() {
                 <Route path="/categories-list" element={<CategoriesList />} />
                 <Route path="/add-categories" element={<AddCategories />} />
                 <Route path="/subcategories-list" element={<SubcategoriesList />} />
+                <Route path="/add-subcategories" element={<AddSubcategories />} />
                 {/*<Route path="/add-categories" element={<AddCategories />} />
                 <Route path="/subcategories-list" element={<SubcategoriesList/>} />
                 <Route path="/add-subcategories" element={<AddSubcategories/>} /> */}

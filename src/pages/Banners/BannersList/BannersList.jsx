@@ -24,8 +24,8 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { FiEye, FiTrash2 } from "react-icons/fi";
-import HeaderCard from "/src/components/HeaderCard/HeaderCard";
-import ContentCard from "/src/components/ContentCard/ContentCard";
+import HeaderCard from "/src/components/Admin/HeaderCard/HeaderCard";
+import ContentCard from "/src/components/Admin/ContentCard/ContentCard";
 
 function BannersList() {
   const breadcrumbs = [

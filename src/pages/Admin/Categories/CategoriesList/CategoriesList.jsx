@@ -1,9 +1,9 @@
 import React from 'react'
 import "./CategoriesList.css"
 
-import HeaderCard from "/src/components/HeaderCard/HeaderCard";
-import ContentCard from "/src/components/ContentCard/ContentCard";
-import CustomContent from '/src/components/ContentCard/CustomContent';
+import HeaderCard from "/src/components/Admin/HeaderCard/HeaderCard";
+import ContentCard from "/src/components/Admin/ContentCard/ContentCard";
+import CustomContent from '/src/components/Admin/ContentCard/CustomContent';
 import BarCategoryChart from '/src/pages/Admin/Categories/CategoriesList/BarChart/Chart.jsx';
 import PieCategoryChart from '/src/pages/Admin/Categories/CategoriesList/PieChart/Chart.jsx';
 import TableCategories from '/src/pages/Admin/Categories/CategoriesList/TableCategories/Table.jsx';

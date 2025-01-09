@@ -4,7 +4,7 @@ import { Breadcrumbs, Link } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Avatar, IconButton, Box, Paper, Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
 import { FiUser, FiShoppingCart, FiEye, FiEdit2, FiTrash2 } from 'react-icons/fi'; // Đã import các biểu tượng
 import BestSellingProductsTable from '/src/pages/Admin/Products/List/BestSellingProducts/Table';
-import CustomContent from '/src/components/ContentCard/CustomContent';
+import CustomContent from '/src/components/Admin/ContentCard/CustomContent';
 
 function ProductsList() {
   const stats = [

@@ -1,11 +1,11 @@
-.stats-header-container {
+.stats-header-container2 {
     display: flex;
     justify-content: space-between;
     width: 100%;
     gap: 2%;
-    margin-top: 0.2%;
+    margin-top: 1.5%;
 }
-.info-box:hover {
+/* .info-box:hover {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2) !important;
 }
 
@@ -20,19 +20,15 @@
 }
 
 .info-box:nth-child(1) {
-    background: linear-gradient(135deg, #0152a9, #87CEEB); /* Xanh lam */
+    background: linear-gradient(135deg, #0152a9, #87CEEB);
 }
 
 .info-box:nth-child(2) {
-    background: linear-gradient(135deg, #008080, #40E0D0); /* Xanh ngọc */
+    background: linear-gradient(135deg, #008080, #40E0D0); 
 }
 
 .info-box:nth-child(3) {
-    background: linear-gradient(135deg, #6A5ACD, #B19CD9); /* Tím lạnh */
-}
-
-.info-box:nth-child(4) {
-    background: linear-gradient(135deg, #2E8B57, #90EE90); /* Xanh lá lạnh */
+    background: linear-gradient(135deg, #6A5ACD, #B19CD9); 
 }
 
 
@@ -45,7 +41,7 @@
 
 .info-title {
     color: white !important;
-    font-size: 1.1em !important;
+    font-size: 0.9em !important;
     font-weight: bold;
     margin-bottom: 5px;
 }
@@ -53,4 +49,4 @@
 .info-count {
     color: white !important;
     font-size: 1em !important;
-}
+} */
