@@ -33,7 +33,7 @@ const Header = () => {
 
             <div className="col3 carTab w-1/5 flex items-center">
               {/* Profile dropdown */}
-              <div className="user relative ml-3">
+              <div className="user relative">
                 {context.isLogin !== false ? (
                   <Link to={"/signIn"}>
                     <Button className="mr-3 whitespace-nowrap">
@@ -47,7 +47,7 @@ const Header = () => {
                       <FaUserCircle className="h-6 w-6" />
                       <span className="ml-2 whitespace-nowrap">Tài khoản</span>
                     </div>
-                    <div className="profile-menu hidden absolute right-[-1em] z-10 w-32 bg-white shadow-lg rounded-md">
+                    <div className="profile-menu ">
                       <Link
                         to="/Account"
                         className="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 flex items-center gap-x-2 rounded-md"

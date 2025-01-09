@@ -1,0 +1,47 @@
+[
+  {
+    "banner_id": "B001",
+    "image": "https://api.spicezgold.com/download/file_1734525014348_NewProject(7).jpg",
+    "status": "Active",
+    "position": "main",
+    "priority": 1,
+    "date_created": "2025-01-09T12:00:00Z",
+    "date_updated": "2025-01-09T12:00:00Z"
+  },
+  {
+    "banner_id": "B002",
+    "image": "https://api.spicezgold.com/download/file_1734524878924_1721277298204_banner.jpg",
+    "status": "Inactive",
+    "position": "sidebar",
+    "priority": 2,
+    "date_created": "2025-01-08T15:30:00Z",
+    "date_updated": "2025-01-08T15:30:00Z"
+  },
+  {
+    "banner_id": "B003",
+    "image": "https://api.spicezgold.com/download/file_1734524893797_NewProject(13).jpg",
+    "status": "Active",
+    "position": "bottom",
+    "priority": 3,
+    "date_created": "2025-01-07T10:45:00Z",
+    "date_updated": "2025-01-07T10:45:00Z"
+  },
+  {
+    "banner_id": "B004",
+    "image": "https://api.spicezgold.com/download/file_1734524930884_NewProject(6).jpg",
+    "status": "Active",
+    "position": "bottom",
+    "priority": 3,
+    "date_created": "2025-01-07T10:45:00Z",
+    "date_updated": "2025-01-07T10:45:00Z"
+  },
+  {
+    "banner_id": "B005",
+    "image": "https://api.spicezgold.com/download/file_1734524958576_NewProject(10).jpg",
+    "status": "Active",
+    "position": "bottom",
+    "priority": 3,
+    "date_created": "2025-01-07T10:45:00Z",
+    "date_updated": "2025-01-07T10:45:00Z"
+  }
+]
