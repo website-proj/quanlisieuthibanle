@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./style.css";
 import { useState, useEffect } from "react"; // Thêm dòng này
 
-import { LuShoppingCart } from "react-icons/lu";
+import { BsCart4 } from "react-icons/bs";
 import ScrollToTopButton from "../../components/ScrollTop";
 
 const Product = () => {
@@ -37,6 +37,49 @@ const Product = () => {
       });
       setLoading(false); // Dừng loading sau khi cập nhật
     }, 2000); // Giả lập thời gian tải dữ liệu (2 giây)
+  };
+
+  const [cartCount, setCartCount] = useState(0);
+  const handleAddToCart = (e, productImage) => {
+    // Tạo ảnh đại diện để làm animation
+    const imgElement = document.createElement("img");
+    imgElement.src = productImage;
+    imgElement.className = "flying-img";
+    document.body.appendChild(imgElement);
+
+    // Lấy vị trí của nút thêm vào giỏ hàng và giỏ hàng
+    const rect = e.target.getBoundingClientRect();
+    const cartRect = document
+      .getElementById("cart-icon")
+      .getBoundingClientRect();
+
+    // Tính toán vị trí thực tế trên trang
+    const startX = rect.left + window.scrollX;
+    const startY = rect.top + window.scrollY;
+    const endX = cartRect.left + window.scrollX;
+    const endY = cartRect.top + window.scrollY;
+
+    // Thiết lập vị trí ban đầu
+    imgElement.style.position = "absolute";
+    imgElement.style.left = `${startX}px`;
+    imgElement.style.top = `${startY}px`;
+    imgElement.style.width = "50px";
+    imgElement.style.height = "50px";
+    imgElement.style.zIndex = "1000";
+    imgElement.style.transition =
+      "transform 1s ease-in-out, opacity 1s ease-in-out";
+
+    // Thực hiện animation
+    imgElement.style.transform = `translate(${endX - startX}px, ${
+      endY - startY
+    }px) scale(0.2)`;
+    imgElement.style.opacity = "0";
+
+    // Xóa ảnh sau khi animation hoàn tất và tăng số lượng
+    setTimeout(() => {
+      imgElement.remove();
+      setCartCount((prev) => prev + 1);
+    }, 1000);
   };
 
   return (
@@ -98,44 +141,50 @@ const Product = () => {
 
                   return (
                     // Bao bọc mỗi product_item bằng Link để chuyển trang khi nhấp vào sản phẩm
-                    <Link
-                      key={product.product_id}
-                      to={`/product_details/${product.product_id}`} // Truyền product_id vào URL
-                      className="border rounded-lg p-4 shadow-sm hover:shadow-lg  transition-all duration-300 ease-in-out transform product_item"
+                    <div
+                      className="border rounded-lg p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+                      key={product.product_id} // Đặt key trực tiếp trên phần tử bao bọc
                     >
-                      <div className="relative overflow-hidden rounded-lg">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full object-cover transition-transform duration-300 hover:scale-110"
-                        />
-                        {product.discount && (
-                          <span className="absolute top-2 left-2 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                            {product.discount}
-                          </span>
-                        )}
-                      </div>
-                      <div className="mt-4">
-                        <h5 className="text-lg font-[400] text-left">
-                          {product.name}
-                        </h5>
-                        <p className="text-sm text-black-500 text-left">
-                          ĐVT: {product.unit}
-                        </p>
-                        <div className="flex items-center justify-between mt-2 space-x-2">
-                          <span className="text-red-500 text-base font-bold">
-                            {formatCurrency(product.price)}
-                          </span>
-                          <span className="line-through text-sm text-gray-400">
-                            {formatCurrency(product.old_price)}
-                          </span>
+                      <Link to={`/product_detials/${product.product_id}`}>
+                        <div className="relative overflow-hidden rounded-lg">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="w-full h-32 object-cover transition-transform duration-300 hover:scale-110"
+                          />
+                          {product.discount && (
+                            <span className="absolute top-[0.5em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                              {product.discount}
+                            </span>
+                          )}
                         </div>
-                        <Button className="productCart">
-                          <LuShoppingCart className="text-[2em] pr-2" />
-                          Thêm vào giỏ hàng
-                        </Button>
-                      </div>
-                    </Link>
+                        <div className="mt-4">
+                          <h5 className="text-[0.9em] text-left">
+                            {product.name}
+                          </h5>
+                          <p className="text-[0.72em] text-black-500 text-left">
+                            ĐVT: {product.unit}
+                          </p>
+                          <div className="flex items-center justify-between mt-2 space-x-2">
+                            <span className="text-red-500 text-base font-bold">
+                              {formatCurrency(product.price)}
+                            </span>
+                            {product.old_price && (
+                              <span className="line-through text-sm text-gray-400">
+                                {formatCurrency(product.old_price)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </Link>
+                      <Button
+                        onClick={(e) => handleAddToCart(e, product.image)}
+                        className="productCart"
+                      >
+                        <BsCart4 className="text-[2em] pr-2" />
+                        Thêm vào giỏ hàng
+                      </Button>
+                    </div>
                   );
                 })}
               </div>
