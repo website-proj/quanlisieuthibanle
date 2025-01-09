@@ -127,7 +127,7 @@ class DataService:
             password = self.password_random()
             password_hashed = get_password_hash(password)
             email = self.email_random(user_name)
-            gender = random.choice(["male" , "female"])
+            gender = random.choice(["male" , "female" ,"other"])
             phone_number = self.phone_number_random()
             address = "Hà Nội"
             start_date = datetime(2022 ,1,1)
