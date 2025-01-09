@@ -14,7 +14,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { MyContext } from "../../App";
 import { IoLogInOutline } from "react-icons/io5";
 
-const Header = () => {
+const Header = ({ cartCount }) => {
   const context = useContext(MyContext);
   return (
     <>
@@ -74,17 +74,18 @@ const Header = () => {
 
               {/* Shopping cart */}
               <div
+                id="cart-icon"
                 className="cart ml-3 flex items-center"
                 onClick={() => context.setOpenCartPanel(true)}
               >
-                <Button className="circle ml-2">
-                  <BsCart4 className="mr-2 h-9 w-9" />
+                <Button className="circle ml-2 ">
+                  <BsCart4 className="mr-2 h-9 w-9 " />
                   <span className="ml-2 whitespace-nowrap">Giỏ hàng</span>
                   <span
                     className="count d-flex align-items-center justify-content-center"
                     style={{ marginLeft: "50%" }}
                   >
-                    0
+                    {cartCount}
                   </span>
                 </Button>
               </div>

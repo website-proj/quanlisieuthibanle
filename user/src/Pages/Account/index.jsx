@@ -22,7 +22,7 @@ const Account = () => {
     <div className="min-h-screen flex mt-36 mb-4">
       {/* Sidebar */}
       <aside className="w-1/5 setting ">
-        <ul className="space-y-4">
+        <ul className="space-y-4 bg-white shadow p-4 rounded-md mr-9">
           <li className="flex items-center text-black-800 font-[1.5em]">
             <FaRegUser className="mr-2 text-white bg-blue-500 rounded-full p-2 text-[2em]" />
             Tài khoản
@@ -65,9 +65,9 @@ const Account = () => {
 
       {/* Main Content */}
 
-      <div className="w-4/5">
+      <div className="w-4/5 mr-[5%]">
         {activePage === "profile" && (
-          <div className="mx-auto bg-white shadow-md rounded-lg p-6 mr-[6%]">
+          <div className="mx-auto bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4 text-left">
               Thông tin tài khoản
             </h2>
@@ -177,7 +177,7 @@ const Account = () => {
           </div>
         )}
         {activePage === "changePassword" && (
-          <div className="mx-auto bg-white shadow-md rounded-lg p-6 mr-[6%]">
+          <div className="mx-auto bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4 text-left">
               Thêm mật khẩu
             </h2>

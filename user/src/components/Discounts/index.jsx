@@ -30,7 +30,10 @@ const DiscountProducts = () => {
       <div className="flex items-center justify-between px-6 py-4 rounded-lg text_list">
         {/* Text Section */}
         <div className="flex flex-col">
-          <h3 className="text-xl font-bold text-black text-left">Giảm giá</h3>
+          <h3 className="text-xl font-bold text-black text-left shadow-text">
+            Giảm giá
+          </h3>
+
           <p className="text-sm text-gray-500">Sản phẩm với mức giá tốt nhất</p>
         </div>
       </div>
@@ -51,7 +54,7 @@ const DiscountProducts = () => {
               </div>
               {product.discount && (
                 <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                  {product.discount}%
+                  {product.discount}
                 </span>
               )}
               <div className="mt-4">

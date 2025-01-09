@@ -14,8 +14,46 @@ import BestSellerProducts from "../../components/BestSellers";
 import NewProducts from "../../components/NewProducts";
 import FooterBanner from "../../components/FooterBanner";
 import BannerSlide from "../../components/BannerSlide";
+import Header from "../../components/Header";
 
 const Home = () => {
+  const [cartCount, setCartCount] = useState(0);
+  const handleAddToCart = (e, productImage) => {
+    // Tạo ảnh đại diện để làm animation
+    const imgElement = document.createElement("img");
+    imgElement.src = productImage;
+    imgElement.className = "flying-img";
+    document.body.appendChild(imgElement);
+
+    // Lấy vị trí của nút thêm vào giỏ hàng và giỏ hàng
+    const rect = e.target.getBoundingClientRect();
+    const cartRect = document
+      .getElementById("cart-icon")
+      .getBoundingClientRect();
+
+    // Thiết lập vị trí ban đầu
+    imgElement.style.position = "absolute";
+    imgElement.style.left = `${rect.left}px`;
+    imgElement.style.top = `${rect.top}px`;
+    imgElement.style.width = "50px";
+    imgElement.style.height = "50px";
+    imgElement.style.zIndex = "1000";
+    imgElement.style.transition =
+      "transform 1s ease-in-out, opacity 1s ease-in-out";
+
+    // Thực hiện animation
+    imgElement.style.transform = `translate(${cartRect.left - rect.left}px, ${
+      cartRect.top - rect.top
+    }px) scale(0.2)`;
+    imgElement.style.opacity = "0";
+
+    // Xóa ảnh sau khi animation hoàn tất và tăng số lượng
+    setTimeout(() => {
+      imgElement.remove();
+      setCartCount((prev) => prev + 1);
+    }, 1000);
+  };
+
   // Chuyển hướng cho id
 
   useEffect(() => {
@@ -60,6 +98,7 @@ const Home = () => {
 
   return (
     <>
+      <Header cartCount={cartCount} />
       <HomeBanner />
 
       <section id="flashseller" className="homeProducts">
@@ -90,7 +129,7 @@ const Home = () => {
                             className="w-full h-32 object-cover transition-transform duration-300 hover:scale-110"
                           />
                           {product.discount && (
-                            <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                            <span className="absolute top-[0.5em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
                               {product.discount}
                             </span>
                           )}
@@ -114,7 +153,10 @@ const Home = () => {
                           </div>
                         </div>
                       </Link>
-                      <Button className="productCart">
+                      <Button
+                        onClick={(e) => handleAddToCart(e, product.image)}
+                        className="productCart"
+                      >
                         <BsCart4 className="text-[2em] pr-2" />
                         Thêm vào giỏ hàng
                       </Button>
