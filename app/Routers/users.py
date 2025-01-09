@@ -1,8 +1,11 @@
+import json
+
+import redis
 from fastapi import Depends, APIRouter, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel
 
-
+from app.core.config import settings
 from app.core.security import create_access_token
 from app.model.users import User
 # from app.schemas.schema_base import DataResponse
@@ -17,18 +20,44 @@ from app.utils.responses import ResponseHandler
 from app.db.base import get_db
 
 router = APIRouter()
-
-
+redis_client = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, decode_responses=True)
 @router.post("/")
-async def register_user(user : UserRegisterRequest  , user_service : UserService = Depends() , db: Session = Depends(get_db) ):
+def register_user(user : UserRegisterRequest  , db: Session = Depends(get_db) ):
     try :
-        register_user = AuthService.user_register(user , db)
-        return ResponseHandler.success("create_success" ,register_user)
+        email = user.email
+        auth = AuthService()
+        user_data = {
+            "username": user.username,
+            "email": user.email,
+            "password" : user.password,
+        }
+        redis_client.setex(f"pending_user:{email}", 300, json.dumps(user_data))
+        auth.send_verification_email(email)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-@router.post("/login/email")
-async def login_check_email_and_password(data : OAuth2PasswordRequestForm =Depends() , db : Session = Depends(get_db) ):
+@router.post("/register/check_code")
+def check_code_email(email,code : str , db: Session = Depends(get_db) ):
+    try :
+        auth = AuthService()
+        check = auth.verify_code(email, code)
+        user_data = redis_client.get(f"pending_user:{email}")
+        if not user_data :
+            raise HTTPException(status_code=400, detail="data error")
+        user_data = json.loads(user_data)
+        user = UserRegisterRequest(
+            username=user_data["username"],
+            email=email,
+            password=user_data["password"],
+        )
+        if check:
+            user = AuthService.user_register(user, db)
+            if not user:
+                raise HTTPException(status_code=401, detail="error")
+            return ResponseHandler.success("success register", user)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+@router.post("/login")
+async def login_access_token(data : OAuth2PasswordRequestForm =Depends() , db : Session = Depends(get_db) ):
     """
     check email and password
     """
@@ -36,15 +65,10 @@ async def login_check_email_and_password(data : OAuth2PasswordRequestForm =Depen
     user = AuthService.authenticate_user( login_form , db)
     if not user :
         raise (HTTPException(status_code=400, detail="Incorrect email or password"))
-    auth = AuthService()
-    auth.send_verification_email(user.email)
-    return {"message": f"Verification code sent to {user.email}. Please check your email."}
-@router.post("/login")
-def check_code_verification(user_email : str , code : str , db : Session = Depends(get_db) ):
-    auth = AuthService()
-    auth.verify_code(user_email , code)
-    token = create_access_token(user_email)
+    token = create_access_token(data.username)
     return {"access_token": token, "token_type": "bearer"}
+
+
 @router.put("/profile" , dependencies = [Depends(login_required)])
 def update_profile(user_data : userUpdateRequest , current_user = Depends(AuthService.get_current_user) ,user_service :UserService = Depends(), db : Session = Depends(get_db) ):
     """"
@@ -56,7 +80,24 @@ def update_profile(user_data : userUpdateRequest , current_user = Depends(AuthSe
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.put("changePassword" , dependencies = [Depends(login_required)])
+@router.put("/changePassword" , dependencies = [Depends(login_required)])
 def change_password(pass_word_form : passwordChangeRequest , current_user = Depends(AuthService.get_current_user), db : Session = Depends(get_db) ):
     user =  UserService.change_password(pass_word_form,current_user, db)
     return ResponseHandler.success("change_password_success" ,user)
+@router.put("/get_code_forgotPassword"  )
+def send_email_code(email : str ):
+    try :
+        auth = AuthService()
+        auth.send_verification_email(email)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+@router.put("/resetPassword")
+def reset_password(email : str ,code : str , password : str , db : Session = Depends(get_db) ):
+    try :
+        auth = AuthService()
+        check = auth.verify_code(email, code)
+        if check:
+            user = UserService.reset_password(email, password, db)
+            return ResponseHandler.success("reset_password success", user)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
