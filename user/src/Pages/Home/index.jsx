@@ -6,7 +6,8 @@ import "./style.css";
 import { Button } from "@mui/material";
 import Banner1 from "../../assets/images/banner3.jpg";
 import Banner2 from "../../assets/images/banner4.jpg";
-import { LuShoppingCart } from "react-icons/lu";
+import { BsCart4 } from "react-icons/bs";
+
 import { FaArrowRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import ScrollToTopButton from "../../components/ScrollTop";
@@ -110,7 +111,7 @@ const Home = () => {
                             </span>
                           </div>
                           <Button className="productCart">
-                            <LuShoppingCart className="text-[2em] pr-2" />
+                            <BsCart4 className="text-[2em] pr-2" />
                             Thêm vào giỏ hàng
                           </Button>
                         </div>
@@ -134,7 +135,7 @@ const Home = () => {
           </div>
 
           {/* Button Section */}
-          <div className="flex items-center all_pro">
+          <div className="flex items-center">
             <Button
               onClick={handleShowAll}
               className="flex items-center whitespace-nowrap min-w-[200px] text-sm font-semibold text-black hover:text-gray-600"
@@ -183,7 +184,7 @@ const Home = () => {
                       </span>
                     </div>
                     <Button className="productCart">
-                      <LuShoppingCart className="text-[2em] pr-2 " />
+                      <BsCart4 className="text-[2em] pr-2 " />
                       Thêm vào giỏ hàng
                     </Button>
                   </div>
@@ -259,7 +260,7 @@ const Home = () => {
                     </span>
                   </div>
                   <Button className="productCart">
-                    <LuShoppingCart className="text-[2em] pr-2" />
+                    <BsCart4 className="text-[2em] pr-2" />
                     Thêm vào giỏ hàng
                   </Button>
                 </div>
@@ -320,7 +321,7 @@ const Home = () => {
                     </span>
                   </div>
                   <Button className="productCart">
-                    <LuShoppingCart className="text-[2em] pr-2" />
+                    <BsCart4 className="text-[2em] pr-2" />
                     Thêm vào giỏ hàng
                   </Button>
                 </div>

@@ -23,10 +23,10 @@ const Timer = ({ duration }) => {
 
   return (
     <div className="flex justify-between items-center bg-gradient-to-br from-blue-800 to-blue-300 text-white py-2 px-4 rounded-lg">
-      <div className="text-xl font-extrabold animate-bounce">
+      <div className="text-xl font-extrabold animate-pulse">
         Duy nhất hôm nay
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 animate-pulse">
         <span>Kết thúc trong</span>
         <div className="flex gap-2">
           <div className="flex justify-center items-center bg-blue-500 text-white w-12 h-12 rounded-lg">
