@@ -53,7 +53,7 @@ const Navigation = () => {
             <div className="flex items-center">
               <div className="w-2/3 navPart1">
                 <div className="relative mt-1">
-                  <Button>
+                  <Button className="!text-black">
                     <span className="mr-2">
                       <FaListUl />
                     </span>
@@ -81,7 +81,7 @@ const Navigation = () => {
                           onClick={handleCategoryClick} // Ẩn hộp thoại khi nhấp
                         >
                           <Link to={`/products/${category.name}`}>
-                            <Button className="w-full flex items-center navigationMenu group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
+                            <Button className="w-full !text-black flex items-center navigationMenu group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
                               <span className="text-left flex-1 group-hover:text-white">
                                 {category.name}
                               </span>
@@ -100,7 +100,7 @@ const Navigation = () => {
                               {category.subcategories.map((sub, idx) => (
                                 <li key={idx} className="mb-2">
                                   <Link to={`/products/${category.name}`}>
-                                    <Button className="w-full text-left nav_menu">
+                                    <Button className="w-full !text-black text-left nav_menu">
                                       {sub}
                                     </Button>
                                   </Link>
@@ -134,7 +134,7 @@ const Navigation = () => {
                 <div className="flex items-center">
                   <Link to="#">
                     <Tooltip title="123456789" arrow>
-                      <Button className="flex items-center gap-2 whitespace-nowrap">
+                      <Button className="flex !text-black items-center gap-2 whitespace-nowrap">
                         <LuHeadphones className="text-xl" />
                         <span>Chăm sóc khách hàng</span>
                       </Button>
