@@ -14,7 +14,7 @@ class User(Base):
     email = Column(String(50), nullable=False)
     phone_number = Column(String(50), nullable = True)
     address = Column(String(50) , nullable = True)
-    gender = Column(Enum("Male" , "Female" , "Other") , nullable = True)
+    gender = Column(Enum("Male" , "Female" , "Other" ,name = "gender") , nullable = True)
     account_type = Column(Enum("Admin" , "Customer" , "SuperAdmin" , name = "account_type"), default="Customer")
     membership_status = Column(Enum("Gold" , "Diamond" , "Silver", name="membership_status_enum"), default="Silver")
     created_at = Column(DateTime, default=datetime.utcnow)
