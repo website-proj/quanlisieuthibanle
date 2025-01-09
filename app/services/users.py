@@ -47,6 +47,12 @@ class UserService():
         except:
             raise HTTPException(status_code = 400 , detail = 'Incorrect password' )
     @staticmethod
+    def reset_password(email : str , password :str , db : Session):
+        user = db.query(User).filter(User.email == email).first()
+        user.password = get_password_hash(password)
+        db.commit()
+        return user
+    @staticmethod
     def get_infor(current_user : User,db : Session):
         user = db.query(User).filter( User.user_id == current_user.user_id).first()
         user_out = UserOut(
