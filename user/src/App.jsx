@@ -16,6 +16,7 @@ import Success from "./Pages/Success";
 import ForgotPassword from "./Pages/ForgotPassword";
 import Payment from "./Pages/Payment";
 import Order from "./Pages/Order";
+import { CartProvider } from "./Context/CartContext";
 
 const MyContext = createContext();
 
@@ -42,39 +43,41 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <MyContext.Provider value={values}>
-          {isHeaderFooterShow === true && <Header />}
+      <CartProvider>
+        <BrowserRouter>
+          <MyContext.Provider value={values}>
+            {isHeaderFooterShow === true && <Header />}
 
-          <Routes>
-            <Route path={"/"} exact={true} element={<Home />} />
-            <Route
-              path="/products/:categoryName"
-              exact={true}
-              element={<Product />}
-            />
-            <Route path="/Account" exact={true} element={<Account />} />
-            <Route
-              path="/product_detials/:id"
-              exact={true}
-              element={<Product_Details />}
-            />
-            <Route path={"/cart"} exact={true} element={<Cart />} />
-            <Route path={"/payment"} exact={true} element={<Payment />} />
-            <Route path="/signIn" exact={true} element={<SignIn />} />
-            <Route path="/signUp" exact={true} element={<SignUp />} />
-            <Route path="/verify" exact={true} element={<Verify />} />
-            <Route path="/success" exact={true} element={<Success />} />
-            <Route path="/order" exact={true} element={<Order />} />
-            <Route
-              path="/forgotPassword"
-              exact={true}
-              element={<ForgotPassword />}
-            />
-          </Routes>
-          {isHeaderFooterShow === true && <Footer />}
-        </MyContext.Provider>
-      </BrowserRouter>
+            <Routes>
+              <Route path={"/"} exact={true} element={<Home />} />
+              <Route
+                path="/products/:categoryName"
+                exact={true}
+                element={<Product />}
+              />
+              <Route path="/Account" exact={true} element={<Account />} />
+              <Route
+                path="/product_detials/:id"
+                exact={true}
+                element={<Product_Details />}
+              />
+              <Route path={"/cart"} exact={true} element={<Cart />} />
+              <Route path={"/payment"} exact={true} element={<Payment />} />
+              <Route path="/signIn" exact={true} element={<SignIn />} />
+              <Route path="/signUp" exact={true} element={<SignUp />} />
+              <Route path="/verify" exact={true} element={<Verify />} />
+              <Route path="/success" exact={true} element={<Success />} />
+              <Route path="/order" exact={true} element={<Order />} />
+              <Route
+                path="/forgotPassword"
+                exact={true}
+                element={<ForgotPassword />}
+              />
+            </Routes>
+            {isHeaderFooterShow === true && <Footer />}
+          </MyContext.Provider>
+        </BrowserRouter>
+      </CartProvider>
     </>
   );
 }

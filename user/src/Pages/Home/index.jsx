@@ -15,49 +15,13 @@ import NewProducts from "../../components/NewProducts";
 import FooterBanner from "../../components/FooterBanner";
 import BannerSlide from "../../components/BannerSlide";
 import Header from "../../components/Header";
+import { useCart } from "../../Context/CartContext";
 
 const Home = () => {
-  const [cartCount, setCartCount] = useState(0);
+  const { addToCart } = useCart();
+
   const handleAddToCart = (e, productImage) => {
-    // Tạo ảnh đại diện để làm animation
-    const imgElement = document.createElement("img");
-    imgElement.src = productImage;
-    imgElement.className = "flying-img";
-    document.body.appendChild(imgElement);
-
-    // Lấy vị trí của nút thêm vào giỏ hàng và giỏ hàng
-    const rect = e.target.getBoundingClientRect();
-    const cartRect = document
-      .getElementById("cart-icon")
-      .getBoundingClientRect();
-
-    // Tính toán vị trí thực tế trên trang
-    const startX = rect.left + window.scrollX;
-    const startY = rect.top + window.scrollY;
-    const endX = cartRect.left + window.scrollX;
-    const endY = cartRect.top + window.scrollY;
-
-    // Thiết lập vị trí ban đầu
-    imgElement.style.position = "absolute";
-    imgElement.style.left = `${startX}px`;
-    imgElement.style.top = `${startY}px`;
-    imgElement.style.width = "50px";
-    imgElement.style.height = "50px";
-    imgElement.style.zIndex = "1000";
-    imgElement.style.transition =
-      "transform 1s ease-in-out, opacity 1s ease-in-out";
-
-    // Thực hiện animation
-    imgElement.style.transform = `translate(${endX - startX}px, ${
-      endY - startY
-    }px) scale(0.2)`;
-    imgElement.style.opacity = "0";
-
-    // Xóa ảnh sau khi animation hoàn tất và tăng số lượng
-    setTimeout(() => {
-      imgElement.remove();
-      setCartCount((prev) => prev + 1);
-    }, 1000);
+    addToCart(productImage); // Sử dụng hàm từ context
   };
 
   // Chuyển hướng cho id
