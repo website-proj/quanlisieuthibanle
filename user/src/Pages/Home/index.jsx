@@ -31,10 +31,16 @@ const Home = () => {
       .getElementById("cart-icon")
       .getBoundingClientRect();
 
+    // Tính toán vị trí thực tế trên trang
+    const startX = rect.left + window.scrollX;
+    const startY = rect.top + window.scrollY;
+    const endX = cartRect.left + window.scrollX;
+    const endY = cartRect.top + window.scrollY;
+
     // Thiết lập vị trí ban đầu
     imgElement.style.position = "absolute";
-    imgElement.style.left = `${rect.left}px`;
-    imgElement.style.top = `${rect.top}px`;
+    imgElement.style.left = `${startX}px`;
+    imgElement.style.top = `${startY}px`;
     imgElement.style.width = "50px";
     imgElement.style.height = "50px";
     imgElement.style.zIndex = "1000";
@@ -42,8 +48,8 @@ const Home = () => {
       "transform 1s ease-in-out, opacity 1s ease-in-out";
 
     // Thực hiện animation
-    imgElement.style.transform = `translate(${cartRect.left - rect.left}px, ${
-      cartRect.top - rect.top
+    imgElement.style.transform = `translate(${endX - startX}px, ${
+      endY - startY
     }px) scale(0.2)`;
     imgElement.style.opacity = "0";
 
