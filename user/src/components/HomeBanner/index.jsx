@@ -16,7 +16,7 @@ const HomeBanner = () => {
         const data = await response.json();
         setBanners(data);
       } catch (error) {
-        console.error("Error fetching banners:", error);
+        console.error("Lỗi lấy banner :", error);
       }
     };
 
@@ -28,6 +28,7 @@ const HomeBanner = () => {
       <div className="homeSlide py-4">
         <div className="px-[5em]">
           <Swiper
+            key={banners.length}
             loop={true}
             spaceBetween={30}
             navigation={true}
@@ -54,9 +55,9 @@ const HomeBanner = () => {
                           section.scrollIntoView({ behavior: "smooth" });
                         }
                       }}
-                      className="px-6 py-3 text-white bg-blue-900 rounded-full hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 cursor-pointer"
+                      className="px-6 py-3 text-black bg-white rounded-sm text-xl hover:bg-gradient-to-r hover:from-[#6297DB] hover:to-[#1EECFF] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500 cursor-pointer"
                     >
-                      Mua ngay
+                      MUA NGAY
                     </a>
                   </div>
                 </div>
