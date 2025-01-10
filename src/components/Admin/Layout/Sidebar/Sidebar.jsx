@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { PiFlagBannerFold } from "react-icons/pi";
 import { LuUser } from "react-icons/lu";
+import { TbFlag } from "react-icons/tb";
 
 import {
   MdOutlineCategory,
@@ -29,6 +30,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
   const [openProducts, setOpenProducts] = React.useState(false);
   const [openUsers, setOpenUsers] = React.useState(false);
   const [openBanners, setOpenBanners] = React.useState(false);
+  const [openPopups, setOpenPopups] = React.useState(false);
   const [openSettings, setSettings] = React.useState(false);
 
   const location = useLocation();
@@ -38,6 +40,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
   const handleProductsClick = () => setOpenProducts(!openProducts);
   const handleUsersClick = () => setOpenUsers(!openUsers);
   const handleBannersClick = () => setOpenBanners(!openBanners);
+  const handlePopupsClick = () => setOpenPopups(!openPopups);
   const handleSettingsClick = () => setOpenSettings(!openSettings);
 
   return (
@@ -318,7 +321,58 @@ function Sidebar({ isOpen, toggleSidebar }) {
               </ListItem>
             </Box>
           </Collapse>
-        </List>
+
+                {/* Quản lý popup */}
+        <ListItem
+          button
+          onClick={handlePopupsClick}
+          className={`custom-list-item ${
+            isActive("/popups-list") || isActive("/add-popup") ? "active" : ""
+          }`}
+        >
+          <ListItemIcon className="custom-list-item-icon">
+          <TbFlag />
+          </ListItemIcon>
+          <ListItemText className="custom-list-item-text" primary="Popup" />
+          {openPopups ? (
+            <MdExpandLess className="custom-list-item-icon" />
+          ) : (
+            <MdExpandMore className="custom-list-item-icon" />
+          )}
+        </ListItem>
+<Collapse in={openPopups} timeout="auto" unmountOnExit>
+  <Box
+    sx={{
+      display: "flex",
+      flexDirection: "column",
+      gap: 0,
+      paddingLeft: 0,
+      borderLeft: "1px solid var(--dark)",
+      marginLeft: 5.5,
+    }}
+  >
+    <ListItem
+      button
+      component={Link}
+      to="/popups-list"
+      className={`submenu-list-item ${isActive("/popups-list") ? "active" : ""}`}
+      sx={{ paddingLeft: 2 }}
+    >
+      <ListItemText className="submenu-text" primary="Danh sách popup" />
+    </ListItem>
+    <ListItem
+      button
+      component={Link}
+      to="/add-popup"
+      className={`submenu-list-item ${isActive("/add-popup") ? "active" : ""}`}
+      sx={{ paddingLeft: 2 }}
+    >
+      <ListItemText className="submenu-text" primary="Thêm popup" />
+    </ListItem>
+  </Box>
+</Collapse>
+</List>
+
       </Box>
 
       {/* Cài đặt và Đăng xuất */}

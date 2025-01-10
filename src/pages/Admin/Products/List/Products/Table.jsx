@@ -325,26 +325,40 @@ export default function ProductTable() {
         </Box>
       )}
 
-      <Backdrop
-        sx={{
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-          backdropFilter: "blur(3px)",
-        }}
-        open={openBackdrop}
-      >
-        <Box
-          sx={{
-            width: "50%",
-            height: "80%",
-            backgroundColor: "white",
-            boxShadow: "0px 0px 20px 1px rgba(0,0,0,0.2)",
-            borderRadius: "20px",
-            overflow: "hidden",
-          }}
-        >
-          <AddProducts onClose={handleCloseBackdrop} />
-        </Box>
-      </Backdrop>
+<Backdrop
+  open={openBackdrop}
+  onClick={() => setOpenBackdrop(false)}
+  sx={{
+    zIndex: (theme) => theme.zIndex.drawer + 1,
+    backdropFilter: "blur(3px)",
+    position: "fixed", 
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    overflowY: "auto", 
+    borderRadius: 2,
+
+  }}
+>
+    <Paper
+    onClick={(e) => e.stopPropagation()}
+    sx={{
+      padding: 2,
+      maxWidth: '60%',
+      width: "90%",
+      margin: "auto",
+      borderRadius: 2,
+      boxShadow: 3,
+      maxHeight: "90%", 
+      overflowY: "auto", 
+    }}
+  >
+  <Typography variant="h6" sx={{textAlign: 'center', marginBottom: '-1.1em'}}>Thông tin sản phẩm</Typography>
+    <AddProducts onClose={() => setOpenBackdrop(false)} />
+  </Paper>
+</Backdrop>
+
     </Box>
   );
-}
+};

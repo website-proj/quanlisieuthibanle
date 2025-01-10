@@ -16,6 +16,11 @@ import AddSubcategories from './pages/Admin/Categories/AddSubcategories/AddSubca
 import ProductsList from './pages/Admin/Products/List/List.jsx'; 
 import AddProducts from './pages/Admin/Products/Add/AddProducts.jsx'; 
 
+import BannersList from "./pages/Admin/Banners/List/List.jsx"
+import AddBanner from "./pages/Admin/Banners/Add/AddBanners.jsx"
+
+import PopupsList from "./pages/Admin/Popups/List/List.jsx"
+import AddPopups from "./pages/Admin/Popups/Add/AddPopups.jsx"
 
 import Settings from './pages/Admin/Settings/Settings.jsx'; 
 
@@ -36,8 +41,8 @@ import Settings from './pages/Admin/Settings/Settings.jsx';
 import UserManagement from "./pages/User/UserManagement/UserManagement";
 import AddUser from "./pages/User/AddUser/AddUser";
 import Orders from "./pages/Orders/Orders"
-import BannersList from "./pages/Banners/BannersList/BannersList"
-import AddBanner from "./pages/Banners/AddBanner/AddBanner"
+// import BannersList from "./pages/Banners/BannersList/BannersList"
+// import AddBanner from "./pages/Banners/AddBanner/AddBanner"
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); 
@@ -68,14 +73,18 @@ function App() {
                 <Route path="/add-categories" element={<AddCategories />} />
                 <Route path="/subcategories-list" element={<SubcategoriesList />} />
                 <Route path="/add-subcategories" element={<AddSubcategories />} />
+                <Route path="/banners-list" element={<BannersList/>} />
+                <Route path="/add-banner" element={<AddBanner/>} />
+                <Route path="/popups-list" element={<PopupsList/>} />
+                <Route path="/add-popup" element={<AddPopups/>} />
                 {/*<Route path="/add-categories" element={<AddCategories />} />
                 <Route path="/subcategories-list" element={<SubcategoriesList/>} />
                 <Route path="/add-subcategories" element={<AddSubcategories/>} /> */}
                 <Route path="/user-management" element={<UserManagement/>} />
                 <Route path="/add-user" element={<AddUser/>} />
                 <Route path="/orders" element={<Orders/>} />
-                <Route path="/banners-list" element={<BannersList/>} />
-                <Route path="/add-banner" element={<AddBanner/>} />
+                {/* <Route path="/banners-list" element={<BannersList/>} />
+                <Route path="/add-banner" element={<AddBanner/>} /> */}
                 <Route path="/settings" element={<Settings/>} />
               </Routes>
             </div>

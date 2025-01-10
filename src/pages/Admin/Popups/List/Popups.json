@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1434242,
+    "image": "https://vending-cdn.kootoro.com/torov-cms/upload/image/1669358914523-kh%C3%A1i%20ni%E1%BB%87m%20qu%E1%BA%A3ng%20c%C3%A1o%20popup%20tr%C3%AAn%20website.jpg",
+    "name": "Bánh quy",
+    "position": "Header",
+    "priority": 1,
+    "status": "Đang hoạt động"
+  },
+  {
+    "id": 2234234,
+    "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
+    "name": "Sữa tươi",
+    "position": "Bottom",
+    "priority": 2,
+    "status": "Không hoạt động"
+  },
+  {
+    "id": 2342343,
+    "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
+    "name": "Quần áo",
+    "position": "Side",
+    "priority": 3,
+    "status": "Đang hoạt động"
+  },
+  {
+    "id": 434535,
+    "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
+    "name": "Sữa ádtươi",
+    "position": "Bottom",
+    "priority": 4,
+    "status": "Không hoạt động"
+  },
+  {
+    "id": 345235,
+    "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
+    "name": "qưeQuần áo",
+    "position": "Side",
+    "priority": 5,
+    "status": "Đang hoạt động"
+  },
+  {
+    "id": 1236,
+    "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
+    "name": "qưeSữaf tươi",
+    "position": "Bottom",
+    "priority": 6,
+    "status": "Không hoạt động"
+  },
+  {
+    "id": 7,
+    "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
+    "name": "dsfeQuần áo",
+    "position": "Side",
+    "priority": 7,
+    "status": "Đang hoạt động"
+  },
+  {
+    "id": 8235,
+    "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
+    "name": "Sdsữa tươi",
+    "position": "Bottom",
+    "priority": 8,
+    "status": "Không hoạt động"
+  },
+  {
+    "id": 235239,
+    "image": "/I/61krVw7kVSL.jpg",
+    "name": "huần áo",
+    "position": "Side",
+    "priority": 9,
+    "status": "Đang hoạt động"
+  }
+]

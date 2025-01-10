@@ -116,46 +116,46 @@ function AddCategories() {
       </Backdrop>
 
       <Backdrop 
-  open={success} 
-  style={{
-    zIndex: 9999, 
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center',
-  }}
-  onClick={handleCloseSuccess} 
->
-  <Box
-    style={{
-      backgroundColor: 'white',
-      padding: '20px',
-      borderRadius: '20px',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      maxWidth: '90%',
-      maxHeight: '80%',
-      width: 'auto',
-      height: 'auto',
-      overflow: 'hidden',
-      transform: 'scale(0.9)', 
-      transformOrigin: 'center',
-    }}
-    onClick={(e) => e.stopPropagation()} 
-  >
-    <Typography variant="h5" style={{ fontWeight: '500' }}>Bạn đã thêm một danh mục!</Typography>
-    <img src={addedCategory?.image} alt="Category" style={{ width: '30em', height: '22em', objectFit: 'contain', marginBottom: '0em' }} />
-    <Typography variant="h6">Tên danh mục: {addedCategory?.name}</Typography>
-    <Button
-      variant="contained"
-      color="primary"
-      onClick={handleCloseSuccess}
-      style={{ marginTop: '1em', borderRadius: "15px" }}
+        open={success} 
+        style={{
+          zIndex: 9999, 
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center',
+        }}
+        onClick={handleCloseSuccess} 
+      >
+    <Box
+      style={{
+        backgroundColor: 'white',
+        padding: '20px',
+        borderRadius: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        maxWidth: '90%',
+        maxHeight: '80%',
+        width: 'auto',
+        height: 'auto',
+        overflow: 'hidden',
+        transform: 'scale(0.9)', 
+        transformOrigin: 'center',
+      }}
+      onClick={(e) => e.stopPropagation()} 
     >
-      Đóng
-    </Button>
-  </Box>
+      <Typography variant="h5" style={{ fontWeight: '500' }}>Bạn đã thêm một danh mục!</Typography>
+      <img src={addedCategory?.image} alt="Category" style={{ width: '30em', height: '22em', objectFit: 'contain', marginBottom: '0em' }} />
+      <Typography variant="h6">Tên danh mục: {addedCategory?.name}</Typography>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleCloseSuccess}
+        style={{ marginTop: '1em', borderRadius: "15px" }}
+      >
+        Đóng
+      </Button>
+    </Box>
 </Backdrop>
 
     </div>
