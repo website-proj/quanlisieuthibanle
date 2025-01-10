@@ -1,4 +1,5 @@
 import Sidebar from "../../components/Sidebar";
+import React, { useContext } from "react";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import "./style.css";
@@ -7,10 +8,13 @@ import { useState, useEffect } from "react"; // Thêm dòng này
 import { BsCart4 } from "react-icons/bs";
 import ScrollToTopButton from "../../components/ScrollTop";
 
+import { CartContext } from "../../Context/CartContext"; // Import CartContext
+
 const Product = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [visibleProducts, setVisibleProducts] = useState(12); // Số sản phẩm hiển thị ban đầu
+  const { incrementCartCount } = useContext(CartContext); // Lấy hàm tăng số lượng giỏ hàng từ context
 
   useEffect(() => {
     // Fetch data từ API
@@ -39,27 +43,27 @@ const Product = () => {
     }, 2000); // Giả lập thời gian tải dữ liệu (2 giây)
   };
 
-  const [cartCount, setCartCount] = useState(0);
   const handleAddToCart = (e, productImage) => {
-    // Tạo ảnh đại diện để làm animation
+    handleAddToCartAnimation(e, productImage);
+    incrementCartCount(); // Tăng số lượng giỏ hàng
+  };
+
+  const handleAddToCartAnimation = (e, productImage) => {
     const imgElement = document.createElement("img");
     imgElement.src = productImage;
     imgElement.className = "flying-img";
     document.body.appendChild(imgElement);
 
-    // Lấy vị trí của nút thêm vào giỏ hàng và giỏ hàng
     const rect = e.target.getBoundingClientRect();
     const cartRect = document
       .getElementById("cart-icon")
       .getBoundingClientRect();
 
-    // Tính toán vị trí thực tế trên trang
     const startX = rect.left + window.scrollX;
     const startY = rect.top + window.scrollY;
     const endX = cartRect.left + window.scrollX;
     const endY = cartRect.top + window.scrollY;
 
-    // Thiết lập vị trí ban đầu
     imgElement.style.position = "absolute";
     imgElement.style.left = `${startX}px`;
     imgElement.style.top = `${startY}px`;
@@ -69,16 +73,14 @@ const Product = () => {
     imgElement.style.transition =
       "transform 1s ease-in-out, opacity 1s ease-in-out";
 
-    // Thực hiện animation
     imgElement.style.transform = `translate(${endX - startX}px, ${
       endY - startY
     }px) scale(0.2)`;
     imgElement.style.opacity = "0";
 
-    // Xóa ảnh sau khi animation hoàn tất và tăng số lượng
     setTimeout(() => {
       imgElement.remove();
-      setCartCount((prev) => prev + 1);
+      incrementCartCount();
     }, 1000);
   };
 
