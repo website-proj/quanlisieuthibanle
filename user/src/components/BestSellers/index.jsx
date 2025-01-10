@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import { BsCart4 } from "react-icons/bs";
+import { CartContext } from "../../Context/CartContext";
+import { useContext } from "react";
 
 const BestSellerProducts = () => {
   const [products, setProducts] = useState([]);
@@ -19,6 +21,11 @@ const BestSellerProducts = () => {
 
   const formatCurrency = (value) => {
     return value.toLocaleString("vi-VN") + "đ";
+  };
+  const { incrementCartCount } = useContext(CartContext);
+
+  const handleAddToCart = () => {
+    incrementCartCount(); // Gọi hàm cập nhật giỏ hàng
   };
 
   const handleAddToCartAnimation = (e, productImage) => {

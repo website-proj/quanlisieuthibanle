@@ -13,11 +13,11 @@ import { TbFileSpreadsheet } from "react-icons/tb";
 import { IoIosLogOut } from "react-icons/io";
 import { MyContext } from "../../App";
 import { IoLogInOutline } from "react-icons/io5";
-import { useCart } from "../../Context/CartContext";
+import { CartContext } from "../../Context/CartContext";
 
 const Header = () => {
   const context = useContext(MyContext);
-  const { cartCount } = useCart();
+  const { cartCount } = useContext(CartContext);
   return (
     <>
       <header>

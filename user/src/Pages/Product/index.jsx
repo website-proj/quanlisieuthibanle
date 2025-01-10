@@ -95,7 +95,7 @@ const Product = () => {
             {/* Content bên cạnh Sidebar */}
             <div className="w-4/5 pl-4 Cart">
               {/* Danh sách nút */}
-              <div className="flex items-center space-x-4 mb-4 Cart">
+              <div className="flex items-center space-x-4 mb-4">
                 <Link to="">
                   <Button
                     variant="contained"

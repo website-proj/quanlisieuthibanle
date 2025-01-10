@@ -16,4 +16,10 @@ nav {
 
 .nav_menu {
   margin-left: 0em !important;
+  background-color: transparent; /* Nền mặc định */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển đổi */
+}
+.nav_menu:hover {
+  background-color: #3b82f6; /* Nền khi hover */
+  color: white !important; /* Màu chữ khi hover */
 }

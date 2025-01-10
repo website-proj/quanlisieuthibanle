@@ -1,0 +1,32 @@
+[
+  {
+    "popup_id": "POPUP001",
+    "image": "https://hcm.fstorage.vn/images/2025/01/2-20250108014127.jpg",
+    "content": "Welcome to our site! Check out our special offers.",
+    "status": "Active",
+    "start_date": "2025-01-10T08:00:00",
+    "end_date": "2025-01-15T18:00:00",
+    "date_created": "2025-01-10T08:00:00",
+    "date_updated": "2025-01-10T08:00:00"
+  },
+  {
+    "popup_id": "POPUP002",
+    "image": "https://hcm.fstorage.vn/images/2024/12/500x500_popup-banner-20241230102647.png",
+    "content": "Don't miss our new arrivals this week!",
+    "status": "Inactive",
+    "start_date": "2025-01-05T08:00:00",
+    "end_date": "2025-01-10T18:00:00",
+    "date_created": "2025-01-05T08:00:00",
+    "date_updated": "2025-01-07T10:00:00"
+  },
+  {
+    "popup_id": "POPUP003",
+    "image": "https://hcm.fstorage.vn/images/2024/12/popup1-20241230023314.jpg",
+    "content": "Subscribe to our newsletter for updates.",
+    "status": "Active",
+    "start_date": "2025-01-09T08:00:00",
+    "end_date": null,
+    "date_created": "2025-01-09T08:00:00",
+    "date_updated": "2025-01-09T09:00:00"
+  }
+]

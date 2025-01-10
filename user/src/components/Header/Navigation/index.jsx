@@ -75,7 +75,7 @@ const Navigation = () => {
                       {categories.map((category, index) => (
                         <li
                           key={index}
-                          className="relative group mb-2"
+                          className="relative group"
                           onMouseEnter={() => handleMouseEnter(category.name)}
                           onMouseLeave={handleMouseLeave}
                           onClick={handleCategoryClick} // Ẩn hộp thoại khi nhấp
@@ -98,7 +98,7 @@ const Navigation = () => {
                           >
                             <ul>
                               {category.subcategories.map((sub, idx) => (
-                                <li key={idx} className="mb-2">
+                                <li key={idx}>
                                   <Link to={`/products/${category.name}`}>
                                     <Button className="w-full !text-black text-left nav_menu">
                                       {sub}
