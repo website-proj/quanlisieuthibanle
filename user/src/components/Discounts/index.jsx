@@ -84,7 +84,7 @@ const DiscountProducts = () => {
             className="border shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
             key={product.product_id}
           >
-            <Link to={`/product_detials/${product.product_id}`}>
+            <Link to={`/product_detials/${product.product_id}`} state={product}>
               <div className="relative overflow-hidden rounded-lg">
                 <img
                   src={product.image}
@@ -115,7 +115,7 @@ const DiscountProducts = () => {
 
             <Button
               onClick={(e) => handleAddToCart(e, product.image)}
-              className="productCart"
+              className="productCart "
             >
               <BsCart4 className="text-[2em] pr-2" />
               Thêm vào giỏ hàng
@@ -125,7 +125,10 @@ const DiscountProducts = () => {
       </div>
 
       <div className="flex justify-center mt-6">
-        <Button onClick={handleShowAll} className="see_more !text-lg mt-4">
+        <Button
+          onClick={handleShowAll}
+          className="see_more pulsating-button !text-lg mt-4"
+        >
           {showAll ? "Ẩn bớt" : "Xem thêm"}
         </Button>
       </div>

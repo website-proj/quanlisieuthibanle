@@ -16,7 +16,7 @@
   margin-left: 0 !important;
   border-width: 2px !important;
   border-color: #3b82f6 !important; /* Màu xanh */
-  background-color: #1d4ed8 !important;
+  background-color: #0096ff !important;
   color: #ffffff !important; /* Màu chữ trắng */
   font-weight: 600; /* Đậm vừa */
   font-size: 1.125em !important; /* 18px - text-lg */
@@ -129,4 +129,34 @@
 }
 .shadow-text {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Đổ bóng nhẹ */
+}
+/* Pulsating effect */
+.pulsating-button {
+  animation: pulsate 1.5s ease-in-out infinite;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.pulsating-button:hover {
+  background-color: #1669c1;
+  transform: scale(1.05);
 }
