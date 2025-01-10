@@ -14,16 +14,8 @@ import BestSellerProducts from "../../components/BestSellers";
 import NewProducts from "../../components/NewProducts";
 import FooterBanner from "../../components/FooterBanner";
 import BannerSlide from "../../components/BannerSlide";
-import Header from "../../components/Header";
-import { useCart } from "../../Context/CartContext";
 
 const Home = () => {
-  const { addToCart } = useCart();
-
-  const handleAddToCart = (e, productImage) => {
-    addToCart(productImage); // Sử dụng hàm từ context
-  };
-
   // Chuyển hướng cho id
 
   useEffect(() => {
@@ -68,7 +60,6 @@ const Home = () => {
 
   return (
     <>
-      <Header cartCount={cartCount} />
       <HomeBanner />
 
       <section id="flashseller" className="homeProducts">
@@ -80,7 +71,7 @@ const Home = () => {
             {/* Timer và danh sách sản phẩm chiếm 3/4 chiều rộng */}
             <div className="w-3/4 productSale">
               <Timer duration={2 * 24 * 60 * 60 * 1000} />
-              <div className="grid grid-cols-4 gap-8 productList">
+              <div className="grid grid-cols-4 gap-5 productList">
                 {products?.slice(0, 12).map((product) => {
                   // Hàm định dạng số tiền
                   const formatCurrency = (value) =>
@@ -88,7 +79,7 @@ const Home = () => {
 
                   return (
                     <div
-                      className="border rounded-lg p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+                      className="border rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
                       key={product.product_id} // Đặt key trực tiếp trên phần tử bao bọc
                     >
                       <Link
@@ -126,10 +117,7 @@ const Home = () => {
                           </div>
                         </div>
                       </Link>
-                      <Button
-                        onClick={(e) => handleAddToCart(e, product.image)}
-                        className="productCart"
-                      >
+                      <Button className="productCart">
                         <BsCart4 className="text-[2em] pr-2" />
                         Thêm vào giỏ hàng
                       </Button>

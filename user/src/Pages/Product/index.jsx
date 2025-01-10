@@ -142,7 +142,7 @@ const Product = () => {
                   return (
                     // Bao bọc mỗi product_item bằng Link để chuyển trang khi nhấp vào sản phẩm
                     <div
-                      className="border rounded-lg p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+                      className="border rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
                       key={product.product_id} // Đặt key trực tiếp trên phần tử bao bọc
                     >
                       <Link to={`/product_detials/${product.product_id}`}>

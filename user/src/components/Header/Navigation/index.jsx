@@ -45,13 +45,13 @@ const Navigation = () => {
       <div className="container mx-auto">
         <div className="flex items-center">
           {/* Part 1 */}
-          <div
-            className="container mx-auto relative"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
+          <div className="container mx-auto relative">
             <div className="flex items-center">
-              <div className="w-2/3 navPart1">
+              <div
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="w-2/3 navPart1"
+              >
                 <div className="relative mt-1">
                   <Button className="!text-black">
                     <span className="mr-2">
@@ -67,7 +67,7 @@ const Navigation = () => {
 
                   {/* Dropdown menu */}
                   <div
-                    className={`absolute top-[2.65em] left-20 w-68 bg-white shadow-lg p-2 border border-gray-200 transition-all duration-300 ${
+                    className={`absolute top-[2.65em] left-16 w-68 bg-white rounded-lg shadow-lg p-2 border border-gray-200 transition-all duration-300 ${
                       isHovered ? "opacity-100 visible" : "opacity-0 invisible"
                     }`}
                   >
@@ -90,7 +90,7 @@ const Navigation = () => {
                           </Link>
                           {/* Sub-submenu */}
                           <div
-                            className={`absolute left-[102.5%] top-0 w-64 bg-white shadow-lg p-2 border border-gray-200 transition-all duration-300 ${
+                            className={`absolute left-[102.5%] top-0 w-64 bg-white shadow rounded-lg p-2 border border-gray-200 transition-all duration-300 ${
                               activeCategory === category.name
                                 ? "opacity-100 visible"
                                 : "opacity-0 invisible"

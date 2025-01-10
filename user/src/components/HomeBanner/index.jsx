@@ -55,7 +55,7 @@ const HomeBanner = () => {
                           section.scrollIntoView({ behavior: "smooth" });
                         }
                       }}
-                      className="px-6 py-3 text-black bg-white rounded-sm text-xl hover:bg-gradient-to-r hover:from-[#6297DB] hover:to-[#1EECFF] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500 cursor-pointer"
+                      className="px-6 py-3 text-black bg-white rounded-xl text-xl hover:bg-gradient-to-r hover:from-[#6297DB] hover:to-[#1EECFF] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500 cursor-pointer"
                     >
                       MUA NGAY
                     </a>
