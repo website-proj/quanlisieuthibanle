@@ -25,7 +25,7 @@ const Account = () => {
       <div className="min-h-screen flex mt-36 mb-4">
         {/* Sidebar */}
         <aside className="w-1/5 setting ">
-          <ul className="space-y-4 bg-white shadow p-4 rounded-md mr-9">
+          <ul className="space-y-4 bg-white shadow p-4 rounded-2xl mr-9">
             <li className="flex items-center text-black-800 font-[1.5em]">
               <FaRegUser className="mr-2 text-white bg-blue-500 rounded-full p-2 text-[2em]" />
               Tài khoản
@@ -70,7 +70,7 @@ const Account = () => {
 
         <div className="w-4/5 mr-[5%]">
           {activePage === "profile" && (
-            <div className="mx-auto bg-white shadow-md rounded-lg p-6">
+            <div className="mx-auto bg-white shadow-md rounded-2xl p-6">
               <h2 className="text-xl font-semibold mb-4 text-left">
                 Thông tin tài khoản
               </h2>
@@ -83,43 +83,46 @@ const Account = () => {
                 {/* Tên đăng nhập */}
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                    Tên đăng nhập
+                    Tên đăng nhập <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Nhập tên đăng nhập"
                     className="w-3/4 border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12"
+                    required
                   />
                 </div>
 
                 {/* Số điện thoại */}
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                    Số điện thoại
+                    Số điện thoại <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Nhập số điện thoại"
                     className="w-3/4 border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12"
+                    required
                   />
                 </div>
 
                 {/* Email */}
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                    Email
+                    Email <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
                     placeholder="Nhập email"
                     className="w-3/4 border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12"
+                    required
                   />
                 </div>
 
                 {/* Giới tính */}
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                    Giới tính
+                    Giới tính <span className="text-red-500">*</span>
                   </label>
                   <div className="w-3/4 flex items-center space-x-4 ml-12">
                     <label className="flex items-center">
@@ -128,6 +131,7 @@ const Account = () => {
                         name="gender"
                         value="male"
                         className="mr-2 peer"
+                        required
                       />
                       Nam
                     </label>
@@ -137,6 +141,7 @@ const Account = () => {
                         name="gender"
                         value="female"
                         className="mr-2"
+                        required
                       />
                       Nữ
                     </label>
@@ -155,12 +160,13 @@ const Account = () => {
                 {/* Địa chỉ */}
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                    Số nhà
+                    Số nhà <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Địa chỉ"
                     className="w-3/4 border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12"
+                    required
                   />
                 </div>
 
@@ -179,8 +185,9 @@ const Account = () => {
               </form>
             </div>
           )}
+
           {activePage === "changePassword" && (
-            <div className="mx-auto bg-white shadow-md rounded-lg p-6">
+            <div className="mx-auto bg-white shadow-md rounded-2xl p-6">
               <h2 className="text-xl font-semibold mb-4 text-left">
                 Thêm mật khẩu
               </h2>
@@ -193,13 +200,14 @@ const Account = () => {
                 {/* Mật khẩu cũ */}
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                    Mật khẩu cũ
+                    Mật khẩu cũ <span className="text-red-500">*</span>
                   </label>
                   <div className="relative w-3/4 ml-12">
                     <input
                       type={showOldPassword ? "text" : "password"}
                       placeholder="Nhập mật khẩu cũ"
                       className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      required
                     />
                     <button
                       type="button"
@@ -214,13 +222,14 @@ const Account = () => {
                 {/* Mật khẩu mới */}
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                    Mật khẩu mới
+                    Mật khẩu mới <span className="text-red-500">*</span>
                   </label>
                   <div className="relative w-3/4 ml-12">
                     <input
                       type={showNewPassword ? "text" : "password"}
                       placeholder="Nhập mật khẩu mới"
                       className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      required
                     />
                     <button
                       type="button"
@@ -235,13 +244,14 @@ const Account = () => {
                 {/* Xác nhận mật khẩu */}
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                    Xác nhận mật khẩu
+                    Xác nhận mật khẩu <span className="text-red-500">*</span>
                   </label>
                   <div className="relative w-3/4 ml-12">
                     <input
                       type={showConfirmPassword ? "text" : "password"}
                       placeholder="Xác nhận mật khẩu mới"
                       className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      required
                     />
                     <button
                       type="button"

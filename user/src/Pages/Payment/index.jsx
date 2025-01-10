@@ -4,7 +4,6 @@ import InvoiceForm from "../../components/InvoiceForm";
 import PaymentMethod from "../../components/PaymentMethod";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-import Footer from "../../components/footer";
 
 const Payment = () => {
   return (
@@ -226,7 +225,6 @@ const Payment = () => {
           </div>
         </div>
       </section>
-      <Footer />
     </>
   );
 };

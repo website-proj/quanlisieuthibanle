@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MdDeleteOutline } from "react-icons/md";
-import { LuShoppingCart } from "react-icons/lu"; // Thêm import LuShoppingCart
+import { BsCart4 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
@@ -8,9 +8,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules"; // Thay đổi import Navigation
 import "swiper/css";
 import "swiper/css/navigation";
-
+import { CartContext } from "../../Context/CartContext";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
 import Header from "../../components/Header";
 
+const formatCurrency = (value) => value.toLocaleString("vi-VN") + "đ";
 const Cart = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [products, setProducts] = useState([]);
@@ -111,6 +115,45 @@ const Cart = () => {
 
   const handleCheckout = () => {
     navigate("/payment");
+  };
+
+  const { cartCount, incrementCartCount } = useContext(CartContext);
+
+  const handleAddToCart = (e, productImage) => {
+    // Animation logic
+    const imgElement = document.createElement("img");
+    imgElement.src = productImage;
+    imgElement.className = "flying-img";
+    document.body.appendChild(imgElement);
+
+    const rect = e.target.getBoundingClientRect();
+    const cartRect = document
+      .getElementById("cart-icon")
+      .getBoundingClientRect();
+
+    const startX = rect.left + window.scrollX;
+    const startY = rect.top + window.scrollY;
+    const endX = cartRect.left + window.scrollX;
+    const endY = cartRect.top + window.scrollY;
+
+    imgElement.style.position = "absolute";
+    imgElement.style.left = `${startX}px`;
+    imgElement.style.top = `${startY}px`;
+    imgElement.style.width = "50px";
+    imgElement.style.height = "50px";
+    imgElement.style.zIndex = "1000";
+    imgElement.style.transition =
+      "transform 1s ease-in-out, opacity 1s ease-in-out";
+
+    imgElement.style.transform = `translate(${endX - startX}px, ${
+      endY - startY
+    }px) scale(0.2)`;
+    imgElement.style.opacity = "0";
+
+    setTimeout(() => {
+      imgElement.remove();
+      incrementCartCount();
+    }, 1000);
   };
 
   return (
@@ -261,44 +304,57 @@ const Cart = () => {
           </h3>
           <Swiper
             slidesPerView={5}
-            spaceBetween={30}
+            spaceBetween={40}
             navigation={true}
             modules={[Navigation]}
             className="mySwiper relatedPro"
           >
             {relatedProducts.map((product) => (
               <SwiperSlide key={product.id}>
-                <div className="relatedPro_item border rounded-lg p-4 shadow-lg w-full hover:border-blue-500 hover:shadow-xl">
-                  <div className="relative">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="rounded-t-lg w-full"
-                    />
-                    {product.discount && (
-                      <span className="absolute top-4 left-[-1.2em] bg-blue-500 text-white text-sm font-bold px-2 py-1 rounded">
-                        {product.discount}
-                      </span>
-                    )}
-                  </div>
-                  <div className="mt-4">
-                    <h4 className="text-base font-semibold">{product.name}</h4>
-                    <p className="text-sm text-gray-500">ĐVT: {product.unit}</p>
-                    <div className="flex justify-between mt-2">
-                      <span className="text-red-500 font-bold">
-                        {product.price.toLocaleString()}đ
-                      </span>
-                      {product.old_price && (
-                        <span className="line-through text-gray-400">
-                          {product.old_price.toLocaleString()}đ
+                <div
+                  className="border bg-white rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+                  key={product.product_id} // Đặt key trực tiếp trên phần tử bao bọc
+                >
+                  <Link
+                    to={`/product_detials/${product.product_id}`}
+                    state={product}
+                  >
+                    <div className="relative overflow-hidden rounded-lg">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-32 object-cover transition-transform duration-300 hover:scale-110"
+                      />
+                      {product.discount && (
+                        <span className="absolute top-[0.5em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                          {product.discount}
                         </span>
                       )}
                     </div>
-                    <button className="mt-2 w-full bg-blue-500 text-white py-2 rounded-md flex items-center justify-center">
-                      <LuShoppingCart className="text-2xl mr-4" />
-                      Thêm vào giỏ hàng
-                    </button>
-                  </div>
+                    <div className="mt-4">
+                      <h5 className="text-[0.9em] text-left">{product.name}</h5>
+                      <p className="text-[0.72em] text-black-500 text-left">
+                        ĐVT: {product.unit}
+                      </p>
+                      <div className="flex items-center justify-between mt-2 space-x-2">
+                        <span className="text-red-500 text-base font-bold">
+                          {formatCurrency(product.price)}
+                        </span>
+                        {product.old_price && (
+                          <span className="line-through text-sm text-gray-400">
+                            {formatCurrency(product.old_price)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                  <Button
+                    onClick={(e) => handleAddToCart(e, product.image)}
+                    className="productCart"
+                  >
+                    <BsCart4 className="text-[2em] pr-2" />
+                    Thêm vào giỏ hàng
+                  </Button>
                 </div>
               </SwiperSlide>
             ))}
