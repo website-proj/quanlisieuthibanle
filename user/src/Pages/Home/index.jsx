@@ -14,8 +14,52 @@ import BestSellerProducts from "../../components/BestSellers";
 import NewProducts from "../../components/NewProducts";
 import FooterBanner from "../../components/FooterBanner";
 import BannerSlide from "../../components/BannerSlide";
+import Header from "../../components/Header";
 
 const Home = () => {
+  const [cartCount, setCartCount] = useState(0);
+  const handleAddToCart = (e, productImage) => {
+    // Tạo ảnh đại diện để làm animation
+    const imgElement = document.createElement("img");
+    imgElement.src = productImage;
+    imgElement.className = "flying-img";
+    document.body.appendChild(imgElement);
+
+    // Lấy vị trí của nút thêm vào giỏ hàng và giỏ hàng
+    const rect = e.target.getBoundingClientRect();
+    const cartRect = document
+      .getElementById("cart-icon")
+      .getBoundingClientRect();
+
+    // Tính toán vị trí thực tế trên trang
+    const startX = rect.left + window.scrollX;
+    const startY = rect.top + window.scrollY;
+    const endX = cartRect.left + window.scrollX;
+    const endY = cartRect.top + window.scrollY;
+
+    // Thiết lập vị trí ban đầu
+    imgElement.style.position = "absolute";
+    imgElement.style.left = `${startX}px`;
+    imgElement.style.top = `${startY}px`;
+    imgElement.style.width = "50px";
+    imgElement.style.height = "50px";
+    imgElement.style.zIndex = "1000";
+    imgElement.style.transition =
+      "transform 1s ease-in-out, opacity 1s ease-in-out";
+
+    // Thực hiện animation
+    imgElement.style.transform = `translate(${endX - startX}px, ${
+      endY - startY
+    }px) scale(0.2)`;
+    imgElement.style.opacity = "0";
+
+    // Xóa ảnh sau khi animation hoàn tất và tăng số lượng
+    setTimeout(() => {
+      imgElement.remove();
+      setCartCount((prev) => prev + 1);
+    }, 1000);
+  };
+
   // Chuyển hướng cho id
 
   useEffect(() => {
@@ -60,6 +104,7 @@ const Home = () => {
 
   return (
     <>
+      <Header cartCount={cartCount} />
       <HomeBanner />
 
       <section id="flashseller" className="homeProducts">
@@ -71,7 +116,7 @@ const Home = () => {
             {/* Timer và danh sách sản phẩm chiếm 3/4 chiều rộng */}
             <div className="w-3/4 productSale">
               <Timer duration={2 * 24 * 60 * 60 * 1000} />
-              <div className="grid grid-cols-4 gap-5 productList">
+              <div className="grid grid-cols-4 gap-8 productList">
                 {products?.slice(0, 12).map((product) => {
                   // Hàm định dạng số tiền
                   const formatCurrency = (value) =>
@@ -79,7 +124,7 @@ const Home = () => {
 
                   return (
                     <div
-                      className="border rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+                      className="border rounded-lg p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
                       key={product.product_id} // Đặt key trực tiếp trên phần tử bao bọc
                     >
                       <Link
@@ -117,7 +162,10 @@ const Home = () => {
                           </div>
                         </div>
                       </Link>
-                      <Button className="productCart">
+                      <Button
+                        onClick={(e) => handleAddToCart(e, product.image)}
+                        className="productCart"
+                      >
                         <BsCart4 className="text-[2em] pr-2" />
                         Thêm vào giỏ hàng
                       </Button>
