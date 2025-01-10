@@ -58,7 +58,7 @@ Sữa chua không đường Vinamilk được đóng hộp nhỏ gọn, tiện d
       <div className="mt-36">
         <IconBreadcrumbs />
         <div className="container mx-auto p-4">
-          <ProductCard className="mr-[6%]" />
+          <ProductCard product={product} className="mr-[6%]" />
 
           <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-5  ml-[3%] mr-[3%]">
             <div className="mota ">
