@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import { BsCart4 } from "react-icons/bs";
-import { useCart } from "../../Context/CartContext";
 
 const BestSellerProducts = () => {
   const [products, setProducts] = useState([]);
@@ -22,10 +21,45 @@ const BestSellerProducts = () => {
     return value.toLocaleString("vi-VN") + "đ";
   };
 
-  const { addToCart } = useCart();
+  const handleAddToCartAnimation = (e, productImage) => {
+    // Tạo ảnh đại diện để làm animation
+    const imgElement = document.createElement("img");
+    imgElement.src = productImage;
+    imgElement.className = "flying-img";
+    document.body.appendChild(imgElement);
 
-  const handleAddToCart = (e, productImage) => {
-    addToCart(productImage); // Sử dụng hàm từ context
+    // Lấy vị trí của nút và giỏ hàng
+    const rect = e.target.getBoundingClientRect();
+    const cartRect = document
+      .getElementById("cart-icon")
+      .getBoundingClientRect();
+
+    // Tính toán vị trí thực tế
+    const startX = rect.left + window.scrollX;
+    const startY = rect.top + window.scrollY;
+    const endX = cartRect.left + window.scrollX + cartRect.width / 2;
+    const endY = cartRect.top + window.scrollY + cartRect.height / 2;
+
+    // Thiết lập vị trí ban đầu
+    imgElement.style.position = "absolute";
+    imgElement.style.left = `${startX}px`;
+    imgElement.style.top = `${startY}px`;
+    imgElement.style.width = "50px";
+    imgElement.style.height = "50px";
+    imgElement.style.zIndex = "1000";
+    imgElement.style.transition =
+      "transform 1s ease-in-out, opacity 1s ease-in-out";
+
+    // Thực hiện animation
+    imgElement.style.transform = `translate(${endX - startX}px, ${
+      endY - startY
+    }px) scale(0.2)`;
+    imgElement.style.opacity = "0";
+
+    // Xóa ảnh sau khi animation hoàn tất
+    setTimeout(() => {
+      imgElement.remove();
+    }, 1000);
   };
 
   const handleShowAll = () => {
@@ -46,10 +80,10 @@ const BestSellerProducts = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 productListSale">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-16 productListSale">
         {(showAll ? products : products.slice(0, 10)).map((product) => (
           <div
-            className="border shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+            className="border shadow rounded-lg p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
             key={product.product_id}
           >
             <Link to={`/product_detials/${product.product_id}`}>
@@ -82,8 +116,8 @@ const BestSellerProducts = () => {
             </Link>
 
             <Button
-              className="productCart rounded-lg"
-              onClick={(e) => handleAddToCart(e, product.image)}
+              className="productCart"
+              onClick={(e) => handleAddToCartAnimation(e, product.image)}
             >
               <BsCart4 className="text-[2em] pr-2" />
               Thêm vào giỏ hàng
@@ -93,7 +127,7 @@ const BestSellerProducts = () => {
       </div>
 
       <div className="flex justify-center mt-6">
-        <Button onClick={handleShowAll} className="see_more !text-lg  mt-4">
+        <Button onClick={handleShowAll} className="see_more !text-lg mt-4">
           {showAll ? "Ẩn bớt" : "Xem thêm"}
         </Button>
       </div>
