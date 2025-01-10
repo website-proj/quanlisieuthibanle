@@ -92,7 +92,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="proCard border rounded-lg p-4 shadow-lg">
+    <div className="proCard mt-2 border rounded-2xl p-4 shadow-lg">
       <div className="flex">
         <div className="w-1/3 proImg">
           <img

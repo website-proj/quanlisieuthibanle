@@ -1,63 +1,27 @@
 import * as React from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import axios from "axios"; // Import axios để gọi API
 import "./style.css";
 
-// Giả lập API trả về các bình luận với ngày và giờ
 function Reviews() {
-  const reviews = [
-    {
-      id: 1,
-      user: "Nguyễn Văn A",
-      rating: 5,
-      comment: "Sản phẩm rất tốt",
-      date: "2024-12-08 14:30:00",
-      userImage: "https://randomuser.me/api/portraits/men/1.jpg", // Ví dụ ảnh người dùng
-    },
-    {
-      id: 2,
-      user: "Hehe",
-      rating: 4,
-      comment: "Sản phẩm dùng rất tốt",
-      date: "2024-12-08 13:30:00",
-      userImage: "https://randomuser.me/api/portraits/men/2.jpg",
-    },
-    {
-      id: 3,
-      user: "Hihi",
-      rating: 4,
-      comment: "Chất lượng ổn",
-      date: "2024-12-07 16:20:00",
-      userImage: "https://randomuser.me/api/portraits/men/3.jpg",
-    },
-    {
-      id: 4,
-      user: "Haha",
-      rating: 4,
-      comment: "Giá cả hợp lý",
-      date: "2024-12-07 18:15:00",
-      userImage: "https://randomuser.me/api/portraits/men/4.jpg",
-    },
-    {
-      id: 5,
-      user: "Khà khà",
-      rating: 4,
-      comment: "Không có chỗ che",
-      date: "2024-12-06 10:10:00",
-      userImage: "https://randomuser.me/api/portraits/men/5.jpg",
-    },
-    {
-      id: 6,
-      user: "TymTym",
-      rating: 4,
-      comment: "Ok nha bé :))",
-      date: "2024-12-05 09:00:00",
-      userImage: "https://randomuser.me/api/portraits/men/6.jpg",
-    },
-  ];
-
+  const [reviews, setReviews] = React.useState([]); // State để lưu các bình luận
   const [currentPage, setCurrentPage] = React.useState(1);
   const reviewsPerPage = 5;
+
+  // Gọi API để lấy dữ liệu bình luận
+  React.useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get("/API/review.json"); // Gọi API lấy dữ liệu bình luận
+        setReviews(response.data); // Cập nhật reviews với dữ liệu nhận được
+      } catch (error) {
+        console.error("Lỗi khi tải bình luận:", error);
+      }
+    };
+
+    fetchReviews();
+  }, []);
 
   // Tính toán các bình luận cần hiển thị dựa trên trang hiện tại
   const indexOfLastReview = currentPage * reviewsPerPage;
@@ -84,12 +48,12 @@ function Reviews() {
   return (
     <>
       <div className="flex flex-col mt-5 mb-5">
-        <h3 className="text-lg font-bold text-black text-left text-shadow text_describe ml-[1.6em] shadow-text">
+        <h3 className="text-lg font-[600] text-black text-left text-shadow text_describe ml-[1.6em] shadow-text">
           Đánh giá sản phẩm
         </h3>
       </div>
 
-      <div className="proCard border rounded-lg p-4 shadow-lg">
+      <div className="proCard border rounded-2xl p-4 shadow-lg">
         <div className="mt-4 space-y-4">
           {currentReviews.map((review) => (
             <div key={review.id} className="flex items-center p-4 rounded ">
@@ -131,7 +95,7 @@ function Reviews() {
         {/* Phân trang */}
         <Stack spacing={2} className="mt-4 pagination">
           <Pagination
-            count={Math.ceil(reviews.length / reviewsPerPage)}
+            count={Math.ceil(reviews.length / reviewsPerPage)} // Tính toán số trang
             page={currentPage}
             onChange={handleChange}
             color="primary"

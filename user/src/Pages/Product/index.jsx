@@ -9,6 +9,7 @@ import { BsCart4 } from "react-icons/bs";
 import ScrollToTopButton from "../../components/ScrollTop";
 
 import { CartContext } from "../../Context/CartContext"; // Import CartContext
+import Header from "../../components/Header";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -86,6 +87,7 @@ const Product = () => {
 
   return (
     <>
+      <Header />
       <section className="product_listing_Page">
         <div className="container">
           <div className="productListing flex">
@@ -147,7 +149,10 @@ const Product = () => {
                       className="border rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
                       key={product.product_id} // Đặt key trực tiếp trên phần tử bao bọc
                     >
-                      <Link to={`/product_detials/${product.product_id}`}>
+                      <Link
+                        to={`/product_detials/${product.product_id}`}
+                        state={product}
+                      >
                         <div className="relative overflow-hidden rounded-lg">
                           <img
                             src={product.image}

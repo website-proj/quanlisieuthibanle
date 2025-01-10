@@ -1,5 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Header from "../../components/Header";
+
 
 const Success = () => {
   const location = useLocation();
@@ -22,6 +24,7 @@ const Success = () => {
 
   return (
     <>
+      <Header />
       <section className="mt-36 mb-4">
         <div className="container mx-auto flex flex-col items-center">
           {/* Tiêu đề */}
@@ -114,6 +117,7 @@ const Success = () => {
           </button>
         </div>
       </section>
+  
     </>
   );
 };

@@ -3,10 +3,13 @@ import "./style.css";
 import InvoiceForm from "../../components/InvoiceForm";
 import PaymentMethod from "../../components/PaymentMethod";
 import { Link } from "react-router-dom";
+import Header from "../../components/Header";
+import Footer from "../../components/footer";
 
 const Payment = () => {
   return (
     <>
+      <Header />
       <section className="mt-36 mb-2">
         <div className="container mx-auto flex flex-col items-center">
           {/* Tiêu đề */}
@@ -223,6 +226,7 @@ const Payment = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

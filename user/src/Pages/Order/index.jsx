@@ -11,6 +11,7 @@ import {
 } from "@material-tailwind/react";
 import "./style.css";
 import { Button } from "@mui/material";
+import Header from "../../components/Header";
 
 const Order = () => {
   const [activeTab, setActiveTab] = useState("all");
@@ -66,6 +67,7 @@ const Order = () => {
 
   return (
     <>
+      <Header />
       <div className="min-h-screen flex mt-36 mb-4">
         {/* Sidebar */}
         <aside className="w-1/5 setting">
