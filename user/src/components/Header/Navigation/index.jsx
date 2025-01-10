@@ -50,7 +50,7 @@ const Navigation = () => {
               <div
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                className="w-2/3 navPart1"
+                className="w-1/3 ml-[5%]"
               >
                 <div className="relative mt-1">
                   <Button className="!text-black">
@@ -67,7 +67,7 @@ const Navigation = () => {
 
                   {/* Dropdown menu */}
                   <div
-                    className={`absolute top-[2.65em] left-16 w-68 bg-white rounded-lg shadow-lg p-2 border border-gray-200 transition-all duration-300 ${
+                    className={`absolute top-[2.65em] left-[2.5em] w-[15em] bg-white rounded-lg shadow-lg p-2 border border-gray-200 transition-all duration-300 ${
                       isHovered ? "opacity-100 visible" : "opacity-0 invisible"
                     }`}
                   >
