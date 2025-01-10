@@ -91,7 +91,10 @@ const Home = () => {
                       className="border rounded-lg p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
                       key={product.product_id} // Đặt key trực tiếp trên phần tử bao bọc
                     >
-                      <Link to={`/product_detials/${product.product_id}`}>
+                      <Link
+                        to={`/product_detials/${product.product_id}`}
+                        state={product}
+                      >
                         <div className="relative overflow-hidden rounded-lg">
                           <img
                             src={product.image}

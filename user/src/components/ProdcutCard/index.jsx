@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./style.css";
 import { Button } from "@mui/material";
-import { LuShoppingCart } from "react-icons/lu";
+import { BsCart4 } from "react-icons/bs";
 
 // Component đếm số lượng
 const QuantitySelector = () => {
@@ -103,7 +103,7 @@ const ProductCard = () => {
           <QuantitySelector />
 
           <Button className=" bg-[#1a73e8] text-white py-2 px-4 rounded mt-4 mx-auto block addPro">
-            <LuShoppingCart />
+            <BsCart4 />
             Thêm vào giỏ hàng
           </Button>
         </div>

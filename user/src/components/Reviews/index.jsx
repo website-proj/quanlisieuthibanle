@@ -84,7 +84,7 @@ function Reviews() {
   return (
     <>
       <div className="flex flex-col mt-5 mb-5">
-        <h3 className="text-lg font-bold text-black text-left text-shadow text_describe ml-[1.6em]">
+        <h3 className="text-lg font-bold text-black text-left text-shadow text_describe ml-[1.6em] shadow-text">
           Đánh giá sản phẩm
         </h3>
       </div>

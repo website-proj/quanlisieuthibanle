@@ -3,18 +3,23 @@ import IconBreadcrumbs from "../../components/IconBreadcrumbs";
 import ProductCard from "../../components/ProdcutCard";
 import Reviews from "../../components/Reviews";
 import axios from "axios";
-import { LuShoppingCart } from "react-icons/lu";
+import { BsCart4 } from "react-icons/bs";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 
 import "./style.css";
+import { useLocation } from "react-router-dom";
 
 // import required modules
 import { Navigation } from "swiper/modules";
 import ScrollToTopButton from "../../components/ScrollTop";
+import { Button } from "@mui/material";
 
 const Product_Details = () => {
+  const location = useLocation();
+  const product = location.state; // Lấy thông tin sản phẩm từ state
+
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   // Gọi API để lấy danh sách sản phẩm liên quan
@@ -30,6 +35,10 @@ const Product_Details = () => {
 
     fetchRelatedProducts();
   }, []);
+  if (!product) {
+    // Nếu không có thông tin sản phẩm, có thể chuyển hướng hoặc thông báo lỗi
+    return <div>Thông tin sản phẩm không tồn tại!</div>;
+  }
 
   const description = `Sữa chua không đường Vinamilk hộp 100g.
 
@@ -56,7 +65,7 @@ Sữa chua không đường Vinamilk được đóng hộp nhỏ gọn, tiện d
               {" "}
               {/* Thêm margin vào div chứa mô tả */}
               <div className="flex flex-col mt-5 mb-5">
-                <h3 className="text-lg font-bold text-black text-left text-shadow text_describe ml-[1em]">
+                <h3 className="text-lg font-bold text-black text-left text-shadow text_describe ml-[1em] shadow-text">
                   Mô tả sản phẩm
                 </h3>
               </div>
@@ -77,7 +86,7 @@ Sữa chua không đường Vinamilk được đóng hộp nhỏ gọn, tiện d
           </div>
 
           <div className="flex flex-col ml-[4%] mr-[5%] mt-5 mb-5">
-            <h3 className="text-lg font-bold text-black text-left text-shadow text_describe">
+            <h3 className="text-lg font-bold text-black text-left text-shadow text_describe shadow-text">
               Sản phẩm liên quan
             </h3>
           </div>
@@ -91,7 +100,7 @@ Sữa chua không đường Vinamilk được đóng hộp nhỏ gọn, tiện d
           >
             {relatedProducts.map((product) => (
               <SwiperSlide key={product.id}>
-                <div className="relatedPro_item border rounded-lg p-4 shadow-lg w-full transition-transform duration-300  hover:border-blue-500 hover:shadow-xl">
+                <div className="relatedPro_item border rounded-lg p-4 shadow w-full transition-transform duration-300  hover:border-blue-500 hover:shadow-xl">
                   <div className="relative">
                     <img
                       src={product.image}
@@ -121,7 +130,7 @@ Sữa chua không đường Vinamilk được đóng hộp nhỏ gọn, tiện d
                     </div>
 
                     <button className="mt-2 w-full bg-blue-500 text-white py-2 rounded-md flex items-center justify-center">
-                      <LuShoppingCart className="text-2xl mr-4" />
+                      <BsCart4 className="text-2xl mr-4" />
                       Thêm vào giỏ hàng
                     </button>
                   </div>
