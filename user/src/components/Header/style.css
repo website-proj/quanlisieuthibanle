@@ -95,8 +95,8 @@ body {
 .profile-menu {
   display: none; /* Ẩn nội dung mặc định */
   position: absolute;
-  top: 163%; /* Hiển thị bên dưới nút "Tài khoản" */
-  right: -0.5em;
+  top: 100%; /* Hiển thị bên dưới nút "Tài khoản" */
+  right: -1em;
   width: 9em;
   background: #ffffff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
