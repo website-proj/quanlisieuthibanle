@@ -9,8 +9,14 @@ export const CartProvider = ({ children }) => {
     setCartCount((prevCount) => prevCount + 1);
   };
 
+  const decrementCartCount = () => {
+    setCartCount((prevCount) => Math.max(0, prevCount - 1));
+  };
+
   return (
-    <CartContext.Provider value={{ cartCount, incrementCartCount }}>
+    <CartContext.Provider
+      value={{ cartCount, incrementCartCount, decrementCartCount }}
+    >
       {children}
     </CartContext.Provider>
   );

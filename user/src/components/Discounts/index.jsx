@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import { BsCart4 } from "react-icons/bs";
+import { CartContext } from "../../Context/CartContext"; // Import CartContext
 
 const DiscountProducts = () => {
   const [products, setProducts] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const { incrementCartCount } = useContext(CartContext); // Lấy hàm tăng số lượng giỏ hàng từ context
 
   useEffect(() => {
-    // Gọi API để lấy danh sách sản phẩm giảm giá
     fetch("/API/discounts.json")
       .then((response) => response.json())
       .then((data) => setProducts(data))
@@ -24,26 +25,28 @@ const DiscountProducts = () => {
   const handleShowAll = () => {
     setShowAll(!showAll);
   };
+
+  const handleAddToCart = (e, productImage) => {
+    handleAddToCartAnimation(e, productImage);
+    incrementCartCount(); // Tăng số lượng giỏ hàng
+  };
+
   const handleAddToCartAnimation = (e, productImage) => {
-    // Tạo ảnh đại diện để làm animation
     const imgElement = document.createElement("img");
     imgElement.src = productImage;
     imgElement.className = "flying-img";
     document.body.appendChild(imgElement);
 
-    // Lấy vị trí của nút và giỏ hàng
     const rect = e.target.getBoundingClientRect();
     const cartRect = document
       .getElementById("cart-icon")
       .getBoundingClientRect();
 
-    // Tính toán vị trí thực tế
     const startX = rect.left + window.scrollX;
     const startY = rect.top + window.scrollY;
-    const endX = cartRect.left + window.scrollX + cartRect.width / 2;
-    const endY = cartRect.top + window.scrollY + cartRect.height / 2;
+    const endX = cartRect.left + window.scrollX;
+    const endY = cartRect.top + window.scrollY;
 
-    // Thiết lập vị trí ban đầu
     imgElement.style.position = "absolute";
     imgElement.style.left = `${startX}px`;
     imgElement.style.top = `${startY}px`;
@@ -53,27 +56,24 @@ const DiscountProducts = () => {
     imgElement.style.transition =
       "transform 1s ease-in-out, opacity 1s ease-in-out";
 
-    // Thực hiện animation
     imgElement.style.transform = `translate(${endX - startX}px, ${
       endY - startY
     }px) scale(0.2)`;
     imgElement.style.opacity = "0";
 
-    // Xóa ảnh sau khi animation hoàn tất
     setTimeout(() => {
       imgElement.remove();
+      incrementCartCount();
     }, 1000);
   };
 
   return (
     <section>
       <div className="flex items-center justify-between px-6 py-4 rounded-lg text_list">
-        {/* Text Section */}
         <div className="flex flex-col">
           <h3 className="text-xl font-bold text-black text-left shadow-text">
             Giảm giá
           </h3>
-
           <p className="text-sm text-gray-500">Sản phẩm với mức giá tốt nhất</p>
         </div>
       </div>
@@ -114,7 +114,7 @@ const DiscountProducts = () => {
             </Link>
 
             <Button
-              onClick={(e) => handleAddToCartAnimation(e, product.image)}
+              onClick={(e) => handleAddToCart(e, product.image)}
               className="productCart"
             >
               <BsCart4 className="text-[2em] pr-2" />

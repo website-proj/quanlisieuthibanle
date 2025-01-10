@@ -1,53 +1,52 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import { BsCart4 } from "react-icons/bs";
-import { CartContext } from "../../Context/CartContext";
-import { useContext } from "react";
+import { CartContext } from "../../Context/CartContext"; // Import CartContext
 
 const BestSellerProducts = () => {
   const [products, setProducts] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const { incrementCartCount } = useContext(CartContext); // Lấy hàm tăng số lượng giỏ hàng từ context
 
   useEffect(() => {
-    // Lấy sản phẩm bán chạy nhất từ API
     fetch("/API/best_sellers.json")
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) =>
-        console.error("Error fetching best seller products:", error)
+        console.error("Error fetching discount products:", error)
       );
   }, []);
 
   const formatCurrency = (value) => {
     return value.toLocaleString("vi-VN") + "đ";
   };
-  const { incrementCartCount } = useContext(CartContext);
 
-  const handleAddToCart = () => {
-    incrementCartCount(); // Gọi hàm cập nhật giỏ hàng
+  const handleShowAll = () => {
+    setShowAll(!showAll);
+  };
+
+  const handleAddToCart = (e, productImage) => {
+    handleAddToCartAnimation(e, productImage);
+    incrementCartCount(); // Tăng số lượng giỏ hàng
   };
 
   const handleAddToCartAnimation = (e, productImage) => {
-    // Tạo ảnh đại diện để làm animation
     const imgElement = document.createElement("img");
     imgElement.src = productImage;
     imgElement.className = "flying-img";
     document.body.appendChild(imgElement);
 
-    // Lấy vị trí của nút và giỏ hàng
     const rect = e.target.getBoundingClientRect();
     const cartRect = document
       .getElementById("cart-icon")
       .getBoundingClientRect();
 
-    // Tính toán vị trí thực tế
     const startX = rect.left + window.scrollX;
     const startY = rect.top + window.scrollY;
-    const endX = cartRect.left + window.scrollX + cartRect.width / 2;
-    const endY = cartRect.top + window.scrollY + cartRect.height / 2;
+    const endX = cartRect.left + window.scrollX;
+    const endY = cartRect.top + window.scrollY;
 
-    // Thiết lập vị trí ban đầu
     imgElement.style.position = "absolute";
     imgElement.style.left = `${startX}px`;
     imgElement.style.top = `${startY}px`;
@@ -57,26 +56,20 @@ const BestSellerProducts = () => {
     imgElement.style.transition =
       "transform 1s ease-in-out, opacity 1s ease-in-out";
 
-    // Thực hiện animation
     imgElement.style.transform = `translate(${endX - startX}px, ${
       endY - startY
     }px) scale(0.2)`;
     imgElement.style.opacity = "0";
 
-    // Xóa ảnh sau khi animation hoàn tất
     setTimeout(() => {
       imgElement.remove();
+      incrementCartCount();
     }, 1000);
-  };
-
-  const handleShowAll = () => {
-    setShowAll(!showAll);
   };
 
   return (
     <section>
       <div className="flex items-center justify-between px-6 py-4 rounded-lg text_list">
-        {/* Text Section */}
         <div className="flex flex-col">
           <h3 className="text-xl font-bold text-black text-left shadow-text">
             Bán chạy nhất
@@ -90,7 +83,7 @@ const BestSellerProducts = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 productListSale">
         {(showAll ? products : products.slice(0, 10)).map((product) => (
           <div
-            className="border shadow rounded-lg p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+            className="border shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
             key={product.product_id}
           >
             <Link to={`/product_detials/${product.product_id}`}>
@@ -123,8 +116,8 @@ const BestSellerProducts = () => {
             </Link>
 
             <Button
+              onClick={(e) => handleAddToCart(e, product.image)}
               className="productCart"
-              onClick={(e) => handleAddToCartAnimation(e, product.image)}
             >
               <BsCart4 className="text-[2em] pr-2" />
               Thêm vào giỏ hàng
