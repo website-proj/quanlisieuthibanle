@@ -32,37 +32,58 @@ class DataService:
     def create_order(self , db:Session):
         users = db.query(User).all()
         products = db.query(Product).all()
-        list_order = []
-        list_order_item = []
-        for i in range(10000):
-            random_user = random.choice(users)
-            user_id = random_user.user_id
-            order_id = f"order{uuid.uuid4().hex[:8]}"
-            status = random.choice(["Processing","Delivered","Canceled"])
-            start_date = datetime(2022 ,1,1)
-            end_date = datetime(2024 ,12,31)
-            order_date = self.random_date(start_date, end_date)
-            order_date = order_date.strftime('%Y-%m-%d')
-            total_amount = 0
+        list_orders = []
+        list_order_items = []
+        try:
+            for i in range(10000):
+                # Tạo order
+                random_user = random.choice(users)
+                user_id = random_user.user_id
+                order_id = f"order{uuid.uuid4().hex[:8]}"
+                status = random.choice(["Processing", "Delivered", "Canceled"])
 
-            for j in range(3):
-                order_item_id = f"order_item{uuid.uuid4().hex[:8]}"
-                product = random.choice(products)
-                product_id = product.product_id
-                quantity = random.randint(1,5)
-                price = quantity * product.price
-                total_amount += price
-                order_item = OrderItems(order_item_id = order_item_id ,order_id = order_id ,product_id = product_id ,
-                                        quantity = quantity ,price = price )
-                db.add(order_item)
-                db.commit()
-            order = Orders(order_id = order_id ,user_id =user_id , order_date = order_date ,
-                          status = status ,total_amount =  total_amount )
-            list_order.append(order)
-            db.add(order)
+                start_date = datetime(2022, 1, 1)
+                end_date = datetime(2024, 12, 31)
+                order_date = self.random_date(start_date, end_date)
+                order_date = order_date.strftime('%Y-%m-%d')
+
+                total_amount = 0
+
+                # Tạo order items
+                for j in range(3):  # Mỗi order có 3 order_items
+                    order_item_id = f"order_item{uuid.uuid4().hex[:8]}"
+                    product = random.choice(products)
+                    product_id = product.product_id
+                    quantity = random.randint(1, 5)
+                    price = quantity * product.price
+                    total_amount += price
+
+                    order_item = OrderItems(
+                        order_item_id=order_item_id,
+                        order_id=order_id,
+                        product_id=product_id,
+                        quantity=quantity,
+                        price=price
+                    )
+                    list_order_items.append(order_item)
+
+                # Thêm order vào danh sách
+                order = Orders(
+                    order_id=order_id,
+                    user_id=user_id,
+                    order_date=order_date,
+                    status=status,
+                    total_amount=total_amount
+                )
+                list_orders.append(order)
+
+            db.add_all(list_orders)
             db.commit()
 
-        return 1
+            db.add_all(list_order_items)
+            db.commit()
+        except Exception as e:
+            raise e
     def read_user_data(self):
         file_path = r"D:\code\python\fastapi-base\database\hoten.txt"
         sur_name  = []
