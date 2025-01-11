@@ -14,7 +14,7 @@ export default function IconBreadcrumbs({ productName }) {
           underline="hover"
           sx={{ display: "flex", alignItems: "center" }}
           color="inherit"
-          href="/"
+          href="/home"
         >
           <TiHome className="mr-1" />
           Trang chủ

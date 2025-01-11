@@ -107,9 +107,11 @@ const SignUp = () => {
 
               <div className="flex space-x-6 mt-1 mb-1">
                 <div className="flex-1">
-                  <Button className="w-full" variant="contained">
-                    Đăng ký
-                  </Button>
+                  <Link to={"/otp"}>
+                    <Button className="w-full" variant="contained">
+                      Đăng ký
+                    </Button>
+                  </Link>
                 </div>
 
                 <div className="flex-1">

@@ -97,21 +97,9 @@ const SignIn = () => {
 
               <div className="flex space-x-6 mt-1 mb-1">
                 <div className="flex-1">
-                  <Link to={"/"}>
+                  <Link to={"/home"}>
                     <Button className="w-full" variant="contained">
                       Đăng nhập
-                    </Button>
-                  </Link>
-                </div>
-
-                <div className="flex-1">
-                  <Link to={"/"} className="w-full block">
-                    <Button
-                      className="w-full"
-                      variant="outlined"
-                      onClick={() => context.setisHeaderFooterShow(true)}
-                    >
-                      Hủy
                     </Button>
                   </Link>
                 </div>

@@ -4,7 +4,13 @@ import Footer from "./components/footer";
 import Header from "./components/Header";
 import Home from "./Pages/Home";
 import Product from "./Pages/Product";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import Product_Details from "./Pages/Product_Details";
 import Account from "./Pages/Account";
 import Cart from "./Pages/Cart";
@@ -18,6 +24,7 @@ import Payment from "./Pages/Payment";
 import Order from "./Pages/Order";
 import { CartProvider } from "./Context/CartContext";
 import ResetPassword from "./Pages/ResetPassword";
+import VerifyDK from "./Pages/VerifyDK";
 
 const MyContext = createContext();
 
@@ -69,6 +76,7 @@ function HeaderFooterWrapper({ setisHeaderFooterShow }) {
       "/success",
       "/forgotPassword",
       "/resetPassword",
+      "/otp",
     ];
     return hiddenPaths.includes(path);
   };
@@ -87,7 +95,8 @@ function HeaderFooterWrapper({ setisHeaderFooterShow }) {
       {/* Header và Footer chỉ render nếu không bị ẩn */}
       {!hideHeaderInitially && <Header />}
       <Routes>
-        <Route path={"/"} exact={true} element={<Home />} />
+        <Route path={"/home"} exact={true} element={<Home />} />
+        <Route path="/" element={<Navigate to="/signIn" replace />} />
         <Route
           path="/products/:categoryName"
           exact={true}
@@ -105,6 +114,7 @@ function HeaderFooterWrapper({ setisHeaderFooterShow }) {
         <Route path="/signUp" exact={true} element={<SignUp />} />
         <Route path="/resetPassword" exact={true} element={<ResetPassword />} />
         <Route path="/verify" exact={true} element={<Verify />} />
+        <Route path="/otp" exact={true} element={<VerifyDK />} />
         <Route path="/success" exact={true} element={<Success />} />
         <Route path="/order" exact={true} element={<Order />} />
         <Route
