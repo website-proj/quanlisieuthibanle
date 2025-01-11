@@ -51,10 +51,10 @@ const Product_Details = () => {
   };
   const { cartCount, incrementCartCount } = useContext(CartContext);
 
-  const handleAddToCart = (e, productImage) => {
+  const handleAddToCart = (e, product, quantity = 1) => {
     // Animation logic
     const imgElement = document.createElement("img");
-    imgElement.src = productImage;
+    imgElement.src = product.image;
     imgElement.className = "flying-img";
     document.body.appendChild(imgElement);
 
@@ -76,7 +76,6 @@ const Product_Details = () => {
     imgElement.style.zIndex = "1000";
     imgElement.style.transition =
       "transform 1s ease-in-out, opacity 1s ease-in-out";
-
     imgElement.style.transform = `translate(${endX - startX}px, ${
       endY - startY
     }px) scale(0.2)`;
@@ -84,7 +83,7 @@ const Product_Details = () => {
 
     setTimeout(() => {
       imgElement.remove();
-      incrementCartCount();
+      incrementCartCount(quantity); // Cập nhật số lượng vào giỏ hàng
     }, 1000);
   };
 
@@ -179,7 +178,7 @@ const Product_Details = () => {
                     </div>
                   </Link>
                   <Button
-                    onClick={(e) => handleAddToCart(e, product.image)}
+                    onClick={(e) => handleAddToCart(e, product, 1)}
                     className="productCart"
                   >
                     <FiShoppingCart className="text-[2em] pr-2" />

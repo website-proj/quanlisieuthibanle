@@ -44,14 +44,10 @@ const Product = () => {
     }, 2000); // Giả lập thời gian tải dữ liệu (2 giây)
   };
 
-  const handleAddToCart = (e, productImage) => {
-    handleAddToCartAnimation(e, productImage);
-    incrementCartCount(); // Tăng số lượng giỏ hàng
-  };
-
-  const handleAddToCartAnimation = (e, productImage) => {
+  const handleAddToCart = (e, product, quantity = 1) => {
+    // Animation logic
     const imgElement = document.createElement("img");
-    imgElement.src = productImage;
+    imgElement.src = product.image;
     imgElement.className = "flying-img";
     document.body.appendChild(imgElement);
 
@@ -73,7 +69,6 @@ const Product = () => {
     imgElement.style.zIndex = "1000";
     imgElement.style.transition =
       "transform 1s ease-in-out, opacity 1s ease-in-out";
-
     imgElement.style.transform = `translate(${endX - startX}px, ${
       endY - startY
     }px) scale(0.2)`;
@@ -81,7 +76,7 @@ const Product = () => {
 
     setTimeout(() => {
       imgElement.remove();
-      incrementCartCount();
+      incrementCartCount(quantity); // Cập nhật số lượng vào giỏ hàng
     }, 1000);
   };
 
@@ -185,7 +180,7 @@ const Product = () => {
                         </div>
                       </Link>
                       <Button
-                        onClick={(e) => handleAddToCart(e, product.image)}
+                        onClick={(e) => handleAddToCart(e, product, 1)}
                         className="productCart"
                       >
                         <FiShoppingCart className="text-[2em] pr-2" />

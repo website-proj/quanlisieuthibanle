@@ -6,9 +6,7 @@ import { CartContext } from "../../Context/CartContext";
 import { useContext } from "react";
 
 // Component đếm số lượng
-const QuantitySelector = () => {
-  const [quantity, setQuantity] = useState(1); // Khởi tạo số lượng ban đầu là 1
-
+const QuantitySelector = ({ quantity, setQuantity }) => {
   const increment = () => {
     setQuantity((prev) => prev + 1);
   };
@@ -47,11 +45,7 @@ const QuantitySelector = () => {
 };
 
 const ProductCard = ({ product }) => {
-  // Kiểm tra nếu product chưa được truyền vào hoặc các giá trị là undefined
-  if (!product) {
-    return <div>Loading...</div>; // Hoặc có thể trả về một thông báo nếu product chưa có dữ liệu
-  }
-
+  const [quantity, setQuantity] = useState(1); // Số lượng sản phẩm mà người dùng muốn mua
   const { cartCount, incrementCartCount } = useContext(CartContext);
 
   const handleAddToCart = (e, productImage) => {
@@ -87,7 +81,7 @@ const ProductCard = ({ product }) => {
 
     setTimeout(() => {
       imgElement.remove();
-      incrementCartCount();
+      incrementCartCount(quantity); // Tăng số lượng trong giỏ hàng theo quantity
     }, 1000);
   };
 
@@ -158,7 +152,7 @@ const ProductCard = ({ product }) => {
           </p>
 
           {/* Thêm đoạn mã đếm số lượng ở đây */}
-          <QuantitySelector />
+          <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
 
           <Button
             onClick={(e) => handleAddToCart(e, product.image)}

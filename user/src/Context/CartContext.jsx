@@ -1,22 +1,18 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useContext } from "react";
 
+// Tạo CartContext
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartCount, setCartCount] = useState(0);
 
-  const incrementCartCount = () => {
-    setCartCount((prevCount) => prevCount + 1);
-  };
-
-  const decrementCartCount = () => {
-    setCartCount((prevCount) => Math.max(0, prevCount - 1));
+  // Cập nhật số lượng giỏ hàng
+  const incrementCartCount = (quantity) => {
+    setCartCount((prevCount) => prevCount + quantity);
   };
 
   return (
-    <CartContext.Provider
-      value={{ cartCount, incrementCartCount, decrementCartCount }}
-    >
+    <CartContext.Provider value={{ cartCount, incrementCartCount }}>
       {children}
     </CartContext.Provider>
   );
