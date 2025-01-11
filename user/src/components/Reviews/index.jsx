@@ -1,21 +1,23 @@
 import * as React from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import axios from "axios"; // Import axios để gọi API
+import axios from "axios";
 import "./style.css";
 import Cmt from "../Cmt";
+import { useLocation } from "react-router-dom";
 
 function Reviews() {
-  const [reviews, setReviews] = React.useState([]); // State để lưu các bình luận
+  const [reviews, setReviews] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const reviewsPerPage = 5;
+  const location = useLocation();
+  const [isFirstLoad, setIsFirstLoad] = React.useState(true);
 
-  // Gọi API để lấy dữ liệu bình luận
   React.useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get("/API/review.json"); // Gọi API lấy dữ liệu bình luận
-        setReviews(response.data); // Cập nhật reviews với dữ liệu nhận được
+        const response = await axios.get("/API/review.json");
+        setReviews(response.data);
       } catch (error) {
         console.error("Lỗi khi tải bình luận:", error);
       }
@@ -24,33 +26,37 @@ function Reviews() {
     fetchReviews();
   }, []);
 
-  // Cuộn lên đầu tiêu đề khi trang hiện tại thay đổi
   React.useEffect(() => {
+    // Nếu lần đầu tiên tải trang, không làm gì cả (để tránh cuộn)
+    if (isFirstLoad) {
+      setIsFirstLoad(false);
+      return;
+    }
+
+    // Khi người dùng phân trang, cuộn đến phần mô tả sản phẩm
     const titleElement = document.querySelector(".text_describe");
     if (titleElement) {
       titleElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [currentPage]); // Theo dõi thay đổi của currentPage
+  }, [currentPage]); // Mỗi khi currentPage thay đổi (tức là khi phân trang)
 
-  // Tính toán các bình luận cần hiển thị dựa trên trang hiện tại
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
   const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
 
   const handleChange = (event, value) => {
-    setCurrentPage(value); // Cập nhật trạng thái trang hiện tại
+    setCurrentPage(value);
   };
 
-  // Hàm format lại ngày giờ
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleString("vi-VN", {
-      weekday: "short", // Thứ
-      year: "numeric", // Năm
-      month: "numeric", // Tháng
-      day: "numeric", // Ngày
-      hour: "numeric", // Giờ
-      minute: "numeric", // Phút
+      weekday: "short",
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
     });
   };
 
@@ -66,7 +72,6 @@ function Reviews() {
         <div className="mt-4 space-y-4">
           {currentReviews.map((review) => (
             <div key={review.id} className="flex items-center p-4 rounded ">
-              {/* Cột 1: Ảnh người dùng */}
               <div className="w-12 h-12 rounded-full mr-4">
                 <img
                   src={review.userImage}
@@ -74,26 +79,20 @@ function Reviews() {
                   className="w-full h-full rounded-full object-cover"
                 />
               </div>
-
-              {/* Cột 2: Tên và Ngày đăng */}
               <div className="flex flex-col flex-1 mr-4">
                 <p className="font-[600] text-left ml-10">{review.user}</p>
                 <p className="text-sm text-gray-500 text-left ml-10">
                   {formatDate(review.date)}
                 </p>
               </div>
-
-              {/* Cột 3: Số sao đánh giá */}
               <div className="flex justify-center items-center mr-4">
                 <p className="text-center text-yellow-500 text-xl">
                   {"★".repeat(review.rating)}{" "}
                   <span className="text-gray-600 text-sm ">
-                    ({review.rating})
+                    {review.rating}
                   </span>
                 </p>
               </div>
-
-              {/* Cột 4: Bình luận */}
               <div className="flex flex-col flex-1">
                 <p className="text-gray-600">{review.comment}</p>
               </div>
@@ -101,11 +100,9 @@ function Reviews() {
           ))}
         </div>
         <Cmt />
-
-        {/* Phân trang */}
         <Stack spacing={2} className="mt-4 pagination">
           <Pagination
-            count={Math.ceil(reviews.length / reviewsPerPage)} // Tính toán số trang
+            count={Math.ceil(reviews.length / reviewsPerPage)}
             page={currentPage}
             onChange={handleChange}
             color="primary"

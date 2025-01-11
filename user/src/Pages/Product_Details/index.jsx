@@ -102,7 +102,7 @@ const Product_Details = () => {
         <div className="container mx-auto p-4">
           <ProductCard product={product} className="mr-[6%]" />
 
-          <div className="mt-3 mb-3  ml-[2.5%] mr-[5%]">
+          <div className="mt-3 mb-3  ml-[3%] mr-[5%]">
             <div className="mota">
               {/* Thêm margin vào div chứa mô tả */}
               <div className="flex flex-col mt-5 mb-5">
