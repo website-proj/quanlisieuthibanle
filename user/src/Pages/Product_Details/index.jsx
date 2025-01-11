@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import IconBreadcrumbs from "../../components/IconBreadcrumbs";
 import ProductCard from "../../components/ProdcutCard";
 import Reviews from "../../components/Reviews";
-import { BsCart4 } from "react-icons/bs";
+import { FiShoppingCart } from "react-icons/fi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -182,7 +182,7 @@ const Product_Details = () => {
                     onClick={(e) => handleAddToCart(e, product.image)}
                     className="productCart"
                   >
-                    <BsCart4 className="text-[2em] pr-2" />
+                    <FiShoppingCart className="text-[2em] pr-2" />
                     Thêm vào giỏ hàng
                   </Button>
                 </div>

@@ -67,7 +67,7 @@ const Navigation = () => {
 
                   {/* Dropdown menu */}
                   <div
-                    className={`absolute top-[2.65em] left-[2.5em] w-[15em] bg-white rounded-lg shadow-lg p-2 border border-gray-200 transition-all duration-300 ${
+                    className={`absolute top-[2.65em] left-[2.5em] w-[15em] bg-white rounded-lg shadow-lg border border-gray-200 transition-all duration-300 ${
                       isHovered ? "opacity-100 visible" : "opacity-0 invisible"
                     }`}
                   >
@@ -90,7 +90,7 @@ const Navigation = () => {
                           </Link>
                           {/* Sub-submenu */}
                           <div
-                            className={`absolute left-[102.5%] top-0 w-64 bg-white shadow rounded-lg p-2 border border-gray-200 transition-all duration-300 ${
+                            className={`absolute left-[100%] top-0 w-64 bg-white shadow rounded-lg border border-gray-200 transition-all duration-300 ${
                               activeCategory === category.name
                                 ? "opacity-100 visible"
                                 : "opacity-0 invisible"

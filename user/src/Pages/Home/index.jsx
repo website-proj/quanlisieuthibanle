@@ -5,7 +5,7 @@ import Timer from "../../components/Timer";
 import "./style.css";
 import { Button } from "@mui/material";
 
-import { BsCart4 } from "react-icons/bs";
+import { FiShoppingCart } from "react-icons/fi";
 
 import { Link } from "react-router-dom";
 import ScrollToTopButton from "../../components/ScrollTop";
@@ -199,7 +199,7 @@ const Home = () => {
                         onClick={(e) => handleAddToCart(e, product.image)}
                         className="productCart"
                       >
-                        <BsCart4 className="text-[2em] pr-2" />
+                        <FiShoppingCart className="text-[2em] pr-2" />
                         Thêm vào giỏ hàng
                       </Button>
                     </div>

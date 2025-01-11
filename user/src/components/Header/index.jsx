@@ -5,7 +5,7 @@ import Search from "../Search";
 import "./style.css";
 import { Button } from "@mui/material";
 import { FaUserCircle } from "react-icons/fa";
-import { BsCart4 } from "react-icons/bs";
+import { FiShoppingCart } from "react-icons/fi";
 
 import Navigation from "./Navigation";
 import { MdOutlineManageAccounts } from "react-icons/md";
@@ -81,7 +81,7 @@ const Header = () => {
                 onClick={() => context.setOpenCartPanel(true)}
               >
                 <Button className="circle ml-2 ">
-                  <BsCart4 className="mr-2 h-9 w-9 " />
+                  <FiShoppingCart className="mr-2 h-10 w-10 " />
                   <span className="ml-2 whitespace-nowrap">Giỏ hàng</span>
                   <span
                     className="count d-flex align-items-center justify-content-center"

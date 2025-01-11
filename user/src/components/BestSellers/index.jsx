@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
-import { BsCart4 } from "react-icons/bs";
+import { FiShoppingCart } from "react-icons/fi";
 import { CartContext } from "../../Context/CartContext"; // Import CartContext
 
 const BestSellerProducts = () => {
@@ -119,7 +119,7 @@ const BestSellerProducts = () => {
               onClick={(e) => handleAddToCart(e, product.image)}
               className="productCart"
             >
-              <BsCart4 className="text-[2em] pr-2" />
+              <FiShoppingCart className="text-[2em] pr-2" />
               Thêm vào giỏ hàng
             </Button>
           </div>

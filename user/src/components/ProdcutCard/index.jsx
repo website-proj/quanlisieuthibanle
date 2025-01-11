@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./style.css";
 import { Button } from "@mui/material";
-import { BsCart4 } from "react-icons/bs";
+import { FiShoppingCart } from "react-icons/fi";
 import { CartContext } from "../../Context/CartContext";
 import { useContext } from "react";
 
@@ -164,7 +164,7 @@ const ProductCard = ({ product }) => {
             onClick={(e) => handleAddToCart(e, product.image)}
             className=" bg-[#1a73e8] text-white py-2 px-4 rounded mt-4 mx-auto block addPro"
           >
-            <BsCart4 />
+            <FiShoppingCart />
             Thêm vào giỏ hàng
           </Button>
         </div>

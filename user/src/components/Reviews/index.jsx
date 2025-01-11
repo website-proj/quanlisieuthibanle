@@ -24,13 +24,21 @@ function Reviews() {
     fetchReviews();
   }, []);
 
+  // Cuộn lên đầu tiêu đề khi trang hiện tại thay đổi
+  React.useEffect(() => {
+    const titleElement = document.querySelector(".text_describe");
+    if (titleElement) {
+      titleElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [currentPage]); // Theo dõi thay đổi của currentPage
+
   // Tính toán các bình luận cần hiển thị dựa trên trang hiện tại
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
   const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
 
   const handleChange = (event, value) => {
-    setCurrentPage(value);
+    setCurrentPage(value); // Cập nhật trạng thái trang hiện tại
   };
 
   // Hàm format lại ngày giờ

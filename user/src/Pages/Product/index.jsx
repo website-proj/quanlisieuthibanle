@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "./style.css";
 import { useState, useEffect } from "react"; // Thêm dòng này
 
-import { BsCart4 } from "react-icons/bs";
+import { FiShoppingCart } from "react-icons/fi";
 import ScrollToTopButton from "../../components/ScrollTop";
 
 import { CartContext } from "../../Context/CartContext"; // Import CartContext
@@ -188,7 +188,7 @@ const Product = () => {
                         onClick={(e) => handleAddToCart(e, product.image)}
                         className="productCart"
                       >
-                        <BsCart4 className="text-[2em] pr-2" />
+                        <FiShoppingCart className="text-[2em] pr-2" />
                         Thêm vào giỏ hàng
                       </Button>
                     </div>
