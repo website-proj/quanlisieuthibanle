@@ -238,14 +238,39 @@ class DataService:
             )
             db.add(voucher)
             db.commit()
+    def add_payment_data(self , db ):
+        orders = db.query(Orders).filter(Orders.status=="Delivered").all()
+        for order in orders:
+            payment_id = f"payment{uuid.uuid4().hex[:8]}"
+            user_id = order.user_id
+            order_id = order.order_id
+            voucher_id = None
+            amount = order.total_amount
+            payment_method = "Card"
+            payment_date  = self.random_date(datetime(2024 ,1,6), datetime(2025 ,12,31))
+            status = "Successful"
+            payment = Payment(
+                payment_id = payment_id,
+                user_id = user_id ,
+                order_id = order_id ,
+                voucher_id = voucher_id ,
+                amount = amount ,
+                payment_method = payment_method ,
+                payment_date = payment_date ,
+                status = status
+            )
+            db.add(payment)
+            db.commit()
+
     def main(self):
         with next(get_db()) as db :
             # self.create_user_data(db)
             # self.create_address_data(db)
-            self.create_order(db)
+            # self.create_order(db)
             # self.update_origin_price_of_product(db)
             # self.add_reviews_data(db)
             # self.add_voucher_data(db)
+            self.add_payment_data(db)
             # print("hello world")
 if __name__ == '__main__':
     data = DataService()
