@@ -4,6 +4,10 @@ const SummaryApi = {
     url: "/api/users/",
     method: "post",
   },
+  register_check_code: {
+    url: "/api/users/register/check_code",
+    method: "post",
+  },
   signIn: {
     url: "/api/users/login",
     method: "post",
