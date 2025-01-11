@@ -29,7 +29,7 @@ const SignIn = () => {
   };
   return (
     <>
-      <section className="section signInPage mt-[-5em]">
+      <section className="section signInPage signUpPage mt-[-5em]">
         <div class="shape-bottom">
           {" "}
           <svg
@@ -88,7 +88,10 @@ const SignIn = () => {
                 </button>
               </div>
 
-              <Link to={"/verify"} className="border-effect cursor text-left">
+              <Link
+                to={"/forgotPassword"}
+                className="border-effect cursor text-left"
+              >
                 Quên mật khẩu?
               </Link>
 

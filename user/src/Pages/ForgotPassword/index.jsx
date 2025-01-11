@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Import mắt xem
 
-const SignIn = () => {
+const ForgotPassword = () => {
   const context = useContext(MyContext);
   useEffect(() => {
     context.setisHeaderFooterShow(false);
@@ -52,14 +52,14 @@ const SignIn = () => {
               <img className=" flex justify-center items-center " src={Logo} />
             </div>
 
-            <form className="mt-3">
+            <form className="mt-6 !p-0">
               <h2 className="text-2xl font-[600] text-left">Quên mật khẩu</h2>
 
               {/* Mật khẩu với chức năng ẩn/hiện */}
               <div className="form-group relative">
                 <TextField
-                  id="password"
-                  label="Mật khẩu mới"
+                  id="email"
+                  label="Email"
                   type={showPassword ? "text" : "password"} // Thay đổi type giữa text và password
                   required
                   variant="standard"
@@ -67,40 +67,28 @@ const SignIn = () => {
                 />
                 <button
                   type="button"
-                  onClick={handleTogglePasswordVisibility}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl"
-                >
-                  {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-                </button>
+                ></button>
               </div>
 
-              <div className="form-group relative">
-                <TextField
-                  id="password"
-                  label="Xác nhận mật khẩu"
-                  type={showPassword ? "text" : "password"} // Thay đổi type giữa text và password
-                  required
-                  variant="standard"
-                  className="w-full text-left"
-                />
-                <button
-                  type="button"
-                  onClick={handleTogglePasswordVisibility}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl"
-                >
-                  {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-                </button>
-              </div>
-
-              <div className="flex space-x-6 mt-3 mb-1">
+              <div className="flex space-x-6 mt-6 mb-1">
                 <div className="flex-1">
-                  <Link to={"/signIn"} className="w-full">
+                  <Link to={"/verify"} className="w-full">
                     <Button className="w-full" variant="contained">
-                      Đổi mật khẩu
+                      Gửi mã OTP
                     </Button>
                   </Link>
                 </div>
               </div>
+              <p className="text-left mt-5 text-lg">
+                Đã có tài khoản?{" "}
+                <Link
+                  to={"/signIn"}
+                  className="font-semibold text-blue-600 hover:text-blue-800"
+                >
+                  Login
+                </Link>
+              </p>
             </form>
           </div>
         </div>
@@ -108,4 +96,4 @@ const SignIn = () => {
     </>
   );
 };
-export default SignIn;
+export default ForgotPassword;

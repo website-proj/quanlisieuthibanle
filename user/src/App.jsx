@@ -17,11 +17,13 @@ import ForgotPassword from "./Pages/ForgotPassword";
 import Payment from "./Pages/Payment";
 import Order from "./Pages/Order";
 import { CartProvider } from "./Context/CartContext";
+import ResetPassword from "./Pages/ResetPassword";
 
 const MyContext = createContext();
 
 function App() {
   const [isHeaderFooterShow, setisHeaderFooterShow] = useState(true);
+  const [isRendered, setIsRendered] = useState(true); // Trạng thái render thực tế
   const [isLogin, setIsLogin] = useState(false);
   const [openCartPanel, setOpenCartPanel] = useState(false);
 
@@ -46,6 +48,8 @@ function App() {
           <HeaderFooterWrapper
             isHeaderFooterShow={isHeaderFooterShow}
             setisHeaderFooterShow={setisHeaderFooterShow}
+            isRendered={isRendered}
+            setIsRendered={setIsRendered}
           />
         </MyContext.Provider>
       </BrowserRouter>
@@ -53,27 +57,35 @@ function App() {
   );
 }
 
-function HeaderFooterWrapper({ isHeaderFooterShow, setisHeaderFooterShow }) {
-  const location = useLocation(); // Chuyển useLocation vào đúng Router context
+function HeaderFooterWrapper({ setisHeaderFooterShow }) {
+  const location = useLocation();
 
-  useEffect(() => {
+  // Xác định trạng thái ban đầu của header/footer
+  const shouldHideHeader = (path) => {
     const hiddenPaths = [
       "/signIn",
       "/signUp",
       "/verify",
       "/success",
       "/forgotPassword",
+      "/resetPassword",
     ];
-    if (hiddenPaths.includes(location.pathname)) {
-      setisHeaderFooterShow(false); // Ẩn header và footer
-    } else {
-      setisHeaderFooterShow(true); // Hiển thị header và footer
-    }
-  }, [location.pathname]);
+    return hiddenPaths.includes(path);
+  };
+
+  // Cập nhật trạng thái ban đầu
+  useEffect(() => {
+    const hideHeader = shouldHideHeader(location.pathname);
+    setisHeaderFooterShow(!hideHeader);
+  }, [location.pathname, setisHeaderFooterShow]);
+
+  // Đảm bảo trạng thái ban đầu khớp với `location.pathname`
+  const hideHeaderInitially = shouldHideHeader(location.pathname);
 
   return (
     <>
-      {isHeaderFooterShow && <Header />}
+      {/* Header và Footer chỉ render nếu không bị ẩn */}
+      {!hideHeaderInitially && <Header />}
       <Routes>
         <Route path={"/"} exact={true} element={<Home />} />
         <Route
@@ -91,6 +103,7 @@ function HeaderFooterWrapper({ isHeaderFooterShow, setisHeaderFooterShow }) {
         <Route path={"/payment"} exact={true} element={<Payment />} />
         <Route path="/signIn" exact={true} element={<SignIn />} />
         <Route path="/signUp" exact={true} element={<SignUp />} />
+        <Route path="/resetPassword" exact={true} element={<ResetPassword />} />
         <Route path="/verify" exact={true} element={<Verify />} />
         <Route path="/success" exact={true} element={<Success />} />
         <Route path="/order" exact={true} element={<Order />} />
@@ -100,7 +113,7 @@ function HeaderFooterWrapper({ isHeaderFooterShow, setisHeaderFooterShow }) {
           element={<ForgotPassword />}
         />
       </Routes>
-      {isHeaderFooterShow && <Footer />}
+      {!hideHeaderInitially && <Footer />}
     </>
   );
 }

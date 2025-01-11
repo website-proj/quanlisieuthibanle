@@ -1,10 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
-import OTP from "../../assets/images/Verify.png";
+import Logo from "../../assets/footer/Logo.png";
 import "./style.css";
 import { MyContext } from "../../App";
 
-import OtpBox from "../../components/OtpBox";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const Verify = () => {
@@ -13,18 +12,24 @@ const Verify = () => {
   useEffect(() => {
     context.setisHeaderFooterShow(false);
   }, []);
+
+  // State để lưu giá trị OTP
   const [otp, setOtp] = useState("");
-  const handleOtpChange = (value) => {
-    setOtp(value);
+
+  // Xử lý khi OTP thay đổi
+  const handleOtpChange = (e) => {
+    setOtp(e.target.value); // Cập nhật giá trị OTP
   };
+
+  // Hàm xử lý khi nhấn "Xác thực OTP"
   const verifyOTP = (e) => {
     e.preventDefault();
-    alert(otp);
+    alert(`OTP nhập vào: ${otp}`);
   };
 
   return (
     <>
-      <section className="section signInPage mt-[-5em]">
+      <section className="section signInPage forgot mt-[-5em]">
         <div className="shape-bottom">
           <svg
             fill="#fff"
@@ -40,27 +45,44 @@ const Verify = () => {
             ></path>
           </svg>
         </div>
-        <div className="container ">
-          <div className="card shadow-md w-[25em] m-auto rounded-md bg-slate-100 p-5 px-10">
-            <div className="text-center flex items-center justify-center">
-              <img src={OTP} className="w-[50%] " />
+        <div className="flex justify-center h-32">
+          <div className="box card p-3 shadow">
+            <div className="text-center ">
+              <div className="text-center">
+                <img
+                  className=" flex justify-center items-center "
+                  src={Logo}
+                />
+              </div>
             </div>
-            <h3 className="text-center text-[1.3em] text-black mt-4 mb-5 font-bold">
-              Mã OTP
-            </h3>
-            <p className="text-center text-[1em] text-black mt-4 mb-5">
-              Mã OTP đã được gửi đến email của bạn
-            </p>
 
-            <form onSubmit={verifyOTP}>
-              <OtpBox length={6} onChange={handleOtpChange} />
+            <form className="!p-0">
+              <h3 className="text-left text-[1.3em] text-black mt-4 font-bold">
+                Mã OTP
+              </h3>
+              <p className="text-left text-[1em] text-black mb-2 mt-4">
+                Mã OTP đã được gửi đến email của bạn
+              </p>
 
-              <div className="flex items-center justify-center mt-5">
-                <Link to={"/forgotPassword"} className="w-full">
-                  <Button className="w-full" variant="contained">
-                    Xác thực OTP
-                  </Button>
-                </Link>
+              {/* Trường nhập mã OTP */}
+              <div className="form-group">
+                <TextField
+                  id="otp"
+                  label="Nhập mã OTP"
+                  type="text"
+                  variant="standard"
+                  className="w-full text-left"
+                />
+              </div>
+
+              <div className="flex space-x-6 mt-6 mb-1">
+                <div className="flex-1">
+                  <Link to={"/resetPassword"} className="w-full mt-4">
+                    <Button className="w-full" variant="contained">
+                      Xác thực OTP
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </form>
           </div>
@@ -69,4 +91,5 @@ const Verify = () => {
     </>
   );
 };
+
 export default Verify;

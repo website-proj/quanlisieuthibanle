@@ -38,3 +38,15 @@ body {
   width: 25em;
   overflow: hidden;
 }
+.header,
+.footer {
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  opacity: 1;
+  visibility: visible;
+}
+
+.header.hidden,
+.footer.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
