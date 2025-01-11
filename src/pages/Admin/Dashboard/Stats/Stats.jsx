@@ -58,7 +58,7 @@ const Stats = () => {
       icon: <FiUser className="icon" />,
       title: 'Người dùng',
       count: stats.usersCount,
-      path: '/user-management',
+      path: '/users-management',
     },
     {
       icon: <GrBasket className="icon" />,

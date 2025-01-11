@@ -17,7 +17,7 @@ function AddSubcategory() {
       .then((response) => response.json())
       .then((data) => {
         console.log("Fetched categories:", data);
-        setCategories(Object.keys(data.categories)); // Ensure categories are fetched
+        setCategories(Object.keys(data.categories)); 
       })
       .catch((error) => console.error("Error fetching categories:", error));
   }, []);
@@ -99,7 +99,7 @@ function AddSubcategory() {
           />
 
           <Button variant="contained" color="primary" onClick={handleAdd} className="submit-button">
-            Thêm
+            Thêm danh mục con
           </Button>
         </Box>
       </ContentCard>

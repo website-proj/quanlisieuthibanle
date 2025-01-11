@@ -5,7 +5,7 @@ import Stats from '/src/pages/Admin/Dashboard/Stats/Stats';
 import ContentCard from '/src/components/Admin/ContentCard/ContentCard';
 import CustomContent from '/src/components/Admin/ContentCard/CustomContent';
 import RenevenueChart from '/src/pages/Admin/Dashboard/Revenue/Chart';
-import UserChart from '/src/pages/Admin/Dashboard/User/Chart';
+import UserChart from '/src/pages/Admin/Users/Management/Line/Chart';
 import CategoryChart from '/src/pages/Admin/Categories/CategoriesList/PieChart/Chart';
 import BestSellingProductsTable from '/src/pages/Admin/Products/List/BestSellingProducts/Table';
 

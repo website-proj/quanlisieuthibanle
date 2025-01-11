@@ -226,7 +226,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
             button
             onClick={handleUsersClick}
             className={`custom-list-item ${
-              isActive("/user-management") || isActive("/add-user") ? "active" : ""
+              isActive("/users-management") || isActive("/add-user") ? "active" : ""
             }`}
           >
             <ListItemIcon className="custom-list-item-icon">
@@ -253,8 +253,8 @@ function Sidebar({ isOpen, toggleSidebar }) {
               <ListItem
                 button
                 component={Link}
-                to="/user-management"
-                className={`submenu-list-item ${isActive("/user-management") ? "active" : ""}`}
+                to="/users-management"
+                className={`submenu-list-item ${isActive("/users-management") ? "active" : ""}`}
                 sx={{ paddingLeft: 2 }}
               >
                 <ListItemText className="submenu-text" primary="Quản lý người dùng" />

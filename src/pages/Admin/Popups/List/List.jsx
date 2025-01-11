@@ -22,7 +22,7 @@ import {
 import HeaderCard from "/src/components/Admin/HeaderCard/HeaderCard";
 import ContentCard from "/src/components/Admin/ContentCard/ContentCard";
 import BackdropComponent from "./Backdrop.jsx";
-import Add from "/src/pages/Admin/Popups/Add/Add"; 
+import Add from "/src/pages/Admin/Popups/Add/Add.jsx";
 
 function List() {
   const breadcrumbs = [
@@ -40,8 +40,8 @@ function List() {
   const [error, setError] = useState(null);
   const [order, setOrder] = useState("asc"); // asc or desc
   const [orderBy, setOrderBy] = useState("id");
-  const [searchTerm, setSearchTerm] = useState(""); 
-  const [openBackdrop, setOpenBackdrop] = useState(false); 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [openBackdrop, setOpenBackdrop] = useState(false);
 
   useEffect(() => {
     const fetchPopups = async () => {
@@ -83,12 +83,22 @@ function List() {
     });
     return stabilizedThis.map((el) => el[0]);
   };
-
   const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
-      : (a, b) => (a[orderBy] < b[orderBy] ? -1 : 1);
+    if (orderBy === "id") {
+      return order === "desc"
+        ? (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
+        : (a, b) => (a[orderBy] < b[orderBy] ? -1 : 1);
+    } else if (orderBy === "start_date" || orderBy === "end_date") {
+      return order === "desc"
+        ? (a, b) => new Date(b[orderBy].split("/").reverse().join("-")) - new Date(a[orderBy].split("/").reverse().join("-"))
+        : (a, b) => new Date(a[orderBy].split("/").reverse().join("-")) - new Date(b[orderBy].split("/").reverse().join("-"));
+    } else {
+      return order === "desc"
+        ? (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
+        : (a, b) => (a[orderBy] < b[orderBy] ? -1 : 1);
+    }
   };
+  
 
   if (loading) {
     return <Typography>Loading...</Typography>;
@@ -99,9 +109,10 @@ function List() {
   }
 
   const filteredPopups = popups.filter((popup) =>
-    popup.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    popup.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    popup.status.toLowerCase().includes(searchTerm.toLowerCase())
+    popup.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    popup.start_date?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    popup.end_date?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    popup.status?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -112,7 +123,7 @@ function List() {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            marginBottom: "20px", 
+            marginBottom: "20px",
           }}
         >
           <TextField
@@ -128,15 +139,15 @@ function List() {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => setOpenBackdrop(true)} 
+            onClick={() => setOpenBackdrop(true)}
             sx={{
-              fontSize: '0.95em',
+              fontSize: "0.95em",
               textTransform: "none",
-              borderRadius: '15px',
-              boxShadow: 'none',
-              height: '40px',
-              width: '25%',
-              marginTop: '0.5em'
+              borderRadius: "15px",
+              boxShadow: "none",
+              height: "40px",
+              width: "25%",
+              marginTop: "0.5em",
             }}
           >
             Thêm popup
@@ -153,7 +164,7 @@ function List() {
             sx={{
               borderRadius: "15px",
               overflow: "hidden",
-              boxShadow: "none", 
+              boxShadow: "none",
             }}
           >
             <Table>
@@ -171,29 +182,20 @@ function List() {
                   <TableCell sx={{ textAlign: "center" }}>Hình ảnh</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     <TableSortLabel
-                      active={orderBy === "name"}
-                      direction={orderBy === "name" ? order : "asc"}
-                      onClick={() => handleRequestSort("name")}
+                      active={orderBy === "start_date"}
+                      direction={orderBy === "start_date" ? order : "asc"}
+                      onClick={() => handleRequestSort("start_date")}
                     >
-                      Tên popup
+                      Ngày bắt đầu
                     </TableSortLabel>
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     <TableSortLabel
-                      active={orderBy === "position"}
-                      direction={orderBy === "position" ? order : "asc"}
-                      onClick={() => handleRequestSort("position")}
+                      active={orderBy === "end_date"}
+                      direction={orderBy === "end_date" ? order : "asc"}
+                      onClick={() => handleRequestSort("end_date")}
                     >
-                      Vị trí
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
-                    <TableSortLabel
-                      active={orderBy === "priority"}
-                      direction={orderBy === "priority" ? order : "asc"}
-                      onClick={() => handleRequestSort("priority")}
-                    >
-                      Thứ tự ưu tiên
+                      Ngày kết thúc
                     </TableSortLabel>
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
@@ -215,24 +217,28 @@ function List() {
                     <TableRow key={popup.id}>
                       <TableCell sx={{ textAlign: "center" }}>{popup.id}</TableCell>
                       <TableCell sx={{ textAlign: "center" }}>
-                        <img src={popup.image} alt={popup.name} style={{ width: "100px", height: "auto" }} />
+                        <img
+                          src={popup.image}
+                          alt='Ảnh popup'
+                          style={{ width: "100px", height: "auto", borderRadius: "10px" }}
+                        />
                       </TableCell>
-                      <TableCell sx={{ textAlign: "center" }}>{popup.name}</TableCell>
-                      <TableCell sx={{ textAlign: "center" }}>{popup.position}</TableCell>
-                      <TableCell sx={{ textAlign: "center" }}>{popup.priority}</TableCell>
+                      <TableCell sx={{ textAlign: "center" }}>{popup.start_date}</TableCell>
+                      <TableCell sx={{ textAlign: "center" }}>{popup.end_date}</TableCell>
                       <TableCell sx={{ textAlign: "center" }}>
                         <Chip
                           label={popup.status}
                           color={popup.status === "Đang hoạt động" ? "success" : "error"}
-                          variant="filled" 
+                          variant="filled"
                           sx={{
                             color: popup.status === "Đang hoạt động" ? "green" : "red",
-                            backgroundColor: popup.status === "Đang hoạt động"
-                                ? "rgba(0, 128, 0, 0.1)" 
-                                : "rgba(255, 0, 0, 0.1)", 
+                            backgroundColor:
+                              popup.status === "Đang hoạt động"
+                                ? "rgba(0, 128, 0, 0.1)"
+                                : "rgba(255, 0, 0, 0.1)",
                             fontWeight: "500",
-                            borderRadius: "20px", 
-                            boxShadow: "none", 
+                            borderRadius: "20px",
+                            boxShadow: "none",
                           }}
                         />
                       </TableCell>
@@ -265,26 +271,23 @@ function List() {
           }}
         >
           <Typography>Tổng số popup: {filteredPopups.length}</Typography>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 15]}
-            component="div"
-            count={filteredPopups.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage="Số popup mỗi trang:"
-            labelDisplayedRows={({ from, to, count }) =>
-              `${from}–${to} trên ${count !== -1 ? count : "nhiều hơn"}`
-            }
-          />
-        </Box>
+                    <TablePagination
+                      rowsPerPageOptions={[5, 10, 15]}
+                      component="div"
+                      count={filteredPopups.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                      labelRowsPerPage="Số banner mỗi trang:"
+                      labelDisplayedRows={({ from, to, count }) =>
+                        `${from}–${to} trên ${count !== -1 ? count : "nhiều hơn"}`
+                      }
+                    />
+                  </Box>
       </ContentCard>
-
       <BackdropComponent open={openBackdrop} onClose={() => setOpenBackdrop(false)}>
-        <Box sx={{ backgroundColor: "white", padding: 2, borderRadius: 4 }}>
-          <Add /> 
-        </Box>
+        <Add />
       </BackdropComponent>
     </div>
   );

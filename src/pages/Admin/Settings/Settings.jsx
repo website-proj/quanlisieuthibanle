@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Settings.css";
+import {  Typography } from '@mui/material';
 
 import HeaderCard from "/src/components/Admin/HeaderCard/HeaderCard";
 import ContentCard from "/src/components/Admin/ContentCard/ContentCard";
@@ -15,7 +16,6 @@ function Settings() {
     { label: "Cài đặt", link: "/settings", active: true },
   ];
 
-  // Xác định tab active dựa vào URL
   const [activeTab, setActiveTab] = useState(
     location.search.includes("account") ? "account" : "interface"
   );
@@ -45,7 +45,6 @@ function Settings() {
     document.documentElement.style.fontSize = `${fontSize}px`; // To apply global font size
   }, [fontSize]);
 
-  // Xử lý khi chuyển tab và cập nhật URL
   useEffect(() => {
     if (activeTab === "account") {
       navigate("/settings?account");
@@ -78,7 +77,8 @@ function Settings() {
           <div className="content">
             {activeTab === "interface" ? (
               <>
-                <h2 style={{ fontSize: `1.3em` }}>Cài đặt giao diện</h2>
+                {/* <h2 style={{ fontSize: `1.3em` }}>Cài đặt giao diện</h2> */}
+                <Typography variant="h5" sx={{fontWeight: 'bold', paddingBottom: '0.5em'}} align="left">Cài đặt giao diện</Typography>
 
                 <div className="setting-item">
                   <span style={{ fontSize: `${fontSize}px` }}>Chế độ</span>

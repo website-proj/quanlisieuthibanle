@@ -32,7 +32,6 @@ function List() {
   ];
   const navigate = useNavigate();
 
-  // State
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [banners, setBanners] = useState([]);
@@ -99,7 +98,6 @@ function List() {
   }
 
   const filteredBanners = banners.filter((banner) =>
-    banner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     banner.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
     banner.status.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -171,15 +169,6 @@ function List() {
                   <TableCell sx={{ textAlign: "center" }}>Hình ảnh</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     <TableSortLabel
-                      active={orderBy === "name"}
-                      direction={orderBy === "name" ? order : "asc"}
-                      onClick={() => handleRequestSort("name")}
-                    >
-                      Tên banner
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
-                    <TableSortLabel
                       active={orderBy === "position"}
                       direction={orderBy === "position" ? order : "asc"}
                       onClick={() => handleRequestSort("position")}
@@ -215,9 +204,8 @@ function List() {
                     <TableRow key={banner.id}>
                       <TableCell sx={{ textAlign: "center" }}>{banner.id}</TableCell>
                       <TableCell sx={{ textAlign: "center" }}>
-                        <img src={banner.image} alt={banner.name} style={{ width: "100px", height: "auto" }} />
+                        <img src={banner.image} alt='Ảnh banner' style={{ width: "100px", height: "auto", borderRadius: '13px' }} />
                       </TableCell>
-                      <TableCell sx={{ textAlign: "center" }}>{banner.name}</TableCell>
                       <TableCell sx={{ textAlign: "center" }}>{banner.position}</TableCell>
                       <TableCell sx={{ textAlign: "center" }}>{banner.priority}</TableCell>
                       <TableCell sx={{ textAlign: "center" }}>

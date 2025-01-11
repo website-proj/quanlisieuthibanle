@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import HeaderCard from "/src/components/Admin/HeaderCard/HeaderCard";
 import ContentCard from "/src/components/Admin/ContentCard/ContentCard";
 import { TextField, MenuItem, Select, FormControl, Button, Typography, Box, Backdrop, CircularProgress } from '@mui/material';
 
 function AddPopup() {
   const [formData, setFormData] = useState({
-    popupName: '',
-    position: '',
-    priority: '',
+    start_date: '',
+    end_date: '',
     status: '',
     popupImage: null,
   });
@@ -24,7 +22,7 @@ function AddPopup() {
       ...prevData,
       [name]: value,
     }));
-    setErrors((prev) => ({ ...prev, [name]: '' }));
+    setErrors((prev) => ({ ...prev }));
   };
 
   const handleFileChange = (e) => {
@@ -40,42 +38,47 @@ function AddPopup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const newErrors = {};
-    if (!formData.popupName) newErrors.popupName = 'Vui lòng nhập tên popup.';
-    if (!formData.position) newErrors.position = 'Vui lòng chọn vị trí.';
-    if (!formData.priority || Number(formData.priority) < 1)
-      newErrors.priority = 'Vui lòng nhập thứ tự ưu tiên lớn hơn hoặc bằng 1.';
+    if (!formData.start_date) newErrors.start_date = 'Vui lòng nhập ngày bắt đầu.';
+    if (!formData.end_date) newErrors.end_date = 'Vui lòng nhập ngày kết thúc.';
     if (!formData.status) newErrors.status = 'Vui lòng chọn trạng thái.';
     if (!formData.popupImage) newErrors.popupImage = 'Vui lòng tải lên ảnh popup.';
-
+  
     setErrors(newErrors);
-
+  
     if (Object.keys(newErrors).length === 0) {
       setLoading(true);
-      setOpenBackdrop(true);  // Show backdrop on form submission
-
+      setOpenBackdrop(true);
+  
+      // Format the dates to dd/mm/yyyy
+      const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = ("0" + date.getDate()).slice(-2);
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      };
+  
       setTimeout(() => {
         setLoading(false);
         setSuccess(true);
         setAddedCategory({
-          name: formData.popupName,
-          position: formData.position,
-          priority: formData.priority,
+          start_date: formatDate(formData.start_date),
+          end_date: formatDate(formData.end_date),
           status: formData.status,
           image: formData.popupImage,
         });
         setOpenBackdrop(false);
-      }, 2000); // Simulate a delay for loading effect
+      }, 2000);
     }
   };
 
   const handleCloseSuccess = () => {
     setSuccess(false);
     setFormData({
-      popupName: '',
-      position: '',
-      priority: '',
+      start_date: '',
+      end_date: '',
       status: '',
       popupImage: null,
     });
@@ -87,48 +90,35 @@ function AddPopup() {
         <form onSubmit={handleSubmit}>
           <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
             <Box flex={1}>
+
               <Box mb={3}>
-                <Typography variant="h6" sx={{ fontSize: '1em', fontWeight: '500' }}>Tên Popup</Typography>
+                <Typography variant="h6" sx={{ fontSize: '1em', fontWeight: '500' }}>Ngày bắt đầu</Typography>
                 <TextField
+                  type="date"
                   fullWidth
-                  name="popupName"
-                  value={formData.popupName}
+                  name="start_date"
+                  value={formData.start_date}
                   onChange={handleChange}
                   variant="outlined"
                   size="medium"
+                  InputLabelProps={{ shrink: true }}
                 />
-                {errors.popupName && <Typography color="error">{errors.popupName}</Typography>}
+                {errors.start_date && <Typography color="error">{errors.start_date}</Typography>}
               </Box>
 
               <Box mb={3}>
-                <Typography variant="h6" sx={{ fontSize: '1em', fontWeight: '500' }}>Vị trí</Typography>
-                <FormControl fullWidth>
-                  <Select
-                    value={formData.position}
-                    name="position"
-                    onChange={handleChange}
-                    displayEmpty
-                  >
-                    <MenuItem value="header">Header</MenuItem>
-                    <MenuItem value="bottom">Bottom</MenuItem>
-                    <MenuItem value="sidebar">Sidebar</MenuItem>
-                  </Select>
-                  {errors.position && <Typography color="error">{errors.position}</Typography>}
-                </FormControl>
-              </Box>
-
-              <Box mb={3}>
-                <Typography variant="h6" sx={{ fontSize: '1em', fontWeight: 500 }}>Thứ tự ưu tiên</Typography>
+                <Typography variant="h6" sx={{ fontSize: '1em', fontWeight: 500 }}>Ngày kết thúc</Typography>
                 <TextField
-                  type="number"
+                  type="date"
                   fullWidth
-                  name="priority"
-                  value={formData.priority}
+                  name="end_date"
+                  value={formData.end_date}
                   onChange={handleChange}
                   variant="outlined"
                   size="medium"
+                  InputLabelProps={{ shrink: true }}
                 />
-                {errors.priority && <Typography color="error">{errors.priority}</Typography>}
+                {errors.end_date && <Typography color="error">{errors.end_date}</Typography>}
               </Box>
 
               <Box mb={3}>
@@ -200,12 +190,10 @@ function AddPopup() {
         </form>
       </ContentCard>
 
-      {/* Backdrop Loading Spinner */}
       <Backdrop open={loading} style={{ zIndex: 9999 }}>
         <CircularProgress color="inherit" />
       </Backdrop>
 
-      {/* Success Backdrop displaying form data */}
       <Backdrop 
         open={success} 
         style={{
@@ -239,56 +227,43 @@ function AddPopup() {
             Bạn đã thêm một popup!
           </Typography>
 
+          <Box style={{ width: '80%', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+            <img 
+              src={addedCategory?.image} 
+              alt="Category" 
+              style={{ 
+                width: '90%', 
+                height: 'auto', 
+                objectFit: 'contain', 
+                maxWidth: '40em', 
+                borderRadius: '15px',
+              }} 
+            />
+          </Box>
+
           <Box
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
               width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
               marginTop: '20px',
             }}
           >
-            <Box style={{ width: '48%' }}>
-              <Typography variant="h6">
-                <div style={{ marginBottom: '10px' }}>
-                  Tên Popup: {addedCategory?.name}
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                  Vị trí: {addedCategory?.position}
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                  Thứ tự ưu tiên: {addedCategory?.priority}
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                  Trạng thái: {addedCategory?.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động'}
-                </div>
-              </Typography>
-            </Box>
-
-            <Box 
-              style={{
-                width: '48%', 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center',
-              }}
-            >
-              <Typography variant="h6" style={{ marginBottom: '10px' }}>Ảnh popup</Typography>
-              <img 
-                src={addedCategory?.image} 
-                alt="Category" 
-                style={{ 
-                  width: '80%', 
-                  height: 'auto', 
-                  objectFit: 'contain', 
-                  maxWidth: '30em', 
-                  marginBottom: '1em',
-                  borderRadius: '15px',
-                }} 
-              />
-            </Box>
+            <Typography variant="h6" style={{ fontWeight: '500' }}>
+              Ngày bắt đầu: <span style={{ fontWeight: 'normal' }}>{addedCategory?.start_date}</span>
+            </Typography>
+            <Typography variant="h6" style={{ fontWeight: '500' }}>
+              Ngày kết thúc: <span style={{ fontWeight: 'normal' }}>{addedCategory?.end_date}</span>
+            </Typography>            <Typography variant="h6" style={{ fontWeight: '500' }}>
+              Trạng thái: <span style={{ fontWeight: 'normal' }}>
+                {addedCategory?.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động'}
+              </span>
+            </Typography>
           </Box>
         </Box>
-      </Backdrop>
+        </Backdrop>
+
     </div>
   );
 }

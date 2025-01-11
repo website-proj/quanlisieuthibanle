@@ -5,7 +5,6 @@ import { TextField, MenuItem, Select, FormControl, Button, Typography, Box, Back
 
 function AddBanner() {
   const [formData, setFormData] = useState({
-    bannerName: '',
     position: '',
     priority: '',
     status: '',
@@ -42,7 +41,6 @@ function AddBanner() {
     e.preventDefault();
 
     const newErrors = {};
-    if (!formData.bannerName) newErrors.bannerName = 'Vui lòng nhập tên banner.';
     if (!formData.position) newErrors.position = 'Vui lòng chọn vị trí.';
     if (!formData.priority || Number(formData.priority) < 1)
       newErrors.priority = 'Vui lòng nhập thứ tự ưu tiên lớn hơn hoặc bằng 1.';
@@ -59,7 +57,6 @@ function AddBanner() {
         setLoading(false);
         setSuccess(true);
         setAddedCategory({
-          name: formData.bannerName,
           position: formData.position,
           priority: formData.priority,
           status: formData.status,
@@ -73,7 +70,6 @@ function AddBanner() {
   const handleCloseSuccess = () => {
     setSuccess(false);
     setFormData({
-      bannerName: '',
       position: '',
       priority: '',
       status: '',
@@ -87,19 +83,6 @@ function AddBanner() {
         <form onSubmit={handleSubmit}>
           <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
             <Box flex={1}>
-              <Box mb={3}>
-                <Typography variant="h6" sx={{ fontSize: '1em', fontWeight: '500' }}>Tên Banner</Typography>
-                <TextField
-                  fullWidth
-                  name="bannerName"
-                  value={formData.bannerName}
-                  onChange={handleChange}
-                  variant="outlined"
-                  size="medium"
-                />
-                {errors.bannerName && <Typography color="error">{errors.bannerName}</Typography>}
-              </Box>
-
               <Box mb={3}>
                 <Typography variant="h6" sx={{ fontSize: '1em', fontWeight: '500' }}>Vị trí</Typography>
                 <FormControl fullWidth>
@@ -236,56 +219,39 @@ function AddBanner() {
         <Typography variant="h5" style={{ fontWeight: '500', textAlign: 'center' }}>
             Bạn đã thêm một banner!
         </Typography>
-
-        <Box
-            style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            width: '100%',
-            marginTop: '20px',
-            }}
-        >
-            <Box style={{ width: '48%' }}>
-            <Typography variant="h6">
-                <div style={{ marginBottom: '10px' }}>
-                    Tên Banner: {addedCategory?.name}
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                    Vị trí: {addedCategory?.position}
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                    Thứ tự ưu tiên: {addedCategory?.priority}
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                    Trạng thái: {addedCategory?.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động'}
-                </div>
-                </Typography>
-
-            </Box>
-
-            <Box 
-            style={{
-                width: '48%', 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center',
-            }}
-            >
-            <Typography variant="h6" style={{ marginBottom: '10px' }}>Ảnh banner</Typography>
-            <img 
+          <Box style={{ width: '80%', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+          <img 
                 src={addedCategory?.image} 
                 alt="Category" 
                 style={{ 
-                width: '80%', 
-                height: 'auto', 
-                objectFit: 'contain', 
-                maxWidth: '30em', 
-                marginBottom: '1em',
-                borderRadius: '15px',
-                }} 
-            />
-            </Box>
-        </Box>
+                  width: '90%', 
+                  height: 'auto', 
+                  objectFit: 'contain', 
+                  maxWidth: '40em', 
+                  borderRadius: '15px',
+                }} />
+          </Box>
+
+          <Box
+            style={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginTop: '20px',
+            }}
+          >
+              <Typography variant="h6" style={{ fontWeight: '500' }}>
+                Vị trí: <span style={{ fontWeight: 'normal' }}>{addedCategory?.position}</span>
+              </Typography>
+              <Typography variant="h6" style={{ fontWeight: '500' }}>
+                Thứ tự ưu tiên: <span style={{ fontWeight: 'normal' }}>{addedCategory?.priority}</span>
+              </Typography>            <Typography variant="h6" style={{ fontWeight: '500' }}>
+                Trạng thái: <span style={{ fontWeight: 'normal' }}>
+                  {addedCategory?.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động'}
+                </span>
+              </Typography>              
+          </Box>
         </Box>
 
 

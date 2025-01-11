@@ -1,6 +1,6 @@
 [
     {
-      "id": 1434242,
+      "id": "1434242",
       "image": "https://vending-cdn.kootoro.com/torov-cms/upload/image/1669358914523-kh%C3%A1i%20ni%E1%BB%87m%20qu%E1%BA%A3ng%20c%C3%A1o%20banner%20tr%C3%AAn%20website.jpg",
       "name": "Bánh quy",
       "position": "Header",
@@ -8,65 +8,60 @@
       "status": "Đang hoạt động"
     },
     {
-      "id": 2234234,
-      "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
+      "id": "2234234",
+      "image" : "https://img.freepik.com/free-vector/gradient-local-market-facebook-cover_23-2149462013.jpg",
       "name": "Sữa tươi",
       "position": "Bottom",
       "priority": 2,
       "status": "Không hoạt động"
     },
     {
-      "id": 2342343,
-      "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
+      "id": "2342343",
+      "image" : "https://img.freepik.com/free-vector/gradient-local-market-facebook-cover_23-2149462013.jpg",
       "name": "Quần áo",
       "position": "Side",
       "priority": 3,
       "status": "Đang hoạt động"
     },
     {
-      "id": 434535,
-      "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
+      "id": "434535",
+      "image" : "https://img.freepik.com/free-vector/gradient-local-market-facebook-cover_23-2149462013.jpg",
       "name": "Sữa ádtươi",
       "position": "Bottom",
       "priority": 4,
       "status": "Không hoạt động"
     },
     {
-      "id": 345235,
-      "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
-      "name": "qưeQuần áo",
+      "id": "345235",
+      "image": "https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2019/10/17/Pictures/kolkata-bhoumik-bazaar-esplanade-branch-photo-indranil_c7a80a78-f090-11e9-a269-0317b040ce03.JPG",
       "position": "Side",
       "priority": 5,
       "status": "Đang hoạt động"
     },
     {
-      "id": 1236,
-      "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
-      "name": "qưeSữaf tươi",
+      "id": "1236",
+      "image": "https://www.ppms.in/wp-content/uploads/2024/08/unnamed-3-1024x576.jpg",
       "position": "Bottom",
       "priority": 6,
       "status": "Không hoạt động"
     },
     {
-      "id": 7,
-      "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
-      "name": "dsfeQuần áo",
+      "id": "7",
+      "image": "https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2019/10/17/Pictures/kolkata-bhoumik-bazaar-esplanade-branch-photo-indranil_c7a80a78-f090-11e9-a269-0317b040ce03.JPG",
       "position": "Side",
       "priority": 7,
       "status": "Đang hoạt động"
     },
     {
-      "id": 8235,
-      "image": "https://m.media-amazon.com/images/I/61krVw7kVSL.jpg",
-      "name": "Sdsữa tươi",
+      "id": "8235",
+      "image": "https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2019/10/17/Pictures/kolkata-bhoumik-bazaar-esplanade-branch-photo-indranil_c7a80a78-f090-11e9-a269-0317b040ce03.JPG",
       "position": "Bottom",
       "priority": 8,
       "status": "Không hoạt động"
     },
     {
-      "id": 235239,
+      "id": "235239",
       "image": "/I/61krVw7kVSL.jpg",
-      "name": "huần áo",
       "position": "Side",
       "priority": 9,
       "status": "Đang hoạt động"

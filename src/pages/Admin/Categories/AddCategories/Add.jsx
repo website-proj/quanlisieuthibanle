@@ -106,7 +106,7 @@ function AddCategories() {
             onClick={handleAdd}
             className="submit-button"
           >
-            Thêm
+            Thêm danh mục
           </Button>
         </Box>
       </ContentCard>
