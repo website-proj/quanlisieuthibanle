@@ -261,7 +261,36 @@ class DataService:
             )
             db.add(payment)
             db.commit()
-
+    def cart_data(self , db):
+        users = db.query(User).all()
+        for user in users:
+            cart_id = f"cart{uuid.uuid4().hex[:8]}"
+            user_id = user.user_id
+            cart = Cart(
+                user_id = user_id ,
+                cart_id = cart_id
+            )
+            db.add(cart)
+            db.commit()
+            for i in range(3):
+                cart_item_id = f"cart_item{uuid.uuid4().hex[:8]}"
+                cart_id = cart_id
+                products = db.query(Product).all()
+                product = random.choice(products)
+                product_id = product.product_id
+                quantity = random.randint(1,5)
+                price_at_add = product.price * quantity
+                added_date  = self.random_date(datetime(2024 ,1,6), datetime(2025 ,12,31))
+                cart_item = CartItem(
+                    cart_item_id = cart_item_id ,
+                    cart_id = cart_id ,
+                    product_id = product_id ,
+                    quantity = quantity ,
+                    price_at_add = price_at_add ,
+                    added_date = added_date
+                )
+                db.add(cart_item)
+                db.commit()
     def main(self):
         with next(get_db()) as db :
             # self.create_user_data(db)
@@ -270,7 +299,8 @@ class DataService:
             # self.update_origin_price_of_product(db)
             # self.add_reviews_data(db)
             # self.add_voucher_data(db)
-            self.add_payment_data(db)
+            # self.add_payment_data(db)
+            self.cart_data(db)
             # print("hello world")
 if __name__ == '__main__':
     data = DataService()
