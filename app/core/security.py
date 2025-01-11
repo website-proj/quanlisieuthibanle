@@ -15,7 +15,7 @@ from app.model.users import User
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def create_access_token(email: Union[str, Any] , db : Session = Depends(get_db)) -> str:
+def create_access_token(email: Union[str, Any] , db : Session) -> str:
     expire = datetime.utcnow() + timedelta(
         seconds=settings.ACCESS_TOKEN_EXPIRE_SECONDS
     )

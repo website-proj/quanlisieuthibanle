@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from app.model.Products_Categories import Category
-from app.schemas.schema_category import CategoryCreate, CategoryUpdate
+from app.schemas.schema_category import CategoryUpdate, SubCategoryCreate
 from app.utils.responses import ResponseHandler
 
 class CategoryService:
@@ -18,13 +18,19 @@ class CategoryService:
 
         return ResponseHandler.success("Top 10 categories fetched successfully", categories)
     @staticmethod
-    def create_category(category : CategoryCreate , db : Session):
-        category = Category(category_name=category.category_name , star_category= category.star_category , parent_category_id= category.parent_category_id)
+    def create_category(category : SubCategoryCreate , db : Session):
+        category = Category(category_name=category.category_name , image =  category.image, parent_category_id= None)
         db.add(category)
         db.commit()
         db.refresh(category)
         return category
-
+    @staticmethod
+    def create_sub_category(category : SubCategoryCreate , db : Session):
+        category = Category(
+            category_name = category.category_name,
+            image = category.image ,
+            parent_category_id = category.parent_category_id
+        )
     @staticmethod
     def get_parent_category( cat_id, db):
         category = db.query(Category).filter(Category.category_id == cat_id).first()
@@ -47,7 +53,7 @@ class CategoryService:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         category.category_id = cat_form_update.category_id
         category.category_name = cat_form_update.category_name
-        category.star_category = cat_form_update.star_category
+        category.image = cat_form_update.image
         category.parent_category_id = cat_form_update.parent_category_id
         db.commit()
         db.refresh(category)

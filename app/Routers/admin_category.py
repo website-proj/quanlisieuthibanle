@@ -6,7 +6,7 @@ from app.db.base import get_db
 from app.model.Products_Categories import Category
 from app.services.categories import CategoryService
 from app.helper.login_manager import check_admin_role
-from app.schemas.schema_category import CategoriesResponse, CategoryCreate, CategoryUpdate
+from app.schemas.schema_category import CategoriesResponse, CategoryUpdate, SubCategoryCreate, parentCategoryCreate
 from app.utils.responses import ResponseHandler
 
 router = APIRouter()
@@ -24,11 +24,11 @@ def get_parent_category(cat_id : str , db : Session = Depends(get_db)):
     except Exception as e:
         raise e
 @router.post("/sub_category" , dependencies=[Depends(check_admin_role)])
-def create_subcategory(data_form : CategoryCreate , db : Session = Depends(get_db)):
-    cat = CategoryService.create_category(data_form, db)
+def create_subcategory(data_form : SubCategoryCreate , db : Session = Depends(get_db)):
+    cat = CategoryService.create_sub_category(data_form, db)
     return ResponseHandler.success("query Success" ,cat)
 @router.post("parent_category" , dependencies=[Depends(check_admin_role)])
-def create_parent_category(data_form : CategoryCreate , db : Session = Depends(get_db)):
+def create_parent_category(data_form : parentCategoryCreate , db : Session = Depends(get_db)):
     cat = CategoryService.create_category(data_form, db)
     return ResponseHandler.success("query Success" ,cat)
 @router.get("/all_subcategories" , dependencies=[Depends(check_admin_role)])

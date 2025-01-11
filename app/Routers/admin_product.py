@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, Query, status, HTTPException
 from starlette.status import HTTP_200_OK
 
-from app.schemas.schema_category import CategoryCreate
 from app.services.categories import CategoryService
 from app.utils.responses import ResponseHandler
 from app.db.base import  get_db

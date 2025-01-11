@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class CategoryBase(BaseModel):
     category_id: int  # Giả sử category_id là số nguyên
     category_name: str
-    star_category: Optional[bool] = False
     parent_category_id: Optional[str] = None
 
     class Config:
@@ -14,17 +13,19 @@ class CategoryBase(BaseModel):
 
 
 # Schema tạo mới category
-class CategoryCreate(BaseModel):
+class SubCategoryCreate(BaseModel):
+    image : str
     category_name: str
-    star_category: Optional[bool] = False
     parent_category_id: Optional[str] = None
-
+class parentCategoryCreate(BaseModel):
+    image : str
+    category_name: str
 
 # Schema cập nhật category
 class CategoryUpdate(BaseModel):
     category_id: str
+    image: str
     category_name: Optional[str] = None
-    star_category: Optional[bool] = False
     parent_category_id: Optional[str] = None
 
 

@@ -1,8 +1,6 @@
-from fastapi import HTTPException
-
+from fastapi import HTTPException, APIRouter, Request, Depends
 from authlib.integrations.base_client import OAuthError
 from authlib.integrations.starlette_client import OAuth
-from fastapi import APIRouter, Request, Depends
 from sqlalchemy.orm import Session
 from starlette import status
 from starlette.responses import JSONResponse
@@ -36,8 +34,7 @@ oauth.register(
     client_kwargs={'scope': 'openid email profile'},
 )
 
-
-FRONTEND_URL = 'http://127.0.0.1:8000/api/login/token'
+FRONTEND_URL = 'http://localhost:8000/api/login/token'
 
 
 @router.get('/')
@@ -46,7 +43,14 @@ async def login(request: Request):
     Redirect người dùng đến trang đăng nhập Google.
     """
     redirect_uri = FRONTEND_URL  # URL backend xử lý callback từ Google
-    return await oauth.google.authorize_redirect(request, redirect_uri=redirect_uri)
+    try:
+        return await oauth.google.authorize_redirect(request, redirect_uri=redirect_uri)
+    except Exception as e:
+        # Xử lý lỗi khi gửi yêu cầu OAuth đến Google
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to redirect to Google login: {str(e)}"
+        )
 
 
 @router.get('/token')
@@ -56,21 +60,26 @@ async def auth(request: Request, db: Session = Depends(get_db)):
     """
     try:
         # Lấy access token từ Google
-        token = await oauth.google.authorize_access_token(request  , db)
-        print(token)
+        token = await oauth.google.authorize_access_token(request)
         user_info = token.get('userinfo')
+
         if not user_info:
             raise OAuthError("Invalid token or userinfo missing.")
-    except OAuthError:
-        raise HTTPException(status_code= 400 , detail = "token error")
+    except OAuthError as e:
+        # Xử lý lỗi OAuth
+        raise HTTPException(status_code=400, detail=f"OAuth error: {str(e)}")
+    except Exception as e:
+        # Xử lý lỗi chung khi nhận token
+        raise HTTPException(status_code=400, detail=f"Token error: {str(e)}")
 
     # Kiểm tra email trong cơ sở dữ liệu
     email = db.query(User).filter(User.email == user_info['email']).first()
     if email:
-        # Trả về access token
+        # Nếu người dùng đã tồn tại, trả về access token
+        access_token = create_access_token(user_info['email'], db)
         return JSONResponse({
             'result': True,
-            'access_token': create_access_token(user_info['email']),
+            'access_token': access_token
         })
 
     # Nếu email không tồn tại, trả về lỗi xác thực
