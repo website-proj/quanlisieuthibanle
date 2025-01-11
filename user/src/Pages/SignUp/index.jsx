@@ -50,29 +50,14 @@ const SignUp = () => {
             <form className="mt-3">
               <h2 className="text-2xl font-[600] text-left">Đăng ký</h2>
 
-              <div className="flex space-x-6 mt-1 mb-1">
-                <div className="flex-1">
-                  <div className="form-group">
-                    <TextField
-                      label="Tên đăng nhập"
-                      type="text"
-                      required
-                      variant="standard"
-                      className="w-full text-left"
-                    />
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <div className="form-group">
-                    <TextField
-                      label="Số điện thoại"
-                      type="text"
-                      required
-                      variant="standard"
-                      className="w-full text-left"
-                    />
-                  </div>
-                </div>
+              <div className="form-group">
+                <TextField
+                  label="Tên đăng nhập"
+                  type="text"
+                  required
+                  variant="standard"
+                  className="w-full text-left"
+                />
               </div>
 
               <div className="form-group">
@@ -131,7 +116,7 @@ const SignUp = () => {
                 <div className="orText">Hoặc</div>
               </div>
 
-              <h3 className="mt-2 mb-3 text-center font-weight-bold">
+              <h3 className="mb-3 text-center font-weight-bold">
                 Tiếp tục với Google
               </h3>
 
