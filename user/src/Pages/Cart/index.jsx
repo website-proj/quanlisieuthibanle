@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MdDeleteOutline } from "react-icons/md";
-import { BsCart4 } from "react-icons/bs";
+import { FiShoppingCart } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import axios from "axios";
@@ -353,7 +353,7 @@ const Cart = () => {
                     onClick={(e) => handleAddToCart(e, product.image)}
                     className="productCart"
                   >
-                    <BsCart4 className="text-[2em] pr-2" />
+                    <FiShoppingCart className="text-[2em] pr-2" />
                     Thêm vào giỏ hàng
                   </Button>
                 </div>

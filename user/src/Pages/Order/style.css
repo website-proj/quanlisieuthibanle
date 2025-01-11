@@ -4,7 +4,7 @@
   margin-left: 1em;
   margin-right: 1em;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  border-radius: 0.3em;
-  /* background-image: linear-gradient(to bottom, #1d4ed8, #bce6ff);
-  color: white; */
+  border-radius: 0.5em;
+  background-image: linear-gradient(to bottom, #1d4ed8, #bce6ff);
+  color: rgb(197, 46, 46);
 }

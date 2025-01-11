@@ -71,7 +71,7 @@ const Order = () => {
       <div className="min-h-screen flex mt-36 mb-4">
         {/* Sidebar */}
         <aside className="w-1/5 setting">
-          <ul className="space-y-4  bg-white p-4 rounded-md shadow">
+          <ul className="space-y-4  bg-white p-4 rounded-2xl shadow">
             <li>
               <Link
                 to="/Account"
@@ -110,8 +110,8 @@ const Order = () => {
                   onClick={() => setActiveTab(value)}
                   className={`${
                     activeTab === value
-                      ? "text-gray-900 font-[600] border-b-2 border-gray-900"
-                      : "text-gray-600"
+                      ? "text-white font-[600] border-b-2 border-gray-900"
+                      : "text-gray-900"
                   } cursor-pointer transition-all duration-300 ease-in-out hover:border-b-2 hover:border-gray-900`}
                 >
                   {label}
@@ -126,7 +126,7 @@ const Order = () => {
                   ) : (
                     filterOrders(value).map((order, index) => (
                       <div
-                        className="flex flex-col  mb-4 p-4 rounded-lg border- shadow bg-white"
+                        className="flex flex-col  mb-4 p-4 rounded-xl border- shadow bg-white"
                         key={index}
                       >
                         {/* Trạng thái giao hàng */}
