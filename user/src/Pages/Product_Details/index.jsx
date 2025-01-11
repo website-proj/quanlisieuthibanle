@@ -98,11 +98,11 @@ const Product_Details = () => {
   return (
     <>
       <div className="mt-36 mb-4">
-        <IconBreadcrumbs />
+        <IconBreadcrumbs productName={product.name} />
         <div className="container mx-auto p-4">
           <ProductCard product={product} className="mr-[6%]" />
 
-          <div className="mt-3 mb-3 grid grid-cols-2 gap-5 ml-[3%] mr-[3%]">
+          <div className="mt-3 mb-3  ml-[2.5%] mr-[5%]">
             <div className="mota">
               {/* Thêm margin vào div chứa mô tả */}
               <div className="flex flex-col mt-5 mb-5">
@@ -110,7 +110,7 @@ const Product_Details = () => {
                   Mô tả sản phẩm
                 </h3>
               </div>
-              <div className="border bg-white rounded-2xl p-4 shadow-lg ml-[1%] h-[90.5%]">
+              <div className="border bg-white rounded-2xl p-6 shadow-lg ml-[1%] h-[90.5%]">
                 <div className="text-left text-black">
                   {sentences.map((sentence, index) => (
                     <p key={index} className="mb-2">
@@ -126,7 +126,7 @@ const Product_Details = () => {
             </div>
           </div>
 
-          <div className="flex flex-col ml-[4%] mr-[5%] mt-5 mb-5">
+          <div className="flex flex-col ml-[4%] mr-[5%] mt-12 mb-5">
             <h3 className="text-lg font-[600] text-black text-left text-shadow text_describe shadow-text">
               Sản phẩm liên quan
             </h3>

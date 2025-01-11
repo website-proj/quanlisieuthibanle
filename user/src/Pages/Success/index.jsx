@@ -2,7 +2,6 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 
-
 const Success = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,7 +27,9 @@ const Success = () => {
       <section className="mt-36 mb-4">
         <div className="container mx-auto flex flex-col items-center">
           {/* Tiêu đề */}
-          <h1 className="text-3xl font-[600] text-center mb-6">Hoàn thành !</h1>
+          <h1 className="text-3xl font-[600] text-center mb-6 shadow-text">
+            Hoàn thành !
+          </h1>
 
           {/* Thanh tiến trình */}
           <div className="flex items-center justify-between w-full max-w-4xl">
@@ -117,7 +118,6 @@ const Success = () => {
           </button>
         </div>
       </section>
-  
     </>
   );
 };

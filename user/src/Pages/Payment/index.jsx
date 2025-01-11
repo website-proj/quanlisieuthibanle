@@ -12,7 +12,9 @@ const Payment = () => {
       <section className="mt-36 mb-2">
         <div className="container mx-auto flex flex-col items-center">
           {/* Tiêu đề */}
-          <h1 className="text-3xl font-[600] text-center mb-6">Thanh toán</h1>
+          <h1 className="text-3xl font-[600] text-center mb-6 shadow-text">
+            Thanh toán
+          </h1>
 
           {/* Thanh tiến trình */}
           <div className="flex items-center justify-between w-full max-w-4xl">

@@ -53,14 +53,13 @@ export default function IconBreadcrumbs({ productName }) {
           color="inherit"
           href="/"
         >
-          <TiHome sx={{ mr: 0.5 }} fontSize="inherit" />
+          <TiHome className="mr-1" />
           Trang chủ
         </Link>
         <Typography
           sx={{ color: "text.primary", display: "flex", alignItems: "center" }}
         >
-          {/* <MdOutlineGrain sx={{ mr: 0.5 }} fontSize="inherit" /> */}
-          {/* {productName} */} Sữa chua nha đam Vinamilk hộp 100g * 4
+          {productName} {/* Hiển thị tên sản phẩm */}
         </Typography>
       </Breadcrumbs>
     </div>

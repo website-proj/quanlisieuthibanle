@@ -3,6 +3,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios"; // Import axios để gọi API
 import "./style.css";
+import Cmt from "../Cmt";
 
 function Reviews() {
   const [reviews, setReviews] = React.useState([]); // State để lưu các bình luận
@@ -53,7 +54,7 @@ function Reviews() {
         </h3>
       </div>
 
-      <div className="proCard border rounded-2xl p-4 shadow-lg">
+      <div className=" ml-[1.5%] bg-white border rounded-2xl p-4 shadow-lg">
         <div className="mt-4 space-y-4">
           {currentReviews.map((review) => (
             <div key={review.id} className="flex items-center p-4 rounded ">
@@ -91,6 +92,7 @@ function Reviews() {
             </div>
           ))}
         </div>
+        <Cmt />
 
         {/* Phân trang */}
         <Stack spacing={2} className="mt-4 pagination">

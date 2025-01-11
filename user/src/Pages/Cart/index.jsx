@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MdDeleteOutline } from "react-icons/md";
 import { BsCart4 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-
+import { Button } from "@mui/material";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules"; // Thay đổi import Navigation
@@ -11,7 +11,6 @@ import "swiper/css/navigation";
 import { CartContext } from "../../Context/CartContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
 import Header from "../../components/Header";
 
 const formatCurrency = (value) => value.toLocaleString("vi-VN") + "đ";
@@ -162,7 +161,9 @@ const Cart = () => {
       <section className="mt-36 mb-3">
         <div className="container mx-auto flex flex-col items-center">
           {/* Tiêu đề */}
-          <h1 className="text-3xl font-[600] text-center mb-6">Giỏ hàng</h1>
+          <h1 className="text-3xl font-[600] text-center mb-6 shadow-text">
+            Giỏ hàng
+          </h1>
           {/* Thanh tiến trình */}
           <div className="flex items-center justify-between w-full max-w-4xl">
             {/* Bước 1 */}
