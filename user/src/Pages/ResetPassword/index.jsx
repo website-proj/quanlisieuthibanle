@@ -146,7 +146,7 @@ const ResetPassword = () => {
                 <div className="flex-1">
                   <Link to={"/signIn"}>
                     <Button
-                      className="w-full"
+                      className="w-full !rounded-[0.625em]"
                       variant="contained"
                       type="submit"
                     >

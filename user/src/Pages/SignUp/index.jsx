@@ -130,7 +130,11 @@ const SignUp = () => {
 
               <div className="flex space-x-6 mt-1 mb-1">
                 <div className="flex-1">
-                  <Button type="submit" className="w-full" variant="contained">
+                  <Button
+                    type="submit"
+                    className="w-full !rounded-[0.625em]"
+                    variant="contained"
+                  >
                     Đăng ký
                   </Button>
                 </div>
@@ -138,7 +142,7 @@ const SignUp = () => {
                 <div className="flex-1">
                   <Link to={"/signIn"} className="w-full block">
                     <Button
-                      className="w-full"
+                      className="w-full !rounded-[0.625em]"
                       variant="outlined"
                       onClick={() => context.setisHeaderFooterShow(true)}
                     >
@@ -156,7 +160,10 @@ const SignUp = () => {
                 Tiếp tục với Google
               </h3>
 
-              <Button className="loginWithGoogle" variant="outlined">
+              <Button
+                className="loginWithGoogle !rounded-[0.625em]"
+                variant="outlined"
+              >
                 <FcGoogle className="text-[1.5em] mr-[0.5em]" /> Đăng nhập bằng
                 Google
               </Button>

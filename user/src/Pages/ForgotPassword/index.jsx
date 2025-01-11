@@ -74,7 +74,10 @@ const ForgotPassword = () => {
               <div className="flex space-x-6 mt-6 mb-1">
                 <div className="flex-1">
                   <Link to={"/verify"} className="w-full">
-                    <Button className="w-full" variant="contained">
+                    <Button
+                      className="w-full !rounded-[0.625em]"
+                      variant="contained"
+                    >
                       Gửi mã OTP
                     </Button>
                   </Link>

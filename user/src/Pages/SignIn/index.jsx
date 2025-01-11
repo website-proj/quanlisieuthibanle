@@ -48,7 +48,7 @@ const SignIn = () => {
           </svg>
         </div>
         <div className="flex justify-center h-screen">
-          <div className="box card p-3 shadow ">
+          <div className="box card p-3 ">
             <div className="text-center">
               <img className=" flex justify-center items-center " src={Logo} />
               {/* <Link to={"/"}>
@@ -88,22 +88,24 @@ const SignIn = () => {
                 </button>
               </div>
 
+              <div className="flex space-x-6 mt-1 mb-1">
+                <div className="flex-1">
+                  <Link to={"/home"}>
+                    <Button
+                      className="w-full !rounded-[0.625em] mt-2 "
+                      variant="contained"
+                    >
+                      Đăng nhập
+                    </Button>
+                  </Link>
+                </div>
+              </div>
               <Link
                 to={"/forgotPassword"}
                 className="border-effect cursor text-left"
               >
                 Quên mật khẩu?
               </Link>
-
-              <div className="flex space-x-6 mt-1 mb-1">
-                <div className="flex-1">
-                  <Link to={"/home"}>
-                    <Button className="w-full" variant="contained">
-                      Đăng nhập
-                    </Button>
-                  </Link>
-                </div>
-              </div>
 
               <div class="hrLine mt-8">
                 <div class="orText">Hoặc</div>
@@ -118,7 +120,10 @@ const SignIn = () => {
                 Tiếp tục với Google
               </h3>
 
-              <Button className="loginWithGoogle" variant="outlined">
+              <Button
+                className="loginWithGoogle !rounded-[0.625em]"
+                variant="outlined"
+              >
                 <FcGoogle className="text-[1.5em] mr-[0.5em]" /> Đăng nhập bằng
                 Google
               </Button>
