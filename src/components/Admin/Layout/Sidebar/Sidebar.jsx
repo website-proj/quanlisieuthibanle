@@ -12,6 +12,7 @@ import {
 import { PiFlagBannerFold } from "react-icons/pi";
 import { LuUser } from "react-icons/lu";
 import { TbFlag } from "react-icons/tb";
+import {toast} from 'react-toastify'
 
 import {
   MdOutlineCategory,
@@ -23,7 +24,7 @@ import {
   MdOutlineShoppingCart,
 } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function Sidebar({ isOpen, toggleSidebar }) {
   const [openCategories, setOpenCategories] = React.useState(false);
@@ -43,6 +44,20 @@ function Sidebar({ isOpen, toggleSidebar }) {
   const handlePopupsClick = () => setOpenPopups(!openPopups);
   const handleSettingsClick = () => setOpenSettings(!openSettings);
 
+  const navigate = useNavigate();
+
+  const onLogoutClick = () => {
+    handleLogout();
+    toast.success('Bạn đã đăng xuất thành công', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+    navigate('/login');
+  };
   return (
     <Drawer
       variant="persistent"
@@ -392,11 +407,11 @@ function Sidebar({ isOpen, toggleSidebar }) {
 
           <ListItem
             button
-            onClick={() => alert("Đăng xuất thành công!")}
+            onClick={onLogoutClick}
             className="custom-list-item"
           >
-            <ListItemIcon className="custom-list-item-icon" id="logout">
-              <MdLogout style={{ color: "red" }} />
+            <ListItemIcon className="custom-list-item-icon">
+              <MdLogout />
             </ListItemIcon>
             <ListItemText className="custom-list-item-text" primary="Đăng xuất" />
           </ListItem>

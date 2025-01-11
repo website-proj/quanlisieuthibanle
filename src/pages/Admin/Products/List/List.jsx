@@ -5,6 +5,7 @@ import ContentCard from "/src/components/Admin/ContentCard/ContentCard";
 import Stats from '/src/pages/Admin/Products/List/Stats/Stats.jsx'
 import BestSellingProducts from '/src/pages/Admin/Products/List/BestSellingProducts/Table.jsx'
 import Products from '/src/pages/Admin/Products/List/Products/Table.jsx'
+// import ProductTable from '/src/pages/Admin/Products/List/Products/ProductTable.jsx'
 function List() {
   const breadcrumbs = [
     { label: "Tổng quan", link: "/dashboard" },
@@ -21,6 +22,7 @@ function List() {
 
       <ContentCard>
         <Products></Products>
+        {/* <ProductTable></ProductTable> */}
       </ContentCard>
     </div>
   )

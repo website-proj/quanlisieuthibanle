@@ -20,3 +20,7 @@
   .css-1yym4mj-MuiTableCell-root {
     border-bottom: 1px solid #f1f1f1 !important;
   }
+
+.css-1tktgsa-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+min-height: 100px;
+}

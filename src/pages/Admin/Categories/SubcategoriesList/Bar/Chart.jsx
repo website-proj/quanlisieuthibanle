@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './Chart.css'
+import './Chart.css';
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -11,25 +11,54 @@ import {
   Legend,
 } from "chart.js";
 import { MenuItem, Select, FormControl, Box, Typography } from "@mui/material";
-import { saveAs } from "file-saver"; 
-import DownloadMenu from "/src/components/Admin/Download/CsvJsonPng"; 
-
-import subcategoriesData from "/src/pages/Admin/Categories/SubcategoriesList/Subcategories.json";
+import { saveAs } from "file-saver";
+import DownloadMenu from "/src/components/Admin/Download/CsvJsonPng";
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";  // Import BASE_URL and ENDPOINTS
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function Chart() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [downloadAnchorEl, setDownloadAnchorEl] = useState(null); 
+  const [downloadAnchorEl, setDownloadAnchorEl] = useState(null);
 
   useEffect(() => {
-    const loadedCategories = subcategoriesData.map((item) => ({
-      category: item.category,
-      subcategories: item.subcategories,
-    }));
-    setCategories(loadedCategories);
-    setSelectedCategory(loadedCategories[0]); 
+    const fetchCategories = async () => {
+      const jwtToken = localStorage.getItem("jwtToken");
+      if (!jwtToken) {
+        console.error("JWT token not found in localStorage.");
+        return;
+      }
+
+      try {
+        // Use BASE_URL and ENDPOINTS to construct the API URL
+        const response = await fetch(`${BASE_URL}${ENDPOINTS.char.revenueCategories}`, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error fetching data: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const loadedCategories = Object.values(data.data).map((item) => ({
+          category: item.parent_category_name,
+          subcategories: Object.values(item.child_categories).map((sub) => ({
+            name: sub.category_name,
+            revenue: sub.category_amount,
+          })),
+        }));
+
+        setCategories(loadedCategories);
+        setSelectedCategory(loadedCategories[0]);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   const handleCategoryChange = (event) => {
@@ -91,7 +120,7 @@ function Chart() {
         },
         grid: {
           display: true,
-          color: "#e0e0e0", 
+          color: "#e0e0e0",
           drawBorder: false,
         },
       },
@@ -99,18 +128,19 @@ function Chart() {
   };
 
   const handleDownloadCSV = () => {
-    let csv = "Danh mục,Số lượng\n";
-    subcategoriesData.forEach((item) => {
-      csv += `${item.category},${item.subcategories.length}\n`;
+    let csv = "Danh mục con,Doanh thu\n";
+    selectedCategory.subcategories.forEach((sub) => {
+      csv += `${sub.name},${sub.revenue}\n`;
     });
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const bom = "\uFEFF";
+    const blob = new Blob([bom + csv], { type: "text/csv;charset=utf-8;" });
     saveAs(blob, "du_lieu_danh_muc.csv");
   };
 
   const handleDownloadJSON = () => {
-    const jsonData = subcategoriesData.map((item) => ({
-      category: item.category,
-      subcategoriesCount: item.subcategories.length,
+    const jsonData = selectedCategory.subcategories.map((sub) => ({
+      name: sub.name,
+      revenue: sub.revenue,
     }));
     const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: "application/json" });
     saveAs(blob, "du_lieu_danh_muc.json");
@@ -154,7 +184,7 @@ function Chart() {
           onChange={handleCategoryChange}
           sx={{
             borderRadius: "10px",
-            height: "35px", 
+            height: "35px",
           }}
         >
           {categories.map((item) => (

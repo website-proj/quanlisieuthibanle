@@ -4,6 +4,7 @@ import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { saveAs } from "file-saver";
 import DownloadMenu from "/src/components/Admin/Download/CsvJsonPng";
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
 
 const materialColors = [
   "#ADD8E6", "#87CEFA", "#4682B4", "#9998FF", "#5F9EA0",
@@ -21,15 +22,36 @@ const CategoryChart = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("/src/pages/Admin/Categories/CategoriesList/Category.json");
-      const data = await response.json();
+      try {
+        const jwtToken = localStorage.getItem("jwtToken");
 
-      const categoryKeys = Object.keys(data.categories);
-      const categoryValues = categoryKeys.map(key => data.categories[key].value);
+        const response = await fetch(`${BASE_URL}${ENDPOINTS.char.countProducts}`, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          }
+        );
 
-      setCategories(categoryKeys);
-      setValues(categoryValues);
-      setColors(materialColors.slice(0, categoryKeys.length));
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+
+        const categoryKeys = Object.keys(data.data);
+        const categoryNames = categoryKeys.map(
+          (key) => data.data[key].category_name
+        );
+        const categoryValues = categoryKeys.map(
+          (key) => data.data[key].product_count
+        );
+
+        setCategories(categoryNames);
+        setValues(categoryValues);
+        setColors(materialColors.slice(0, categoryNames.length));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
     fetchData();
@@ -72,18 +94,21 @@ const CategoryChart = () => {
   };
 
   const handleDownloadCSV = () => {
-    let csv = "Danh mục,Doanh thu\n";
+    let csv = "Danh mục,Số lượng\n";
     categories.forEach((category, index) => {
       csv += `${category},${values[index]}\n`;
     });
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+
+    const bom = "\uFEFF";
+    const blob = new Blob([bom + csv], { type: "text/csv;charset=utf-8;" });
     saveAs(blob, "du_lieu_danh_muc.csv");
   };
+  
 
   const handleDownloadJSON = () => {
     const jsonData = categories.map((category, index) => ({
       category,
-      revenue: values[index],
+      quantity: values[index],
     }));
     const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: "application/json" });
     saveAs(blob, "du_lieu_danh_muc.json");

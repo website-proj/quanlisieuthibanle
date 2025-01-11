@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { PolarArea } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -9,47 +9,68 @@ import {
   Legend,
 } from "chart.js";
 import { saveAs } from "file-saver";
-import DownloadMenu from "/src/components/Admin/Download/CsvJsonPng"; 
+import DownloadMenu from "/src/components/Admin/Download/CsvJsonPng";
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
-
-import subcategoriesData from '/src/pages/Admin/Categories/SubcategoriesList/Subcategories.json';
 
 function PolarAreaChart() {
   const [chartData, setChartData] = useState(null);
   const [downloadAnchorEl, setDownloadAnchorEl] = useState(null);
 
-  useEffect(() => {
-    const labels = subcategoriesData.map((item) => item.category);
-    const values = subcategoriesData.map((item) => item.subcategories.length);
+  const getBackgroundColors = () => [
+    "rgba(0, 123, 255, 0.6)", // Blue
+    "rgba(0, 255, 255, 0.6)", // Cyan
+    "rgba(30, 144, 255, 0.6)", // DodgerBlue
+    "rgba(100, 149, 237, 0.6)", // CornflowerBlue
+    "rgba(135, 206, 235, 0.6)", // SkyBlue
+    "rgba(70, 130, 180, 0.6)", // SteelBlue
+    "rgba(176, 224, 230, 0.6)", // LightBlue
+    "rgba(95, 158, 160, 0.6)", // CadetBlue
+    "rgba(123, 104, 238, 0.6)", // MediumSlateBlue
+    "rgba(72, 61, 139, 0.6)", // DarkSlateBlue
+  ];
 
-    setChartData({
-      labels: labels,
-      datasets: [
-        {
-          label: "Số lượng danh mục con",
-          data: values,
-          backgroundColor: [
-            "rgba(0, 123, 255, 0.6)",  // Blue
-            "rgba(0, 255, 255, 0.6)",  // Cyan
-            "rgba(30, 144, 255, 0.6)", // DodgerBlue
-            "rgba(100, 149, 237, 0.6)", // CornflowerBlue
-            "rgba(135, 206, 235, 0.6)", // SkyBlue
-            "rgba(70, 130, 180, 0.6)", // SteelBlue
-            "rgba(176, 224, 230, 0.6)", // LightBlue
-            "rgba(95, 158, 160, 0.6)", // CadetBlue
-            "rgba(123, 104, 238, 0.6)", // MediumSlateBlue
-            "rgba(72, 61, 139, 0.6)",  // DarkSlateBlue
-          ],
-          borderWidth: 0.5,
-        },
-      ],
-    });
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("jwtToken");
+      try {
+        const response = await fetch(`${BASE_URL}${ENDPOINTS.char.countChild}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const result = await response.json();
+
+        if (result.message === "success") {
+          const labels = Object.values(result.data).map((item) => Object.keys(item)[0]);
+          const values = Object.values(result.data).map((item) => Object.values(item)[0]);
+
+          setChartData({
+            labels: labels,
+            datasets: [
+              {
+                label: "Số lượng danh mục con",
+                data: values,
+                backgroundColor: getBackgroundColors(),
+                borderWidth: 0.5,
+              },
+            ],
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const options = {
     responsive: true,
-    maintainAspectRatio: false, // Cho phép co dãn biểu đồ
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "right",
@@ -64,20 +85,25 @@ function PolarAreaChart() {
     },
   };
 
-  // Xử lý tải xuống CSV
   const handleDownloadCSV = () => {
+    if (!chartData) return;
+  
     let csv = "Danh mục,Số lượng\n";
-    subcategoriesData.forEach((item) => {
-      csv += `${item.category},${item.subcategories.length}\n`;
+    chartData.labels.forEach((label, index) => {
+      csv += `${label},${chartData.datasets[0].data[index]}\n`;
     });
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  
+    const bom = "\uFEFF";
+    const blob = new Blob([bom + csv], { type: "text/csv;charset=utf-8;" });
     saveAs(blob, "du_lieu_danh_muc.csv");
   };
+  
 
   const handleDownloadJSON = () => {
-    const jsonData = subcategoriesData.map((item) => ({
-      category: item.category,
-      subcategoriesCount: item.subcategories.length,
+    if (!chartData) return;
+    const jsonData = chartData.labels.map((label, index) => ({
+      category: label,
+      subcategoriesCount: chartData.datasets[0].data[index],
     }));
     const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: "application/json" });
     saveAs(blob, "du_lieu_danh_muc.json");
@@ -121,7 +147,6 @@ function PolarAreaChart() {
           <Typography>Đang tải dữ liệu...</Typography>
         )}
       </Box>
-
     </Box>
   );
 }

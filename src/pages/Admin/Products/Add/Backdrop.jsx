@@ -17,7 +17,6 @@ const SuccessBackdrop = ({ open, handleCloseSuccess, addedCategory }) => {
   const formatValue = (value, isDate) => {
     if (isDate) return formatDate(value);
     if (value === undefined || value === null) return 'chưa có thông tin';
-    // return String(value).toLowerCase();
     return String(value);
   };
 
@@ -42,7 +41,7 @@ const SuccessBackdrop = ({ open, handleCloseSuccess, addedCategory }) => {
       onClick={handleCloseSuccess}
       sx={{
         zIndex: 9999,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -100,7 +99,7 @@ const SuccessBackdrop = ({ open, handleCloseSuccess, addedCategory }) => {
             mb: 3, 
             display: 'flex', 
             flexDirection: 'column', 
-            alignItems: 'center' // Đảm bảo ảnh được căn giữa
+            alignItems: 'center' 
           }}
         >
           <Typography 

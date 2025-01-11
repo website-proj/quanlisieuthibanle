@@ -24,6 +24,7 @@ import {
 } from "@mui/material";
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import AddCategories from '/src/pages/Admin/Categories/AddSubcategories/Add.jsx';
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
 
 export default function SubcategoryTable() {
   const [categories, setCategories] = useState([]);
@@ -32,19 +33,55 @@ export default function SubcategoryTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [rowsPerPage, setRowsPerPage] = useState(5); 
-  const [page, setPage] = useState(0); 
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
   const selectRef = useRef(null);
+  const [selectedSubcategoryDetails, setSelectedSubcategoryDetails] = useState(null);
 
-  useEffect(() => {
-    fetch("/src/pages/Admin/Categories/SubcategoriesList/Subcategories.json")
-      .then((response) => response.json())
-      .then((data) => {
-        setCategories(data);
-      })
-      .catch((error) => {
+    useEffect(() => {
+        const fetchCategories = async () => {
+          const jwtToken = localStorage.getItem("jwtToken");
+          if (!jwtToken) {
+            console.error("JWT token not found in localStorage.");
+            return;
+          }
+
+          try {
+            const response = await fetch(`${BASE_URL}${ENDPOINTS.char.revenueCategories}`, {
+              headers: {
+                Authorization: `Bearer ${jwtToken}`,
+              },
+            });
+
+            if (!response.ok) {
+              throw new Error(`Error fetching data: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+
+        if (data.message === "success") {
+          const formattedCategories = Object.entries(data.data).map(([key, value]) => ({
+            id: key,
+            category: value.parent_category_name,
+            subcategories: Object.entries(value.child_categories).map(([subKey, subValue]) => ({
+              id: subKey,
+              name: subValue.category_name,
+              amount: subValue.category_amount,
+            })),
+          }));
+          setCategories(formattedCategories);
+        } else {
+          console.error("Error: Unexpected response format", data);
+        }
+      } catch (error) {
         console.error("Error loading data:", error);
-      });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   const handleCategoryChange = (event) => {
@@ -59,9 +96,9 @@ export default function SubcategoryTable() {
     if (selectElement) {
       const selectRect = selectElement.getBoundingClientRect();
       const availableSpace = window.innerHeight - selectRect.bottom;
-      return availableSpace > 200 ? 200 : availableSpace;
+      return availableSpace < 200 ? 200 : availableSpace;
     }
-    return 200;
+    return 300;
   };
 
   const filteredSubcategories = subcategories.filter((sub) =>
@@ -103,7 +140,16 @@ export default function SubcategoryTable() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  const handleViewSubcategory = (sub) => {
+    setSelectedSubcategoryDetails({
+      id: sub.id,
+      name: sub.name,
+      category: selectedCategory,
+      amount: sub.amount,
+    });
+    setOpenBackdrop(true);
+  };
+  
   return (
     <Box display="flex" sx={{ gap: 3 }}>
       {/* Left Panel */}
@@ -111,36 +157,41 @@ export default function SubcategoryTable() {
         <Typography variant="h6" gutterBottom>
           Danh mục
         </Typography>
-        <FormControl fullWidth>
-          <Select
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-            sx={{
-              borderRadius: "10px",
-            }}
-            displayEmpty
-            ref={selectRef}
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  maxHeight: calculateMenuHeight(),
-                  overflowY: "auto",
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <FormControl fullWidth>
+            <Select
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+              sx={{
+                borderRadius: "10px",
+              }}
+              displayEmpty
+              ref={selectRef}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: calculateMenuHeight(),
+                    overflowY: "auto",
+                  },
                 },
-              },
-            }}
-          >
-            <MenuItem value="" disabled>
-              Chọn danh mục
-            </MenuItem>
-            {categories.map((item) => (
-              <MenuItem key={item.category} value={item.category}>
-                {item.category}
+              }}
+            >
+              <MenuItem value="" disabled>
+                Chọn danh mục
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Typography variant="h6" sx={{marginBottom: "-10px", marginTop: "15px"}}>
-            Tìm kiếm
+              {categories.map((item) => (
+                <MenuItem key={item.id} value={item.category}>
+                  {item.category}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+
+        <Typography variant="h6" sx={{ marginBottom: "-10px", marginTop: "15px" }}>
+          Tìm kiếm
         </Typography>
         <TextField
           label="Tìm kiếm trong danh mục con"
@@ -160,7 +211,7 @@ export default function SubcategoryTable() {
             marginTop: 2,
             textTransform: "none",
             boxShadow: "none",
-            minWidth: "100%"
+            minWidth: "100%",
           }}
           onClick={handleAddSubcategory}
         >
@@ -207,11 +258,11 @@ export default function SubcategoryTable() {
                   </TableCell>
                 </TableRow>
               ) : (
-                paginatedSubcategories.map((sub, index) => (
-                  <TableRow key={index}>
+                paginatedSubcategories.map((sub) => (
+                  <TableRow key={sub.id}>
                     <TableCell sx={{ paddingLeft: "4em" }}>{sub.name}</TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
-                      <IconButton color="info">
+                    <IconButton color="info" onClick={() => handleViewSubcategory(sub)}>
                         <AiOutlineEye />
                       </IconButton>
                       <IconButton sx={{ color: "green" }}>

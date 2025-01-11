@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Backdrop, DialogActions, DialogContent, IconButton, TextField, Snackbar, Alert, Button, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import userInfoData from './Account.json';
 import passwordData from './Password.json';
 
@@ -20,6 +22,10 @@ function Account() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChangeProfile = (e) => {
     setEditedInfo({
@@ -118,7 +124,6 @@ function Account() {
                   onChange={handleChangeProfile}
                   fullWidth
                   variant="outlined"
-                  // margin="normal"
                   size="small"
                 />
               </div>
@@ -143,18 +148,26 @@ function Account() {
             {['oldPassword', 'newPassword', 'confirmPassword'].map((field) => (
               <div key={field} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <Typography variant="body1">{field === 'oldPassword' ? 'Mật khẩu cũ' : field === 'newPassword' ? 'Mật khẩu mới' : 'Nhập lại mật khẩu mới'}</Typography>
-                <TextField
-                  type="password"
-                  value={passwords[field]}
-                  onChange={(e) => setPasswords({
-                    ...passwords,
-                    [field]: e.target.value
-                  })}
-                  fullWidth
-                  variant="outlined"
-                  // margin="normal"
-                  size="small"
-                />
+                <div style={{ position: 'relative' }}>
+                  <TextField
+                    type={field === 'oldPassword' && showOldPassword ? 'text' : field === 'newPassword' && showNewPassword ? 'text' : field === 'confirmPassword' && showConfirmPassword ? 'text' : 'password'}
+                    value={passwords[field]}
+                    onChange={(e) => setPasswords({ ...passwords, [field]: e.target.value })}
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                  />
+                  <IconButton
+                    onClick={() => {
+                      if (field === 'oldPassword') setShowOldPassword(!showOldPassword);
+                      if (field === 'newPassword') setShowNewPassword(!showNewPassword);
+                      if (field === 'confirmPassword') setShowConfirmPassword(!showConfirmPassword);
+                    }}
+                    style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)' }}
+                  >
+                    {field === 'oldPassword' && showOldPassword || field === 'newPassword' && showNewPassword || field === 'confirmPassword' && showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </div>
               </div>
             ))}
           </div>
