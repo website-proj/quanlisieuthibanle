@@ -173,6 +173,9 @@ class OrderService:
         db.commit()
         db.refresh(order)
         return order
-
+    def get_all_orders(db : Session):
+        orders = db.query(Orders).all()
+        for order in orders:
+            status = order.status
 
 
