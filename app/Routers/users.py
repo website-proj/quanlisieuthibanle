@@ -65,7 +65,7 @@ async def login_access_token(data : OAuth2PasswordRequestForm =Depends() , db : 
     user = AuthService.authenticate_user( login_form , db)
     if not user :
         raise (HTTPException(status_code=400, detail="Incorrect email or password"))
-    token = create_access_token(data.username)
+    token = create_access_token(data.username , db )
     return {"access_token": token, "token_type": "bearer"}
 
 

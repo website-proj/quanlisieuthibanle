@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_200_OK
 
@@ -34,6 +34,8 @@ def create_parent_category(data_form : CategoryCreate , db : Session = Depends(g
 @router.get("/all_subcategories" , dependencies=[Depends(check_admin_role)])
 def get_all_subcategories_of_parent_Category(parent_category_id : str , db : Session = Depends(get_db)):
     cats = CategoryService.get_sub_category_of_parent_category(parent_category_id, db)
+    if not cats :
+        raise HTTPException(status_code= 400  , detail = "not cats found")
     return ResponseHandler.success("query Success" ,cats)
 @router.get("/subcategories" , dependencies=[Depends(check_admin_role)])
 def get_sub_category(cat_id : str , db : Session = Depends(get_db)):
@@ -56,9 +58,13 @@ def delete_parent_category(parent_category_id : str, db : Session = Depends(get_
     cat = CategoryService.delete_parent_category(parent_category_id, db)
     return ResponseHandler.success("delete Success" ,cat)
 
-@router.get("count_category")
+@router.get("count_category" , dependencies=[Depends(check_admin_role)])
 def count_category(db : Session = Depends(get_db)):
     return CategoryService.count_category(db)
 @router.get("sub_category")
 def count_sub_category(db : Session = Depends(get_db)):
     return CategoryService.count_sub_category(db)
+@router.get("/get_parent_categories" , dependencies=[Depends(check_admin_role)])
+def get_parent_categories(db: Session = Depends(get_db)):
+    categories = CategoryService.get_parent_categories(db)
+    return ResponseHandler.success("query Success" ,categories)

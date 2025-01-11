@@ -54,7 +54,7 @@ class CategoryService:
         return category
     @staticmethod
     def get_sub_category_of_parent_category( cat_id : str , db : Session):
-        cats = db.query(Category).filter(Category.parent_category_id == cat_id).all
+        cats = db.query(Category).filter(Category.parent_category_id == cat_id).all()
         if not cats:
             raise HTTPException(status_code= 404 , detail="Category not found")
         return cats
@@ -82,7 +82,9 @@ class CategoryService:
     @staticmethod
     def count_sub_category( db : Session):
         return db.query(Category).filter(Category.parent_category_id != None).count()
-
-
-
-
+    @staticmethod
+    def get_parent_categories(db : Session):
+        categories = db.query(Category).filter(Category.parent_category_id == None).all()
+        if not categories:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        return categories

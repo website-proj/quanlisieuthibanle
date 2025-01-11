@@ -56,7 +56,7 @@ async def auth(request: Request, db: Session = Depends(get_db)):
     """
     try:
         # Lấy access token từ Google
-        token = await oauth.google.authorize_access_token(request)
+        token = await oauth.google.authorize_access_token(request  , db)
         print(token)
         user_info = token.get('userinfo')
         if not user_info:

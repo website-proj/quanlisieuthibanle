@@ -10,6 +10,7 @@ from app.model.Products_Categories import Product
 from app.model.addres_model import Address
 from app.model.cart_model import CartItem, Cart
 from app.model.model_orders import Orders, OrderItems
+from app.model.voucher_payment import Payment
 from app.schemas.schema_order import OrderItemCreate, Order, OrderItem
 from app.services.auth import AuthService
 class OrderService:
@@ -124,46 +125,57 @@ class OrderService:
         db.commit()
         db.refresh(order)
         return order
+
     @staticmethod
-    def admin_get_all_order(db : Session):
-        order_data = db.query(Orders, OrderItems, Product, Address) \
-            .outerjoin(OrderItems, OrderItems.order_id == Orders.order_id) \
-            .outerjoin(Product, Product.product_id == OrderItems.product_id) \
-            .outerjoin(Address, Address.user_id == Orders.user_id).all()
+    def admin_get_all_order(db: Session):
+        order_data = (
+            db.query(Orders, OrderItems, Product, Address , Payment)
+            .outerjoin(OrderItems, Orders.order_id == OrderItems.order_id)
+            .outerjoin(Product, Product.product_id == OrderItems.product_id)
+            .outerjoin(Address, Address.user_id == Orders.user_id)
+            .outerjoin(Payment, Payment.order_id == Orders.order_id)
+            .all()
+        )
 
-        if not order_data :
-            raise HTTPException(status_code=404, detail='Order not found')
-        result = []
-        for orders, order_items, product, address in order_data:
-            result.append({
-                "orders": orders.__dict__ if orders else None,
-                "order_items": order_items.__dict__ if order_items else None,
-                "product": product.__dict__ if product else None,
-                "address": address.__dict__ if address else None,
-            })
-
-        # Loại bỏ các trường nội bộ của SQLAlchemy (_sa_instance_state)
-        for item in result:
-            for key, value in item.items():
-                if value and "_sa_instance_state" in value:
-                    del value["_sa_instance_state"]
-        grouped_orders = {}
-        for entry in result:
-            order_id = entry["orders"]["order_id"]
-            order_infor = entry["orders"]
-            order_item = entry["order_items"]
-            product_infor = entry["product"]
-
-            if order_id not in grouped_orders:
-                grouped_orders[order_id] = {
-                    "order_infor" : order_infor,
-                    "order_item" :[]
+        dic = {}
+        for order, order_items, product, address , payment in order_data:
+            order_id = order.order_id
+            product = {
+                "product_id" : product.product_id,
+                "product_name" : product.name,
+                "quantity" :order_items.quantity,
+                "price" : product.price,
+                "total_amount" : order_items.price
+            }
+            payment  = {
+                "payment_method":payment.payment_method
+            }
+            if order_id not in dic:
+                dic[order_id] = {
+                    "order": order.__dict__,  # Chuyển `order` thành dict
+                    "products": [],  # Danh sách sản phẩm
+                    "address": address.__dict__ if address else None,
+                    "payment" : payment
                 }
-            grouped_orders[order_id]["order_item"].append({
-                "order_item" : order_item,
-                "product" : product_infor,
-            })
-        return grouped_orders
+
+            # Chỉ thêm sản phẩm nếu `product` không phải là `None`
+            if product:
+                dic[order_id]["products"].append(product)
+
+        # Loại bỏ `_sa_instance_state` khỏi kết quả
+        for order_id, data in dic.items():
+            if "_sa_instance_state" in data["order"]:
+                del data["order"]["_sa_instance_state"]
+
+            if data["address"] and "_sa_instance_state" in data["address"]:
+                del data["address"]["_sa_instance_state"]
+
+            for product in data["products"]:
+                if "_sa_instance_state" in product:
+                    del product["_sa_instance_state"]
+
+        return dic
+
     @staticmethod
     def update_order_satatus(order_id : str , Status : str , db : Session):
         if Status != "Processing" and  Status != "Canceled" and Status != "Delivered":
@@ -173,9 +185,13 @@ class OrderService:
         db.commit()
         db.refresh(order)
         return order
-    def get_all_orders(db : Session):
-        orders = db.query(Orders).all()
-        for order in orders:
-            status = order.status
-
+    # def get_all_orders(db : Session):
+    #     orders  , order_items , products , address = db.query(Orders ,OrderItems ,  Product , Address ).join(
+    #         OrderItems , OrderItems.order_id == Orders.order_id
+    #     ).join(
+    #         Product , Product.product_id == OrderItems.product_id
+    #     ).join(
+    #         Address , Address.user_id == Orders.user_id
+    #     )
+    #
 

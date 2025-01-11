@@ -35,7 +35,7 @@ class DataService:
         list_orders = []
         list_order_items = []
         try:
-            for i in range(10000):
+            for i in range(100):
                 # Tạo order
                 random_user = random.choice(users)
                 user_id = random_user.user_id
@@ -142,7 +142,7 @@ class DataService:
         phone_number = prefix + suffix
         return phone_number
     def create_user_data(self , db:Session):
-        for i in range(1000):
+        for i in range(100):
             user_id = f"user{uuid.uuid4().hex[:8]}"
             user_name = self.name_random()
             password = self.password_random()
@@ -241,7 +241,7 @@ class DataService:
             db.add(review)
             db.commit()
     def add_voucher_data(self , db : Session):
-        for i in range(1000):
+        for i in range(100):
             voucher_id = f"voucher{uuid.uuid4().hex[:8]}"
             code = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
             discount_rate = random.randint(0,25)
@@ -260,7 +260,7 @@ class DataService:
             db.add(voucher)
             db.commit()
     def add_payment_data(self , db ):
-        orders = db.query(Orders).filter(Orders.status=="Delivered").all()
+        orders = db.query(Orders).all()
         for order in orders:
             payment_id = f"payment{uuid.uuid4().hex[:8]}"
             user_id = order.user_id
@@ -316,11 +316,11 @@ class DataService:
         with next(get_db()) as db :
             # self.create_user_data(db)
             # self.create_address_data(db)
-            self.create_order(db)
+            # self.create_order(db)
             # self.update_origin_price_of_product(db)
             # self.add_reviews_data(db)
             # self.add_voucher_data(db)
-            # self.add_payment_data(db)
+            self.add_payment_data(db)
             # self.cart_data(db)
             # print("hello world")
 if __name__ == '__main__':
