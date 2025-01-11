@@ -8,7 +8,7 @@ from app.model.model_base import Base
 
 
 class Address(Base):
-    __tablename__ = 'address'
+    __tablename__ = 'addresses'
     address_id = Column(String(50) ,   primary_key=True, unique=True, default=lambda: f"address{uuid.uuid4().hex[:8]}")
     user_id  = Column(String(50) , ForeignKey('users.user_id'), nullable=False)
     user_name = Column(String(50) , nullable=False)
