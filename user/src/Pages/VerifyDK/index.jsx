@@ -67,6 +67,15 @@ const VerifyDK = () => {
               {/* Trường nhập mã OTP */}
               <div className="form-group">
                 <TextField
+                  id="email"
+                  label="Email*"
+                  type="text"
+                  variant="standard"
+                  className="w-full text-left"
+                />
+              </div>
+              <div className="form-group">
+                <TextField
                   id="otp"
                   label="Nhập mã OTP"
                   type="text"
