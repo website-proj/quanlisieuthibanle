@@ -39,12 +39,14 @@ class ProductCreate(BaseModel):
     price: float
     old_price: Optional[float] = None
     discount: float
+    original_price : float
     unit: str
     stock_quantity: int = Field(0)
     image: str
     star_product: bool = Field(False)
     expiration_date: datetime
     category_id: str
+
 class ProductResponse(BaseModel):
     message:str
     data : ProductBase

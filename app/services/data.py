@@ -121,13 +121,13 @@ class DataService:
         phone_number = prefix + suffix
         return phone_number
     def create_user_data(self , db:Session):
-        for i in range(10000):
+        for i in range(1000):
             user_id = f"user{uuid.uuid4().hex[:8]}"
             user_name = self.name_random()
             password = self.password_random()
             password_hashed = get_password_hash(password)
             email = self.email_random(user_name)
-            gender = random.choice(["male" , "female" ,"other"])
+            gender = random.choice(["Male" , "Female" ,"Other"])
             phone_number = self.phone_number_random()
             address = "Hà Nội"
             start_date = datetime(2022 ,1,1)
@@ -242,10 +242,10 @@ class DataService:
         with next(get_db()) as db :
             # self.create_user_data(db)
             # self.create_address_data(db)
-            # self.create_order(db)
+            self.create_order(db)
             # self.update_origin_price_of_product(db)
             # self.add_reviews_data(db)
-            self.add_voucher_data(db)
+            # self.add_voucher_data(db)
             # print("hello world")
 if __name__ == '__main__':
     data = DataService()

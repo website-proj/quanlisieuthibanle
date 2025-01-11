@@ -42,3 +42,4 @@ urllib3==1.26.4
 uvicorn==0.22.0
 Authlib==1.4.0
 redis>=5.0.0,<6.0.0
+cloudinary==1.42.1

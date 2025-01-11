@@ -39,7 +39,7 @@ class Product(Base):
     date_created = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     expiration_date = Column(Date)
-    featured_product = Column(Boolean , default=False)
+    star_product = Column(Boolean , default=False)
     category_id = Column(String(50), ForeignKey('categories.category_id'))
 
     #relationship

@@ -115,6 +115,7 @@ class ProductService:
             description=product.description,
             price=product.price,
             old_price=product.old_price,
+            original_price = product.original_price,
             discount=product.discount,
             unit=product.unit,
             stock_quantity=product.stock_quantity,

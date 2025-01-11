@@ -16,6 +16,10 @@ router = APIRouter()
 @router.post("/products", dependencies=[Depends(check_admin_role)])
 def create_product(product : ProductCreate , db : Session = Depends(get_db) ):
     return ProductService.creat_product(product , db)
+@router.get("/testdata")
+def testdata(db: Session = Depends(get_db)):
+    product = db.query(Product).all()
+    return product
 @router.get("/products" , dependencies=[Depends(check_admin_role)])
 async  def get_all_product(db : Session = Depends(get_db)):
     try :
