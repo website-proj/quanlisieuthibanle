@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./style.css";
 
 const Popup = () => {
   const [popupData, setPopupData] = useState(null);
@@ -44,6 +45,26 @@ const Popup = () => {
     };
   }, []);
 
+  // Hiệu ứng mờ cho các phần tử khi popup hiển thị
+  useEffect(() => {
+    const header = document.querySelector("header"); // Lấy phần tử header
+    const mainContent = document.querySelector("main"); // Lấy phần tử main (nếu cần)
+
+    if (popupData) {
+      header?.classList.add("blur");
+      mainContent?.classList.add("blur");
+    } else {
+      header?.classList.remove("blur");
+      mainContent?.classList.remove("blur");
+    }
+
+    // Cleanup: Gỡ hiệu ứng mờ khi component bị unmount
+    return () => {
+      header?.classList.remove("blur");
+      mainContent?.classList.remove("blur");
+    };
+  }, [popupData]);
+
   const handleClose = () => {
     setPopupData(null);
 
@@ -56,7 +77,7 @@ const Popup = () => {
   return (
     <>
       {/* Overlay làm mờ toàn bộ trang */}
-      <div className="fixed inset-0 z-40 bg-black bg-opacity-50"></div>
+      <div className="fixed inset-0 z-40 bg-black bg-opacity-50 blur-overlay"></div>
 
       {/* Popup Content */}
       <div className="fixed inset-0 z-50 flex items-center justify-center">
