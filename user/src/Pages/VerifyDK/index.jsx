@@ -94,7 +94,7 @@ const VerifyDK = () => {
 
             <form className="!p-0" onSubmit={verifyOTP}>
               <h3 className="text-left text-[1.3em] text-black mt-4 font-bold">
-                Xác thực tài khoản
+                Mã OTP
               </h3>
               <p className="text-left text-[1em] text-black mb-2 mt-4">
                 Mã OTP đã được gửi đến email của bạn

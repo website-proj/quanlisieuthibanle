@@ -1,86 +1,108 @@
 import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import "./style.css";
 import { MyContext } from "../../App";
 import Logo from "../../assets/footer/Logo.png";
-import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
-
 import Button from "@mui/material/Button";
 
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Import mắt xem
+import SummaryApi, { baseURL } from "../../common/SummaryApi";
 
 const ForgotPassword = () => {
   const context = useContext(MyContext);
-  useEffect(() => {
-    context.setisHeaderFooterShow(false);
-  }, []);
-  // State để kiểm soát mật khẩu
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState(""); // Email nhập từ người dùng
+  const [errorMessage, setErrorMessage] = useState(null); // Lưu lỗi nếu có
+  const [successMessage, setSuccessMessage] = useState(null); // Lưu thông báo thành công
 
   useEffect(() => {
     context.setisHeaderFooterShow(false);
   }, []);
 
-  // Hàm để thay đổi trạng thái hiển thị/ẩn mật khẩu
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  // Hàm xử lý gửi mã OTP
+  const handleSendOTP = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Gọi API gửi mã OTP
+      const decodedEmail = decodeURIComponent(email);
+
+      // Gọi API gửi mã OTP
+      const response = await axios.put(
+        `${baseURL}${SummaryApi.forgot_password.url}`,
+        null, // Không có body, chỉ gửi query param
+        {
+          params: { email: decodedEmail }, // Truyền email đã giải mã qua query param
+        }
+      );
+
+      // Hiển thị thông báo thành công
+      setSuccessMessage("Mã OTP đã được gửi đến email của bạn.");
+      setErrorMessage(null);
+
+      // Điều hướng người dùng tới trang xác minh (nếu cần)
+      navigate("/verify", { state: { email } });
+    } catch (error) {
+      if (error.response) {
+        // Hiển thị lỗi từ server
+        setErrorMessage(error.response.data.detail || "Gửi mã OTP thất bại.");
+        setSuccessMessage(null);
+      } else {
+        // Hiển thị lỗi mạng
+        setErrorMessage("Lỗi mạng hoặc máy chủ không phản hồi.");
+        setSuccessMessage(null);
+      }
+    }
   };
+
   return (
     <>
       <section className="section signInPage forgot mt-[-5em]">
-        <div class="shape-bottom">
-          {" "}
-          <svg
-            fill="#fff"
-            id="Layer_1"
-            x="0px"
-            y="0px"
-            viewBox="0 0 1921 819.8"
-            style={{ enableBackground: "new 0 0 1921 819.8" }}
-          >
-            {" "}
-            <path
-              class="st0"
-              d="M1921,413.1v406.7H0V0.5h0.4l228.1,598.3c30,74.4,80.8,130.6,152.5,168.6c107.6,57,212.1,40.7,245.7,34.4 c22.4-4.2,54.9-13.1,97.5-26.6L1921,400.5V413.1z"
-            ></path>{" "}
-          </svg>
-        </div>
         <div className="flex justify-center h-screen">
-          <div className="box  card p-3 shadow ">
+          <div className="box card p-3 shadow">
             <div className="text-center">
-              <img className=" flex justify-center items-center " src={Logo} />
+              <img
+                className="flex justify-center items-center"
+                src={Logo}
+                alt="Logo"
+              />
             </div>
 
-            <form className="mt-6 !p-0">
+            <form className="mt-6 !p-0" onSubmit={handleSendOTP}>
               <h2 className="text-2xl font-[600] text-left">Quên mật khẩu</h2>
 
-              {/* Mật khẩu với chức năng ẩn/hiện */}
+              {errorMessage && (
+                <p className="text-red-500 text-sm">{errorMessage}</p>
+              )}
+              {successMessage && (
+                <p className="text-green-500 text-sm">{successMessage}</p>
+              )}
+
               <div className="form-group relative">
                 <TextField
                   id="email"
                   label="Email"
-                  type={showPassword ? "text" : "password"} // Thay đổi type giữa text và password
+                  type="email" // Email input
                   required
                   variant="standard"
                   className="w-full text-left"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)} // Cập nhật email state
                 />
-                <button
-                  type="button"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl"
-                ></button>
               </div>
 
               <div className="flex space-x-6 mt-6 mb-1">
                 <div className="flex-1">
-                  <Link to={"/verify"} className="w-full">
-                    <Button
-                      className="w-full !rounded-[0.625em]"
-                      variant="contained"
-                    >
-                      Gửi mã OTP
-                    </Button>
-                  </Link>
+                  <Button
+                    type="submit"
+                    className="w-full !rounded-[0.625em]"
+                    variant="contained"
+                  >
+                    Gửi mã OTP
+                  </Button>
                 </div>
               </div>
             </form>
@@ -90,4 +112,5 @@ const ForgotPassword = () => {
     </>
   );
 };
+
 export default ForgotPassword;

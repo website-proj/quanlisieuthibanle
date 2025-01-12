@@ -16,13 +16,14 @@ const SummaryApi = {
     url: "/api/users/get_code_forgotPassword",
     method: "put",
   },
-  forgot_password_otp_verification: {
-    url: "api/user/verify-forgot-password-otp",
-    method: "put",
-  },
+
   resetPassword: {
     url: "/api/users/resetPassword",
     method: "put",
+  },
+  login_gg: {
+    url: "/api/login/",
+    method: "get",
   },
 };
 

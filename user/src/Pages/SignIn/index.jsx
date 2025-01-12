@@ -24,21 +24,29 @@ const SignIn = () => {
     context.setisHeaderFooterShow(false);
   }, []);
 
-  // Hàm để thay đổi trạng thái hiển thị/ẩn mật khẩu
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  // Hàm xử lý đăng nhập bằng Google
+  const handleGoogleLogin = async () => {
+    try {
+      // Gửi yêu cầu đến backend để bắt đầu quá trình OAuth Google
+      window.location.href = `${baseURL}/api/login`; // Điều hướng người dùng tới backend OAuth
+    } catch (error) {
+      setErrorMessage("Lỗi khi kết nối với Google.");
+    }
   };
 
   // Hàm xử lý đăng nhập
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-      // Gửi yêu cầu đăng nhập tới API
       const response = await axios.post(
         `${baseURL}${SummaryApi.signIn.url}`,
         new URLSearchParams({
-          username: email, // Truyền email vào username (theo yêu cầu backend)
-          password: password, // Truyền mật khẩu
+          username: email,
+          password: password,
         }),
         {
           headers: {
@@ -47,20 +55,13 @@ const SignIn = () => {
         }
       );
 
-      // Xử lý thành công
       const { access_token, token_type } = response.data;
-
-      // Lưu token vào localStorage hoặc context để sử dụng cho các API tiếp theo
       localStorage.setItem("token", `${token_type} ${access_token}`);
-
-      // Chuyển hướng người dùng tới trang home
       navigate("/home");
     } catch (error) {
       if (error.response) {
-        // Hiển thị lỗi từ server
         setErrorMessage(error.response.data.detail || "Đăng nhập thất bại.");
       } else {
-        // Hiển thị lỗi mạng
         setErrorMessage("Lỗi mạng hoặc máy chủ không phản hồi.");
       }
     }
@@ -149,6 +150,7 @@ const SignIn = () => {
               <Button
                 className="loginWithGoogle !rounded-[0.625em]"
                 variant="outlined"
+                onClick={handleGoogleLogin}
               >
                 <FcGoogle className="text-[1.5em] mr-[0.5em]" /> Đăng nhập bằng
                 Google
