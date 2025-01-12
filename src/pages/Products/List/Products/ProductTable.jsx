@@ -19,7 +19,7 @@ import CategorySelect from "./CategorySelect";
 import SubcategorySelect from "./SubcategorySelect";
 import SearchProduct from "./SearchProduct";
 import Pagination from "./Pagination";
-import AddProducts from "/src/pages/Admin/Products/Add/Add.jsx";
+import AddProducts from "/src/pages/Products/Add/Add.jsx";
 
 export default function ProductTable() {
   const [categories, setCategories] = useState([]);
@@ -37,7 +37,7 @@ export default function ProductTable() {
 
   // Load danh mục từ dữ liệu JSON mới
   useEffect(() => {
-    fetch("/src/pages/Admin/Products/List/Products/Products.json")
+    fetch("/src/pages/Products/List/Products/Products.json")
       .then((response) => response.json())
       .then((data) => {
         const categoryMap = {};

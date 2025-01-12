@@ -52,7 +52,7 @@ const OrderManagement = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('/src/pages/Admin/Orders/Orders.json');
+      const response = await fetch('/src/pages/Orders/Orders.json');
       if (!response.ok) throw new Error('Không thể tải dữ liệu đơn hàng');
       const data = await response.json();
       setOrders(data);

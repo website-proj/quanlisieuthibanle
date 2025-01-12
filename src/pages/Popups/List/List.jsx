@@ -38,7 +38,7 @@ function List() {
   const [popups, setPopups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [order, setOrder] = useState("asc"); // asc or desc
+  const [order, setOrder] = useState("asc"); 
   const [orderBy, setOrderBy] = useState("id");
   const [searchTerm, setSearchTerm] = useState("");
   const [openBackdrop, setOpenBackdrop] = useState(false);

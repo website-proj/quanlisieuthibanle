@@ -30,7 +30,7 @@ function BestSellingProductsTable() {
   const [orderBy, setOrderBy] = useState("name");
 
   useEffect(() => {
-    fetch("/src/pages/Admin/Products/List/BestSellingProducts/Products.json") 
+    fetch("/src/pages/Products/List/BestSellingProducts/Products.json") 
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);
