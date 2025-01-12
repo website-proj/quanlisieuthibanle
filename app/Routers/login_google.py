@@ -73,14 +73,15 @@ async def auth(request: Request, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail=f"Token error: {str(e)}")
 
     # Kiểm tra email trong cơ sở dữ liệu
-    email = db.query(User).filter(User.email == user_info['email']).first()
-    if email:
-        # Nếu người dùng đã tồn tại, trả về access token
-        access_token = create_access_token(user_info['email'], db)
-        return JSONResponse({
-            'result': True,
-            'access_token': access_token
-        })
-
-    # Nếu email không tồn tại, trả về lỗi xác thực
-    raise CREDENTIALS_EXCEPTION
+    user = db.query(User).filter(User.email == user_info['email']).first()
+    if not user :
+        new_user = User(
+            username = user_info["name"],
+            email = user_info["email"],
+            password = user_info["sub"]
+        )
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        return new_user
+    return user
