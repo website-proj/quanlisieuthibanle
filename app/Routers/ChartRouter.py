@@ -22,18 +22,56 @@ def Count_products_of_category(db:Session = Depends(get_db)):
 @router.get("/revenue_12_month" , dependencies=[Depends(check_admin_role)])
 def Revenue_12_month(db:Session = Depends(get_db)):
     chart = Chart()
-    revenue =chart.revenue_12_month(db)
+    revenue =chart.revenue_last_12_months(db)
     return ResponseHandler.success("success" , revenue)
 @router.get("/cost_12_month" , dependencies=[Depends(check_admin_role)])
 def Cost_12_month(db:Session = Depends(get_db)):
     chart = Chart()
-    cost = chart.cost_12_month(db)
+    cost = chart.cost_last_12_months(db)
     return ResponseHandler.success("success" , cost)
 @router.get("/profit_12_month" , dependencies=[Depends(check_admin_role)])
 def Profit_12_month(db:Session = Depends(get_db)):
     chart = Chart()
     profit = chart.profit_12_month(db)
     return ResponseHandler.success("success" , profit)
-
-
+@router.get("/revenue_14_day" , dependencies=[Depends(check_admin_role)])
+def Revenue_14_day(db:Session = Depends(get_db)):
+    chart = Chart()
+    revenue =chart.revenue_last_14_days(db)
+    return ResponseHandler.success("success" , revenue)
+@router.get("/cost_14_day" , dependencies=[Depends(check_admin_role)])
+def Cost_14_day_last(db:Session = Depends(get_db)):
+    chart = Chart()
+    cost = chart.cost_last_14_days(db)
+    return ResponseHandler.success("success" , cost)
+@router.get("/profit_14_day" , dependencies=[Depends(check_admin_role)])
+def Profit_14_day_last(db:Session = Depends(get_db)):
+    chart = Chart()
+    profit = chart.profit_14_days(db)
+    return ResponseHandler.success("success" , profit)
+@router.get("/Revenue_3_years",dependencies=[Depends(check_admin_role)])
+def Revenue_3_years(db:Session = Depends(get_db)):
+    chart = Chart()
+    revenue  = chart.revenue_last_3_years(db)
+    return ResponseHandler.success("success" , revenue)
+@router.get("/cost_3_years" , dependencies=[Depends(check_admin_role)])
+def Cost_3_years(db:Session = Depends(get_db)):
+    chart = Chart()
+    cost = chart.cost_last_3_years(db)
+    return ResponseHandler.success("success" , cost)
+@router.get("/user_create_14_day" , dependencies=[Depends(check_admin_role)])
+def User_create_14_day(db:Session = Depends(get_db)):
+    chart = Chart()
+    user = chart.user_create_in_14_day(db)
+    return ResponseHandler.success("success" , user)
+@router.get("/user_create_12_month", dependencies=[Depends(check_admin_role)])
+def User_create_12_month(db:Session = Depends(get_db)):
+    chart = Chart()
+    user = chart.user_create_in_12_month(db)
+    return ResponseHandler.success("success" , user)
+@router.get("/user_create_3_years", dependencies=[Depends(check_admin_role)])
+def User_create_3_years(db:Session = Depends(get_db)):
+    chart = Chart()
+    user = chart.user_create_in_3_years(db)
+    return ResponseHandler.success("success" , user)
 

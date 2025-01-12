@@ -35,15 +35,15 @@ class DataService:
         list_orders = []
         list_order_items = []
         try:
-            for i in range(100):
+            for i in range(1000):
                 # Tạo order
                 random_user = random.choice(users)
                 user_id = random_user.user_id
                 order_id = f"order{uuid.uuid4().hex[:8]}"
                 status = random.choice(["Processing", "Delivered", "Canceled"])
 
-                start_date = datetime(2022, 1, 1)
-                end_date = datetime(2024, 12, 31)
+                start_date = datetime(2023, 1, 1)
+                end_date = datetime.utcnow()
                 order_date = self.random_date(start_date, end_date)
                 order_date = order_date.strftime('%Y-%m-%d')
 
@@ -142,7 +142,7 @@ class DataService:
         phone_number = prefix + suffix
         return phone_number
     def create_user_data(self , db:Session):
-        for i in range(100):
+        for i in range(500):
             user_id = f"user{uuid.uuid4().hex[:8]}"
             user_name = self.name_random()
             password = self.password_random()
@@ -151,7 +151,7 @@ class DataService:
             gender = random.choice(["Male" , "Female" ,"Other"])
             phone_number = self.phone_number_random()
             address = "Hà Nội"
-            start_date = datetime(2022 ,1,1)
+            start_date = datetime(2023 ,1,1)
             end_date = datetime(2024 ,12,31)
             date = self.random_date(start_date, end_date)
             user = User(
@@ -314,13 +314,13 @@ class DataService:
                 db.commit()
     def main(self):
         with next(get_db()) as db :
-            # self.create_user_data(db)
+            self.create_user_data(db)
             # self.create_address_data(db)
             # self.create_order(db)
             # self.update_origin_price_of_product(db)
             # self.add_reviews_data(db)
             # self.add_voucher_data(db)
-            self.add_payment_data(db)
+            # self.add_payment_data(db)
             # self.cart_data(db)
             # print("hello world")
 if __name__ == '__main__':

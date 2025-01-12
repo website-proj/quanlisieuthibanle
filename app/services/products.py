@@ -54,7 +54,7 @@ class ProductService:
     # GET /products/best-sellers: Lấy danh sách sản phẩm bán chạy nhất
     @staticmethod
     def get_flash_sale(db : Session):
-        discounted_products = db.query(Product).filter(Product.discount > 50).all()
+        discounted_products = db.query(Product).filter(Product.discount >= 50).all()
         if not discounted_products:
             raise HTTPException(status_code=404, detail="No flash sale products found")
         return discounted_products
