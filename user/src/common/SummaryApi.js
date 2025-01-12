@@ -42,6 +42,10 @@ const SummaryApi = {
     url: "/api/product/new_arrivals",
     method: "get",
   },
+  search: {
+    url: "/api/product/search",
+    method: "get",
+  },
 };
 
 export default SummaryApi;

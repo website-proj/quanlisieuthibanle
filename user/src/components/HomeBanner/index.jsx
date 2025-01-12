@@ -45,7 +45,7 @@ const HomeBanner = () => {
                   <img
                     src={banner.image}
                     alt={`Banner ${banner.banner_id}`}
-                    className="w-full h-[25em] object-cover bannerImg"
+                    className="w-full h-[25em] bg-cover bg-center object-cover bannerImg"
                   />
                   <div className="absolute bottom-10 left-10">
                     <a

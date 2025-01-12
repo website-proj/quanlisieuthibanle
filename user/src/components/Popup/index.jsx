@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./style.css";
 
 const Popup = () => {
   const [popupData, setPopupData] = useState(null);
+  const popupRef = useRef(null); // Sử dụng ref để tham chiếu đến phần tử popup
 
   useEffect(() => {
     const fetchPopupData = async () => {
@@ -72,6 +73,24 @@ const Popup = () => {
     document.body.style.overflow = "auto";
   };
 
+  // Lắng nghe sự kiện click ngoài popup để đóng popup
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Kiểm tra nếu click ngoài vùng popup
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        handleClose();
+      }
+    };
+
+    // Thêm sự kiện click lắng nghe
+    window.addEventListener("click", handleClickOutside);
+
+    // Cleanup: Gỡ sự kiện khi component bị unmount
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   if (!popupData) return null;
 
   return (
@@ -80,7 +99,10 @@ const Popup = () => {
       <div className="fixed inset-0 z-40 bg-black bg-opacity-50 blur-overlay"></div>
 
       {/* Popup Content */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center mt-16">
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center mt-16"
+        ref={popupRef} // Gán ref cho popup content
+      >
         <div className="relative bg-white rounded-[0.625em] shadow-lg max-w-md">
           <button
             className="absolute top-[-0.4em] right-[-0.4em] bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center font-[600] hover:bg-red-700"
