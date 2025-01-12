@@ -29,5 +29,11 @@ def edit_profile_user(dataform : admin_update, db : Session =Depends(get_db)):
 def delete_user(user_id : str , db : Session = Depends(get_db)):
     user = UserService.delete_user(user_id , db)
     return ResponseHandler.success("delete user success", user)
+@router.get("/user/count" , dependencies=[Depends(check_admin_role)])
+def count_all_users(db : Session = Depends(get_db)):
+    users = UserService.count_all_users(db)
+    return {
+        "users": users
+    }
 
 

@@ -94,7 +94,7 @@ class CategoryService:
         except Exception as e :
             raise e
     @staticmethod
-    def update_parent_category( category_id : Optional[str] , category_name :Optional[str] ,
+    def update_parent_category( category_id : str  , category_name :Optional[str] = None,
                                 file: Optional[UploadFile] = None, db : Session = Depends(get_db)):
         category = db.query(Category).filter(Category.category_id == category_id).first()
         if not category:
@@ -103,9 +103,9 @@ class CategoryService:
             raise HTTPException(status_code = 404 , detail = "not parent category")
         try :
 
-            if file != None:
-                url_image = UploadImage.upload_image(file)
-                url_image = url_image["secure_url"]
+            if file   :
+                image = UploadImage.upload_image(file)
+                url_image = image["secure_url"]
             else :
                 url_image = None
             #update

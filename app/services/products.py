@@ -408,5 +408,11 @@ class ProductService:
             }
             data.append(detail_product)
         return data
+    @staticmethod
+    def count_all_product(db:Session):
+        product = db.query(Product).count()
+        if not product :
+            raise HTTPException(status_code= 400 , detail = "not product found")
+        return product
 
 

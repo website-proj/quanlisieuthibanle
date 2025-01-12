@@ -77,6 +77,7 @@ class UserService():
         hashed_password = get_password_hash(data_form.password)
         user = User(username = data_form.username
                     , email = data_form.email
+                    ,gender = data_form.gender
                     , phone_number = data_form.phone_number
                     , address = data_form.address
                     , password = hashed_password)
@@ -105,7 +106,12 @@ class UserService():
         db.delete(user)
         db.commit()
         return user
-
+    @staticmethod
+    def count_all_users(db : Session):
+        user = db.query(User).count()
+        if not user :
+            raise HTTPException(status_code = status.HTTP_404_NOT_FOUND)
+        return user
 
 
 

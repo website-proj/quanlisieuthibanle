@@ -13,8 +13,8 @@ class Banner(Base):
     status = Column(Enum("Active" , "Inactive", name = "banner_status") , nullable = False)
     position = Column(Enum("main" , "sidebar" , "bottom" , name  = "banner_position") )
     priority = Column(Integer)
-    date_create = Column(DateTime , default=datetime.utcnow)
-    date_update = Column(DateTime , default=datetime.utcnow)
+    date_created = Column(DateTime , default=datetime.utcnow)
+    date_updated = Column(DateTime , default=datetime.utcnow)
 
 class Popup(Base):
     __tablename__ = 'popup'
@@ -24,7 +24,7 @@ class Popup(Base):
     status = Column(Enum("Active" , "Inactive", name = "popup_status") , nullable = False)
     start_date = Column(DateTime , default=datetime.utcnow)
     end_date = Column(DateTime )
-    date_create = Column(DateTime , default=datetime.utcnow)
-    date_update = Column(DateTime , default=datetime.utcnow)
+    date_created = Column(DateTime , default=datetime.utcnow)
+    date_updated= Column(DateTime , default=datetime.utcnow)
 
 

@@ -74,8 +74,8 @@ class Chart:
 
         return result
 
-    @staticmethod
-    def revenue_12_month(db:Session):
+
+    def revenue_12_month(self ,  db:Session):
         """"
         tính doanh thu theo tháng của của hàng
         """
@@ -87,6 +87,33 @@ class Chart:
                 data[month] = 0
             data[month] += order.total_amount or 0
         return data
+    # @staticmethod
+    def cost_12_month( self , db:Session):
+        data = db.query(Orders , OrderItems , Product ).outerjoin(
+            OrderItems, OrderItems.order_id == Orders.order_id
+        ).outerjoin(
+            Product , Product.product_id == OrderItems.product_id
+        ).all()
+        result = {}
+        for order , order_item , product in data:
+            month = order.order_date.strftime("%Y-%m")
+            if month not in result:
+                result[month] =0
+            original_price  = product.original_price
+            quantity = order_item.quantity
+            cost = original_price * quantity
+            result[month] += cost
+        return result
+    # @staticmethod
+    def profit_12_month(self , db:Session):
+        cost = self.cost_12_month(db)
+        revenue = self.revenue_12_month(db)
+        result = {}
+        for i , j in zip(revenue, cost) :
+            result[i] = revenue[i] - cost[i]
+        return result
+
+
 
 
 

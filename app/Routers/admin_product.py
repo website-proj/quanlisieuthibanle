@@ -154,3 +154,9 @@ def get_expiring_product(db : Session = Depends(get_db)):
 def get_detail_product(product_id : str, db : Session = Depends(get_db)):
     product = ProductService.get_detail_product_by_admin(product_id , db)
     return ResponseHandler.success("product detail" , product)
+@router.get("/count_products" , dependencies=[Depends(check_admin_role)])
+def count_products(db : Session = Depends(get_db)):
+    product = ProductService.count_all_product(db)
+    return {
+        "product_count" : product
+    }

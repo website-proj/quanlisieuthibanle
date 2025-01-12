@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile
+from fastapi.params import File
 from sqlalchemy.orm import Session
 
 from app.db.base import get_db
@@ -13,13 +14,12 @@ def get_all_banner(db : Session = Depends(get_db)):
     banner = BannerService.get_banner(db)
     return ResponseHandler.success("banner",banner)
 @router.post("/",dependencies=[Depends(check_admin_role)])
-def create_banner(banner: BannerCreate , db : Session = Depends(get_db)):
-    banner = BannerService.create_banner(banner,db)
-    # return banner
+def create_banner(position : str , status : str , priority : int , file: UploadFile = File(...),db : Session = Depends(get_db)):
+    banner = BannerService.create_banner(position , status , priority , file ,db)
     return ResponseHandler.success("banner create successfully",banner)
 @router.put("/",dependencies=[Depends(check_admin_role)])
-def update_banner(banner: BannerUpdate , db : Session = Depends(get_db)):
-    banner = BannerService.update_banner(banner,db)
+def update_banner(banner_id  , position : str , status : str , priority : int , file: UploadFile = File(...),db : Session = Depends(get_db)):
+    banner = BannerService.update_banner(banner_id , position , status , priority , file ,db)
     return ResponseHandler.success("banner update successfully",banner)
 @router.delete("/",dependencies=[Depends(check_admin_role)])
 def delete_banner(banner_id : str , db : Session = Depends(get_db)):

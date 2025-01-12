@@ -28,9 +28,10 @@ class admin_update(BaseModel):
         pass
 class UserCreateRequest(BaseModel):
     username :str
+    gender : str
+    phone_number: str
     email :str
     password : str
-    phone_number :str
     address: str
     # account_type : account_type = account_type.Customer
 class UserRegisterRequest(BaseModel):

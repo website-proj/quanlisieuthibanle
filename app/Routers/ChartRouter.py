@@ -19,3 +19,21 @@ def Revenue_category(db:Session = Depends(get_db)):
 def Count_products_of_category(db:Session = Depends(get_db)):
     cat = Chart.count_product_by_category(db)
     return ResponseHandler.success("success" , cat)
+@router.get("/revenue_12_month" , dependencies=[Depends(check_admin_role)])
+def Revenue_12_month(db:Session = Depends(get_db)):
+    chart = Chart()
+    revenue =chart.revenue_12_month(db)
+    return ResponseHandler.success("success" , revenue)
+@router.get("/cost_12_month" , dependencies=[Depends(check_admin_role)])
+def Cost_12_month(db:Session = Depends(get_db)):
+    chart = Chart()
+    cost = chart.cost_12_month(db)
+    return ResponseHandler.success("success" , cost)
+@router.get("/profit_12_month" , dependencies=[Depends(check_admin_role)])
+def Profit_12_month(db:Session = Depends(get_db)):
+    chart = Chart()
+    profit = chart.profit_12_month(db)
+    return ResponseHandler.success("success" , profit)
+
+
+

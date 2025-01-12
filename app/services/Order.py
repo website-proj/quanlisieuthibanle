@@ -132,7 +132,7 @@ class OrderService:
             db.query(Orders, OrderItems, Product, Address , Payment)
             .outerjoin(OrderItems, Orders.order_id == OrderItems.order_id)
             .outerjoin(Product, Product.product_id == OrderItems.product_id)
-            .outerjoin(Address, Address.user_id == Orders.user_id)
+            .outerjoinouterjoin(Address, Address.user_id == Orders.user_id)
             .outerjoin(Payment, Payment.order_id == Orders.order_id)
             .all()
         )
@@ -185,13 +185,9 @@ class OrderService:
         db.commit()
         db.refresh(order)
         return order
-    # def get_all_orders(db : Session):
-    #     orders  , order_items , products , address = db.query(Orders ,OrderItems ,  Product , Address ).join(
-    #         OrderItems , OrderItems.order_id == Orders.order_id
-    #     ).join(
-    #         Product , Product.product_id == OrderItems.product_id
-    #     ).join(
-    #         Address , Address.user_id == Orders.user_id
-    #     )
-    #
-
+    @staticmethod
+    def count_all_order(db:Session):
+        orders_count = db.query(Orders).count()
+        if not orders_count:
+            raise HTTPException(status_code=400 , detail= "order count not found")
+        return orders_count

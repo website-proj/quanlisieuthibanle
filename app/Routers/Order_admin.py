@@ -19,3 +19,9 @@ def update_order(order_id : str , status : str , db : Session = Depends(get_db))
     """
     order = OrderService.update_order_satatus(order_id, status, db)
     return ResponseHandler.success("order response" , order)
+@router.get("/count" , dependencies= [Depends(check_admin_role)])
+def count_orders(db : Session = Depends(get_db)):
+    orders_count = OrderService.count_all_order(db)
+    return {
+        "orders_count": orders_count
+    }

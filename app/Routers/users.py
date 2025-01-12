@@ -39,7 +39,7 @@ def register_user(user : UserRegisterRequest  , db: Session = Depends(get_db) ):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 @router.post("/register/check_code")
-def check_code_email(email,code : str , db: Session = Depends(get_db) ):
+def check_code_email(email : str ,code : str , db: Session = Depends(get_db) ):
     try :
         auth = AuthService()
         check = auth.verify_code(email, code)
