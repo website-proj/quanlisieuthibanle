@@ -34,6 +34,7 @@ class UserService():
         current_user.email = data.email if data.email is not None else current_user.email
         current_user.phone_number = data.phone_number if data.phone_number is not None else current_user.phone_number
         current_user.address = data.address if data.address is not None else current_user.address
+        current_user.gender = data.gender if data.gender is not None else current_user.gender
         db.commit()
         return current_user
     @staticmethod
@@ -92,6 +93,7 @@ class UserService():
         user.phone_number = dataform.phone_number
         user.address = dataform.address
         user.membership_status = dataform.membership_status
+        user.gender = dataform.gender
         db.commit()
         db.refresh(user)
         return user

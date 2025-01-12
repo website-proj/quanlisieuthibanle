@@ -1,9 +1,12 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile, File, Depends
+from fastapi.params import Form
 from sqlalchemy.orm import Session
 from starlette import status
 
+from app.db.base import get_db
 from app.model.Products_Categories import Category
 from app.schemas.schema_category import CategoryUpdate, SubCategoryCreate
+from app.services.uploadImage import UploadImage
 from app.utils.responses import ResponseHandler
 
 class CategoryService:
@@ -18,19 +21,46 @@ class CategoryService:
 
         return ResponseHandler.success("Top 10 categories fetched successfully", categories)
     @staticmethod
-    def create_category(category : SubCategoryCreate , db : Session):
-        category = Category(category_name=category.category_name , image =  category.image, parent_category_id= None)
-        db.add(category)
-        db.commit()
-        db.refresh(category)
-        return category
+    def create_category( category_name: str = Form(...), file: UploadFile = File(...), db : Session = Depends(get_db)):
+        try:
+            # Upload ảnh
+            image_url = UploadImage.upload_image(file)
+            image_url = image_url["secure_url"]
+            # Tạo category mới
+            new_category = Category(
+                category_name=category_name,
+                image=image_url,
+                parent_category_id=None
+            )
+
+            db.add(new_category)
+            db.commit()
+            db.refresh(new_category)
+            return new_category
+        except Exception as e:
+            raise e
     @staticmethod
-    def create_sub_category(category : SubCategoryCreate , db : Session):
-        category = Category(
-            category_name = category.category_name,
-            image = category.image ,
-            parent_category_id = category.parent_category_id
-        )
+    def create_sub_category(category_name : str = Form() , parent_category_id : str = Form()
+            , db : Session = Depends(get_db)):
+        try :
+            # image_url = UploadImage.upload_image(file)
+            # image_url = image_url["secure_url"]
+            parent_cat = db.query(Category).filter(Category.category_id== parent_category_id).first()
+            if not parent_cat:
+                raise HTTPException(status_code = 404 , detail="Parent category not found")
+            new_cat = Category(
+                category_name = category_name ,
+                # image = image_url ,
+                parent_category_id = parent_category_id
+            )
+            if not new_cat :
+                raise HTTPException(status_code = 404 , detail="Sub category not found")
+            db.add(new_cat)
+            db.commit()
+
+            return new_cat
+        except Exception as e :
+            raise e
     @staticmethod
     def get_parent_category( cat_id, db):
         category = db.query(Category).filter(Category.category_id == cat_id).first()
@@ -47,17 +77,44 @@ class CategoryService:
         return sub_categories
 
     @staticmethod
-    def update_category( cat_form_update : CategoryUpdate, db):
-        category = db.query(Category).filter(Category.category_id == cat_form_update.category_id).first()
+    def update_category( category_id : str = Form()  , category_name : str = Form() , parent_category_id  : str = Form()
+                         ,   db : Session = Depends(get_db)):
+        category = db.query(Category).filter(Category.category_id == category_id).first()
+        try :
+            if not category:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+            # img_url = UploadImage.upload_image(file)
+            # img_url = img_url["secure_url"]
+            #update
+            category.category_id = category_id
+            category.category_name = category_name
+            # category.image = img_url
+            category.parent_category_id = parent_category_id
+            db.commit()
+            db.refresh(category)
+            return category
+        except Exception as e :
+            raise e
+    @staticmethod
+    def update_parent_category( category_id : str = Form() , category_name : str = Form() ,
+                                file : UploadFile = File(...), db : Session = Depends(get_db)):
+        category = db.query(Category).filter(Category.category_id == category_id).first()
         if not category:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-        category.category_id = cat_form_update.category_id
-        category.category_name = cat_form_update.category_name
-        category.image = cat_form_update.image
-        category.parent_category_id = cat_form_update.parent_category_id
-        db.commit()
-        db.refresh(category)
-        return category
+        if category.parent_category_id != None :
+            raise HTTPException(status_code = 404 , detail = "not parent category")
+        try :
+            url_image = UploadImage.upload_image(file)
+            url_image = url_image["secure_url"]
+            #update
+            category.category_id = category_id
+            category.category_name = category_name
+            category.image = url_image
+            db.commit()
+            db.refresh(category)
+            return category
+        except Exception as e :
+            raise e
     @staticmethod
     def get_sub_category_of_parent_category( cat_id : str , db : Session):
         cats = db.query(Category).filter(Category.parent_category_id == cat_id).all()
@@ -78,10 +135,14 @@ class CategoryService:
         if not parent_category:
             raise HTTPException(status_code = 404 , detail="Category not found")
         sub_category = db.query(Category).filter(Category.parent_category_id == parent_category_id).all()
+        if not sub_category :
+            db.delete(parent_category)
+            db.commit()
+            return parent_category
         db.delete(parent_category)
         db.delete(sub_category)
         db.commit()
-        return parent_category , sub_category
+        return parent_category
     @staticmethod
     def count_category(db : Session):
         return db.query(Category).filter(Category.parent_category_id == None).count()

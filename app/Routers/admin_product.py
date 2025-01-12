@@ -1,4 +1,7 @@
-from fastapi import APIRouter, Depends, Query, status, HTTPException
+from datetime import datetime
+from typing import Optional
+
+from fastapi import APIRouter, Depends, Query, status, HTTPException, Form, UploadFile, File
 from starlette.status import HTTP_200_OK
 
 from app.services.categories import CategoryService
@@ -13,8 +16,50 @@ from app.helper.login_manager import check_admin_role
 router = APIRouter()
 
 @router.post("/products", dependencies=[Depends(check_admin_role)])
-def create_product(product : ProductCreate , db : Session = Depends(get_db) ):
-    return ProductService.creat_product(product , db)
+def create_product(
+    name: str = Form(...),
+    name_brand: str = Form(...),
+    description: str = Form(...),
+    price: float = Form(...),
+    old_price: Optional[float] = None,
+    original_price: float = Form(...),
+    discount: float = Form(...),
+    unit: int = Form(...),
+    stock_quantity: int = Form(...),
+    star_product: bool = Form(...),
+    expiration_date: datetime = Form(...),
+    category_id: str = Form(...),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+):
+    try:
+        # Gọi service để xử lý logic tạo sản phẩm
+        product = ProductService.create_product(
+            name=name,
+            name_brand=name_brand,
+            description=description,
+            price=price,
+            old_price=old_price,
+            original_price=original_price,
+            discount=discount,
+            unit=unit,
+            stock_quantity=stock_quantity,
+            star_product=star_product,
+            expiration_date=expiration_date,
+            category_id=category_id,
+            file=file,
+            db=db,
+        )
+        return ResponseHandler.success("Product created successfully", product)
+
+    except HTTPException as http_err:
+        # Trả về lỗi ứng dụng
+        raise http_err
+    except Exception as e:
+        # Ghi log lỗi và trả về lỗi không mong muốn
+        print(f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail="An unexpected error occurred")
+
 @router.get("/testdata")
 def testdata(db: Session = Depends(get_db)):
     product = db.query(Product).all()
@@ -29,12 +74,50 @@ async  def get_all_product(db : Session = Depends(get_db)):
     except HTTPException as e:
         raise e
 @router.put("/product", dependencies=[Depends(check_admin_role)])
-def update_product(product : ProductUpdate , db : Session = Depends(get_db) ):
-    try :
-        product = ProductService.update_product(product , db)
-        return ResponseHandler.success("success update" , product)
-    except HTTPException as e:
-        raise e
+def update_product(
+    product_id: str = Form(...),
+    name: str = Form(...),
+    name_brand: str = Form(...),
+    description: str = Form(...),
+    price: float = Form(...),
+    old_price: Optional[float] = None,
+    original_price: float = Form(...),
+    discount: float = Form(...),
+    unit: int = Form(...),
+    stock_quantity: int = Form(...),
+    star_product: bool = Form(...),
+    expiration_date: datetime = Form(...),
+    category_id: str = Form(...),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+):
+    try:
+        # Gọi hàm service để cập nhật sản phẩm
+        product = ProductService.update_product(
+            product_id=product_id,
+            name=name,
+            name_brand=name_brand,
+            description=description,
+            price=price,
+            old_price=old_price,
+            original_price=original_price,
+            discount=discount,
+            unit=unit,
+            stock_quantity=stock_quantity,
+            star_product=star_product,
+            expiration_date=expiration_date,
+            category_id=category_id,
+            file=file,
+            db=db,
+        )
+        return ResponseHandler.success("Product updated successfully", product)
+
+    except HTTPException as http_err:
+        raise http_err
+    except Exception as e:
+        # Ghi log và trả về lỗi chi tiết hơn
+        print(f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail="An unexpected error occurred")
 @router.delete("/product" , dependencies = [Depends(check_admin_role)])
 def delete_product_by_ID(product_id : str, db : Session = Depends(get_db)):
     try :

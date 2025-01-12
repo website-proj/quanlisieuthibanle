@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_200_OK
 
@@ -10,9 +10,7 @@ from app.schemas.schema_category import CategoriesResponse, CategoryUpdate, SubC
 from app.utils.responses import ResponseHandler
 
 router = APIRouter()
-# @router.post("/category",  dependencies=[Depends(check_admin_role)])
-# def create_category(category : CategoryCreate , db : Session = Depends(get_db) ):
-#     return CategoryService.create_category(category, db)
+
 @router.get("/category" , dependencies=[Depends(check_admin_role)])
 def get_parent_category(cat_id : str , db : Session = Depends(get_db)):
     """
@@ -24,12 +22,12 @@ def get_parent_category(cat_id : str , db : Session = Depends(get_db)):
     except Exception as e:
         raise e
 @router.post("/sub_category" , dependencies=[Depends(check_admin_role)])
-def create_subcategory(data_form : SubCategoryCreate , db : Session = Depends(get_db)):
-    cat = CategoryService.create_sub_category(data_form, db)
+def create_subcategory(category_name : str = Form() , parent_category_id : str = Form(), db : Session = Depends(get_db)):
+    cat = CategoryService.create_sub_category(category_name , parent_category_id ,  db)
     return ResponseHandler.success("query Success" ,cat)
 @router.post("parent_category" , dependencies=[Depends(check_admin_role)])
-def create_parent_category(data_form : parentCategoryCreate , db : Session = Depends(get_db)):
-    cat = CategoryService.create_category(data_form, db)
+def create_parent_category(category_name: str = Form(...) , file: UploadFile = File(...),db : Session = Depends(get_db)):
+    cat = CategoryService.create_category(category_name,file , db)
     return ResponseHandler.success("query Success" ,cat)
 @router.get("/all_subcategories" , dependencies=[Depends(check_admin_role)])
 def get_all_subcategories_of_parent_Category(parent_category_id : str , db : Session = Depends(get_db)):
@@ -42,12 +40,12 @@ def get_sub_category(cat_id : str , db : Session = Depends(get_db)):
     sub_cat = CategoryService.get_sub_categories(cat_id, db)
     return ResponseHandler.success("query Success" ,sub_cat)
 @router.put("/subcategory" , dependencies=[Depends(check_admin_role)])
-def update_subcategory(cat_form_update : CategoryUpdate , db : Session = Depends(get_db) ):
-    cat_update = CategoryService.update_category(cat_form_update, db)
+def update_subcategory(category_id : str = Form()  , category_name : str = Form() , parent_category_id  : str = Form(), db : Session = Depends(get_db) ):
+    cat_update = CategoryService.update_category(category_id , category_name , parent_category_id  ,  db)
     return ResponseHandler.success("update Success" ,cat_update)
 @router.put("/parent_category" , dependencies=[Depends(check_admin_role)])
-def update_parent_category(cat_form_update : CategoryUpdate , db : Session = Depends(get_db)):
-    cat_update = CategoryService.update_category(cat_form_update, db)
+def update_parent_category(category_id : str = Form() , category_name : str = Form()  , file: UploadFile = File(...),db : Session = Depends(get_db)):
+    cat_update = CategoryService.update_parent_category(category_id , category_name ,file ,  db)
     return ResponseHandler.success("update Success" ,cat_update)
 @router.delete("/sub_category" , dependencies= [Depends(check_admin_role)])
 def delete_sub_category(sub_category_id : str , db : Session = Depends(get_db)):

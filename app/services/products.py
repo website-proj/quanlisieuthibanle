@@ -1,13 +1,18 @@
 from datetime import datetime, timedelta
+from typing import Optional
 
-
-from fastapi import HTTPException
+from IPython.terminal.shortcuts.auto_match import single_quote
+from fastapi import HTTPException, Form, UploadFile, File, Depends
 from sqlalchemy.orm import Session, aliased
-from sqlalchemy import or_, and_, func, desc
+from sqlalchemy import or_, and_, func, desc, Float
+
+from app import db
+from app.db.base import get_db
 from app.model.Products_Categories import Product, Category
 from app.model.model_orders import Orders, OrderItems
 from app.model.reviews import Reviews
 from app.schemas.schema_order import OrderItem
+from app.services.uploadImage import UploadImage
 from app.utils.responses import ResponseHandler
 from app.schemas.schema_product import ProductCreate, ProductUpdate
 
@@ -108,28 +113,63 @@ class ProductService:
         return ResponseHandler.success("found product ", products)
 
     @staticmethod
-    def creat_product(product : ProductCreate  , db : Session):
-        new_product = Product(
-            name=product.name,
-            name_brand=product.name_brand,
-            description=product.description,
-            price=product.price,
-            old_price=product.old_price,
-            original_price = product.original_price,
-            discount=product.discount,
-            unit=product.unit,
-            stock_quantity=product.stock_quantity,
-            image=product.image,
-            star_product=product.star_product,
-            expiration_date=product.expiration_date,
-            category_id=product.category_id  # Giả sử có category_id trong ProductCreate
-        )
+    def create_product(
+            name: str = Form(...),
+            name_brand: str = Form(...),
+            description: str = Form(...),
+            price: float = Form(...),
+            old_price: Optional[float] = None,
+            original_price: float = Form(...),
+            discount: float = Form(...),
+            unit: int = Form(...),
+            stock_quantity: int = Form(...),
+            star_product: bool = Form(...),
+            expiration_date: datetime = Form(...),
+            category_id: str = Form(...),
+            file: UploadFile = File(...),
+            db : Session = Depends(get_db)
+    ):
+        try:
+            if not file:
+                raise HTTPException(status_code=400, detail="File upload is required")
 
-        # Thêm sản phẩm vào cơ sở dữ liệu
-        db.add(new_product)
-        db.commit()
-        db.refresh(new_product)
-        return new_product
+            image = UploadImage.upload_image(file)
+            image_url = image.get("secure_url", None)
+            if not image_url:
+                raise HTTPException(status_code=500, detail="Failed to upload image")
+
+            product = Product(
+                name=name,
+                name_brand=name_brand,
+                description=description,
+                price=price,
+                old_price=old_price if old_price else None,
+                original_price=original_price,
+                discount=discount,
+                unit=unit,
+                stock_quantity=stock_quantity,
+                image=image_url,
+                star_product=star_product,
+                expiration_date=expiration_date,
+                category_id=category_id,
+            )
+
+            # Lưu vào cơ sở dữ liệu
+            db.add(product)
+            db.commit()
+            db.refresh(product)
+
+            return {
+                "message": "Product created successfully",
+                "product": product
+            }
+        except HTTPException as http_err:
+            db.rollback()  # Hoàn tác nếu có lỗi từ phía ứng dụng
+            raise http_err
+        except Exception as e:
+            db.rollback()  # Hoàn tác nếu có lỗi không mong muốn
+            raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {e}")
+
     @staticmethod
     def get_all_products(db : Session):
         products = db.query(Product).all()
@@ -147,27 +187,49 @@ class ProductService:
             })
         return data
     @staticmethod
-    def update_product(product : ProductUpdate , db : Session):
-        pro = db.query(Product).filter(Product.product_id == product.product_id).first()
+    def update_product(product_id: str = Form(...),
+        name: str = Form(...),
+        name_brand: str = Form(...),
+        description: str = Form(...),
+        price: float = Form(...),
+        old_price: Optional[float] = None,
+        original_price: float = Form(...),
+        discount: float = Form(...),
+        unit: int = Form(...),
+        stock_quantity: int = Form(...),
+        star_product: bool = Form(...),
+        expiration_date: datetime = Form(...),
+        category_id: str = Form(...),
+        file: UploadFile = File(...),
+        db: Session = Depends(get_db)
+    ):
+        pro = db.query(Product).filter(Product.product_id == product_id).first()
         if not pro:
             raise HTTPException(status_code=404, detail="No products found")
-        pro.name = product.name
-        pro.name_brand = product.name_brand
-        pro.description = product.description
-        pro.price = product.price
-        pro.old_price = product.old_price if product.old_price is not None else pro.old_price  # Đảm bảo không ghi đè nếu old_price không được cập nhật
-        pro.discount = product.discount
-        pro.unit = product.unit
-        pro.stock_quantity = product.stock_quantity
-        pro.image = product.image
-        pro.star_product = product.star_product
-        pro.expiration_date = product.expiration_date
-        pro.category_id = product.category_id
+        try :
+            image = UploadImage.upload_image(file)
+            image_url = image["secure_url"]
+            # update
+            pro.name = name
+            pro.name_brand = name_brand
+            pro.description = description
+            pro.price = price
+            pro.old_price = old_price if old_price is not None else pro.old_price  # Đảm bảo không ghi đè nếu old_price không được cập nhật
+            pro.discount = discount
+            pro.original_price = original_price
+            pro.unit = unit
+            pro.stock_quantity = stock_quantity
+            pro.image = image_url
+            pro.star_product = star_product
+            pro.expiration_date = expiration_date
+            pro.category_id = category_id
 
-        # Commit thay đổi vào cơ sở dữ liệu
-        db.commit()
-        db.refresh(pro)
-        return pro
+            # Commit thay đổi vào cơ sở dữ liệu
+            db.commit()
+            db.refresh(pro)
+            return pro
+        except HTTPException as e :
+            raise e
     @staticmethod
     def delete_product(product_id , db : Session):
         pro = db.query(Product).filter(Product.product_id == product_id).first()

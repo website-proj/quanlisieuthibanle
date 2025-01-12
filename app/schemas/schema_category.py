@@ -14,17 +14,14 @@ class CategoryBase(BaseModel):
 
 # Schema tạo mới category
 class SubCategoryCreate(BaseModel):
-    image : str
     category_name: str
     parent_category_id: Optional[str] = None
 class parentCategoryCreate(BaseModel):
-    image : str
     category_name: str
 
 # Schema cập nhật category
 class CategoryUpdate(BaseModel):
     category_id: str
-    image: str
     category_name: Optional[str] = None
     parent_category_id: Optional[str] = None
 

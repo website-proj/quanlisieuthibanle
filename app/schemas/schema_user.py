@@ -23,6 +23,7 @@ class admin_update(BaseModel):
     phone_number : str
     membership_status : str
     address : str
+    gender : str
     class Config(BaseConfig) :
         pass
 class UserCreateRequest(BaseModel):
@@ -61,6 +62,7 @@ class userUpdateRequest(BaseModel):
     email : str
     phone_number : str
     address : str
+    gender : str
     class Config(BaseConfig):
         pass
 class passwordChangeRequest(BaseModel):
