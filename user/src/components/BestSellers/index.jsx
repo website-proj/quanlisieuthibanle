@@ -3,27 +3,43 @@ import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import { FiShoppingCart } from "react-icons/fi";
 import { CartContext } from "../../Context/CartContext"; // Import CartContext
+import axios from "axios";
+import SummaryApi, { baseURL } from "../../common/SummaryApi";
 
 const BestSellerProducts = () => {
   const [products, setProducts] = useState([]);
-  const [showAll, setShowAll] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(10); // Số lượng sản phẩm hiển thị ban đầu
   const { incrementCartCount } = useContext(CartContext); // Lấy hàm tăng số lượng giỏ hàng từ context
 
   useEffect(() => {
-    fetch("/API/best_sellers.json")
-      .then((response) => response.json())
-      .then((data) => setProducts(data))
-      .catch((error) =>
-        console.error("Error fetching discount products:", error)
-      );
+    const fetchDiscountProducts = async () => {
+      try {
+        const response = await axios({
+          method: SummaryApi.best_seller.method,
+          url: `${baseURL}${SummaryApi.best_seller.url}`,
+        });
+
+        if (response.data && Array.isArray(response.data.data)) {
+          setProducts(response.data.data); // Cập nhật sản phẩm vào state từ trường "data"
+        } else {
+          console.error("Dữ liệu không hợp lệ hoặc không có sản phẩm");
+          setProducts([]); // Gán mảng trống nếu dữ liệu không hợp lệ
+        }
+      } catch (error) {
+        console.error("Error fetching discount products:", error);
+        setProducts([]); // Gán mảng trống khi có lỗi xảy ra
+      }
+    };
+
+    fetchDiscountProducts();
   }, []);
 
   const formatCurrency = (value) => {
     return value.toLocaleString("vi-VN") + "đ";
   };
 
-  const handleShowAll = () => {
-    setShowAll(!showAll);
+  const handleShowMore = () => {
+    setVisibleCount((prevCount) => prevCount + 5); // Tăng số lượng sản phẩm hiển thị thêm 5
   };
 
   const handleAddToCart = (e, product, quantity = 1) => {
@@ -76,9 +92,9 @@ const BestSellerProducts = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 productListSale">
-        {(showAll ? products : products.slice(0, 10)).map((product) => (
+        {products.slice(0, visibleCount).map((product) => (
           <div
-            className="border shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+            className="border flex flex-col justify-between shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
             key={product.product_id}
           >
             <Link to={`/product_detials/${product.product_id}`} state={product}>
@@ -86,12 +102,12 @@ const BestSellerProducts = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-32 object-cover transition-transform duration-300 hover:scale-110"
+                  className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                 />
               </div>
               {product.discount && (
                 <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                  {product.discount}
+                  {product.discount}%
                 </span>
               )}
               <div className="mt-4">
@@ -111,24 +127,26 @@ const BestSellerProducts = () => {
             </Link>
 
             <Button
-              onClick={(e) => handleAddToCart(e, product, 1)} // Thêm số lượng sản phẩm mặc định là 1
-              className="productCart"
+              onClick={(e) => handleAddToCart(e, product, 1)}
+              className="productCart "
             >
-              <FiShoppingCart className="text-[2em] pr-2" />
+              <FiShoppingCart className="text-[2em] mt-auto pr-2" />
               Thêm vào giỏ hàng
             </Button>
           </div>
         ))}
       </div>
 
-      <div className="flex justify-center mt-6">
-        <Button
-          onClick={handleShowAll}
-          className="see_more pulsating-button !text-lg mt-4"
-        >
-          {showAll ? "Ẩn bớt" : "Xem thêm"}
-        </Button>
-      </div>
+      {visibleCount < products.length && (
+        <div className="flex justify-center mt-6">
+          <Button
+            onClick={handleShowMore} // Tăng số lượng sản phẩm hiển thị thêm 5
+            className="see_more pulsating-button !text-lg mt-4"
+          >
+            Xem thêm
+          </Button>
+        </div>
+      )}
     </section>
   );
 };

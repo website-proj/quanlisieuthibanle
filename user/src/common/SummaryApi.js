@@ -34,6 +34,14 @@ const SummaryApi = {
     url: "/api/product/flash_sale",
     method: "get",
   },
+  best_seller: {
+    url: "/api/product/best_seller",
+    method: "get",
+  },
+  new_arrivals: {
+    url: "/api/product/new_arrivals",
+    method: "get",
+  },
 };
 
 export default SummaryApi;

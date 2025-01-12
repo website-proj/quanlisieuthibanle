@@ -92,7 +92,7 @@ const DiscountProducts = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 productListSale">
         {products.slice(0, visibleCount).map((product) => (
           <div
-            className="border shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+            className="border flex flex-col justify-between shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
             key={product.product_id}
           >
             <Link to={`/product_detials/${product.product_id}`} state={product}>
@@ -100,7 +100,7 @@ const DiscountProducts = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-auto object-cover transition-transform duration-300 hover:scale-110"
+                  className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                 />
               </div>
               {product.discount && (
@@ -128,7 +128,7 @@ const DiscountProducts = () => {
               onClick={(e) => handleAddToCart(e, product, 1)}
               className="productCart "
             >
-              <FiShoppingCart className="text-[2em] pr-2" />
+              <FiShoppingCart className="text-[2em] mt-auto pr-2" />
               Thêm vào giỏ hàng
             </Button>
           </div>

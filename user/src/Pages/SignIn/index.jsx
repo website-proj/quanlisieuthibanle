@@ -10,15 +10,19 @@ import Button from "@mui/material/Button";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import SummaryApi, { baseURL } from "../../common/SummaryApi";
+import Alert from "@mui/material/Alert";
 
 const SignIn = () => {
   const context = useContext(MyContext);
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState(""); // Email nhập từ người dùng
-  const [password, setPassword] = useState(""); // Mật khẩu nhập từ người dùng
-  const [showPassword, setShowPassword] = useState(false); // Ẩn/hiện mật khẩu
-  const [errorMessage, setErrorMessage] = useState(null); // Lưu lỗi nếu có
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const [snackbarMessage, setSnackbarMessage] = useState(""); // Thông báo snackbar
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success"); // Mức độ nghiêm trọng
 
   useEffect(() => {
     context.setisHeaderFooterShow(false);
@@ -28,17 +32,17 @@ const SignIn = () => {
     setShowPassword(!showPassword);
   };
 
-  // Hàm xử lý đăng nhập bằng Google
   const handleGoogleLogin = async () => {
     try {
-      // Gửi yêu cầu đến backend để bắt đầu quá trình OAuth Google
-      window.location.href = `${baseURL}/api/login`; // Điều hướng người dùng tới backend OAuth
+      window.location.href = `${baseURL}/api/login`;
+      setSnackbarMessage("Đang kết nối với Google...");
+      setSnackbarSeverity("info");
     } catch (error) {
-      setErrorMessage("Lỗi khi kết nối với Google.");
+      setSnackbarMessage("Lỗi khi kết nối với Google.");
+      setSnackbarSeverity("error");
     }
   };
 
-  // Hàm xử lý đăng nhập
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
@@ -57,13 +61,16 @@ const SignIn = () => {
 
       const { access_token, token_type } = response.data;
       localStorage.setItem("token", `${token_type} ${access_token}`);
+      setSnackbarMessage("Đăng nhập thành công!");
+      setSnackbarSeverity("success");
       navigate("/home");
     } catch (error) {
       if (error.response) {
-        setErrorMessage(error.response.data.detail || "Đăng nhập thất bại.");
+        setSnackbarMessage(error.response.data.detail || "Đăng nhập thất bại.");
       } else {
-        setErrorMessage("Lỗi mạng hoặc máy chủ không phản hồi.");
+        setSnackbarMessage("Lỗi mạng hoặc máy chủ không phản hồi.");
       }
+      setSnackbarSeverity("error");
     }
   };
 
@@ -159,6 +166,24 @@ const SignIn = () => {
           </div>
         </div>
       </section>
+
+      {/* Hiển thị Alert */}
+      {snackbarMessage && (
+        <Alert
+          onClose={() => setSnackbarMessage("")}
+          severity={snackbarSeverity}
+          sx={{
+            width: "auto",
+            borderRadius: "20px",
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 9999,
+          }}
+        >
+          {snackbarMessage}
+        </Alert>
+      )}
     </>
   );
 };

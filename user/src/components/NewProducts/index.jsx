@@ -3,27 +3,41 @@ import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import { FiShoppingCart } from "react-icons/fi";
 import { CartContext } from "../../Context/CartContext"; // Import CartContext
+import axios from "axios";
+import SummaryApi, { baseURL } from "../../common/SummaryApi";
 
 const NewProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [showAll, setShowAll] = useState(false);
+  const [products, setProducts] = useState([]); // Dữ liệu sản phẩm
+  const [visibleCount, setVisibleCount] = useState(10); // Số lượng sản phẩm hiển thị ban đầu
   const { incrementCartCount } = useContext(CartContext); // Lấy hàm tăng số lượng giỏ hàng từ context
 
   useEffect(() => {
-    fetch("/API/new_products.json")
-      .then((response) => response.json())
-      .then((data) => setProducts(data))
-      .catch((error) =>
-        console.error("Error fetching discount products:", error)
-      );
+    const fetchNewProducts = async () => {
+      try {
+        const response = await axios({
+          method: SummaryApi.new_arrivals.method,
+          url: `${baseURL}${SummaryApi.new_arrivals.url}`,
+        });
+
+        if (Array.isArray(response.data)) {
+          setProducts(response.data);
+        } else {
+          console.error("Dữ liệu trả về không phải là mảng:", response.data);
+        }
+      } catch (error) {
+        console.error("Lỗi khi gọi API sản phẩm mới:", error);
+      }
+    };
+
+    fetchNewProducts();
   }, []);
 
   const formatCurrency = (value) => {
     return value.toLocaleString("vi-VN") + "đ";
   };
 
-  const handleShowAll = () => {
-    setShowAll(!showAll);
+  const handleShowMore = () => {
+    setVisibleCount((prevCount) => prevCount + 5); // Tăng số lượng sản phẩm hiển thị thêm 5
   };
 
   const handleAddToCart = (e, product, quantity = 1) => {
@@ -76,9 +90,9 @@ const NewProducts = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 productListSale">
-        {(showAll ? products : products.slice(0, 10)).map((product) => (
+        {products.slice(0, visibleCount).map((product) => (
           <div
-            className="border shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+            className="border flex flex-col justify-between shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
             key={product.product_id}
           >
             <Link to={`/product_detials/${product.product_id}`} state={product}>
@@ -86,14 +100,14 @@ const NewProducts = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-32 object-cover transition-transform duration-300 hover:scale-110"
+                  className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                 />
               </div>
-              {product.discount && (
+              {/* {product.discount && (
                 <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                  {product.discount}
+                  {product.discount}%
                 </span>
-              )}
+              )} */}
               <div className="mt-4">
                 <h5 className="text-[0.9em] text-left">{product.name}</h5>
                 <p className="text-[0.72em] text-black-500 text-left">
@@ -103,9 +117,9 @@ const NewProducts = () => {
                   <span className="text-red-500 text-base font-bold">
                     {formatCurrency(product.price)}
                   </span>
-                  <span className="line-through text-sm text-gray-400">
+                  {/* <span className="line-through text-sm text-gray-400">
                     {formatCurrency(product.old_price)}
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </Link>
@@ -122,12 +136,14 @@ const NewProducts = () => {
       </div>
 
       <div className="flex justify-center mt-6">
-        <Button
-          onClick={handleShowAll}
-          className="see_more pulsating-button !text-lg mt-4"
-        >
-          {showAll ? "Ẩn bớt" : "Xem thêm"}
-        </Button>
+        {visibleCount < products.length && ( // Chỉ hiển thị nút nếu còn sản phẩm
+          <Button
+            onClick={handleShowMore}
+            className="see_more pulsating-button !text-lg mt-4"
+          >
+            Xem thêm
+          </Button>
+        )}
       </div>
     </section>
   );

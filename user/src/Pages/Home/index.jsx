@@ -101,7 +101,7 @@ const Home = () => {
 
                     return (
                       <div
-                        className="border rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+                        className="border rounded-xl p-4 flex flex-col justify-between shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
                         key={product.product_id}
                       >
                         <Link
@@ -112,14 +112,14 @@ const Home = () => {
                             <img
                               src={product.image}
                               alt={product.name}
-                              className="w-full h-32 object-cover transition-transform duration-300 hover:scale-110"
+                              className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                             />
-                            {product.discount && (
-                              <span className="absolute top-[0.5em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                                {product.discount}
-                              </span>
-                            )}
                           </div>
+                          {product.discount && (
+                            <span className="absolute top-[1.5em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                              {product.discount}%
+                            </span>
+                          )}
                           <div className="mt-4">
                             <h5 className="text-[0.9em] text-left">
                               {product.name}
@@ -143,7 +143,7 @@ const Home = () => {
                           onClick={(e) => handleAddToCart(e, product, 1)} // Sử dụng số lượng mặc định là 1
                           className="productCart"
                         >
-                          <FiShoppingCart className="text-[2em] pr-2" />
+                          <FiShoppingCart className="text-[2em] mt-auto pr-2" />
                           Thêm vào giỏ hàng
                         </Button>
                       </div>
