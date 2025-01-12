@@ -8,7 +8,7 @@ from app.services.Banner import BannerService
 from app.utils.responses import ResponseHandler
 
 router = APIRouter()
-@router.get("/",dependencies=[Depends(check_admin_role)])
+@router.get("/")
 def get_all_banner(db : Session = Depends(get_db)):
     banner = BannerService.get_banner(db)
     return ResponseHandler.success("banner",banner)

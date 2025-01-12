@@ -14,15 +14,13 @@ class Chart:
         result = {}
         for cat in parent_cat:
             for child_category in categories:
+                if cat.category_id not in result:
+                    result[cat.category_id] = {
+                        cat.category_name: 0
+                    }
                 if cat.category_id == child_category.parent_category_id:
-                    if cat.category_id not in result:
-                        result[cat.category_id] = {
-                            cat.category_name : 1
-                        }
-                    else :
-                        result[cat.category_id][cat.category_name] += 1
+                     result[cat.category_id][cat.category_name] += 1
         return result
-
     @staticmethod
     def sum_revenue_of_child_category(db: Session):
         data = db.query(
@@ -56,19 +54,26 @@ class Chart:
             }
 
         return result
+
     def count_product_by_category(db: Session):
-        data = db.query(Product , Category ).join(
-            Product , Product.category_id == Category.category_id
-        )
+        cats = db.query(Category).filter(Category.parent_category_id == None).all()
+        data = db.query(Category, Product).outerjoin(
+            Product, Product.category_id == Category.category_id
+        ).all()
+
         result = {}
-        for product , category in data:
-            if category.parent_category_id not in result:
-                result[category.parent_category_id] = {
-                    "category_name" : db.query(Category).filter(Category.category_id == category.parent_category_id).first().category_name,
-                    "product_count":0
-                }
-            result[category.parent_category_id]["product_count"] += 1
+        for cat in cats:
+            result[cat.category_id] = {
+                "category_name": cat.category_name,
+                "product_count": 0
+            }
+
+        for category, product in data:
+            if category.parent_category_id in result:
+                result[category.parent_category_id]["product_count"] += 1
+
         return result
+
     @staticmethod
     def revenue_12_month(db:Session):
         """"

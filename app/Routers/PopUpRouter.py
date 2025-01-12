@@ -9,7 +9,7 @@ from app.services.PopUp import PopUpService
 from app.utils.responses import ResponseHandler
 
 router = APIRouter()
-@router.get("/" , dependencies=[Depends(check_admin_role)])
+@router.get("/")
 def get_pop_up(db:Session=Depends(get_db)):
     popup = PopUpService.get_popup(db)
     return ResponseHandler.success("PopUp" , popup)

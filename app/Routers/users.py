@@ -25,6 +25,9 @@ redis_client = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_P
 def register_user(user : UserRegisterRequest  , db: Session = Depends(get_db) ):
     try :
         email = user.email
+        user = db.query(User).filter(User.email == email).first()
+        if email :
+            raise HTTPException(status_code = 400 , detail = "Email already registered")
         auth = AuthService()
         user_data = {
             "username": user.username,

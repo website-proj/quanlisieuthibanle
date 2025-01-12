@@ -28,8 +28,7 @@ class AuthService :
     def user_register(request_form  : UserRegisterRequest , db : Session ):
         try :
             user_exist_email = db.query(User).filter(User.email == request_form.email).first()
-            user_exist_username = db.query(User).filter(User.username == request_form.username).first()
-            if user_exist_email or user_exist_username :
+            if user_exist_email :
                 raise HTTPException(status_code = 400 , detail = "Email or username already registered")
             hashed_password = get_password_hash(request_form.password)
             request_form.password = hashed_password
