@@ -67,15 +67,6 @@ const VerifyDK = () => {
               {/* Trường nhập mã OTP */}
               <div className="form-group">
                 <TextField
-                  id="email"
-                  label="Email*"
-                  type="text"
-                  variant="standard"
-                  className="w-full text-left"
-                />
-              </div>
-              <div className="form-group">
-                <TextField
                   id="otp"
                   label="Nhập mã OTP"
                   type="text"
@@ -87,10 +78,7 @@ const VerifyDK = () => {
               <div className="flex space-x-6 mt-6 mb-1">
                 <div className="flex-1">
                   <Link to={"/signIn"} className="w-full mt-4">
-                    <Button
-                      className="w-full !rounded-[0.625em]"
-                      variant="contained"
-                    >
+                    <Button className="w-full" variant="contained">
                       Xác thực OTP
                     </Button>
                   </Link>

@@ -80,7 +80,7 @@ const SignUp = () => {
             </div>
 
             <form className="mt-3" onSubmit={handleSignUp}>
-              <h2 className="text-2xl font-[600] text-left">Đăng ký</h2>
+              <h2 className="text-2xl font-[600] text-left mb-1">Đăng ký</h2>
 
               <div className="form-group">
                 <TextField
