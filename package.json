@@ -20,7 +20,6 @@
     "boxicons": "^2.1.4",
     "chart.js": "^4.4.7",
     "chartjs-plugin-datalabels": "^2.2.0",
-    "date-fns": "^4.1.0",
     "echarts": "^5.5.1",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",

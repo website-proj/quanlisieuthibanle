@@ -4,25 +4,25 @@ import { ToastContainer } from 'react-toastify';
 import "./App.css";
 import LogIn from "./LogIn.jsx";
 
-import Sidebar from "./components/Admin/Layout/Sidebar/Sidebar.jsx";
-import Header from "./components/Admin/Layout/Header/Header.jsx";
-import Content from "./components/Admin/Layout/Content/Content.jsx";
+import Sidebar from "./components/Layout/Sidebar/Sidebar.jsx";
+import Header from "./components/Layout/Header/Header.jsx";
+import Content from "./components/Layout/Content/Content.jsx";
 
-import Dashboard from "./pages/Admin/Dashboard/Dashboard.jsx";
-import CategoriesList from './pages/Admin/Categories/CategoriesList/CategoriesList.jsx'; 
-import AddCategories from './pages/Admin/Categories/AddCategories/AddCategories.jsx'; 
-import SubcategoriesList from './pages/Admin/Categories/SubcategoriesList/SubcategoriesList.jsx'; 
-import AddSubcategories from './pages/Admin/Categories/AddSubcategories/AddSubcategories.jsx'; 
-import ProductsList from './pages/Admin/Products/List/List.jsx'; 
-import AddProducts from './pages/Admin/Products/Add/AddProducts.jsx'; 
-import Orders from "./pages/Admin/Orders/Orders.jsx";
-import UsersManagement from "./pages/Admin/Users/Management/UsersManagement.jsx";
-import AddUser from "./pages/Admin/Users/Add/AddUser.jsx";
-import BannersList from "./pages/Admin/Banners/List/List.jsx";
-import AddBanner from "./pages/Admin/Banners/Add/AddBanners.jsx";
-import PopupsList from "./pages/Admin/Popups/List/List.jsx";
-import AddPopups from "./pages/Admin/Popups/Add/AddPopups.jsx";
-import Settings from './pages/Admin/Settings/Settings.jsx'; 
+import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import CategoriesList from './pages/Categories/CategoriesList/CategoriesList.jsx'; 
+import AddCategories from './pages/Categories/AddCategories/AddCategories.jsx'; 
+import SubcategoriesList from './pages/Categories/SubcategoriesList/SubcategoriesList.jsx'; 
+import AddSubcategories from './pages/Categories/AddSubcategories/AddSubcategories.jsx'; 
+import ProductsList from './pages/Products/List/List.jsx'; 
+import AddProducts from './pages/Products/Add/AddProducts.jsx'; 
+import Orders from "./pages/Orders/Orders.jsx";
+import UsersManagement from "./pages/Users/Management/UsersManagement.jsx";
+import AddUser from "./pages/Users/Add/AddUser.jsx";
+import BannersList from "./pages/Banners/List/List.jsx";
+import AddBanner from "./pages/Banners/Add/AddBanners.jsx";
+import PopupsList from "./pages/Popups/List/List.jsx";
+import AddPopups from "./pages/Popups/Add/AddPopups.jsx";
+import Settings from './pages/Settings/Settings.jsx'; 
 
 import PrivateRoute from "./routes/PrivateRoute";  
 
