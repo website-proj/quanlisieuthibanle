@@ -1,23 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./style.css";
 import { MyContext } from "../../App";
 import Logo from "../../assets/footer/Logo.png";
-// import { BiHome } from "react-icons/bi";
-// import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { FcGoogle } from "react-icons/fc";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Import mắt xem
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import SummaryApi, { baseURL } from "../../common/SummaryApi";
 
 const SignIn = () => {
   const context = useContext(MyContext);
-  useEffect(() => {
-    context.setisHeaderFooterShow(false);
-  }, []);
-  // State để kiểm soát mật khẩu
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState(""); // Email nhập từ người dùng
+  const [password, setPassword] = useState(""); // Mật khẩu nhập từ người dùng
+  const [showPassword, setShowPassword] = useState(false); // Ẩn/hiện mật khẩu
+  const [errorMessage, setErrorMessage] = useState(null); // Lưu lỗi nếu có
 
   useEffect(() => {
     context.setisHeaderFooterShow(false);
@@ -27,57 +28,85 @@ const SignIn = () => {
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  // Hàm xử lý đăng nhập
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      // Gửi yêu cầu đăng nhập tới API
+      const response = await axios.post(
+        `${baseURL}${SummaryApi.signIn.url}`,
+        new URLSearchParams({
+          username: email, // Truyền email vào username (theo yêu cầu backend)
+          password: password, // Truyền mật khẩu
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      // Xử lý thành công
+      const { access_token, token_type } = response.data;
+
+      // Lưu token vào localStorage hoặc context để sử dụng cho các API tiếp theo
+      localStorage.setItem("token", `${token_type} ${access_token}`);
+
+      // Chuyển hướng người dùng tới trang home
+      navigate("/home");
+    } catch (error) {
+      if (error.response) {
+        // Hiển thị lỗi từ server
+        setErrorMessage(error.response.data.detail || "Đăng nhập thất bại.");
+      } else {
+        // Hiển thị lỗi mạng
+        setErrorMessage("Lỗi mạng hoặc máy chủ không phản hồi.");
+      }
+    }
+  };
+
   return (
     <>
       <section className="section signInPage signUpPage mt-[-5em]">
-        <div class="shape-bottom">
-          {" "}
-          <svg
-            fill="#fff"
-            id="Layer_1"
-            x="0px"
-            y="0px"
-            viewBox="0 0 1921 819.8"
-            style={{ enableBackground: "new 0 0 1921 819.8" }}
-          >
-            {" "}
-            <path
-              class="st0"
-              d="M1921,413.1v406.7H0V0.5h0.4l228.1,598.3c30,74.4,80.8,130.6,152.5,168.6c107.6,57,212.1,40.7,245.7,34.4 c22.4-4.2,54.9-13.1,97.5-26.6L1921,400.5V413.1z"
-            ></path>{" "}
-          </svg>
-        </div>
         <div className="flex justify-center h-screen">
-          <div className="box card p-3 ">
+          <div className="box card p-3">
             <div className="text-center">
-              <img className=" flex justify-center items-center " src={Logo} />
-              {/* <Link to={"/"}>
-                <BiHome className="text-left " />
-              </Link> */}
+              <img
+                className="flex justify-center items-center"
+                src={Logo}
+                alt="Logo"
+              />
             </div>
 
-            <form className="mt-3">
+            <form className="mt-3" onSubmit={handleSignIn}>
               <h2 className="text-2xl font-[600] text-left">Đăng nhập</h2>
+              {errorMessage && (
+                <p className="text-red-500 text-sm">{errorMessage}</p>
+              )}
               <div className="form-group">
                 <TextField
-                  id="standard-basic"
+                  id="email"
                   label="Email"
                   type="email"
                   required
                   variant="standard"
                   className="w-full text-left"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
-              {/* Mật khẩu với chức năng ẩn/hiện */}
               <div className="form-group relative">
                 <TextField
                   id="password"
                   label="Mật khẩu"
-                  type={showPassword ? "text" : "password"} // Thay đổi type giữa text và password
+                  type={showPassword ? "text" : "password"}
                   required
                   variant="standard"
                   className="w-full text-left"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
                   type="button"
@@ -89,29 +118,26 @@ const SignIn = () => {
               </div>
 
               <div className="flex space-x-6 mt-1 mb-1">
-                <div className="flex-1">
-                  <Link to={"/home"}>
-                    <Button
-                      className="w-full !rounded-[0.625em] mt-2 "
-                      variant="contained"
-                    >
-                      Đăng nhập
-                    </Button>
-                  </Link>
-                </div>
+                <Button
+                  type="submit"
+                  className="w-full !rounded-[0.625em] mt-2"
+                  variant="contained"
+                >
+                  Đăng nhập
+                </Button>
               </div>
               <Link
-                to={"/forgotPassword"}
+                to="/forgotPassword"
                 className="border-effect cursor text-left"
               >
                 Quên mật khẩu?
               </Link>
 
-              <div class="hrLine mt-8">
-                <div class="orText">Hoặc</div>
+              <div className="hrLine mt-8">
+                <div className="orText">Hoặc</div>
               </div>
               <Link
-                to={"/signUp"}
+                to="/signUp"
                 className="border-effect cursor text-left font-weight-bold"
               >
                 Đăng ký
@@ -134,4 +160,5 @@ const SignIn = () => {
     </>
   );
 };
+
 export default SignIn;

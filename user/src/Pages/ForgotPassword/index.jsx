@@ -47,7 +47,7 @@ const ForgotPassword = () => {
           </svg>
         </div>
         <div className="flex justify-center h-screen">
-          <div className="box card p-3 shadow ">
+          <div className="box  card p-3 shadow ">
             <div className="text-center">
               <img className=" flex justify-center items-center " src={Logo} />
             </div>
@@ -83,15 +83,6 @@ const ForgotPassword = () => {
                   </Link>
                 </div>
               </div>
-              <p className="text-left mt-5 text-lg">
-                Đã có tài khoản?{" "}
-                <Link
-                  to={"/signIn"}
-                  className="font-semibold text-blue-600 hover:text-blue-800"
-                >
-                  Login
-                </Link>
-              </p>
             </form>
           </div>
         </div>

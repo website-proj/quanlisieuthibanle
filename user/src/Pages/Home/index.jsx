@@ -69,7 +69,6 @@ const Home = () => {
   return (
     <>
       <div id="home">
-        <Header cartCount={cartCount} />
         <Popup />
         <HomeBanner />
         <section id="flashseller" className="homeProducts">

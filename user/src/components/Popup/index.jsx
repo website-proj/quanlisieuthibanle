@@ -80,7 +80,7 @@ const Popup = () => {
       <div className="fixed inset-0 z-40 bg-black bg-opacity-50 blur-overlay"></div>
 
       {/* Popup Content */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="fixed inset-0 z-50 flex items-center justify-center mt-16">
         <div className="relative bg-white rounded-[0.625em] shadow-lg max-w-md">
           <button
             className="absolute top-[-0.4em] right-[-0.4em] bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center font-[600] hover:bg-red-700"

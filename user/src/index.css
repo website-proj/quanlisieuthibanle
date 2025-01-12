@@ -27,7 +27,7 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-optical-sizing: auto;
   background-color: #dfdcff44;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
 }
 
 /* .container {

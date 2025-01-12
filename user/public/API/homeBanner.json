@@ -1,7 +1,7 @@
 [
   {
     "banner_id": "B001",
-    "image": "https://api.spicezgold.com/download/file_1734525014348_NewProject(7).jpg",
+    "image": "https://scontent.fhph1-3.fna.fbcdn.net/v/t1.15752-9/472517577_597196696596971_6223781355002014682_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=9f807c&_nc_ohc=7bSnAHq4gx0Q7kNvgH_7kgs&_nc_oc=AdhAiwfF6w-6apzLi3svdqjUUllLAucPU9R_HEeOq3x_9q-6ZpSPVe_lBYMAszUAh84&_nc_zt=23&_nc_ht=scontent.fhph1-3.fna&oh=03_Q7cD1gFGca0E-W1IK30TMNviP7r-XXlhUfmUKzyqI4UTQGGEgQ&oe=67AAD4A8",
     "status": "Active",
     "position": "main",
     "priority": 1,
@@ -10,7 +10,7 @@
   },
   {
     "banner_id": "B002",
-    "image": "https://api.spicezgold.com/download/file_1734524878924_1721277298204_banner.jpg",
+    "image": "https://scontent.fhph1-3.fna.fbcdn.net/v/t1.15752-9/416020862_765673548761125_135513272847213924_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=9f807c&_nc_ohc=kph6pBgNajEQ7kNvgEGYgyB&_nc_oc=AdhTjYjRP-N2-jyQcDOWwuJGHKvr5K1_tLCRSIF5b_cCVdsgkAkWq-3ZBI1hnO5P2oo&_nc_zt=23&_nc_ht=scontent.fhph1-3.fna&oh=03_Q7cD1gGJEfPeUIaDdgzL9PS2Pdl9Td1maTQly7tVzTm3nleVhg&oe=67AAE4F0",
     "status": "Inactive",
     "position": "sidebar",
     "priority": 2,
@@ -19,7 +19,7 @@
   },
   {
     "banner_id": "B003",
-    "image": "https://api.spicezgold.com/download/file_1734524893797_NewProject(13).jpg",
+    "image": "https://scontent.fhph1-2.fna.fbcdn.net/v/t1.15752-9/472360272_916028237407255_7225350929456989839_n.jpg?stp=dst-jpg_s2048x2048_tt6&_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_ohc=JHnaY0jeuVYQ7kNvgFzFX1S&_nc_oc=AdiuPVGkFMHp9sr4VkewyXV6IzxP0ZZyRMg_qTDy9Y6eT_IXoyspddTyIqIK-OCOMKg&_nc_zt=23&_nc_ht=scontent.fhph1-2.fna&oh=03_Q7cD1gF79bk-wLer5fYG8AikCZ51iONMrp2oxerfAvxn-hoO7Q&oe=67AAD4A8",
     "status": "Active",
     "position": "bottom",
     "priority": 3,
@@ -28,7 +28,7 @@
   },
   {
     "banner_id": "B004",
-    "image": "https://api.spicezgold.com/download/file_1734524930884_NewProject(6).jpg",
+    "image": "https://scontent.fhph1-2.fna.fbcdn.net/v/t1.15752-9/470056985_631451092648635_999714458055139904_n.jpg?stp=dst-jpg_s2048x2048_tt6&_nc_cat=106&ccb=1-7&_nc_sid=9f807c&_nc_ohc=R7EnpwV90xkQ7kNvgEaNN0L&_nc_oc=AdjiIt2OLTiD6-AJ7N-e4b8LP6_zSvXTMKN7_v5IP8etwVSOBjZ8QyLc1B6j0jD3fNc&_nc_zt=23&_nc_ht=scontent.fhph1-2.fna&oh=03_Q7cD1gFTIRXum9sVrxsRzo9k9VDMyFZfvFNcrr5H6C1LPo2WEw&oe=67AAC039",
     "status": "Active",
     "position": "bottom",
     "priority": 3,
@@ -37,7 +37,7 @@
   },
   {
     "banner_id": "B005",
-    "image": "https://api.spicezgold.com/download/file_1734524958576_NewProject(10).jpg",
+    "image": "https://scontent.fhph2-1.fna.fbcdn.net/v/t1.15752-9/470053628_1255833625503563_6434528922333808533_n.jpg?stp=dst-jpg_s2048x2048_tt6&_nc_cat=109&ccb=1-7&_nc_sid=9f807c&_nc_ohc=WUajoGHT8f8Q7kNvgGKWse7&_nc_oc=Adilt0QYB4PVUMhh_o08HpBFGMGzhigebBkTbWqkJivwheqK7qIg8Pb3xuV_0DvjviA&_nc_zt=23&_nc_ht=scontent.fhph2-1.fna&oh=03_Q7cD1gHlK8dMVqBMPcGu84L6oMINpJrMtSD4yMHK8aTr4PpyoQ&oe=67AAD0FC",
     "status": "Active",
     "position": "bottom",
     "priority": 3,

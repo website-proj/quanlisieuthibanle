@@ -1,38 +1,37 @@
 import React, { useState, useContext, useEffect } from "react";
-import "./style.css";
 import { MyContext } from "../../App";
+import "./style.css";
 import Logo from "../../assets/footer/Logo.png";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { FcGoogle } from "react-icons/fc";
 import { TextField } from "@mui/material";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Import mắt xem
-import axios from "axios"; // Import axios
-import { baseURL } from "../../common/SummaryApi"; // Import base URL từ SummaryApi
-import SummaryApi from "../../common/SummaryApi"; // Import SummaryApi
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import axios from "axios";
+import { baseURL } from "../../common/SummaryApi";
+import SummaryApi from "../../common/SummaryApi";
+import { Alert } from "@mui/material";
 
 const SignUp = () => {
   const context = useContext(MyContext);
-  const navigate = useNavigate(); // Khởi tạo hook useNavigate
+  const navigate = useNavigate();
 
-  // State để kiểm soát mật khẩu
   const [showPassword, setShowPassword] = useState(false);
-
-  // State để lưu trữ giá trị người dùng nhập vào
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [snackbarMessage, setSnackbarMessage] = useState(""); // Thêm state này
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success"); // Thêm state này
 
   useEffect(() => {
     context.setisHeaderFooterShow(false);
   }, []);
 
-  // Hàm để thay đổi trạng thái hiển thị/ẩn mật khẩu
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // Hàm xử lý đăng ký
   const handleSignUp = async (e) => {
     e.preventDefault();
 
@@ -47,11 +46,20 @@ const SignUp = () => {
         },
       });
 
-      // Nếu đăng ký thành công, chuyển hướng sang trang OTP
-      console.log(response.data); // Bạn có thể thay đổi xử lý ở đây, ví dụ như điều hướng trang hoặc thông báo thành công
-      navigate("/otp", { state: { email: email } });
+      setSnackbarMessage("Đăng ký thành công!");
+      setSnackbarSeverity("success");
+
+      navigate("/otp", { state: { email } });
     } catch (error) {
-      console.error("Error during sign up:", error);
+      if (error.response) {
+        setSnackbarMessage(
+          `Lỗi: ${error.response.data.message || "Đăng ký thất bại."}`
+        );
+        setSnackbarSeverity("error");
+      } else {
+        setSnackbarMessage("Lỗi mạng hoặc máy chủ không phản hồi.");
+        setSnackbarSeverity("error");
+      }
     }
   };
 
@@ -61,22 +69,16 @@ const SignUp = () => {
         <div className="shape-bottom">
           <svg
             fill="#fff"
-            id="Layer_1"
-            x="0px"
-            y="0px"
             viewBox="0 0 1921 819.8"
             style={{ enableBackground: "new 0 0 1921 819.8" }}
           >
-            <path
-              className="st0"
-              d="M1921,413.1v406.7H0V0.5h0.4l228.1,598.3c30,74.4,80.8,130.6,152.5,168.6c107.6,57,212.1,40.7,245.7,34.4 c22.4-4.2,54.9-13.1,97.5-26.6L1921,400.5V413.1z"
-            ></path>
+            <path d="M1921,413.1v406.7H0V0.5h0.4l228.1,598.3c30,74.4,80.8,130.6,152.5,168.6c107.6,57,212.1,40.7,245.7,34.4 c22.4-4.2,54.9-13.1,97.5-26.6L1921,400.5V413.1z"></path>
           </svg>
         </div>
         <div className="flex justify-center h-screen">
           <div className="box card p-3 shadow">
             <div className="text-center">
-              <img className="flex justify-center items-center" src={Logo} />
+              <img src={Logo} />
             </div>
 
             <form className="mt-3" onSubmit={handleSignUp}>
@@ -90,34 +92,31 @@ const SignUp = () => {
                   variant="standard"
                   className="w-full text-left"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)} // Cập nhật giá trị tên đăng nhập
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
 
               <div className="form-group">
                 <TextField
-                  id="standard-basic"
                   label="Email"
                   type="email"
                   required
                   variant="standard"
                   className="w-full text-left"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)} // Cập nhật giá trị email
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
-              {/* Mật khẩu với chức năng ẩn/hiện */}
               <div className="form-group relative">
                 <TextField
-                  id="password"
                   label="Mật khẩu"
-                  type={showPassword ? "text" : "password"} // Thay đổi type giữa text và password
+                  type={showPassword ? "text" : "password"}
                   required
                   variant="standard"
                   className="w-full text-left"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)} // Cập nhật giá trị mật khẩu
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
                   type="button"
@@ -169,9 +168,26 @@ const SignUp = () => {
               </Button>
             </form>
           </div>
+          {snackbarMessage && (
+            <Alert
+              onClose={() => setSnackbarMessage("")}
+              severity={snackbarSeverity}
+              sx={{
+                width: "auto",
+                borderRadius: "20px",
+                position: "fixed",
+                top: "20px",
+                right: "20px",
+                zIndex: 9999,
+              }}
+            >
+              {snackbarMessage}
+            </Alert>
+          )}
         </div>
       </section>
     </>
   );
 };
+
 export default SignUp;
