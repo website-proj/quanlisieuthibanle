@@ -5,7 +5,6 @@ import { FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../Context/CartContext";
 import ScrollToTopButton from "../../components/ScrollTop";
-import Header from "../../components/Header";
 import HomeBanner from "../../components/HomeBanner";
 import Timer from "../../components/Timer";
 import BannerSlide from "../../components/BannerSlide";
@@ -15,6 +14,8 @@ import NewProducts from "../../components/NewProducts";
 import FooterBanner from "../../components/FooterBanner";
 import "./style.css";
 import Popup from "../../components/Popup";
+import axios from "axios";
+import SummaryApi, { baseURL } from "../../common/SummaryApi";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -22,12 +23,28 @@ const Home = () => {
 
   // Lấy thông tin sản phẩm
   useEffect(() => {
-    fetch("/API/products.json")
-      .then((response) => response.json())
-      .then((data) => {
-        setProducts(data);
-      })
-      .catch((error) => console.error("Error fetching products:", error));
+    const fetchDiscountProducts = async () => {
+      try {
+        const response = await axios({
+          method: SummaryApi.flash_sale.method,
+          url: `${baseURL}${SummaryApi.flash_sale.url}`,
+        });
+
+        console.log("API Response:", response.data);
+
+        if (response.data && Array.isArray(response.data.data)) {
+          setProducts(response.data.data);
+        } else {
+          console.error("Dữ liệu không hợp lệ hoặc không có sản phẩm");
+          setProducts([]);
+        }
+      } catch (error) {
+        console.error("Error fetching discount products:", error);
+        setProducts([]);
+      }
+    };
+
+    fetchDiscountProducts();
   }, []);
 
   const handleAddToCart = (e, product, quantity = 1) => {

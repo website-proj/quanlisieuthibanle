@@ -25,6 +25,15 @@ const SummaryApi = {
     url: "/api/login/",
     method: "get",
   },
+
+  discount_products: {
+    url: "/api/product/discount",
+    method: "get",
+  },
+  flash_sale: {
+    url: "/api/product/flash_sale",
+    method: "get",
+  },
 };
 
 export default SummaryApi;
