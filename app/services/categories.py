@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import HTTPException, UploadFile, File, Depends
 from fastapi.params import Form
 from sqlalchemy.orm import Session
@@ -77,39 +79,38 @@ class CategoryService:
         return sub_categories
 
     @staticmethod
-    def update_category( category_id : str = Form()  , category_name : str = Form() , parent_category_id  : str = Form()
+    def update_category( category_id : str , category_name :Optional[str] , parent_category_id  :  Optional[str]
                          ,   db : Session = Depends(get_db)):
         category = db.query(Category).filter(Category.category_id == category_id).first()
         try :
             if not category:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-            # img_url = UploadImage.upload_image(file)
-            # img_url = img_url["secure_url"]
-            #update
-            category.category_id = category_id
-            category.category_name = category_name
+            category.category_name = category_name if category_name is not None else category.category_name
             # category.image = img_url
-            category.parent_category_id = parent_category_id
+            category.parent_category_id = parent_category_id if parent_category_id is not None else category.parent_category_id
             db.commit()
             db.refresh(category)
             return category
         except Exception as e :
             raise e
     @staticmethod
-    def update_parent_category( category_id : str = Form() , category_name : str = Form() ,
-                                file : UploadFile = File(...), db : Session = Depends(get_db)):
+    def update_parent_category( category_id : Optional[str] , category_name :Optional[str] ,
+                                file: Optional[UploadFile] = None, db : Session = Depends(get_db)):
         category = db.query(Category).filter(Category.category_id == category_id).first()
         if not category:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         if category.parent_category_id != None :
             raise HTTPException(status_code = 404 , detail = "not parent category")
         try :
-            url_image = UploadImage.upload_image(file)
-            url_image = url_image["secure_url"]
+
+            if file != None:
+                url_image = UploadImage.upload_image(file)
+                url_image = url_image["secure_url"]
+            else :
+                url_image = None
             #update
-            category.category_id = category_id
-            category.category_name = category_name
-            category.image = url_image
+            category.category_name = category_name if category_name is not None else category.category_name
+            category.image = url_image if url_image is not None else category.image
             db.commit()
             db.refresh(category)
             return category

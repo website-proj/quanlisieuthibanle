@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_200_OK
@@ -40,11 +42,13 @@ def get_sub_category(cat_id : str , db : Session = Depends(get_db)):
     sub_cat = CategoryService.get_sub_categories(cat_id, db)
     return ResponseHandler.success("query Success" ,sub_cat)
 @router.put("/subcategory" , dependencies=[Depends(check_admin_role)])
-def update_subcategory(category_id : str = Form()  , category_name : str = Form() , parent_category_id  : str = Form(), db : Session = Depends(get_db) ):
+def update_subcategory(category_id : str  , category_name : Optional[str] = None,
+                       parent_category_id  : Optional[str] = None, db : Session = Depends(get_db) ):
     cat_update = CategoryService.update_category(category_id , category_name , parent_category_id  ,  db)
     return ResponseHandler.success("update Success" ,cat_update)
 @router.put("/parent_category" , dependencies=[Depends(check_admin_role)])
-def update_parent_category(category_id : str = Form() , category_name : str = Form()  , file: UploadFile = File(...),db : Session = Depends(get_db)):
+def update_parent_category(category_id  , category_name :Optional[str] = None,
+                                file: Optional[UploadFile] = None, db : Session = Depends(get_db)):
     cat_update = CategoryService.update_parent_category(category_id , category_name ,file ,  db)
     return ResponseHandler.success("update Success" ,cat_update)
 @router.delete("/sub_category" , dependencies= [Depends(check_admin_role)])
