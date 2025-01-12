@@ -156,3 +156,9 @@ class CategoryService:
         if not categories:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         return categories
+    @staticmethod
+    def get_all_sub_categories(db : Session):
+        categories = db.query(Category).filter(Category.parent_category_id != None).all()
+        if not categories:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        return categories
