@@ -24,14 +24,8 @@ class UserService():
         return exist_user
     @staticmethod
     def update_profile(data : userUpdateRequest ,current_user : User ,  db : Session  ):
-        if data.email is not None :
-            exist_user = db.query(User).filter(
-                User.email == data.email , User.user_id != current_user.user_id
-            ).first()
-            if exist_user :
-                raise Exception('Email already registered')
+        
         current_user.username = data.username if data.username is not None else current_user.username
-        current_user.email = data.email if data.email is not None else current_user.email
         current_user.phone_number = data.phone_number if data.phone_number is not None else current_user.phone_number
         current_user.address = data.address if data.address is not None else current_user.address
         current_user.gender = data.gender if data.gender is not None else current_user.gender

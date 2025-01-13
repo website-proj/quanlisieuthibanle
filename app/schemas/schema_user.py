@@ -1,6 +1,9 @@
 from datetime import datetime
+from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
+
+
 # from app.model.users import account_type , membership_status
 class BaseConfig:
     from_attributes = True
@@ -59,11 +62,17 @@ class login(BaseModel):
     class Config(BaseConfig):
         pass
 class userUpdateRequest(BaseModel):
-    username : str
-    email : str
-    phone_number : str
-    address : str
-    gender : str
+    username : Optional[str] = None
+    email : Optional[str] = None
+    phone_number : Optional[str]=None
+    address : Optional[str]=None
+    gender : Optional[str]=None
+
+    @validator('*', pre=True)
+    def empty_string_to_none(cls, value):
+        if value == "":
+            return None
+        return value
     class Config(BaseConfig):
         pass
 class passwordChangeRequest(BaseModel):
