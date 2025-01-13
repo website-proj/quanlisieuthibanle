@@ -4,6 +4,7 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./style.css";
+import { baseURL } from "../../common/SummaryApi"; // Import baseURL từ SummaryApi
 
 const HomeBanner = () => {
   const [banners, setBanners] = useState([]);
@@ -12,9 +13,15 @@ const HomeBanner = () => {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const response = await fetch("/API/homeBanner.json");
+        // Sử dụng fetch để lấy dữ liệu từ API của bạn
+        const response = await fetch(`${baseURL}/api/banner/main`);
+        if (!response.ok) {
+          throw new Error("Không thể lấy dữ liệu từ API");
+        }
         const data = await response.json();
-        setBanners(data);
+
+        // Set dữ liệu banner vào state
+        setBanners(data.data);
       } catch (error) {
         console.error("Lỗi lấy banner :", error);
       }
@@ -45,7 +52,7 @@ const HomeBanner = () => {
                   <img
                     src={banner.image}
                     alt={`Banner ${banner.banner_id}`}
-                    className="w-full h-[25em] bg-cover bg-center object-cover bannerImg"
+                    className="w-full h-[25em]  object-cover  bannerImg"
                   />
                   <div className="absolute bottom-10 left-10">
                     <a

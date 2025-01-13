@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaRegUser } from "react-icons/fa";
 import "./style.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -17,6 +17,15 @@ const Account = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("info");
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (snackbarMessage) {
+      const timer = setTimeout(() => {
+        setSnackbarMessage(""); // Đóng alert sau 5 giây
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [snackbarMessage]);
 
   // State để lưu dữ liệu form
   const [formData, setFormData] = useState({
@@ -47,7 +56,8 @@ const Account = () => {
     setLoading(true);
     setSnackbarMessage("");
     try {
-      const token = localStorage.getItem("token");
+      const newtoken = localStorage.getItem("token"); // Đảm bảo lấy token đúng cách từ localStorage
+      const token = newtoken ? newtoken.split(" ")[1] : null; // Lấy phần sau "bearer "
 
       if (!token) {
         setSnackbarMessage("Không tìm thấy token, vui lòng đăng nhập lại.");
@@ -78,6 +88,75 @@ const Account = () => {
       }
     } catch (error) {
       console.error("Error details:", error); // Debugging line
+      setSnackbarMessage(
+        error.response?.data?.detail || "Đã xảy ra lỗi. Vui lòng thử lại."
+      );
+      setSnackbarSeverity("error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [profileData, setProfileData] = useState({
+    username: "",
+    phone_number: "",
+    address: "",
+    gender: "",
+  });
+  const handleProfileChange = (e) => {
+    const { name, value } = e.target;
+    setProfileData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const handleProfileSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const newtoken = localStorage.getItem("token");
+      const token = newtoken ? newtoken.split(" ")[1] : null;
+
+      if (!token) {
+        setSnackbarMessage("Không tìm thấy token, vui lòng đăng nhập lại.");
+        setSnackbarSeverity("error");
+        return;
+      }
+
+      // Chỉnh sửa giá trị gender
+      let genderValue;
+      switch (profileData.gender.toLowerCase()) {
+        case "nữ":
+          genderValue = "Female";
+          break;
+        case "nam":
+          genderValue = "Male";
+          break;
+        default:
+          genderValue = "Other";
+          break;
+      }
+
+      const response = await axios.put(
+        `${baseURL}${SummaryApi.profile.url}`,
+        {
+          ...profileData,
+          gender: genderValue, // Gửi giá trị đã được chỉnh sửa
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setSnackbarMessage("Cập nhật hồ sơ thành công!");
+        setSnackbarSeverity("success");
+      }
+    } catch (error) {
       setSnackbarMessage(
         error.response?.data?.detail || "Đã xảy ra lỗi. Vui lòng thử lại."
       );
@@ -160,47 +239,49 @@ const Account = () => {
               </p>
               <div className="border-b border-gray-300 mb-6 "></div>
 
-              <form className="space-y-4">
-                {/* Tên đăng nhập */}
+              <form onSubmit={handleProfileSubmit} className="space-y-4">
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
                     Tên đăng nhập <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
+                    name="username"
+                    value={profileData.username}
+                    onChange={handleProfileChange}
                     placeholder="Nhập tên đăng nhập"
                     className="w-3/4 border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12"
                     required
                   />
                 </div>
-
-                {/* Số điện thoại */}
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
                     Số điện thoại <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
+                    name="phone_number"
+                    value={profileData.phone_number}
+                    onChange={handleProfileChange}
                     placeholder="Nhập số điện thoại"
                     className="w-3/4 border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12"
                     required
                   />
                 </div>
-
-                {/* Email */}
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                    Email <span className="text-red-500">*</span>
+                    Địa chỉ <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="email"
-                    placeholder="Nhập email"
+                    type="text"
+                    name="address"
+                    value={profileData.address}
+                    onChange={handleProfileChange}
+                    placeholder="Nhập địa chỉ"
                     className="w-3/4 border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12"
                     required
                   />
                 </div>
-
-                {/* Giới tính */}
                 <div className="flex items-center mb-4">
                   <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
                     Giới tính <span className="text-red-500">*</span>
@@ -211,7 +292,8 @@ const Account = () => {
                         type="radio"
                         name="gender"
                         value="male"
-                        className="mr-2 peer"
+                        checked={profileData.gender === "male"}
+                        onChange={handleProfileChange}
                         required
                       />
                       Nam
@@ -221,7 +303,8 @@ const Account = () => {
                         type="radio"
                         name="gender"
                         value="female"
-                        className="mr-2"
+                        checked={profileData.gender === "female"}
+                        onChange={handleProfileChange}
                         required
                       />
                       Nữ
@@ -231,35 +314,22 @@ const Account = () => {
                         type="radio"
                         name="gender"
                         value="other"
-                        className="mr-2"
+                        checked={profileData.gender === "other"}
+                        onChange={handleProfileChange}
                       />
                       Khác
                     </label>
                   </div>
                 </div>
-
-                {/* Địa chỉ */}
                 <div className="flex items-center mb-4">
-                  <label className="w-1/4 text-sm font-medium text-gray-700 text-left">
-                    Số nhà <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Địa chỉ"
-                    className="w-3/4 border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ml-12"
-                    required
-                  />
-                </div>
-
-                {/* Nút lưu */}
-                <div className="flex items-center mb-4">
-                  <div className="w-1/4 text-sm font-medium text-gray-700 text-left"></div>
+                  <div className="w-1/4"></div>
                   <div className="w-3/4 text-left py-2 ml-12">
                     <button
                       type="submit"
+                      disabled={loading}
                       className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
                     >
-                      Lưu
+                      {loading ? "Đang xử lý..." : "Lưu"}
                     </button>
                   </div>
                 </div>

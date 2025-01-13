@@ -1,17 +1,19 @@
 import { FaAngleDown, FaAngleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { BiMessage } from "react-icons/bi";
 import { LuHeadphones } from "react-icons/lu";
 import { FaListUl } from "react-icons/fa";
 import "./style.css";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
+import SummaryApi, { baseURL } from "../../../common/SummaryApi";
 
 const Navigation = () => {
   const [activeCategory, setActiveCategory] = useState(null); // Trạng thái danh mục đang mở
   const [isHovered, setIsHovered] = useState(false); // Trạng thái hover tổng thể
   const [categories, setCategories] = useState([]); // Trạng thái danh mục sản phẩm từ API
+
   const handleCategoryClick = () => {
     setActiveCategory(null); // Đặt trạng thái danh mục đang mở về null
     setIsHovered(false); // Tắt trạng thái hover
@@ -21,9 +23,16 @@ const Navigation = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("/API/categories.json"); // Thay thế bằng URL API của bạn
+        const response = await fetch(`${baseURL}${SummaryApi.categories.url}`, {
+          method: SummaryApi.categories.method, // Sử dụng phương thức GET từ SummaryApi
+        });
         const data = await response.json();
-        setCategories(data); // Cập nhật danh mục sản phẩm
+        // Biến đổi dữ liệu API nếu cần thiết
+        const formattedCategories = Object.keys(data).map((parentName) => ({
+          name: parentName,
+          subcategories: data[parentName],
+        }));
+        setCategories(formattedCategories); // Cập nhật danh mục sản phẩm
       } catch (error) {
         console.error("Lỗi khi tìm danh mục:", error);
       }
@@ -101,7 +110,8 @@ const Navigation = () => {
                                 <li key={idx}>
                                   <Link to={`/products/${category.name}`}>
                                     <Button className="w-full !text-black text-left nav_menu">
-                                      {sub}
+                                      {sub.category_name}{" "}
+                                      {/* Hiển thị tên phụ mục */}
                                     </Button>
                                   </Link>
                                 </li>
@@ -116,8 +126,6 @@ const Navigation = () => {
               </div>
             </div>
           </div>
-
-          {/* <div className="5/12"></div> */}
 
           {/* Part 2 */}
           <div className="w-2/3 flex justify-end items-center mx-[6%]">

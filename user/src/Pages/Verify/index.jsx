@@ -37,16 +37,25 @@ const Verify = () => {
     }
 
     try {
-      // Gửi yêu cầu xác thực OTP tới API
-      const response = await axios({
-        method: "POST", // Sử dụng phương thức POST
-        url: `${baseURL}/api/users/register/check_code`, // Đường dẫn đầy đủ tới API
-        params: {
-          // Truyền query parameters
-          email: email, // Đảm bảo email được truyền đúng
-          code: otp, // Đảm bảo mã OTP được truyền đúng
-        },
-      });
+      // Log tham số để kiểm tra giá trị của email và OTP
+      console.log("email:", email);
+      console.log("otp:", otp);
+
+      // Log URL được tạo ra để kiểm tra
+      console.log(
+        `Sending request to: ${baseURL}/api/users/register/check_code`
+      );
+
+      // Gửi yêu cầu xác thực OTP tới API, truyền tham số trong query string
+      const response = await axios.get(
+        `${baseURL}/api/users/register/check_code`,
+        {
+          params: {
+            email: email, // Truyền email dưới dạng query parameter
+            code: otp, // Truyền mã OTP dưới dạng query parameter
+          },
+        }
+      );
 
       // Nếu thành công, hiển thị thông báo và điều hướng người dùng
       setSnackbarMessage("Xác thực thành công!");

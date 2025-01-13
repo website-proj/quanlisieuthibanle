@@ -62,8 +62,28 @@ const SummaryApi = {
     url: "/api/users/changePassword",
     method: "put",
   },
+  profile: {
+    url: "/api/users/profile",
+    method: "put",
+  },
   cart_item: {
     url: "/api/cart/carts",
+    method: "get",
+  },
+  categories: {
+    url: "/api/user/category/all_category",
+    method: "get",
+  },
+  popup: {
+    url: "/api/popup/",
+    method: "get",
+  },
+  homeBanner: {
+    url: "/api/banner/main",
+    method: "get",
+  },
+  bannerSlide: {
+    url: "/api/banner/sidebar",
     method: "get",
   },
 };

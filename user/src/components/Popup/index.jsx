@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
+import axios from "axios"; // Đảm bảo bạn đã cài axios
+import { baseURL } from "../../common/SummaryApi"; // Đảm bảo đường dẫn đúng tới SummaryApi
 import "./style.css";
 
 const Popup = () => {
@@ -8,12 +10,12 @@ const Popup = () => {
   useEffect(() => {
     const fetchPopupData = async () => {
       try {
-        const response = await fetch("/API/popup.json");
-        const data = await response.json();
+        // Gửi yêu cầu GET tới API để lấy thông tin popup
+        const response = await axios.get(`${baseURL}${"/api/popup/"}`);
 
         // Lọc popup hợp lệ
         const now = new Date();
-        const validPopups = data.filter((popup) => {
+        const validPopups = response.data.data.filter((popup) => {
           const startDate = new Date(popup.start_date);
           const endDate = popup.end_date ? new Date(popup.end_date) : null;
 
@@ -113,7 +115,7 @@ const Popup = () => {
           <img
             src={popupData.image}
             alt="popup-banner"
-            className="w-full h-auto rounded-lg"
+            className="w-full h-auto rounded-xl"
           />
         </div>
       </div>
