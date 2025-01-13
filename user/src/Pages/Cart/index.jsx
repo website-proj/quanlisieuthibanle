@@ -13,6 +13,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import SummaryApi, { baseURL } from "../../common/SummaryApi";
+import noDataImage from "../../assets/images/nothing here yet.webp";
 
 const formatCurrency = (value) => value.toLocaleString("vi-VN") + "đ";
 const Cart = () => {
@@ -209,6 +210,44 @@ const Cart = () => {
   // Tính thành tiền (tạm tính + phí vận chuyển - tiền tiết kiệm)
   const finalAmount = totalAmount + shippingFee;
 
+  const clearCart = async () => {
+    const token = localStorage.getItem("token")?.split(" ")[1];
+
+    if (!token) {
+      console.error("Token không tồn tại. Vui lòng đăng nhập.");
+      window.location.href = "/signIn";
+      return;
+    }
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/cart/cart", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Parse JSON từ phản hồi
+      const data = await response.json();
+
+      // Kiểm tra trạng thái HTTP và nội dung phản hồi
+      if (response.ok && data.message === "deleted cart") {
+        setCartItems([]); // Làm rỗng giỏ hàng trên frontend
+        console.log("Giỏ hàng đã được xóa thành công:", data.message);
+        window.location.reload(); // Reload để cập nhật giao diện
+      } else {
+        console.error(
+          "Lỗi khi xóa giỏ hàng:",
+          data.message || "Phản hồi không hợp lệ."
+        );
+        alert("Không thể xóa giỏ hàng!");
+      }
+    } catch (error) {
+      console.error("Lỗi khi xóa giỏ hàng:", error);
+      alert("Có lỗi xảy ra khi xóa giỏ hàng!");
+    }
+  };
+
   const handleCheckout = () => {
     navigate("/payment");
   };
@@ -285,115 +324,149 @@ const Cart = () => {
           </div>
           <div className="container ml-[4%] flex">
             <div className="leftPart w-[60%]">
-              <table className="w-full border-collapse bg-white shadow-md rounded-xl overflow-hidden ml-[6%] mt-4">
-                <thead>
-                  <tr className="bg-blue-500 text-white">
-                    <th className="px-4 py-2 text-left">Sản phẩm</th>
-                    <th className="px-4 py-2">Đơn giá</th>
-                    <th className="px-4 py-2 w-40">Số lượng</th>
-                    <th className="px-4 py-2 w-32">Số tiền</th>
-                    <th className="px-4 py-2">Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cartItems.map((product) => (
-                    <tr key={product.product_id} className="border-b">
-                      <td className="px-4 py-2 flex items-center">
-                        <Link
-                          to={`/product_detials/${product.product_id}`}
-                          state={product}
-                          className="flex items-center"
-                        >
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="w-12 h-12 mr-3"
-                          />
-                          <div>
-                            <p className="font-bold text-left">
-                              {product.name}
-                            </p>
-                            <p className="text-sm text-gray-500 text-left">{`ĐVT: ${product.unit}`}</p>
-                          </div>
-                        </Link>
-                      </td>
+              {cartItems.length === 0 ? (
+                <div className="flex flex-col items-end justify-center text-gray-500">
+                  <img
+                    src={noDataImage}
+                    alt="no data"
+                    className="w-1/2 max-w-sm mb-4"
+                  />
+                  <p className="text-neutral-500 mr-32 mb-2">Giỏ hàng trống</p>
+                  <Link
+                    to="/home"
+                    className="text-blue-500 mb-5 mr-20 hover:underline"
+                  >
+                    <Button className="see_more pulsating-button !text-lg">
+                      Tiếp tục mua sắm
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="">
+                  <table className="w-full border-collapse bg-white shadow-md rounded-xl overflow-hidden ml-[6%] mt-4">
+                    {/* Nội dung bảng */}
+                    <thead>
+                      <tr className="bg-blue-500 text-white">
+                        <th className="px-4 py-2 text-left">Sản phẩm</th>
+                        <th className="px-4 py-2">Đơn giá</th>
+                        <th className="px-4 py-2 w-40">Số lượng</th>
+                        <th className="px-4 py-2 w-32">Số tiền</th>
+                        <th className="px-4 py-2">Thao tác</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {cartItems.map((product) => (
+                        <tr key={product.product_id} className="border-b">
+                          <td className="px-4 py-2 flex items-center">
+                            <Link
+                              to={`/product_detials/${product.product_id}`}
+                              state={product}
+                              className="flex items-center"
+                            >
+                              <img
+                                src={product.image}
+                                alt={product.name}
+                                className="w-12 h-12 mr-3"
+                              />
+                              <div>
+                                <p className="font-bold text-left">
+                                  {product.name}
+                                </p>
+                                <p className="text-sm text-gray-500 text-left">{`ĐVT: ${product.unit}`}</p>
+                              </div>
+                            </Link>
+                          </td>
+                          <td className="px-4 py-2 text-center">
+                            <span className="line-through text-gray-500">
+                              {product.old_price.toLocaleString()}đ
+                            </span>
+                            <br />
+                            {product.price.toLocaleString()}đ
+                          </td>
+                          <td className="px-4 py-2 text-center w-40">
+                            <div className="flex items-center justify-center">
+                              <button
+                                onClick={() =>
+                                  decreaseQuantity(product.product_id)
+                                }
+                                className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded-full bg-gray-300"
+                              >
+                                -
+                              </button>
+                              <span className="mx-2 w-8 text-center">
+                                {product.quantity}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  increaseQuantity(product.product_id)
+                                }
+                                className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded-full bg-gray-300"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </td>
+                          <td className="px-4 py-2 text-center w-32">
+                            {(
+                              product.price * product.quantity
+                            ).toLocaleString()}
+                            đ
+                          </td>
+                          <td className="px-4 py-2 text-center">
+                            <button className="text-red-500 hover:underline">
+                              <MdDeleteOutline
+                                onClick={() =>
+                                  deleteCartItem(product.product_id)
+                                }
+                                className="text-2xl"
+                              />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="!text-right justify-items-end mt-4">
+                    <Button
+                      onClick={() => clearCart([])} // Fix clear cart logic
+                      className=" !text-white !bg-blue-600 hover:underline"
+                    >
+                      Xoá tất cả giỏ hàng
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
 
-                      <td className="px-4 py-2 text-center">
-                        <span className="line-through text-gray-500">
-                          {product.old_price.toLocaleString()}đ
-                        </span>
-                        <br />
-                        {product.price.toLocaleString()}đ
-                      </td>
-                      <td className="px-4 py-2 text-center w-40">
-                        <div className="flex items-center justify-center">
-                          <button
-                            onClick={() => decreaseQuantity(product.product_id)} // Gọi API khi giảm số lượng
-                            className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded-full bg-gray-300"
-                          >
-                            -
-                          </button>
-                          <span className="mx-2 w-8 text-center">
-                            {product.quantity}
-                          </span>
-                          <button
-                            onClick={() => increaseQuantity(product.product_id)} // Gọi API khi tăng số lượng
-                            className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded-full bg-gray-300"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-center w-32">
-                        {(product.price * product.quantity).toLocaleString()}đ
-                      </td>
-                      <td className="px-4 py-2 text-center">
-                        <button className="text-red-500 hover:underline">
-                          <MdDeleteOutline
-                            onClick={() => deleteCartItem(product.product_id)}
-                            className="text-2xl"
-                          />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="text-right mt-4">
-                <button
-                  onClick={() => setCartItems([])} // Fix clear cart logic
-                  className="text-red-500 hover:underline"
-                >
-                  Xoá tất cả giỏ hàng
-                </button>
+            {/* Phần này chỉ hiển thị khi cartItems.length > 0 */}
+            {cartItems.length > 0 && (
+              <div className="rightPart w-[26%] ml-24 mt-4">
+                <div className="shadow-md rounded-xl bg-white p-4">
+                  <div className="flex justify-between mb-2">
+                    <span>Tạm tính</span>
+                    <span>{formatCurrency(totalAmount)}đ</span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span>Tiết kiệm</span>
+                    <span>{formatCurrency(totalSavings)}đ</span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span>Phí vận chuyển</span>
+                    <span>{formatCurrency(shippingFee)}đ</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-red-500">
+                    <span>Thành tiền</span>
+                    <span>{formatCurrency(finalAmount)}đ</span>
+                  </div>
+                  <button
+                    onClick={handleCheckout}
+                    className="w-full bg-blue-500 text-white py-2 rounded-xl mt-4"
+                  >
+                    THANH TOÁN {formatCurrency(finalAmount)}đ
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="rightPart w-[26%] ml-24 mt-4">
-              <div className="shadow-md rounded-xl bg-white p-4">
-                <div className="flex justify-between mb-2">
-                  <span>Tạm tính</span>
-                  <span>{formatCurrency(totalAmount)}đ</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Tiết kiệm</span>
-                  <span>{formatCurrency(totalSavings)}đ</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Phí vận chuyển</span>
-                  <span>{formatCurrency(shippingFee)}đ</span>
-                </div>
-                <div className="flex justify-between font-bold text-red-500">
-                  <span>Thành tiền</span>
-                  <span>{formatCurrency(finalAmount)}đ</span>
-                </div>
-                <button
-                  onClick={handleCheckout}
-                  className="w-full bg-blue-500 text-white py-2 rounded-xl mt-4"
-                >
-                  THANH TOÁN {formatCurrency(finalAmount)}đ
-                </button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
