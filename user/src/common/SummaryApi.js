@@ -86,6 +86,10 @@ const SummaryApi = {
     url: "/api/banner/sidebar",
     method: "get",
   },
+  footBanner: {
+    url: "/api/banner/bottom",
+    method: "get",
+  },
 };
 
 export default SummaryApi;
