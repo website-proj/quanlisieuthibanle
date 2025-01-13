@@ -448,9 +448,15 @@ class ProductService:
         if not data:
             raise  HTTPException(status_code=404, detail="no reviews found")
         result  = {}
-        for review , product in data :
-            if product not in data:
-                result[product] = []
-            result[product].append(review)
-        return result
+        try:
+            for review , product in data :
+                if product not in result :
+                    result[product.product_id] = {
+                        "product" : product.__dict__ if product else None,
+                        "review" : {}
+                    }
+                    result[product.product_id]["review"] = review
+            return result
+        except Exception as e :
+            raise e
 

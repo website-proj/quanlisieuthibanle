@@ -163,4 +163,4 @@ def count_products(db : Session = Depends(get_db)):
 @router.get("/reviews_of_product" ,dependencies=[Depends(login_required)])
 def get_reviews_of_product(product_id : str, db : Session = Depends(get_db)):
     product = ProductService.get_reviews_of_product(product_id , db)
-    return ResponseHandler.success("product reviews" , product)
+    return product
