@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Table.css";
+
 import {
   Box,
   Table,
@@ -25,6 +26,9 @@ import {
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import AddCategories from '/src/pages/Categories/AddSubcategories/Add.jsx';
 import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
+import EditSubcategory from "./EditSubcategory.jsx";
+import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx";
+import axios from "axios";
 
 export default function SubcategoryTable() {
   const [categories, setCategories] = useState([]);
@@ -38,12 +42,36 @@ export default function SubcategoryTable() {
   const [loading, setLoading] = useState(false);
   const selectRef = useRef(null);
   const [selectedSubcategoryDetails, setSelectedSubcategoryDetails] = useState(null);
+  const [detailsBackdrop, setDetailsBackdrop] = useState(false);
+  const [editBackdrop, setEditBackdrop] = useState(false);
+  const [selectedSubcategoryEdit, setSelectedSubcategoryEdit] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [subcategoryToDelete, setSubcategoryToDelete] = useState(null);
+  
+  const handleDeleteSubcategory = (subcategory) => {
+    setSubcategoryToDelete(subcategory);
+    setOpenDeleteDialog(true);
+  };
+  
+  const handleEditSubcategory = (sub) => {
+    setSelectedSubcategoryEdit(sub);
+    setEditBackdrop(true);
+  };
+  const handleCloseEditBackdrop = () => {
+    setEditBackdrop(false);
+  };
+  const handleSaveEditedSubcategory = (updatedSubcategory) => {
+    setSubcategories((prev) =>
+      prev.map((sub) => (sub.id === updatedSubcategory.id ? updatedSubcategory : sub))
+    );
+  };
+
 
     useEffect(() => {
         const fetchCategories = async () => {
           const jwtToken = localStorage.getItem("jwtToken");
           if (!jwtToken) {
-            console.error("JWT token not found in localStorage.");
+            console.error("Không tìm thấy JWT token ở localStorage.");
             return;
           }
 
@@ -55,7 +83,7 @@ export default function SubcategoryTable() {
             });
 
             if (!response.ok) {
-              throw new Error(`Error fetching data: ${response.statusText}`);
+              throw new Error(`Không tìm thấy dữ li: ${response.statusText}`);
             }
 
             const data = await response.json();
@@ -147,9 +175,35 @@ export default function SubcategoryTable() {
       category: selectedCategory,
       amount: sub.amount,
     });
-    setOpenBackdrop(true);
+    setDetailsBackdrop(true);
   };
   
+  const handleCloseDetailsBackdrop = () => {
+    setDetailsBackdrop(false);
+  };
+  const jwtToken = localStorage.getItem("jwtToken");
+  const confirmDelete = () => {
+    if (subcategoryToDelete) {
+      const subcategoryId = subcategoryToDelete.id; 
+  
+      axios
+        .delete(`${BASE_URL}${ENDPOINTS.categories.deleteSubcategory}${subcategoryId}`, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        })
+        .then(() => {
+          fetchCategories(); 
+          setOpenDeleteDialog(false);
+          setSubcategoryToDelete(null);
+        })
+        .catch((error) => {
+          console.error("Lỗi xóa danh mục con: ", error);
+        });
+    }
+  };
+  
+
   return (
     <Box display="flex" sx={{ gap: 3 }}>
       {/* Left Panel */}
@@ -265,10 +319,13 @@ export default function SubcategoryTable() {
                     <IconButton color="info" onClick={() => handleViewSubcategory(sub)}>
                         <AiOutlineEye />
                       </IconButton>
-                      <IconButton sx={{ color: "green" }}>
+                      <IconButton
+                        sx={{ color: "green" }}
+                        onClick={() => handleEditSubcategory(sub)}
+                      >
                         <AiOutlineEdit />
                       </IconButton>
-                      <IconButton sx={{ color: "red" }}>
+                      <IconButton sx={{ color: "red" }} onClick={() => handleDeleteSubcategory(sub)}>
                         <AiOutlineDelete />
                       </IconButton>
                     </TableCell>
@@ -297,7 +354,7 @@ export default function SubcategoryTable() {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              labelRowsPerPage="Số danh mục con mỗi trang:"
+              labelRowsPerPage="Danh mục con mỗi trang:"
               labelDisplayedRows={({ from, to, count }) => `${from}-${to} trên ${count}`}
             />
           </Box>
@@ -322,6 +379,58 @@ export default function SubcategoryTable() {
           <AddCategories />
         </div>
       </Backdrop>
+
+      <Backdrop 
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backdropFilter: "blur(3px)" }}
+        open={detailsBackdrop} 
+        onClick={handleCloseDetailsBackdrop}>
+      <div
+          onClick={(e) => e.stopPropagation()}
+          style={{ width: "30%", background: "#fff", padding: "20px", borderRadius: '20px' }}
+        >
+          <Typography variant="h6" gutterBottom fontSize="1.3em" fontWeight="bold" textAlign="center">
+            Chi tiết danh mục con
+          </Typography>
+          {selectedSubcategoryDetails && (
+              <>
+                <Typography variant="body1" fontSize="1em" paddingBottom="0.5em">
+                <strong>Mã danh mục con:</strong> {selectedSubcategoryDetails.id}
+                </Typography>
+                <Typography variant="body1" fontSize="1em" paddingBottom="0.5em">
+                  <strong>Tên danh mục con:</strong> {selectedSubcategoryDetails.name}
+                </Typography>
+                <Typography variant="body1" fontSize="1em" paddingBottom="0.5em">
+                  <strong>Danh mục cha:</strong> {selectedSubcategoryDetails.category}
+                </Typography>
+                <Typography variant="body1" fontSize="1em" paddingBottom="0.5em">
+                <strong>Tổng doanh thu:</strong> {selectedSubcategoryDetails.amount.toLocaleString('vi-VN')} VNĐ
+                </Typography>
+              </>
+            )}
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginTop: "1.2em", borderRadius: "15px", width: '100%', textTransform: 'none', boxShadow: 'none'}}
+            onClick={handleCloseDetailsBackdrop}
+          >
+            Đóng
+          </Button>
+        </div>
+      </Backdrop>
+
+      <EditSubcategory
+          open={editBackdrop}
+          onClose={handleCloseEditBackdrop}
+          subcategoryDetails={selectedSubcategoryEdit}
+          onSave={handleSaveEditedSubcategory}
+        />;
+
+        <ConfirmDeleteDialog
+                open={openDeleteDialog}
+                onClose={() => setOpenDeleteDialog(false)}
+                onConfirm={confirmDelete}
+                itemName={subcategoryToDelete ? subcategoryToDelete.name : ""}
+              />
     </Box>
   );
 }

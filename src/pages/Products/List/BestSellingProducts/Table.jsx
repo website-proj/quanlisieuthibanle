@@ -54,7 +54,7 @@ function BestSellingProductsTable() {
     let filtered = products;
 
     if (categoryValue) {
-      filtered = filtered.filter((product) => product.category === categoryValue);
+      filtered = filtered.filter((product) => product["Category of product"].category_name === categoryValue);
     }
 
     if (searchValue) {
@@ -77,20 +77,42 @@ function BestSellingProductsTable() {
     const direction = isAsc ? "desc" : "asc";
     setOrderDirection(direction);
     setOrderBy(property);
-
+  
     const sorted = [...filteredProducts].sort((a, b) => {
-      if (property === "date") {
-        const dateA = new Date(a[property].split('/').reverse().join('-'));
-        const dateB = new Date(b[property].split('/').reverse().join('-'));
+      const valueA = a.product[property];
+      const valueB = b.product[property];
+  
+      if (property === "expiration_date") {
+        const dateA = valueA ? new Date(valueA.split('/').reverse().join('-')) : new Date();
+        const dateB = valueB ? new Date(valueB.split('/').reverse().join('-')) : new Date();
         return isAsc ? dateA - dateB : dateB - dateA;
       }
-      if (typeof a[property] === "number") {
-        return isAsc ? a[property] - b[property] : b[property] - a[property];
+  
+      if (property === "category") {
+        const categoryA = a["Category of product"].category_name.toLowerCase();
+        const categoryB = b["Category of product"].category_name.toLowerCase();
+        return isAsc ? categoryA.localeCompare(categoryB) : categoryB.localeCompare(categoryA);
       }
-      return isAsc
-        ? a[property].toString().localeCompare(b[property])
-        : b[property].toString().localeCompare(a[property]);
+
+      if (property === "sold") {
+        const soldA = a.sold;
+        const soldB = b.sold;
+        return isAsc ? soldA - soldB : soldB - soldA;
+      }
+  
+      if (typeof valueA === "number" && typeof valueB === "number") {
+        return isAsc ? valueA - valueB : valueB - valueA;
+      }
+  
+      if (valueA && valueB) {
+        return isAsc
+          ? valueA.toString().localeCompare(valueB.toString())
+          : valueB.toString().localeCompare(valueA.toString());
+      }
+  
+      return 0;
     });
+  
     setFilteredProducts(sorted);
   };
 
@@ -104,8 +126,13 @@ function BestSellingProductsTable() {
   };
 
   const uniqueCategories = [
-    ...new Set(products.map((product) => product.category)),
+    ...new Set(products.map((product) => product["Category of product"].category_name)),
   ];
+
+  const formatDate = (date) => {
+    const [year, month, day] = date.split('-');
+    return `${day}/${month}/${year}`;
+  };
 
   return (
     <Box>
@@ -139,16 +166,22 @@ function BestSellingProductsTable() {
             <TableHead>
               <TableRow className="table-header">
                 <TableCell sx={{ textAlign: "center" }}>Hình ảnh</TableCell>
-                {[{ label: "Tên sản phẩm", key: "name" }, { label: "Danh mục", key: "category" }, { label: "Ngày hết hạn", key: "date" }, { label: "Giá", key: "price" }].map((column) => (
-                  <TableCell key={column.key} sx={{ textAlign: "center" }}>
-                    <TableSortLabel
-                      active={orderBy === column.key}
-                      direction={orderDirection}
-                      onClick={() => handleSort(column.key)}
-                    >
+                {[{ label: "Tên sản phẩm", key: "name" }, { label: "Danh mục", key: "category" }, { label: "Hết hạn", key: "expiration_date" }, { label: "Giá", key: "price" }, { label: "Đã bán", key: "sold" }].map((column) => (
+                  column.key !== "image" && column.key !== "functions" ? (
+                    <TableCell key={column.key} sx={{ textAlign: "center" }}>
+                      <TableSortLabel
+                        active={orderBy === column.key}
+                        direction={orderDirection}
+                        onClick={() => handleSort(column.key)}
+                      >
+                        {column.label}
+                      </TableSortLabel>
+                    </TableCell>
+                  ) : (
+                    <TableCell key={column.key} sx={{ textAlign: "center" }}>
                       {column.label}
-                    </TableSortLabel>
-                  </TableCell>
+                    </TableCell>
+                  )
                 ))}
                 <TableCell sx={{ textAlign: "center" }}>Chức năng</TableCell>
               </TableRow>
@@ -156,13 +189,14 @@ function BestSellingProductsTable() {
             <TableBody>
               {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
                 <TableRow key={index} className="table-row">
-                  <TableCell sx={{ textAlign: "center"}}>
-                    <img src={product.image} alt={product.name} style={{ width: "50px", height: "50px", borderRadius: "10px" }} />
+                  <TableCell sx={{ textAlign: "center" }}>
+                    <img src={product.product.image} alt={product.product.name} style={{ width: "50px", height: "50px", borderRadius: "10px" }} />
                   </TableCell>
-                  <TableCell>{product.name}</TableCell>
-                  <TableCell>{product.category}</TableCell>
-                  <TableCell sx={{textAlign: "center"}}>{product.date}</TableCell>
-                  <TableCell >{product.price.toString().replace(/\./g, ",")}</TableCell>
+                  <TableCell>{product.product.name}</TableCell>
+                  <TableCell>{product["Category of product"].category_name}</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>{formatDate(product.product.expiration_date)}</TableCell>
+                  <TableCell>{product.product.price.toString().replace(/\./g, ",")}</TableCell>
+                  <TableCell>{product.sold}</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     <IconButton color="info">
                       <AiOutlineEye />

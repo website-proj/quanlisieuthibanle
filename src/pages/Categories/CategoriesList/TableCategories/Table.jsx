@@ -19,13 +19,14 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
 } from "@mui/material";
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 import AddCategories from '/src/pages/Categories/AddCategories/Add.jsx';
+import EditCategory from './EditCategory';
 import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
-import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx"; 
+import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx";
+import './Table.css';
 
 function ProductTable() {
   const [categories, setCategories] = useState([]);
@@ -34,17 +35,23 @@ function ProductTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [openBackdrop, setOpenBackdrop] = useState(false); 
-  const [openAddCategoryBackdrop, setOpenAddCategoryBackdrop] = useState(false); 
-  const [selectedCategory, setSelectedCategory] = useState(null); 
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false); 
-  const [categoryToDelete, setCategoryToDelete] = useState(null); 
-
+  const [openBackdrop, setOpenBackdrop] = useState(false);
+  const [openAddCategoryBackdrop, setOpenAddCategoryBackdrop] = useState(false);
+  const [openEditCategory, setOpenEditCategory] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
+  
   const jwtToken = localStorage.getItem("jwtToken");
 
   useEffect(() => {
+    fetchCategories();
+  }, [jwtToken]);
+
+  const fetchCategories = () => {
     axios
       .get(`${BASE_URL}${ENDPOINTS.categories.getParentCategories}`, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${jwtToken}`,
         },
@@ -57,7 +64,7 @@ function ProductTable() {
       .catch((error) => {
         console.error("Error fetching data from API:", error);
       });
-  }, [jwtToken]);
+  };
 
   useEffect(() => {
     const filtered = categories.filter((category) =>
@@ -88,12 +95,6 @@ function ProductTable() {
     setPage(0);
   };
 
-  const totalCategories = filteredCategories.length;
-  const paginatedCategories = filteredCategories.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
-
   const handleOpenCategoryBackdrop = (category) => {
     setSelectedCategory(category);
     setOpenBackdrop(true);
@@ -112,31 +113,41 @@ function ProductTable() {
     setOpenAddCategoryBackdrop(false);
   };
 
+  const handleEditCategory = (category) => {
+    setSelectedCategory(category);
+    setOpenEditCategory(true);
+  };
+
   const handleDeleteCategory = (category) => {
     setCategoryToDelete(category);
-    setOpenDeleteDialog(true); 
+    setOpenDeleteDialog(true);
   };
 
   const confirmDelete = () => {
     if (categoryToDelete) {
       axios
         .delete(`${BASE_URL}${ENDPOINTS.categories.deleteCategory}?parent_category_id=${categoryToDelete.category_id}`, {
+          method: "DELETE",
           headers: {
             Authorization: `Bearer ${jwtToken}`,
           },
         })
-        .then((response) => {
-          setCategories(categories.filter((category) => category.category_id !== categoryToDelete.category_id));
-          setFilteredCategories(filteredCategories.filter((category) => category.category_id !== categoryToDelete.category_id));
+        .then(() => {
+          fetchCategories();
           setOpenDeleteDialog(false);
           setCategoryToDelete(null);
         })
         .catch((error) => {
-          console.error("Error deleting category:", error);
+          console.error("Lỗi xóa danh mục: ", error);
         });
     }
   };
-  
+
+  const totalCategories = filteredCategories.length;
+  const paginatedCategories = filteredCategories.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   return (
     <Box>
@@ -156,7 +167,7 @@ function ProductTable() {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleOpenAddCategoryBackdrop} 
+            onClick={handleOpenAddCategoryBackdrop}
             sx={{
               fontSize: '0.95em',
               marginLeft: "10px",
@@ -200,8 +211,8 @@ function ProductTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {paginatedCategories.map((category, index) => (
-                <TableRow key={index} className="table-row">
+              {paginatedCategories.map((category) => (
+                <TableRow key={category.category_id} className="table-row">
                   <TableCell sx={{ textAlign: "center" }}>
                     <Box
                       sx={{
@@ -227,7 +238,7 @@ function ProductTable() {
                     <IconButton color="info" onClick={() => handleOpenCategoryBackdrop(category)}>
                       <AiOutlineEye />
                     </IconButton>
-                    <IconButton sx={{ color: "green" }}>
+                    <IconButton sx={{ color: "green" }} onClick={() => handleEditCategory(category)}>
                       <AiOutlineEdit />
                     </IconButton>
                     <IconButton sx={{ color: "red" }} onClick={() => handleDeleteCategory(category)}>
@@ -265,7 +276,7 @@ function ProductTable() {
         />
       </Box>
 
-      {/* Backdrop for showing category details */}
+      {/* View Category Backdrop */}
       <Backdrop
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -277,28 +288,36 @@ function ProductTable() {
         <div onClick={(e) => e.stopPropagation()} style={{ width: '40%', maxWidth: '1000px', paddingTop: '0', backgroundColor: '#fff', borderRadius: '15px' }}>
           {selectedCategory && (
             <Dialog open={openBackdrop} onClose={handleCloseBackdrop}>
-              <Typography variant="h5" sx={{ textAlign: 'center', paddingTop: '1em', fontWeight: 'bold' }}>Chi tiết danh mục</Typography>
+              <Typography variant="h6" gutterBottom fontSize="1.3em" fontWeight="bold" textAlign="center" paddingTop="1em" marginBottom="-0.5em">
+                Chi tiết danh mục
+              </Typography>
               <DialogContent>
                 <Box display="flex" flexDirection="column" alignItems="center">
                   <img
                     src={selectedCategory.image}
                     alt={selectedCategory.category_name}
-                    style={{ width: "80%", height: "50vh", objectFit: "cover", borderRadius: "20px" }}
+                    style={{ width: "100%", height: "50vh", objectFit: "cover", borderRadius: "20px" }}
                   />
-                  <Typography variant="h6" sx={{ mt: 2 }}>
-                    Mã danh mục: {selectedCategory.category_id}
+                  <Typography variant="body1" fontSize="1em" paddingBottom="0.5em" paddingTop="1em">
+                    <strong>Mã danh mục:</strong> {selectedCategory.category_id}
                   </Typography>
-                  <Typography variant="h6" sx={{ mt: 1 }}>
-                    Tên danh mục: {selectedCategory.category_name}
+                  <Typography variant="body1" fontSize="1em" paddingBottom="0.5em">
+                    <strong>Tên danh mục:</strong> {selectedCategory.category_name}
                   </Typography>
                 </Box>
               </DialogContent>
               <DialogActions>
                 <Button
                   variant="contained"
-                  color="primary"
                   onClick={handleCloseBackdrop}
-                  style={{ marginBottom: '1em', borderRadius: "15px", minWidth: '100%', boxShadow: 'none' }}
+                  fullWidth
+                  sx={{
+                    marginBottom: "0.5em",
+                    borderRadius: "15px",
+                    textTransform: 'none',
+                    boxShadow: 'none',
+                    fontSize: '1em'
+                  }}
                 >
                   Đóng
                 </Button>
@@ -308,7 +327,7 @@ function ProductTable() {
         </div>
       </Backdrop>
 
-      {/* Backdrop for adding category */}
+      {/* Add Category Backdrop */}
       <Backdrop
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -318,11 +337,23 @@ function ProductTable() {
         onClick={handleCloseAddCategoryBackdrop}
       >
         <div onClick={(e) => e.stopPropagation()} style={{ width: '40%', maxWidth: '1000px', paddingTop: '0', backgroundColor: '#fff', borderRadius: '15px' }}>
-          <AddCategories />
+          <AddCategories onSuccess={fetchCategories} />
         </div>
       </Backdrop>
 
-      {/* Confirm delete dialog */}
+      {/* Edit Category Component */}
+      <EditCategory
+        open={openEditCategory}
+        category={selectedCategory}
+        onClose={() => {
+          setOpenEditCategory(false);
+          setSelectedCategory(null);
+        }}
+        onUpdate={fetchCategories}
+        jwtToken={jwtToken}
+      />
+
+      {/* Confirm Delete Dialog */}
       <ConfirmDeleteDialog
         open={openDeleteDialog}
         onClose={() => setOpenDeleteDialog(false)}

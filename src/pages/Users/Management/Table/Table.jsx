@@ -23,6 +23,11 @@ import {
 import { AiOutlineEdit, AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 import BackdropWrapper from "/src/components/Backdrop/Backdrop.jsx";
 import AddUserForm from "/src/pages/Users/Add/Add.jsx";
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
+import ViewUser from "./ViewUser";
+import EditUser from "./EditUser";
+import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx";
+import axios from "axios";
 
 function UserTable() {
   const [users, setUsers] = useState([]);
@@ -34,23 +39,60 @@ function UserTable() {
   const [sortBy, setSortBy] = useState("username");
   const [role, setRole] = useState("Customer");
   const [isBackdropOpen, setIsBackdropOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [editUser, setEditUser] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
 
   useEffect(() => {
-    fetch("/src/pages/Users/Management/Users.json")
-      .then((response) => response.json())
-      .then((data) => {
-        setUsers(data);
-        setFilteredUsers(data);
-      })
-      .catch((error) => {
-        console.error("Lỗi khi tải dữ liệu từ Users.json:", error);
-      });
+    const fetchUsers = async () => {
+      const jwtToken = localStorage.getItem("jwtToken");
+      if (!jwtToken) {
+        console.error("Không tìm thấy JWT token ở localStorage.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${BASE_URL}${ENDPOINTS.users.detailsUser}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Không tìm thấy dữ liệu: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        if (data.message === "query success") {
+          const formattedUsers = data.data.map((user) => ({
+            id: user.user_id,
+            username: user.username,
+            gender: user.gender,
+            phone_number: user.phone_number,
+            email: user.email,
+            account_type: user.account_type,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+            address: user.address,
+            membership_status: user.membership_status,
+          }));
+          setUsers(formattedUsers);
+          setFilteredUsers(formattedUsers);
+        }
+      } catch (error) {
+        console.error("Lỗi khi tải dữ liệu từ API:", error);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
   useEffect(() => {
     const filtered = users.filter(
       (user) =>
-        (role === "All" || user.account_type === role) &&
+        (role === "Customer" || user.account_type === role) &&
         Object.values(user)
           .join(" ")
           .toLowerCase()
@@ -60,6 +102,35 @@ function UserTable() {
     setPage(0);
   }, [search, users, role]);
 
+  const handleEditUser = (user) => setEditUser(user);
+  const handleCloseEditUser = () => setEditUser(null);
+
+  const handleDeleteUser = (user) => {
+    setUserToDelete(user);
+    setOpenDeleteDialog(true);
+  };
+
+  const confirmDelete = () => {
+    if (userToDelete) {
+      const jwtToken = localStorage.getItem("jwtToken");
+      axios
+        .delete(`${BASE_URL}${ENDPOINTS.users.deleteUser}${userToDelete.id}`, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        })
+        .then(() => {
+          setUsers(users.filter(user => user.id !== userToDelete.id));
+          setFilteredUsers(filteredUsers.filter(user => user.id !== userToDelete.id));
+          setOpenDeleteDialog(false);
+          setUserToDelete(null);
+        })
+        .catch((error) => {
+          console.error("Lỗi xóa người dùng: ", error);
+        });
+    }
+  };
+  
   const handleSort = (column) => {
     const newSortOrder = sortBy === column && sortOrder === "asc" ? "desc" : "asc";
     setSortBy(column);
@@ -89,16 +160,25 @@ function UserTable() {
     setRole(event.target.value);
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
+  // const formatDate = (dateString) => {
+  //   const date = new Date(dateString);
+  //   const day = String(date.getDate()).padStart(2, "0");
+  //   const month = String(date.getMonth() + 1).padStart(2, "0");
+  //   const year = date.getFullYear();
+  //   return `${day}/${month}/${year}`;
+  // };
 
   const totalUsers = filteredUsers.length;
   const paginatedUsers = sortedUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+  const handleViewUser = (user) => {
+    setSelectedUser(user);
+  };
+
+  const handleCloseViewUser = () => {
+    setSelectedUser(null);
+  };
+
 
   return (
     <Box>
@@ -122,7 +202,7 @@ function UserTable() {
             <Select value={role} onChange={handleRoleChange} label="Vai trò">
               <MenuItem value="Customer">Khách hàng</MenuItem>
               <MenuItem value="Admin">Quản trị viên</MenuItem>
-              <MenuItem value="All">Tất cả</MenuItem>
+              {/* <MenuItem value="All">Tất cả</MenuItem> */}
             </Select>
           </FormControl>
         </Box>
@@ -220,13 +300,13 @@ function UserTable() {
                   <TableCell sx={{ textAlign: "center" }}>{user.phone_number}</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>{user.email}</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    <IconButton color="info">
+                    <IconButton color="info" onClick={() => handleViewUser(user)}>
                       <AiOutlineEye />
                     </IconButton>
-                    <IconButton sx={{ color: "green" }}>
+                    <IconButton sx={{ color: "green"}} onClick={() => handleEditUser(user)}>
                       <AiOutlineEdit />
                     </IconButton>
-                    <IconButton sx={{ color: "red" }}>
+                    <IconButton sx={{ color: "red" }} onClick={() => handleDeleteUser(user)}>
                       <AiOutlineDelete />
                     </IconButton>
                   </TableCell>
@@ -259,11 +339,24 @@ function UserTable() {
             `${from}-${to} trên ${count}`
           }
         />
+        {editUser && (
+        <EditUser open={!!editUser} onClose={handleCloseEditUser} user={editUser} />
+      )}
       </Box>
 
       <BackdropWrapper open={isBackdropOpen} onClose={() => setIsBackdropOpen(false)}>
         <AddUserForm />
       </BackdropWrapper>
+
+      
+      <ViewUser open={!!selectedUser} onClose={handleCloseViewUser} user={selectedUser} />
+    
+      <ConfirmDeleteDialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+        onConfirm={confirmDelete}
+        itemName={userToDelete ? userToDelete.username : ""}
+      />
     </Box>
   );
 }

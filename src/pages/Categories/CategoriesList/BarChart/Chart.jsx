@@ -26,7 +26,8 @@ const CategoryChart = () => {
         const jwtToken = localStorage.getItem("jwtToken");
 
         const response = await fetch(`${BASE_URL}${ENDPOINTS.char.countProducts}`, {
-            headers: {
+          method: "GET", 
+          headers: {
               Authorization: `Bearer ${jwtToken}`,
             },
           }

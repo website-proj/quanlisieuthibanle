@@ -13,7 +13,7 @@ import {
 import { MenuItem, Select, FormControl, Box, Typography } from "@mui/material";
 import { saveAs } from "file-saver";
 import DownloadMenu from "/src/components/Download/CsvJsonPng";
-import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";  // Import BASE_URL and ENDPOINTS
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";  
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -185,6 +185,14 @@ function Chart() {
           sx={{
             borderRadius: "10px",
             height: "35px",
+          }}
+          MenuProps={{
+            PaperProps: {
+              style: {
+                maxHeight: 200,
+                overflowY: 'auto',
+              },
+            },
           }}
         >
           {categories.map((item) => (

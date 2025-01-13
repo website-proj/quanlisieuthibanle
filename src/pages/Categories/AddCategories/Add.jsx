@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Typography, Box, TextField, Button, Backdrop, CircularProgress } from '@mui/material';
 import ContentCard from "/src/components/ContentCard/ContentCard";
 import './AddCategories.css';
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
 
 function AddCategories() {
   const [categoryName, setCategoryName] = useState('');
@@ -16,7 +17,7 @@ function AddCategories() {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImage(reader.result);
+        setImage(file); 
       };
       reader.readAsDataURL(file);
       setErrors((prev) => ({ ...prev, image: '' })); 
@@ -26,11 +27,8 @@ function AddCategories() {
   const handleAdd = async () => {
     const newErrors = {};
 
-  // const namePattern = /^[A-Za-z\s]+$/; 
     if (!categoryName.trim()) {
       newErrors.categoryName = 'Vui lòng nhập tên danh mục.';
-    // } else if (!namePattern.test(categoryName.trim())) {
-    //   newErrors.categoryName = 'Tên danh mục chỉ được phép chứa chữ cái.';
     }
     if (!image) {
       newErrors.image = 'Vui lòng tải lên hình ảnh.';
@@ -40,16 +38,36 @@ function AddCategories() {
 
     if (Object.keys(newErrors).length === 0) {
       setLoading(true);
+
       try {
-        setTimeout(() => {
-          setAddedCategory({ name: categoryName, image: image });
-          setSuccess(true);  
+        const jwtToken = localStorage.getItem('jwtToken'); 
+        if (!jwtToken) throw new Error('Không tìm thấy JWT token.');
+
+        const formData = new FormData();
+        formData.append('category_name', categoryName);
+        formData.append('file', image);
+
+        const response = await fetch(`${BASE_URL}${ENDPOINTS.categories.addCategory}`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${jwtToken}`, 
+          },
+          body: formData, 
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          setAddedCategory(result.data);
+          setSuccess(true);
           setCategoryName('');
           setImage(null);
-          setLoading(false);
-        }, 1500); 
+        } else {
+          throw new Error(result.message || 'Có lỗi xảy ra!');
+        }
       } catch (error) {
         console.error('Lỗi khi thêm danh mục:', error);
+      } finally {
         setLoading(false);
       }
     }
@@ -57,6 +75,7 @@ function AddCategories() {
 
   const handleCloseSuccess = () => {
     setSuccess(false); 
+    window.location.reload();
   };
 
   return (
@@ -80,7 +99,10 @@ function AddCategories() {
             onClick={() => document.getElementById('fileInput').click()}
           >
             {image ? (
-              <img src={image} alt="Preview" className="image-preview" />
+              <img
+                src={URL.createObjectURL(image)} 
+                className="image-preview"
+              />
             ) : (
               <div className="upload-icon">
                 <i className="bx bxs-cloud-upload"></i>
@@ -104,7 +126,8 @@ function AddCategories() {
             variant="contained"
             color="primary"
             onClick={handleAdd}
-            className="submit-button"
+            // className="submit-button"
+            sx={{borderRadius: '15px', textTransform: 'none', fontSize: '1em', boxShadow: 'none'}}
           >
             Thêm danh mục
           </Button>
@@ -126,38 +149,37 @@ function AddCategories() {
         }}
         onClick={handleCloseSuccess} 
       >
-    <Box
-      style={{
-        backgroundColor: 'white',
-        padding: '20px',
-        borderRadius: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        maxWidth: '90%',
-        maxHeight: '80%',
-        width: 'auto',
-        height: 'auto',
-        overflow: 'hidden',
-        transform: 'scale(0.9)', 
-        transformOrigin: 'center',
-      }}
-      onClick={(e) => e.stopPropagation()} 
-    >
-      <Typography variant="h5" style={{ fontWeight: '500' }}>Bạn đã thêm một danh mục!</Typography>
-      <img src={addedCategory?.image} alt="Category" style={{ width: '30em', height: '22em', objectFit: 'contain', marginBottom: '0em' }} />
-      <Typography variant="h6">Tên danh mục: {addedCategory?.name}</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleCloseSuccess}
-        style={{ marginTop: '1em', borderRadius: "15px" }}
-      >
-        Đóng
-      </Button>
-    </Box>
-</Backdrop>
-
+        <Box
+          style={{
+            backgroundColor: 'white',
+            padding: '20px',
+            borderRadius: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            maxWidth: '90%',
+            maxHeight: '80%',
+            width: 'auto',
+            height: 'auto',
+            overflow: 'hidden',
+            transform: 'scale(0.9)', 
+            transformOrigin: 'center',
+          }}
+          onClick={(e) => e.stopPropagation()} 
+        >
+          <Typography variant="h5" style={{ fontWeight: '500' }}>Bạn đã thêm một danh mục!</Typography>
+          <img src={addedCategory?.image} alt="Category" style={{ width: '30em', height: '22em', objectFit: 'contain', marginBottom: '0em' }} />
+          <Typography variant="h6">Tên danh mục: {addedCategory?.category_name}</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCloseSuccess}
+            style={{ marginTop: '1em', borderRadius: "15px" }}
+          >
+            Đóng
+          </Button>
+        </Box>
+      </Backdrop>
     </div>
   );
 }

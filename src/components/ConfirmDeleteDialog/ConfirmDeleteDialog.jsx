@@ -24,7 +24,7 @@ function ConfirmDeleteDialog({ open, onClose, onConfirm, itemName }) {
           Hủy
         </Button>
         <Button
-          onClick={() => { onConfirm(); onClose(); }}
+          onClick={() => { onConfirm(); onClose(); window.location.reload();}}
           color="primary"
           sx={{
             '&:hover': {

@@ -11,6 +11,14 @@ function CategorySelect({ category, onCategoryChange, uniqueCategories }) {
         onChange={onCategoryChange}
         label="Danh mục"
         className="category-select"
+        MenuProps={{
+          PaperProps: {
+            style: {
+              maxHeight: 200, 
+              overflowY: 'auto',
+            },
+          },
+        }}
       >
         <MenuItem value="" className="sub-select">
           Tất cả

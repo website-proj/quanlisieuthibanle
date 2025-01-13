@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Box, Container } from "@mui/material";
-import { decodeJwt } from 'jose';  // Import decodeJwt từ jose
+import { decodeJwt } from 'jose'; 
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
 
 function LogIn({ onLogin }) {
   const [username, setUsername] = useState("");
@@ -19,7 +20,7 @@ function LogIn({ onLogin }) {
       formData.append("client_id", "string");
       formData.append("client_secret", "string");
 
-      const response = await fetch("http://127.0.0.1:8000/api/users/login", {
+      const response = await fetch(`${BASE_URL}${ENDPOINTS.login}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -30,9 +31,8 @@ function LogIn({ onLogin }) {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("jwtToken", data.access_token); // Save token
+        localStorage.setItem("jwtToken", data.access_token);
 
-        // Sử dụng decodeJwt từ jose để giải mã token
         const decodedToken = decodeJwt(data.access_token);
 
         if (!decodedToken || !decodedToken.role) {
@@ -40,8 +40,7 @@ function LogIn({ onLogin }) {
           return;
         }
 
-        // Kiểm tra thời gian hết hạn của token
-        const currentTime = Math.floor(Date.now() / 1000); // Lấy thời gian hiện tại theo giây
+        const currentTime = Math.floor(Date.now() / 1000); 
         if (decodedToken.exp < currentTime) {
           setError("Token đã hết hạn.");
           return;
@@ -49,8 +48,7 @@ function LogIn({ onLogin }) {
 
         const userRole = decodedToken.role;
 
-        // Kiểm tra nếu role là 'Admin'
-        if (userRole === "Admin") {
+        if (userRole === "SuperAdmin") {
           onLogin();
           navigate("/dashboard");
         } else {

@@ -3,7 +3,7 @@
     justify-content: space-between;
     width: 100%;
     gap: 2%;
-    margin-top: 1.5%;
+    margin-top: 1.5% !important;
 }
 /* .info-box:hover {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2) !important;

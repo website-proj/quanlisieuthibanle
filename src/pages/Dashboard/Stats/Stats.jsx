@@ -5,41 +5,86 @@ import { Box, Typography } from '@mui/material';
 import { FiUser, FiShoppingCart } from 'react-icons/fi';
 import { GrBasket } from 'react-icons/gr';
 import { FaRegStar } from 'react-icons/fa';
-import statsData from './Stats.json';
+import { BASE_URL, ENDPOINTS } from '/src/api/apiEndpoints';
+
+const jwtToken = localStorage.getItem("jwtToken");
 
 const Stats = () => {
   const [stats, setStats] = useState({
     usersCount: 0,
     ordersCount: 0,
     productsCount: 0,
-    reviewsCount: 0,
+    categoriesCount: 0,
   });
 
   const navigate = useNavigate();
 
+  const fetchStats = async () => {
+    try {
+      console.log('Fetching productsData...');
+      const usersData = await fetch(`${BASE_URL}${ENDPOINTS.stats.usersCount}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${jwtToken}` },
+      }).then((res) => res.json());
+      console.log('usersData:', usersData);
+      
+      console.log('Fetching ordersData...');
+      const ordersData = await fetch(`${BASE_URL}${ENDPOINTS.stats.ordersCount}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${jwtToken}` },
+      }).then((res) => res.json());
+      console.log('ordersData:', ordersData);
+      
+      console.log('Fetching productsData...');
+      const productsData = await fetch(`${BASE_URL}${ENDPOINTS.stats.productsCount}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${jwtToken}` },
+      }).then((res) => res.json());
+      console.log('productsData:', productsData);
+      
+      console.log('Fetching productsData...');
+      const categoriesData = await fetch(`${BASE_URL}${ENDPOINTS.stats.categoriesCount}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${jwtToken}` },
+      }).then((res) => res.json());
+      console.log('categoriesData:', categoriesData);
+
+      const mergedStats = {
+        usersCount: usersData.users,
+        ordersCount: ordersData.orders_count,
+        productsCount: productsData.product_count,
+        categoriesCount: categoriesData,
+      };
+
+      const keys = Object.keys(mergedStats);
+      const duration = 300;
+      const steps = 30;
+      const intervalTime = duration / steps;
+
+      keys.forEach((key) => {
+        const target = mergedStats[key];
+        const increment = Math.ceil(target / steps);
+        let current = 0;
+
+        const interval = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            current = target;
+            clearInterval(interval);
+          }
+          setStats((prevStats) => ({
+            ...prevStats,
+            [key]: current,
+          }));
+        }, intervalTime);
+      });
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  };
+
   useEffect(() => {
-    const keys = Object.keys(statsData);
-    const duration = 300;
-    const steps = 30;
-    const intervalTime = duration / steps;
-
-    keys.forEach((key) => {
-      const target = statsData[key];
-      const increment = Math.ceil(target / steps);
-      let current = 0;
-
-      const interval = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          current = target;
-          clearInterval(interval);
-        }
-        setStats((prevStats) => ({
-          ...prevStats,
-          [key]: current,
-        }));
-      }, intervalTime);
-    });
+    fetchStats();
   }, []);
 
   const formatCount = (count) => {
@@ -74,9 +119,9 @@ const Stats = () => {
     },
     {
       icon: <FaRegStar className="icon" />,
-      title: 'Đánh giá',
-      count: stats.reviewsCount,
-      path: '/reviews',
+      title: 'Danh mục',
+      count: stats.categoriesCount,
+      path: '/categories-list',
     },
   ];
 
