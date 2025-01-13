@@ -4,7 +4,7 @@ from authlib.integrations.starlette_client import OAuth
 from sqlalchemy.orm import Session
 from starlette import status
 from starlette.responses import JSONResponse
-from app.core.security import create_access_token
+from app.core.security import create_access_token , get_password_hash
 from app.core.config import settings
 from app.db.base import get_db
 from app.model.users import User
@@ -74,11 +74,12 @@ async def auth(request: Request, db: Session = Depends(get_db)):
 
     # Kiểm tra email trong cơ sở dữ liệu
     user = db.query(User).filter(User.email == user_info['email']).first()
+    hash_password = get_password_hash(user_info["sub"])
     if not user :
         new_user = User(
             username = user_info["name"],
             email = user_info["email"],
-            password = user_info["sub"]
+            password = hash_password
         )
         db.add(new_user)
         db.commit()
