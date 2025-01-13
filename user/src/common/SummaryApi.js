@@ -25,6 +25,10 @@ const SummaryApi = {
     url: "/api/login/",
     method: "get",
   },
+  login_gg_token: {
+    url: "/api/login/token",
+    method: "getget",
+  },
 
   discount_products: {
     url: "/api/product/discount",
@@ -35,7 +39,7 @@ const SummaryApi = {
     method: "get",
   },
   best_seller: {
-    url: "/api/product/best_seller",
+    url: "/api/productbest_sellers",
     method: "get",
   },
   new_arrivals: {
@@ -44,6 +48,22 @@ const SummaryApi = {
   },
   search: {
     url: "/api/product/search",
+    method: "get",
+  },
+  addToCart: {
+    url: "/api/cart/",
+    method: "post",
+  },
+  account: {
+    url: "/api/users/profile",
+    method: "put",
+  },
+  changePassword: {
+    url: "/api/users/changePassword",
+    method: "put",
+  },
+  cart_item: {
+    url: "/api/cart/carts",
     method: "get",
   },
 };

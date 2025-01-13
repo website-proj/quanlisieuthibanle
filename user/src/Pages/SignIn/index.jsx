@@ -33,8 +33,17 @@ const SignIn = () => {
   };
 
   const handleGoogleLogin = async () => {
+    const storedToken = localStorage.getItem("token");
+
+    if (storedToken) {
+      // Nếu đã lưu token Google, điều hướng người dùng đến trang
+      window.location.href = `${baseURL}/api/login?token=${storedToken}`;
+      return;
+    }
+
     try {
-      window.location.href = `${baseURL}/api/login`;
+      // Nếu chưa có token, thực hiện xác thực qua Google
+      window.location.href = `${baseURL}/api/login_gg`;
       setSnackbarMessage("Đang kết nối với Google...");
       setSnackbarSeverity("info");
     } catch (error) {
@@ -42,6 +51,31 @@ const SignIn = () => {
       setSnackbarSeverity("error");
     }
   };
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const googleResponse = urlParams.get("google_response");
+
+    if (googleResponse) {
+      const userData = JSON.parse(decodeURIComponent(googleResponse));
+
+      // Lưu thông tin người dùng vào localStorage
+      localStorage.setItem("user_data", JSON.stringify(userData));
+
+      // Điều hướng đến trang Home
+      navigate("/home");
+    }
+  }, []);
+  useEffect(() => {
+    const userData = localStorage.getItem("user_data");
+
+    if (userData) {
+      // Người dùng đã đăng nhập, điều hướng đến Home
+      navigate("/home");
+    } else {
+      // Hiển thị giao diện đăng nhập
+      context.setisHeaderFooterShow(false);
+    }
+  }, []);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -77,6 +111,23 @@ const SignIn = () => {
   return (
     <>
       <section className="section signInPage signUpPage mt-[-5em]">
+        <div class="shape-bottom">
+          {" "}
+          <svg
+            fill="#fff"
+            id="Layer_1"
+            x="0px"
+            y="0px"
+            viewBox="0 0 1921 819.8"
+            style={{ enableBackground: "new 0 0 1921 819.8" }}
+          >
+            {" "}
+            <path
+              class="st0"
+              d="M1921,413.1v406.7H0V0.5h0.4l228.1,598.3c30,74.4,80.8,130.6,152.5,168.6c107.6,57,212.1,40.7,245.7,34.4 c22.4-4.2,54.9-13.1,97.5-26.6L1921,400.5V413.1z"
+            ></path>{" "}
+          </svg>
+        </div>
         <div className="flex justify-center h-screen">
           <div className="box card p-3">
             <div className="text-center">
