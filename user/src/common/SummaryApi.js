@@ -78,8 +78,17 @@ const SummaryApi = {
     url: "/api/cart/cart_item",
     method: "delete",
   },
+  update_product: {
+    url: "/api/cart/",
+    method: "put",
+  },
+
   totalPrice: {
     url: "/api/cart/totalPrice",
+    method: "get",
+  },
+  count_products: {
+    url: "/api/cart/count_product",
     method: "get",
   },
   categories: {
