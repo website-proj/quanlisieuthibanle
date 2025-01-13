@@ -171,18 +171,25 @@ class ProductService:
             raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {e}")
 
     @staticmethod
-    def get_all_products(db : Session):
+    def get_all_products(db: Session):
         sub = aliased(Category)
         parent = aliased(Category)
-        data = db.query(Product , sub , parent).outerjoin(
-            sub , sub.category_id == Product.category_id
+        data = db.query(Product, sub, parent).outerjoin(
+            sub, sub.category_id == Product.category_id
         ).outerjoin(
-            parent , parent.category_id == sub.parent_category_id
+            parent, parent.category_id == sub.parent_category_id
         ).all()
+
         result = {}
-        if not data :
+
+        data_no = db.query(sub, parent).join(
+            parent, sub.parent_category_id == parent.category_id
+        ).all()
+
+        if not data:
             raise HTTPException(status_code=404, detail="No products found")
-        for product , sub , parent in data:
+
+        for product, sub, parent in data:
             parent_name = parent.category_name
             sub_name = sub.category_name
             if parent_name not in result:
@@ -190,6 +197,20 @@ class ProductService:
             if sub_name not in result[parent_name]:
                 result[parent_name][sub_name] = []
             result[parent_name][sub_name].append(product)
+
+        for cat_no, parent_no in data_no:
+            parent_name = parent_no.category_name
+            sub_name = cat_no.category_name
+
+            if parent_name not in result:
+                result[parent_name] = {}
+            if sub_name not in result[parent_name]:
+                result[parent_name][sub_name] = []
+        parent_cat = db.query(Category).filter(Category.parent_category_id == None).all()
+        for cat in parent_cat:
+            cat_name = cat.category_name
+            if cat_name not in result:
+                result[cat_name] = {}
         return result
 
     @staticmethod
