@@ -46,11 +46,21 @@ class CartService:
     @staticmethod
     def get_all_cart_items(  token : str = Depends(AuthService.oauth2_scheme) ,db : Session = Depends(get_db) ) :
         current_user =  AuthService.get_current_user(db , token)
-        cart_items  = (db.query(CartItem).join(Cart , Cart.cart_id == CartItem.cart_id)
-                       .filter(Cart.user_id == current_user.user_id).all())
+        cart_items  = (db.query(CartItem ,Cart , Product).join(
+            Cart , Cart.cart_id == CartItem.cart_id).join(
+            Product , CartItem.product_id == Product.product_id
+        ).filter(Cart.user_id == current_user.user_id).all())
+
         if not cart_items:
             raise HTTPException(status_code=404 , detail = "no products found")
-        return cart_items
+        data = {}
+        for cart_item , cart , product in cart_items:
+            cart_id = cart.cart_id
+            if cart_id not in data:
+                data[cart_id] = []
+            data[cart_id].append(product)
+
+        return data
 
 
     @staticmethod

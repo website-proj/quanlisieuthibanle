@@ -1,6 +1,6 @@
 import uuid
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.model.users import User
 from app.core.security import get_password_hash
@@ -13,11 +13,14 @@ router = APIRouter()
 def create_admin(admin_name : str , password : str , db : Session = Depends(get_db)):
     hashed_password = get_password_hash(password)
     user_id = f"admin{uuid.uuid4().hex[:8]}"
-    user = User(username=admin_name, email = "Admin" , password = hashed_password )
+    user = db.query(User).filter(User.email == admin_name).first()
+    if user:
+        raise HTTPException(status_code=400, detail="name  already registered")
+    user = User(username=admin_name, email = admin_name , password = hashed_password , account_type = "Admin" )
     db.add(user)
     db.commit()
     db.refresh(user)
-    return ResponseHandler.success("create success" )
+    return ResponseHandler.success("create success"  , user)
 @router.put("/" , dependencies=[Depends(check_super_admin_role)])
 def update_admin(Admin_id : str , password , db : Session = Depends(get_db)):
     hashed_password = get_password_hash(password)

@@ -15,6 +15,7 @@ class BannerService :
         if not banner :
             raise HTTPException(status_code=404, detail="Banner not found")
         return banner
+    # def get_
     def create_banner(position : str , status : str , priority : int , file: UploadFile = File(...),db : Session = Depends(get_db)):
         try :
             image = UploadImage.upload_image(file)
