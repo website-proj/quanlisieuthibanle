@@ -13,7 +13,7 @@ function CategorySelect({ category, onCategoryChange, uniqueCategories }) {
         className="category-select"
         MenuProps={{
           PaperProps: {
-            style: {
+            style: { 
               maxHeight: 200, 
               overflowY: 'auto',
             },

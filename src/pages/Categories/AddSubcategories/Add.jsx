@@ -94,7 +94,7 @@ function AddSubcategory() {
         <Box display="flex" flexDirection="column" gap={2}>
           <Typography variant="h6" className="title-add-categories">
             Tên danh mục
-          </Typography>
+          </Typography> 
           <Select
             className="dropdown-categories"
             value={selectedCategory}
