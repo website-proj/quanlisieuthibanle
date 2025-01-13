@@ -2,7 +2,7 @@ from typing import Optional
 
 from fastapi import HTTPException, UploadFile, File, Depends
 from fastapi.params import Form
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 from starlette import status
 
 from app.db.base import get_db
@@ -162,3 +162,20 @@ class CategoryService:
         if not categories:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         return categories
+    @staticmethod
+    def get_all_categories(db:Session):
+        sub_cat = aliased(Category)
+        parent_cat = aliased(Category)
+        data = db.query(sub_cat, parent_cat).join(
+            parent_cat, parent_cat.category_id == sub_cat.parent_category_id
+        )
+        result = {}
+        if not data :
+            raise HTTPException(status_code=404 , detail="Category not found")
+        for sub , parent in data :
+            parent_name = parent.category_name
+            if parent_name not in result:
+                result[parent_name] = []
+            result[parent_name].append(sub)
+        return result
+

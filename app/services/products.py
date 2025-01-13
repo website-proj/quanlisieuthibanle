@@ -187,42 +187,46 @@ class ProductService:
             })
         return data
     @staticmethod
-    def update_product(product_id: str = Form(...),
-        name: str = Form(...),
-        name_brand: str = Form(...),
-        description: str = Form(...),
-        price: float = Form(...),
+    def update_product(
+        product_id: str = Form(...),
+        name: Optional[str] = None,
+        name_brand: Optional[str] = None,
+        description: Optional[str] = None,
+        price: Optional[float] = None,
         old_price: Optional[float] = None,
-        original_price: float = Form(...),
-        discount: float = Form(...),
-        unit: int = Form(...),
-        stock_quantity: int = Form(...),
-        star_product: bool = Form(...),
-        expiration_date: datetime = Form(...),
-        category_id: str = Form(...),
-        file: UploadFile = File(...),
+        original_price: Optional[float] = None,
+        discount: Optional[float] = None,
+        unit: Optional[int] = None,
+        stock_quantity:  Optional[int] = None,
+        star_product: Optional[bool] = None,
+        expiration_date: Optional[datetime] = None,
+        category_id: Optional[str] = None,
+        file: Optional[UploadFile] = None,
         db: Session = Depends(get_db)
     ):
         pro = db.query(Product).filter(Product.product_id == product_id).first()
         if not pro:
             raise HTTPException(status_code=404, detail="No products found")
         try :
-            image = UploadImage.upload_image(file)
-            image_url = image["secure_url"]
+            if file :
+                image = UploadImage.upload_image(file)
+                image_url = image["secure_url"]
+            else :
+                image_url = None
             # update
-            pro.name = name
-            pro.name_brand = name_brand
-            pro.description = description
-            pro.price = price
+            pro.name = name if name is not None else pro.name
+            pro.name_brand = name_brand if name_brand is not None else pro.name_brand
+            pro.description = description if description is not None else pro.description
+            pro.price = price if price is not None else pro.price
             pro.old_price = old_price if old_price is not None else pro.old_price  # Đảm bảo không ghi đè nếu old_price không được cập nhật
-            pro.discount = discount
-            pro.original_price = original_price
-            pro.unit = unit
-            pro.stock_quantity = stock_quantity
-            pro.image = image_url
-            pro.star_product = star_product
-            pro.expiration_date = expiration_date
-            pro.category_id = category_id
+            pro.discount = discount if discount is not None else pro.discount
+            pro.original_price = original_price if not original_price else pro.original_price
+            pro.unit = unit if unit is not None else pro.unit
+            pro.stock_quantity = stock_quantity if stock_quantity is not None else pro.stock_quantity
+            pro.image = image_url if image_url is not None else pro.image
+            pro.star_product = star_product if star_product is not None else pro.star_product
+            pro.expiration_date = expiration_date if expiration_date is not None else pro.expiration_date
+            pro.category_id = category_id if category_id is not None else pro.category_id
 
             # Commit thay đổi vào cơ sở dữ liệu
             db.commit()
@@ -430,5 +434,4 @@ class ProductService:
         if not product :
             raise HTTPException(status_code= 400 , detail = "not product found")
         return product
-
 

@@ -75,21 +75,21 @@ async  def get_all_product(db : Session = Depends(get_db)):
         raise e
 @router.put("/product", dependencies=[Depends(check_admin_role)])
 def update_product(
-    product_id: str = Form(...),
-    name: str = Form(...),
-    name_brand: str = Form(...),
-    description: str = Form(...),
-    price: float = Form(...),
-    old_price: Optional[float] = None,
-    original_price: float = Form(...),
-    discount: float = Form(...),
-    unit: int = Form(...),
-    stock_quantity: int = Form(...),
-    star_product: bool = Form(...),
-    expiration_date: datetime = Form(...),
-    category_id: str = Form(...),
-    file: UploadFile = File(...),
-    db: Session = Depends(get_db),
+        product_id: str = Form(...),
+        name: Optional[str] = None,
+        name_brand: Optional[str] = None,
+        description: Optional[str] = None,
+        price: Optional[float] = None,
+        old_price: Optional[float] = None,
+        original_price: Optional[float] = None,
+        discount: Optional[float] = None,
+        unit: Optional[int] = None,
+        stock_quantity: Optional[int] = None,
+        star_product: Optional[bool] = None,
+        expiration_date: Optional[datetime] = None,
+        category_id: Optional[str] = None,
+        file: Optional[UploadFile] = None,
+        db: Session = Depends(get_db)
 ):
     try:
         # Gọi hàm service để cập nhật sản phẩm
@@ -115,7 +115,6 @@ def update_product(
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
-        # Ghi log và trả về lỗi chi tiết hơn
         print(f"Unexpected error: {e}")
         raise HTTPException(status_code=500, detail="An unexpected error occurred")
 @router.delete("/product" , dependencies = [Depends(check_admin_role)])

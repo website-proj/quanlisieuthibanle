@@ -18,3 +18,7 @@ def get_sub_categories(db: Session = Depends(get_db)):
 def get_parent_category(db: Session = Depends(get_db)):
     cat = CategoryService.get_parent_categories(db)
     return cat
+@router.get("/all_category")
+def get_all_categories(db: Session = Depends(get_db)):
+    cat = CategoryService.get_all_categories(db)
+    return cat
