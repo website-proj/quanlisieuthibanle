@@ -333,47 +333,63 @@ class ProductService:
         if not datas :
             raise HTTPException(status_code=404, detail="No products found")
         return datas
-    @staticmethod
-    def get_best_seller_v1(db:Session):
-        order_items_pass = db.query(OrderItems , Orders ).join(Orders ,Orders.order_id == OrderItems.order_id).filter(Orders.status == "Delivered").all()
+
+    def get_best_seller_v1(db : Session):
+        # Truy vấn các OrderItems liên kết với Orders đã được giao
+        order_items_pass = db.query(OrderItems, Orders).join(
+            Orders, Orders.order_id == OrderItems.order_id
+        ).filter(
+            Orders.status == "Delivered"
+        ).all()
+
         if not order_items_pass:
-            raise HTTPException(status_code=404 , detail = "no order_items_pass found")
-        products = dict()
-        for order_item ,_ in order_items_pass:
+            raise HTTPException(status_code=404, detail="No order_items_pass found")
+
+        # Tính số lượng sản phẩm bán được
+        products = {}
+        for order_item, _ in order_items_pass:
             product_id = order_item.product_id
             quantity = order_item.quantity
-            if product_id not in products:
-                products[product_id] = quantity
-            else :
-                products[product_id] += quantity
-        data = []
-        products = sorted(products.items(), key=lambda item: item[1], reverse=True)
-        products =  dict(products)
+            products[product_id] = products.get(product_id, 0) + quantity
+
         if not products:
             raise HTTPException(status_code=404, detail="No products found")
+
+        products = sorted(products.items(), key=lambda item: item[1], reverse=True)
+
         alias_product = aliased(Product)
         alias_category = aliased(Category)
         parent_category = aliased(Category)
 
-        for product_id in products:
-            product, category, parent_cat = db.query(
-                alias_product,
-                alias_category,
-                parent_category
+        data = []
+
+        for product_id, sold_quantity in products:
+            result = db.query(
+                alias_product, alias_category, parent_category
             ).join(
                 alias_category, alias_product.category_id == alias_category.category_id
             ).join(
-                parent_category, alias_category.parent_category_id == parent_category.category_id ,  isouter=True
+                parent_category, alias_category.parent_category_id == parent_category.category_id, isouter=True
             ).filter(
                 alias_product.product_id == product_id
             ).first()
+
+            if not result:
+                continue
+
+            product, category, parent_cat = result
+
             detail_product = {
-                "sold": products[product_id],
+                "sold": sold_quantity,
                 "product": product.__dict__ if product else None,
-                "Category of product" : category.__dict__ if category else None,
-                "Parent Category of Product" : parent_cat.__dict__ if parent_cat else None,
+                "Category of product": category.__dict__ if category else None,
+                "Parent Category of Product": parent_cat.__dict__ if parent_cat else None,
             }
             data.append(detail_product)
+
+        if not data:
+            raise HTTPException(status_code=404, detail="No detailed product data found")
+
         return data
     @staticmethod
     def get_best_seller_for_sub_category(sub_category_id : str , db:Session):
