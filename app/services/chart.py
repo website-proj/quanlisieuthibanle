@@ -96,13 +96,13 @@ class Chart:
         orders = db.query(Orders).filter(Orders.order_date >= start_date).all()
         data = {}
         for order in orders:
-            month = order.order_date.strftime("%m/%y")
+            month = order.order_date.strftime("%m/%Y")
             if month not in data:
                 data[month] = 0
             data[month] += order.total_amount or 0
         months_in_range = []
         for i in range(12):
-            month = (now - relativedelta(months=i)).strftime("%m/%y")
+            month = (now - relativedelta(months=i)).strftime("%m/%Y")
             months_in_range.append(month)
         for month in months_in_range:
             if month not in data:
@@ -127,17 +127,17 @@ class Chart:
         result = {}
 
         for order, order_item, product in data:
-            month = order.order_date.strftime("%m/%y")
+            month = order.order_date.strftime("%m/%Y")
             if month not in result:
                 result[month] = 0
             original_price = product.original_price
             quantity = order_item.quantity
-            cost = original_price * quantity
+            cost = int(original_price) * quantity
             result[month] += cost
 
         months_in_range = []
         for i in range(12):
-            month = (now - relativedelta(months=i)).strftime("%m/%y")
+            month = (now - relativedelta(months=i)).strftime("%m/%Y")
             months_in_range.append(month)
 
         for month in months_in_range:
@@ -167,14 +167,14 @@ class Chart:
         result = {}
 
         for order in orders:
-            day = order.order_date.strftime("%d/%m/%y")
+            day = order.order_date.strftime("%d/%m/%Y")
             if day not in result:
                 result[day] = 0  # Nếu chưa có ngày này, khởi tạo với 0
             result[day] += order.total_amount or 0  # Cộng doanh thu cho ngày đó
 
         days_in_range = []
         for i in range(14):
-            day = (now - timedelta(days=i)).strftime("%d/%m/%y")
+            day = (now - timedelta(days=i)).strftime("%d/%m/%Y")
             days_in_range.append(day)
 
         for day in days_in_range:
@@ -199,7 +199,7 @@ class Chart:
         result = {}
 
         for order, order_item, product in data:
-            day = order.order_date.strftime("%d/%m/%y")
+            day = order.order_date.strftime("%d/%m/%Y")
             if day not in result:
                 result[day] = 0
             original_price = product.original_price
@@ -207,7 +207,7 @@ class Chart:
             cost = original_price * quantity
             result[day] += cost
 
-        all_days = [(now - timedelta(days=i)).strftime("%d/%m/%y") for i in range(14)]
+        all_days = [(now - timedelta(days=i)).strftime("%d/%m/%Y") for i in range(14)]
         for day in all_days:
             if day not in result:
                 result[day] = 0
@@ -294,13 +294,13 @@ class Chart:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         result = {}
         for user in users:
-            date = user.created_at.strftime("%d/%m/%y")
+            date = user.created_at.strftime("%d/%m/%Y")
             if date not in result:
                 result[date] = 0
             result[date] +=1
         days_in_range = []
         for i in range(14):
-            day = (now - timedelta(days=i)).strftime("%d/%m/%y")
+            day = (now - timedelta(days=i)).strftime("%d/%m/%Y")
             days_in_range.append(day)
         for day in days_in_range:
             if day not in result:
@@ -314,13 +314,13 @@ class Chart:
         users = db.query(User).filter(User.created_at >= start_date).all()
         data = {}
         for user in users:
-            month = user.created_at.strftime("%m/%y")
+            month = user.created_at.strftime("%m/%Y")
             if month not in data:
                 data[month] = 0
             data[month] += 1
         months_in_range = []
         for i in range(12):
-            month = (now - relativedelta(months=i)).strftime("%m/%y")
+            month = (now - relativedelta(months=i)).strftime("%m/%Y")
             months_in_range.append(month)
         for month in months_in_range:
             if month not in data:
