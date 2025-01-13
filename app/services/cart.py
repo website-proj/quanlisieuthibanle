@@ -55,10 +55,16 @@ class CartService:
             raise HTTPException(status_code=404 , detail = "no products found")
         data = {}
         for cart_item , cart , product in cart_items:
-            cart_id = cart.cart_id
-            if cart_id not in data:
-                data[cart_id] = []
-            data[cart_id].append(product)
+            # cart_id = cart.cart_id
+            product_id = product.product_id
+            if product_id not in data:
+                data[product_id] = {
+                    "quantity" : 0,
+                    "product" : []
+                }
+            data[product_id]["quantity"] += cart_item.quantity
+            data[product_id]["product"].append(product)
+
 
         return data
 
