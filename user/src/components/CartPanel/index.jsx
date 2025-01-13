@@ -45,6 +45,40 @@ const CartPanel = () => {
     return <div>Loading...</div>;
   }
 
+  const deleteCartItem = (product_id) => {
+    const newToken = localStorage.getItem("token");
+    const token = newToken ? newToken.split(" ")[1] : null;
+
+    if (!token) {
+      console.error("Token không tồn tại. Vui lòng đăng nhập.");
+      window.location.href = "/signIn";
+      return;
+    }
+
+    axios
+      .delete(
+        `${baseURL}${SummaryApi.cart_items_delete.url}?product_id=${product_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.message === "deleted cart item") {
+          // Reload lại trang sau khi xóa thành công
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "Error deleting cart item:",
+          error.response ? error.response.data : error
+        );
+        alert("Có lỗi xảy ra khi xóa sản phẩm!");
+      });
+  };
+
   return (
     <>
       <div className="scroll w-full max-h-[35em] overflow-y-scroll overflow-x-hidden py-3 px-4">
@@ -85,7 +119,10 @@ const CartPanel = () => {
                     {product.price.toLocaleString()}đ
                   </span>
                 </p>
-                <MdDeleteOutline className="absolute top-[0.1em] right-[0em] cursor-pointer text-[1.5em] transition-all hover:text-blue-500" />
+                <MdDeleteOutline
+                  onClick={() => deleteCartItem(product.product_id)} // Gọi hàm delete khi nhấn vào thùng rác
+                  className="absolute top-[0.1em] right-[0em] cursor-pointer text-[1.5em] transition-all hover:text-blue-500"
+                />
               </div>
             </div>
           ))
