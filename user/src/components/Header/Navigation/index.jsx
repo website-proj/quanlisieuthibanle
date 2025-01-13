@@ -108,7 +108,9 @@ const Navigation = () => {
                             <ul>
                               {category.subcategories.map((sub, idx) => (
                                 <li key={idx}>
-                                  <Link to={`/products/${category.name}`}>
+                                  <Link
+                                    to={`/products/${category.name}/${sub.category_name}`}
+                                  >
                                     <Button className="w-full !text-black text-left nav_menu">
                                       {sub.category_name}{" "}
                                       {/* Hiển thị tên phụ mục */}

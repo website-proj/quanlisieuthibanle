@@ -1,80 +1,85 @@
 import React, { useState, useContext, useEffect } from "react";
 import Logo from "../../assets/footer/Logo.png";
 import { MyContext } from "../../App";
-import { Button, TextField } from "@mui/material";
-import { Link, useLocation, useNavigate } from "react-router-dom"; // Thêm useLocation và useNavigate
+import { Button, TextField, Alert } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { baseURL } from "../../common/SummaryApi";
-import SummaryApi from "../../common/SummaryApi";
-import { Alert } from "@mui/material"; // Thêm Alert để thông báo
 
 const Verify = () => {
   const context = useContext(MyContext);
   const navigate = useNavigate();
-  const location = useLocation(); // Lấy state từ location (email đã được chuyển từ SignUp)
+  const location = useLocation();
 
-  const [otp, setOtp] = useState(""); // Lưu giá trị OTP
-  const [snackbarMessage, setSnackbarMessage] = useState(""); // Thông báo
-  const [snackbarSeverity, setSnackbarSeverity] = useState("success"); // Loại thông báo
-  const email = location?.state?.email; // Lấy email từ state của react-router
+  const [otp, setOtp] = useState("");
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const email = location?.state?.email;
 
   useEffect(() => {
     context.setisHeaderFooterShow(false);
-  }, []);
+  }, [context]);
 
   const handleOtpChange = (e) => {
-    setOtp(e.target.value); // Cập nhật giá trị OTP khi người dùng nhập
+    setOtp(e.target.value.trim());
   };
+  // Tự động ẩn thông báo sau 5 giây
+  useEffect(() => {
+    if (snackbarMessage) {
+      const timer = setTimeout(() => {
+        setSnackbarMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [snackbarMessage]);
 
   const verifyOTP = async (e) => {
     e.preventDefault();
 
-    // Kiểm tra nếu người dùng chưa nhập mã OTP
-    if (!otp) {
-      setSnackbarMessage("Vui lòng nhập mã OTP");
+    if (!otp || !email) {
+      setSnackbarMessage("Vui lòng nhập mã OTP và email.");
       setSnackbarSeverity("error");
       return;
     }
 
     try {
-      // Log tham số để kiểm tra giá trị của email và OTP
-      console.log("email:", email);
-      console.log("otp:", otp);
-
-      // Log URL được tạo ra để kiểm tra
-      console.log(
-        `Sending request to: ${baseURL}/api/users/register/check_code`
-      );
-
-      // Gửi yêu cầu xác thực OTP tới API, truyền tham số trong query string
-      const response = await axios.get(
-        `${baseURL}/api/users/register/check_code`,
+      // Truyền tham số qua query string
+      const response = await axios.put(
+        `http://localhost:8000/api/users/check_code?email=${encodeURIComponent(
+          email
+        )}&code=${encodeURIComponent(otp)}`,
+        {},
         {
-          params: {
-            email: email, // Truyền email dưới dạng query parameter
-            code: otp, // Truyền mã OTP dưới dạng query parameter
+          headers: {
+            "Content-Type": "application/json",
           },
         }
       );
 
-      // Nếu thành công, hiển thị thông báo và điều hướng người dùng
-      setSnackbarMessage("Xác thực thành công!");
-      setSnackbarSeverity("success");
+      // Kiểm tra kết quả trả về
+      if (response.data === true) {
+        setSnackbarMessage("Xác thực thành công!");
+        setSnackbarSeverity("success");
 
-      // Điều hướng đến trang đăng nhập hoặc trang tiếp theo
-      navigate("/resetPassword", { state: { code } });
-    } catch (error) {
-      if (error.response) {
-        // Nếu có lỗi từ server, hiển thị thông báo lỗi
-        setSnackbarMessage(
-          `Lỗi: ${error.response.data.detail || "Xác thực thất bại."}`
-        );
-        setSnackbarSeverity("error");
+        // Lưu email và OTP vào localStorage
+        localStorage.setItem("email", email);
+        localStorage.setItem("otp", otp);
+
+        navigate("/resetPassword", { state: { email, code: otp } });
       } else {
-        // Nếu lỗi mạng hoặc server không phản hồi
-        setSnackbarMessage("Lỗi mạng hoặc máy chủ không phản hồi.");
+        setSnackbarMessage("Xác thực thất bại. Vui lòng kiểm tra lại.");
         setSnackbarSeverity("error");
       }
+    } catch (error) {
+      // Xử lý lỗi
+      let errorMessage = "Lỗi mạng hoặc máy chủ không phản hồi.";
+
+      if (error.response?.data?.detail) {
+        errorMessage = error.response.data.detail;
+      }
+
+      setSnackbarMessage(`Lỗi: ${errorMessage}`);
+      setSnackbarSeverity("error");
     }
   };
 
@@ -96,9 +101,11 @@ const Verify = () => {
         <div className="flex justify-center h-32">
           <div className="box card p-3 shadow">
             <div className="text-center">
-              <div className="text-center">
-                <img className="flex justify-center items-center" src={Logo} />
-              </div>
+              <img
+                className="flex justify-center items-center"
+                src={Logo}
+                alt="Logo"
+              />
             </div>
 
             <form className="!p-0" onSubmit={verifyOTP}>
@@ -109,7 +116,6 @@ const Verify = () => {
                 Mã OTP đã được gửi đến email của bạn
               </p>
 
-              {/* Trường nhập mã OTP */}
               <div className="form-group">
                 <TextField
                   id="otp"
@@ -118,7 +124,7 @@ const Verify = () => {
                   variant="standard"
                   className="w-full text-left"
                   value={otp}
-                  onChange={handleOtpChange} // Cập nhật giá trị OTP
+                  onChange={handleOtpChange}
                 />
               </div>
 
@@ -131,7 +137,6 @@ const Verify = () => {
               </div>
             </form>
 
-            {/* Hiển thị thông báo */}
             {snackbarMessage && (
               <Alert
                 onClose={() => setSnackbarMessage("")}

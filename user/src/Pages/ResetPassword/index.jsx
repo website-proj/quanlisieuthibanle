@@ -1,13 +1,17 @@
 import React, { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../App";
 import Logo from "../../assets/footer/Logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Import mắt xem
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import axios from "axios"; // Đảm bảo bạn đã cài đặt axios
 
 const ResetPassword = () => {
   const context = useContext(MyContext);
+  const location = useLocation(); // Lấy thông tin từ state
+
+  const { email, code } = location.state || {}; // Email và mã OTP từ trang trước
 
   // Kiểm tra đầu vào mật khẩu
   const [password, setPassword] = useState("");
@@ -16,6 +20,8 @@ const ResetPassword = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false); // Trạng thái ẩn/hiện mật khẩu mới
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Trạng thái ẩn/hiện mật khẩu xác nhận
+  const [snackbarMessage, setSnackbarMessage] = useState(""); // Thông báo
+  const [snackbarSeverity, setSnackbarSeverity] = useState(""); // Mức độ thông báo (success, error)
 
   // Hàm kiểm tra mật khẩu
   const validatePassword = () => {
@@ -50,12 +56,50 @@ const ResetPassword = () => {
   };
 
   // Hàm xử lý khi nhấn đổi mật khẩu
-  const handleSubmit = (e) => {
+  const navigate = useNavigate(); // useNavigate được gọi trong Function Component
+  // Tự động ẩn thông báo sau 5 giây
+  useEffect(() => {
+    if (snackbarMessage) {
+      const timer = setTimeout(() => {
+        setSnackbarMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [snackbarMessage]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Ngừng gửi form
 
-    if (validatePassword()) {
-      // Nếu mật khẩu hợp lệ, thực hiện hành động đổi mật khẩu
-      console.log("Mật khẩu hợp lệ, thực hiện đổi mật khẩu");
+    // Lấy thông tin từ input và state
+    const password = document.getElementById("password").value;
+    const { email, code: otp } = location.state || {};
+
+    if (!email || !otp || !password) {
+      console.error("Email, OTP hoặc mật khẩu không hợp lệ");
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/users/resetPassword`,
+        {},
+        {
+          params: {
+            email,
+            code: otp,
+            password,
+          },
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response.data.message === "reset_password success") {
+        navigate("/signIn"); // Chuyển hướng tới trang đăng nhập
+      } else {
+        console.error("Đổi mật khẩu thất bại.");
+      }
+    } catch (error) {
+      console.error("API Error:", error.message);
     }
   };
 
@@ -76,7 +120,7 @@ const ResetPassword = () => {
             style={{ enableBackground: "new 0 0 1921 819.8" }}
           >
             <path
-              class="st0"
+              className="st0"
               d="M1921,413.1v406.7H0V0.5h0.4l228.1,598.3c30,74.4,80.8,130.6,152.5,168.6c107.6,57,212.1,40.7,245.7,34.4 c22.4-4.2,54.9-13.1,97.5-26.6L1921,400.5V413.1z"
             ></path>
           </svg>
@@ -88,7 +132,9 @@ const ResetPassword = () => {
             </div>
 
             <form className="mt-3 !p-0" onSubmit={handleSubmit}>
-              <h2 className="text-2xl font-[600] text-left">Đổi mật khẩu</h2>
+              <h2 className="text-2xl font-[600] text-left">
+                Đặt lại mật khẩu
+              </h2>
 
               {/* Mật khẩu với chức năng ẩn/hiện */}
               <div className="form-group relative">
@@ -144,18 +190,34 @@ const ResetPassword = () => {
 
               <div className="flex space-x-6 mt-3 mb-1">
                 <div className="flex-1">
-                  <Link to={"/signIn"}>
-                    <Button
-                      className="w-full !rounded-[0.625em]"
-                      variant="contained"
-                      type="submit"
-                    >
-                      Đổi mật khẩu
-                    </Button>
-                  </Link>
+                  <Button
+                    className="w-full !rounded-[0.625em]"
+                    variant="contained"
+                    type="submit"
+                  >
+                    Đổi mật khẩu
+                  </Button>
                 </div>
               </div>
             </form>
+
+            {/* Hiển thị thông báo */}
+            {snackbarMessage && (
+              <Alert
+                onClose={() => setSnackbarMessage("")}
+                severity={snackbarSeverity}
+                sx={{
+                  width: "auto",
+                  borderRadius: "20px",
+                  position: "fixed",
+                  top: "20px",
+                  right: "20px",
+                  zIndex: 9999,
+                }}
+              >
+                {snackbarMessage}
+              </Alert>
+            )}
           </div>
         </div>
       </section>
