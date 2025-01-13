@@ -172,20 +172,26 @@ class ProductService:
 
     @staticmethod
     def get_all_products(db : Session):
-        products = db.query(Product).all()
-        data = []
-        if not products:
+        sub = aliased(Category)
+        parent = aliased(Category)
+        data = db.query(Product , sub , parent).outerjoin(
+            sub , sub.category_id == Product.category_id
+        ).outerjoin(
+            parent , parent.category_id == sub.parent_category_id
+        ).all()
+        result = {}
+        if not data :
             raise HTTPException(status_code=404, detail="No products found")
-        for product in products :
-            cat_of_product  = db.query(Category).filter(Category.category_id == product.category_id).first()
-            parent_cat = db.query(Category).filter(Category.category_id == cat_of_product.parent_category_id).first()
+        for product , sub , parent in data:
+            parent_name = parent.category_name
+            sub_name = sub.category_name
+            if parent_name not in result:
+                result[parent_name] = {}
+            if sub_name not in result[parent_name]:
+                result[parent_name][sub_name] = []
+            result[parent_name][sub_name].append(product)
+        return result
 
-            data.append({
-                "product" : product.__dict__ if product else None,
-                "category_of_product" : cat_of_product.__dict__ if cat_of_product else None,
-                "parent_of_category"    : parent_cat.__dict__ if parent_cat else None,
-            })
-        return data
     @staticmethod
     def update_product(
         product_id: str = Form(...),
