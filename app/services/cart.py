@@ -30,7 +30,9 @@ class CartService:
         # if  exist_cart_item:
         #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='CartItem not found')
         product = db.query(Product).filter(Product.product_id == cart_item.product_id).first()
-        product_price = product.price * cart_item.quantity
+        if not product:
+            raise HTTPException(status_code = 400 , detail = 'Product not found')
+        product_price = product.price
         if exist_cart_item:
             exist_cart_item.quantity += cart_item.quantity
             exist_cart_item.price_at_add = product_price + exist_cart_item.price_at_add
@@ -76,7 +78,7 @@ class CartService:
             raise HTTPException(status_code=404 , detail = "no cart found")
         cart_item = db.query(CartItem).filter(CartItem.cart_id == exist_cart.cart_id , CartItem.product_id == cart_update.product_id).first()
         product = db.query(Product).filter(Product.product_id == cart_update.product_id).first()
-        price = product.price * cart_update.quantity
+        price = product.price
         if not cart_item:
             raise HTTPException(status_code=404, detail="No products found")
         cart_item.quantity = cart_update.quantity
