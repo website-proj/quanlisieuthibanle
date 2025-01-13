@@ -39,6 +39,22 @@ const CartPanel = () => {
       .finally(() => {
         setLoading(false);
       });
+
+    // Gọi API lấy tổng tiền
+    axios
+      .get(`${baseURL}${SummaryApi.totalPrice.url}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.data.message === "total price") {
+          setTotalPrice(response.data.data); // Lưu tổng tiền vào state
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching total price:", error);
+      });
   }, []);
 
   if (loading) {
