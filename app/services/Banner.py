@@ -15,7 +15,22 @@ class BannerService :
         if not banner :
             raise HTTPException(status_code=404, detail="Banner not found")
         return banner
-    # def get_
+    def get_main(db : Session):
+        banner = db.query(Banner).filter(Banner.position == "main").all()
+        if not banner :
+            raise HTTPException(status_code=404, detail="Banner not found")
+        return banner
+    def get_sidebar(db : Session):
+        banner = db.query(Banner).filter(Banner.position == "sidebar").all()
+        if not banner :
+            raise HTTPException(status_code=404, detail="Banner not found")
+        return banner
+    def get_bottom(db: Session):
+        banner = db.query(Banner).filter(Banner.position == "bottom").all()
+        if not banner:
+            raise HTTPException(status_code=404, detail="Banner not found")
+        return banner
+
     def create_banner(position : str , status : str , priority : int , file: UploadFile = File(...),db : Session = Depends(get_db)):
         try :
             image = UploadImage.upload_image(file)

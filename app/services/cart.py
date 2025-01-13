@@ -62,7 +62,6 @@ class CartService:
 
         return data
 
-
     @staticmethod
     def update_product_quantity(cart_update : CartItemUpdate, db : Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme) ) :
         current_user = AuthService.get_current_user(db , token )

@@ -13,6 +13,18 @@ router = APIRouter()
 def get_all_banner(db : Session = Depends(get_db)):
     banner = BannerService.get_banner(db)
     return ResponseHandler.success("banner",banner)
+@router.get("/main")
+def get_main_banner(db:Session=Depends(get_db)):
+    banner = BannerService.get_main(db)
+    return ResponseHandler.success("banner main",banner)
+@router.get("/sidebar")
+def get_sidebar_banner(db:Session=Depends(get_db)):
+    banner = BannerService.get_sidebar(db)
+    return ResponseHandler.success("banner sidebar",banner)
+@router.post("/bottom")
+def get_bottom_banner(db:Session=Depends(get_db)):
+    banner = BannerService.get_bottom(db)
+    return ResponseHandler.success("banner bottom",banner)
 @router.post("/",dependencies=[Depends(check_admin_role)])
 def create_banner(position : str , status : str , priority : int , file: UploadFile = File(...),db : Session = Depends(get_db)):
     banner = BannerService.create_banner(position , status , priority , file ,db)
