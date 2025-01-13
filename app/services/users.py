@@ -1,4 +1,5 @@
 import jwt
+from alembic.command import current
 from fastapi import Depends , HTTPException
 from fastapi.security import HTTPBearer
 import logging
@@ -32,13 +33,22 @@ class UserService():
         db.commit()
         return current_user
     @staticmethod
-    def change_password(password : passwordChangeRequest , current_user : User,db : Session):
+    def change_password(password : passwordChangeRequest , db: Session = Depends(get_db) ,
+                        token : str = Depends(AuthService.oauth2_scheme)):
+        current_user = AuthService.get_current_user(db , token)
         user = db.query(User).filter( User.user_id == current_user.user_id).first()
-        hashed_password = get_password_hash(password.old_password)
+        if not user :
+            raise Exception('User not found')
+        # hashed_password = get_password_hash(password.old_password)
+        check  = verify_password(password.old_password , current_user.password)
         try :
-            if user.password == hashed_password :
-                user.password = get_password_hash(password.new_password)
+            if check :
+                new_password = get_password_hash(password.new_password)
+                user.password = new_password
                 db.commit()
+            else :
+                raise Exception('Password is incorrect')
+                # db.refresh()
         except:
             raise HTTPException(status_code = 400 , detail = 'Incorrect password' )
     @staticmethod
@@ -48,7 +58,8 @@ class UserService():
         db.commit()
         return user
     @staticmethod
-    def get_infor(current_user : User,db : Session):
+    def get_infor(db : Session  = Depends(get_db),  token : str = Depends(AuthService.oauth2_scheme)):
+        current_user =  AuthService.get_current_user(db , token)
         user = db.query(User).filter( User.user_id == current_user.user_id).first()
         user_out = UserOut(
             user_id=user.user_id,

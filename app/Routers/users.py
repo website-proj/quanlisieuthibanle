@@ -84,8 +84,8 @@ def update_profile(user_data : userUpdateRequest , current_user = Depends(AuthSe
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.put("/changePassword" , dependencies = [Depends(login_required)])
-def change_password(pass_word_form : passwordChangeRequest , current_user = Depends(AuthService.get_current_user), db : Session = Depends(get_db) ):
-    user =  UserService.change_password(pass_word_form,current_user, db)
+def change_password(pass_word_form : passwordChangeRequest ,db : Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme) ):
+    user =  UserService.change_password(pass_word_form, db , token)
     return ResponseHandler.success("change_password_success" ,user)
 @router.put("/get_code_forgotPassword"  )
 def send_email_code(email : str ):
