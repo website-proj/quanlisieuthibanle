@@ -21,7 +21,7 @@ def get_main_banner(db:Session=Depends(get_db)):
 def get_sidebar_banner(db:Session=Depends(get_db)):
     banner = BannerService.get_sidebar(db)
     return ResponseHandler.success("banner sidebar",banner)
-@router.post("/bottom")
+@router.get("/bottom")
 def get_bottom_banner(db:Session=Depends(get_db)):
     banner = BannerService.get_bottom(db)
     return ResponseHandler.success("banner bottom",banner)

@@ -12,7 +12,8 @@ from sqlalchemy.orm import Session
 from app.schemas.schema_product import ProductResponse, ProductsResponse, ProductBase, ProductCreate, ProductUpdate
 import logging
 from app.model.Products_Categories import Product
-from app.helper.login_manager import check_admin_role
+from app.helper.login_manager import check_admin_role, login_required
+
 router = APIRouter()
 
 @router.post("/products", dependencies=[Depends(check_admin_role)])
@@ -159,3 +160,7 @@ def count_products(db : Session = Depends(get_db)):
     return {
         "product_count" : product
     }
+@router.get("/reviews_of_product" ,dependencies=[Depends(login_required)])
+def get_reviews_of_product(product_id : str, db : Session = Depends(get_db)):
+    product = ProductService.get_reviews_of_product(product_id , db)
+    return ResponseHandler.success("product reviews" , product)

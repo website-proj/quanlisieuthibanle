@@ -114,4 +114,14 @@ class CartService:
         for cart_item in cart_items:
             total_price += cart_item.price_at_add * cart_item.quantity
         return total_price
+    @staticmethod
+    def count_product_in_cart(db: Session , token : str = Depends(AuthService.oauth2_scheme)) :
+        current_user = AuthService.get_current_user(db , token)
+        count = db.query(Cart , CartItem).join(
+            CartItem , Cart.cart_id == CartItem.cart_id).filter(
+            Cart.user_id == current_user.user_id
+        ).count()
+        if not count:
+            raise HTTPException(status_code=404 , detail = "no cart found")
+        return count
 

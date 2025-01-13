@@ -51,6 +51,9 @@ def get_total_price( db : Session = Depends(get_db) , token : str = Depends(Auth
     total = CartService.total_price( db , token )
     return ResponseHandler.success("total price" , total)
 
-
+@router.get("/count_product" ,dependencies=[Depends(login_required )])
+def count_products_in_cart(db : Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme)):
+    count = CartService.count_product_in_cart(db , token)
+    return ResponseHandler.success("count products" , count)
 
 

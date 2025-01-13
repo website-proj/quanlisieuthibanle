@@ -94,6 +94,14 @@ def send_email_code(email : str ):
         auth.send_verification_email(email)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+@router.put("/check_code")
+def check_code(email : str , code : str  ):
+    try :
+        auth = AuthService()
+        check = auth.verify_code(email, code)
+        return check
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 @router.put("/resetPassword")
 def reset_password(email : str ,code : str , password : str , db : Session = Depends(get_db) ):
     try :
