@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import './Table.css'
 import {
   Box,
   Table,
@@ -196,14 +197,18 @@ export default function ProductTable() {
         />
       </Box>
 
-
-      <TableContainer
-        component={Paper}
-        sx={{ borderRadius: "10px", boxShadow: "none" }}
-      >
+        <TableContainer
+          component={Paper}
+          sx={{
+            borderRadius: "15px",
+            boxShadow: "none",
+            fontFamily: "Roboto",
+            minHeight: "400px", 
+          }}
+        >
         <Table>
           <TableHead>
-            <TableRow>
+            <TableRow className="table-header">
               <TableCell  sx={{textAlign: "center"}}>Hình ảnh</TableCell>
               <TableCell sx={{textAlign: "center"}}>
                 <TableSortLabel

@@ -314,8 +314,8 @@ export default function SubcategoryTable() {
               ) : (
                 paginatedSubcategories.map((sub) => (
                   <TableRow key={sub.id}>
-                    <TableCell sx={{ paddingLeft: "4em" }}>{sub.name}</TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
+                    <TableCell sx={{width: "500px", paddingLeft: "4em" }}>{sub.name}</TableCell>
+                    <TableCell sx={{width: "50%", textAlign: "center" }}>
                     <IconButton color="info" onClick={() => handleViewSubcategory(sub)}>
                         <AiOutlineEye />
                       </IconButton>

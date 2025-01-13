@@ -171,11 +171,18 @@ function AddCategories() {
           <img src={addedCategory?.image} alt="Category" style={{ width: '30em', height: '22em', objectFit: 'contain', marginBottom: '0em' }} />
           <Typography variant="h6">Tên danh mục: {addedCategory?.category_name}</Typography>
           <Button
-            variant="contained"
-            color="primary"
-            onClick={handleCloseSuccess}
-            style={{ marginTop: '1em', borderRadius: "15px" }}
-          >
+                            variant="contained"
+                            onClick={handleCloseSuccess}
+                            fullWidth
+                            sx={{
+                              marginBottom: "0em",
+                              borderRadius: "15px",
+                              textTransform: 'none',
+                              boxShadow: 'none',
+                              fontSize: '1em',
+                              marginTop: '1em'
+                            }}
+                          >
             Đóng
           </Button>
         </Box>

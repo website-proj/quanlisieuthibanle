@@ -18,6 +18,7 @@ import {
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import CategorySelect from "./CategorySelect"; 
 import SearchField from "./SearchField"; 
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
 
 function BestSellingProductsTable() {
   const [products, setProducts] = useState([]);
@@ -29,14 +30,40 @@ function BestSellingProductsTable() {
   const [orderDirection, setOrderDirection] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");
 
+  const jwtToken = localStorage.getItem("jwtToken")
   useEffect(() => {
-    fetch("/src/pages/Products/List/BestSellingProducts/Products.json") 
-      .then((response) => response.json())
+    fetch(`${BASE_URL}${ENDPOINTS.products.bestSellerProducts}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${jwtToken}`, 
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
-        setProducts(data);
-        setFilteredProducts(data);
+        // Check if the expected fields exist
+        if (
+          data &&
+          data.message === "products best seller" &&
+          Array.isArray(data.data)
+        ) {
+          setProducts(data.data);
+          setFilteredProducts(data.data);
+        } else {
+          console.error("Unexpected API response structure:", data);
+          throw new Error("Unexpected API response structure");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching best selling products:", error.message);
       });
   }, []);
+  
 
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
@@ -53,19 +80,22 @@ function BestSellingProductsTable() {
   const filterData = (searchValue, categoryValue) => {
     let filtered = products;
 
+    // Filter by category
     if (categoryValue) {
       filtered = filtered.filter((product) => product["Category of product"].category_name === categoryValue);
     }
 
+    // Filter by search value
     if (searchValue) {
-      filtered = filtered.filter((product) =>
-        Object.entries(product).some(
-          ([key, val]) =>
-            key !== "image" &&
-            key !== "functions" &&
-            val.toString().toLowerCase().includes(searchValue)
-        )
-      );
+      filtered = filtered.filter((product) => {
+        const nameMatch = product.product.name.toLowerCase().includes(searchValue);
+        const categoryMatch = product["Category of product"].category_name.toLowerCase().includes(searchValue);
+        const expirationDateMatch = formatDate(product.product.expiration_date).toLowerCase().includes(searchValue);
+        const priceMatch = product.product.price.toString().replace(/\./g, ",").includes(searchValue);
+        const soldMatch = product.sold.toString().includes(searchValue);
+
+        return nameMatch || categoryMatch || expirationDateMatch || priceMatch || soldMatch;
+      });
     }
 
     setFilteredProducts(filtered);
@@ -189,15 +219,15 @@ function BestSellingProductsTable() {
             <TableBody>
               {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
                 <TableRow key={index} className="table-row">
-                  <TableCell sx={{ textAlign: "center" }}>
+                  <TableCell sx={{ textAlign: "center", width: "100px" }}>
                     <img src={product.product.image} alt={product.product.name} style={{ width: "50px", height: "50px", borderRadius: "10px" }} />
                   </TableCell>
-                  <TableCell>{product.product.name}</TableCell>
-                  <TableCell>{product["Category of product"].category_name}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{formatDate(product.product.expiration_date)}</TableCell>
-                  <TableCell>{product.product.price.toString().replace(/\./g, ",")}</TableCell>
-                  <TableCell>{product.sold}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
+                  <TableCell sx={{ width: "200px" }}>{product.product.name}</TableCell>
+                  <TableCell sx={{ width: "150px" }}>{product["Category of product"].category_name}</TableCell>
+                  <TableCell sx={{  width: "150px" }}>{formatDate(product.product.expiration_date)}</TableCell>
+                  <TableCell sx={{ textAlign: "center", width: "20px" }}>{product.product.price.toString().replace(/\./g, ",")}</TableCell>
+                  <TableCell sx={{ textAlign: "center", width: "150px" }}>{product.sold}</TableCell>
+                  <TableCell sx={{ textAlign: "center", width: "200px" }}>
                     <IconButton color="info">
                       <AiOutlineEye />
                     </IconButton>

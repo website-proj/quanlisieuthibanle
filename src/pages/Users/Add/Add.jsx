@@ -30,7 +30,7 @@ export default function Add() {
     email: '',
     address: '',
     password: '',
-    role: '',
+    // role: '',
   });
   const userInfo = [
     { label: "Tên người dùng", value: addedUserData?.name },
@@ -38,7 +38,7 @@ export default function Add() {
     { label: "Số điện thoại", value: addedUserData?.phone },
     { label: "Email", value: addedUserData?.email },
     { label: "Địa chỉ", value: addedUserData?.address },
-    { label: "Vai trò", value: addedUserData?.role },
+    // { label: "Vai trò", value: addedUserData?.role },
   ];
   
   userInfo.map((item, index) => (
@@ -74,7 +74,7 @@ export default function Add() {
     if (!userData.phone) newErrors.phone = 'Vui lòng nhập số điện thoại.';
     if (!userData.email) newErrors.email = 'Vui lòng nhập email.';
     if (!userData.address) newErrors.address = 'Vui lòng nhập địa chỉ.';
-    if (!userData.role) newErrors.role = 'Vui lòng chọn vai trò.';
+    // if (!userData.role) newErrors.role = 'Vui lòng chọn vai trò.';
     if (!userData.password) newErrors.password = 'Vui lòng nhập mật khẩu.';
 
     setErrors(newErrors);
@@ -100,7 +100,7 @@ export default function Add() {
       address: '',
       password: '',
       role: '',
-    }); // Reset form data after closing success backdrop
+    }); 
   };
 
   return (
@@ -108,7 +108,7 @@ export default function Add() {
       <ContentCard>
         <Grid container spacing={2}>
           {/* Row 1 */}
-          <Grid item xs={6}>
+          <Grid item xs={7}>
             <Typography variant="h6" className='title-add-categories'>
               Tên người dùng
             </Typography>
@@ -123,7 +123,7 @@ export default function Add() {
               helperText={errors.name}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={5}>
             <Typography variant="h6" className='title-add-categories'>
               Giới tính
             </Typography>
@@ -142,7 +142,26 @@ export default function Add() {
               {errors.gender && <Typography color="error">{errors.gender}</Typography>}
             </FormControl>
           </Grid>
-          <Grid item xs={3}>
+
+          {/* Row 2 */}
+          <Grid item xs={7}>
+            <Typography variant="h6" className='title-add-categories'>
+              Email
+            </Typography>
+            <TextField
+              name="email"
+              value={userData.email}
+              onChange={handleChange}
+              fullWidth
+              required
+              variant="outlined"
+              type="email"
+              error={Boolean(errors.email)}
+              helperText={errors.email}
+            />
+          </Grid>
+
+          <Grid item xs={5}>
             <Typography variant="h6" className='title-add-categories'>
               Số điện thoại
             </Typography>
@@ -159,25 +178,7 @@ export default function Add() {
               helperText={errors.phone}
             />
           </Grid>
-
-          {/* Row 2 */}
-          <Grid item xs={6}>
-            <Typography variant="h6" className='title-add-categories'>
-              Email
-            </Typography>
-            <TextField
-              name="email"
-              value={userData.email}
-              onChange={handleChange}
-              fullWidth
-              required
-              variant="outlined"
-              type="email"
-              error={Boolean(errors.email)}
-              helperText={errors.email}
-            />
-          </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <Typography variant="h6" className='title-add-categories'>
               Địa chỉ
             </Typography>
@@ -193,7 +194,7 @@ export default function Add() {
           </Grid>
 
           {/* Row 3 */}
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <Typography variant="h6" className='title-add-categories'>
               Vai trò
             </Typography>
@@ -209,8 +210,8 @@ export default function Add() {
               </Select>
               {errors.role && <Typography color="error">{errors.role}</Typography>}
             </FormControl>
-          </Grid>
-          <Grid item xs={6}>
+          </Grid> */}
+          <Grid item xs={12}>
             <Typography variant="h6" className='title-add-categories'>
               Mật khẩu
             </Typography>
@@ -243,7 +244,7 @@ export default function Add() {
           fullWidth
           style={{ marginTop: '1em' }}
           onClick={handleSubmit}
-          sx={{textTransform: 'none', fontSize: '1.1em', borderRadius: '15px'}}
+          sx={{textTransform: 'none', fontSize: '1.1em', borderRadius: '15px', boxShadow: 'none'}}
         >
           Thêm người dùng
         </Button>
@@ -268,12 +269,12 @@ export default function Add() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <Typography variant="h5" style={{ fontSize: '1.5em', fontWeight: "500" }}>
+            <Typography variant="h5" style={{textAlign:'center', fontSize: '1.5em', fontWeight: "bold" }}>
               {successMessage}
             </Typography>
             {userInfo.map((item, index) => (
-              <Typography key={index} variant="h6" style={{ marginTop: '10px', fontWeight: '0' }}>
-                {item.label}: {item.value || 'N/A'}
+              <Typography key={index} variant="body2" style={{ marginTop: '10px', fontWeight: '0', fontSize: '1.2em' }}>
+                <strong>{item.label}:</strong> {item.value || 'N/A'}
               </Typography>
             ))}
 
@@ -281,7 +282,7 @@ export default function Add() {
               variant="contained"
               color="primary"
               onClick={handleCloseSuccessBackdrop}
-              style={{ marginTop: "1em", borderRadius: "15px" }}
+              style={{ marginTop: "1em", borderRadius: "15px", boxShadow: 'none' }}
             >
               Đóng
             </Button>

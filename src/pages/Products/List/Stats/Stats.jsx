@@ -11,8 +11,7 @@ const jwtToken = localStorage.getItem("jwtToken");
 
 const Stats = () => {
   const [stats, setStats] = useState({
-    usersCount: 0,
-    ordersCount: 0,
+    subcategoriesCount: 0,
     productsCount: 0,
     categoriesCount: 0,
   });
@@ -21,12 +20,12 @@ const Stats = () => {
 
   const fetchStats = async () => {
     try {
-      console.log('Fetching ordersData...');
-      const ordersData = await fetch(`${BASE_URL}${ENDPOINTS.stats.ordersCount}`, {
+      console.log('Fetching subcategoriesData...');
+      const subcategoriesData = await fetch(`${BASE_URL}${ENDPOINTS.stats.subcategoriesCount}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${jwtToken}` },
       }).then((res) => res.json());
-      console.log('ordersData:', ordersData);
+      console.log('subcategoriesData:', subcategoriesData);
       
       console.log('Fetching productsData...');
       const productsData = await fetch(`${BASE_URL}${ENDPOINTS.stats.productsCount}`, {
@@ -43,7 +42,7 @@ const Stats = () => {
       console.log('categoriesData:', categoriesData);
 
       const mergedStats = {
-        ordersCount: ordersData.orders_count,
+        subcategoriesCount: subcategoriesData,
         productsCount: productsData.product_count,
         categoriesCount: categoriesData,
       };

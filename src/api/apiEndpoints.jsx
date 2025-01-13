@@ -7,13 +7,15 @@ const ENDPOINTS = {
     productsCount: "/admin/count_products",
     ordersCount: "/order_admin/count",
     categoriesCount: "/admincount_category",
-    subcategoriesCount: "/api/adminsub_category",
+    subcategoriesCount: "/adminsub_category",
   },
+
   char: {
     countChild: "/char/count_child",
     countProducts: "/char/count_products_of_category",
     revenueCategories: "/char/revenue_category"
   },
+
   categories: {
     getParentCategories: "/admin/get_parent_categories",
     deleteCategory: "/admin/parent_category",
@@ -25,6 +27,14 @@ const ENDPOINTS = {
     deleteSubcategory: "/admin/sub_category?sub_category_id=",
     addSubcategory: "/admin/sub_category",
   },
+
+  products: {
+    allProducts: "/admin/products",
+    bestSellerProducts: "/productbest_sellers"
+  }
+
+
+  ,
   users: {
     detailsUser: "/admin/users",
     editUser: "/admin/user",

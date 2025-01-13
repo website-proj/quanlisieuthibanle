@@ -92,7 +92,7 @@ function UserTable() {
   useEffect(() => {
     const filtered = users.filter(
       (user) =>
-        (role === "Customer" || user.account_type === role) &&
+        (role === "All" || user.account_type === role) &&
         Object.values(user)
           .join(" ")
           .toLowerCase()

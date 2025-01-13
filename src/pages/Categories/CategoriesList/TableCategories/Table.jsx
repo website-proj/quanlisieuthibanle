@@ -213,7 +213,7 @@ function ProductTable() {
             <TableBody>
               {paginatedCategories.map((category) => (
                 <TableRow key={category.category_id} className="table-row">
-                  <TableCell sx={{ textAlign: "center" }}>
+                  <TableCell sx={{ textAlign: "center", width: "100px"}}>
                     <Box
                       sx={{
                         display: "flex",
@@ -233,8 +233,8 @@ function ProductTable() {
                       />
                     </Box>
                   </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{category.category_name}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
+                  <TableCell sx={{width: "150px"}}>{category.category_name}</TableCell>
+                  <TableCell sx={{ textAlign: "center", width: "150px"}}>
                     <IconButton color="info" onClick={() => handleOpenCategoryBackdrop(category)}>
                       <AiOutlineEye />
                     </IconButton>
