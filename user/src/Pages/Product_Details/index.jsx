@@ -20,6 +20,7 @@ import axios from "axios";
 import { CartContext } from "../../Context/CartContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
+import SummaryApi, { baseURL } from "../../common/SummaryApi"; // Import API
 
 const Product_Details = () => {
   const location = useLocation();
@@ -31,7 +32,13 @@ const Product_Details = () => {
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       try {
-        const response = await axios.get("/API/products.json");
+        const response = await axios.get(
+          `${baseURL}${SummaryApi.relevantProduct.url}`,
+          {
+            params: { product_id: product.product_id }, // Truyền product_id vào query params
+          }
+        );
+
         setRelatedProducts(response.data);
       } catch (error) {
         console.error("Lỗi khi tải sản phẩm liên quan:", error);
@@ -51,40 +58,83 @@ const Product_Details = () => {
   };
   const { cartCount, incrementCartCount } = useContext(CartContext);
 
-  const handleAddToCart = (e, product, quantity = 1) => {
-    // Animation logic
-    const imgElement = document.createElement("img");
-    imgElement.src = product.image;
-    imgElement.className = "flying-img";
-    document.body.appendChild(imgElement);
+  const handleAddToCart = async (e, product, quantity = 1) => {
+    try {
+      // Tạo hiệu ứng hoạt hình cho hình ảnh
+      const imgElement = document.createElement("img");
+      imgElement.src = product.image;
+      imgElement.className = "flying-img";
+      document.body.appendChild(imgElement);
 
-    const rect = e.target.getBoundingClientRect();
-    const cartRect = document
-      .getElementById("cart-icon")
-      .getBoundingClientRect();
+      const rect = e.target.getBoundingClientRect();
+      const cartRect = document
+        .getElementById("cart-icon")
+        .getBoundingClientRect();
 
-    const startX = rect.left + window.scrollX;
-    const startY = rect.top + window.scrollY;
-    const endX = cartRect.left + window.scrollX;
-    const endY = cartRect.top + window.scrollY;
+      const startX = rect.left + window.scrollX;
+      const startY = rect.top + window.scrollY;
+      const endX = cartRect.left + window.scrollX;
+      const endY = cartRect.top + window.scrollY;
 
-    imgElement.style.position = "absolute";
-    imgElement.style.left = `${startX}px`;
-    imgElement.style.top = `${startY}px`;
-    imgElement.style.width = "50px";
-    imgElement.style.height = "50px";
-    imgElement.style.zIndex = "1000";
-    imgElement.style.transition =
-      "transform 1s ease-in-out, opacity 1s ease-in-out";
-    imgElement.style.transform = `translate(${endX - startX}px, ${
-      endY - startY
-    }px) scale(0.2)`;
-    imgElement.style.opacity = "0";
+      imgElement.style.position = "absolute";
+      imgElement.style.left = `${startX}px`;
+      imgElement.style.top = `${startY}px`;
+      imgElement.style.width = "50px";
+      imgElement.style.height = "50px";
+      imgElement.style.zIndex = "1000";
+      imgElement.style.transition =
+        "transform 1s ease-in-out, opacity 1s ease-in-out";
+      imgElement.style.transform = `translate(${endX - startX}px, ${
+        endY - startY
+      }px) scale(0.2)`;
+      imgElement.style.opacity = "0";
 
-    setTimeout(() => {
-      imgElement.remove();
-      incrementCartCount(quantity); // Cập nhật số lượng vào giỏ hàng
-    }, 1000);
+      setTimeout(() => {
+        imgElement.remove();
+        incrementCartCount(quantity); // Cập nhật số lượng giỏ hàng nếu API thành công
+      }, 1000);
+
+      // Lấy token từ localStorage
+      const newtoken = localStorage.getItem("token"); // Đảm bảo lấy token đúng cách từ localStorage
+      const token = newtoken ? newtoken.split(" ")[1] : null; // Lấy phần sau "bearer "
+
+      if (!token) {
+        console.error("Token không tồn tại. Vui lòng đăng nhập.");
+        window.location.href = "/signIn"; // Chuyển hướng đến trang đăng nhập
+        return; // Nếu không có token, không tiếp tục gửi yêu cầu
+      }
+
+      // Tiến hành gửi yêu cầu với token hợp lệ
+      const response = await fetch(`${baseURL}${SummaryApi.addToCart.url}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // Đảm bảo thêm "Bearer" trước token
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ product_id: product.product_id, quantity }), // Chỉnh sửa từ "productId" thành "product_id"
+      });
+
+      if (response.ok) {
+        const result = await response.json(); // Chỉ gọi .json() khi phản hồi thành công
+        console.log("Sản phẩm đã được thêm vào giỏ hàng", result);
+
+        // Xử lý kết quả trả về
+        if (result.message === "added product to cart") {
+          const cartData = result.data;
+          console.log("Thông tin giỏ hàng:", cartData);
+          // Cập nhật giỏ hàng với thông tin từ response
+          // Ví dụ: cập nhật giỏ hàng trên giao diện người dùng
+        }
+      } else {
+        const errorData = await response.json();
+        console.error("Error response from server:", errorData);
+        alert(
+          "Có lỗi khi thêm sản phẩm vào giỏ hàng: " + JSON.stringify(errorData)
+        );
+      }
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
   };
 
   // Lấy mô tả sản phẩm từ state và cắt theo dấu chấm
@@ -133,7 +183,7 @@ const Product_Details = () => {
 
           <Swiper
             slidesPerView={5}
-            spaceBetween={40}
+            spaceBetween={20}
             navigation={true}
             modules={[Navigation]}
             className="mySwiper relatedPro"
@@ -141,8 +191,8 @@ const Product_Details = () => {
             {relatedProducts.map((product) => (
               <SwiperSlide key={product.id}>
                 <div
-                  className="border bg-white rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
-                  key={product.product_id} // Đặt key trực tiếp trên phần tử bao bọc
+                  className="border bg-white flex flex-col justify-between h-[24em] shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+                  key={product.product_id}
                 >
                   <Link
                     to={`/product_detials/${product.product_id}`}
@@ -152,14 +202,14 @@ const Product_Details = () => {
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-32 object-cover transition-transform duration-300 hover:scale-110"
+                        className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                       />
-                      {product.discount && (
-                        <span className="absolute top-[0.5em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                          {product.discount}
-                        </span>
-                      )}
                     </div>
+                    {/* {product.discount && (
+                                <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                                  {product.discount}%
+                                </span>
+                              )} */}
                     <div className="mt-4">
                       <h5 className="text-[0.9em] text-left">{product.name}</h5>
                       <p className="text-[0.72em] text-black-500 text-left">
@@ -169,14 +219,13 @@ const Product_Details = () => {
                         <span className="text-red-500 text-base font-bold">
                           {formatCurrency(product.price)}
                         </span>
-                        {product.old_price && (
-                          <span className="line-through text-sm text-gray-400">
-                            {formatCurrency(product.old_price)}
-                          </span>
-                        )}
+                        {/* <span className="line-through text-sm text-gray-400">
+                                    {formatCurrency(product.old_price)}
+                                  </span> */}
                       </div>
                     </div>
                   </Link>
+
                   <Button
                     onClick={(e) => handleAddToCart(e, product, 1)}
                     className="productCart"
