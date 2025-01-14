@@ -1,44 +1,78 @@
 import * as React from "react";
 import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
+import { Stack, Box, Typography, Paper, Avatar, Rating } from "@mui/material";
 import axios from "axios";
 import "./style.css";
 import Cmt from "../Cmt";
-import { useLocation } from "react-router-dom";
+import SummaryApi, { baseURL } from "../../common/SummaryApi";
+import { FaUserCircle } from "react-icons/fa";
 
-function Reviews() {
+function Reviews({ productId }) {
   const [reviews, setReviews] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const reviewsPerPage = 5;
-  const location = useLocation();
   const [isFirstLoad, setIsFirstLoad] = React.useState(true);
 
   React.useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get("/API/review.json");
-        setReviews(response.data);
+        const newtoken = localStorage.getItem("token");
+        if (!newtoken) {
+          console.error("Token không tồn tại. Vui lòng đăng nhập.");
+          window.location.href = "/signIn";
+          return;
+        }
+
+        const token = newtoken.split(" ")[1]; // Giả sử token có định dạng "Bearer <token>"
+
+        if (!productId) {
+          console.error("Thiếu productId. Không thể tải đánh giá.");
+          return;
+        }
+
+        console.log("Gửi yêu cầu API với params:", { product_id: productId });
+
+        const response = await axios.get(
+          `${baseURL}${SummaryApi.reviews_product.url}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Thêm header Authorization
+            },
+            params: { product_id: productId }, // Đảm bảo truyền đúng productId
+          }
+        );
+
+        console.log("Kết quả từ API:", response.data);
+
+        // Lấy danh sách review từ dữ liệu trả về
+        const productData = response.data[productId];
+        if (productData && productData.review) {
+          setReviews(productData.review); // Đảm bảo `reviews` là một mảng
+        } else {
+          console.error("Không tìm thấy đánh giá cho sản phẩm.");
+          setReviews([]); // Đặt giá trị mặc định nếu không có review
+        }
       } catch (error) {
         console.error("Lỗi khi tải bình luận:", error);
       }
     };
 
-    fetchReviews();
-  }, []);
+    if (productId) {
+      fetchReviews();
+    }
+  }, [productId]);
 
   React.useEffect(() => {
-    // Nếu lần đầu tiên tải trang, không làm gì cả (để tránh cuộn)
     if (isFirstLoad) {
       setIsFirstLoad(false);
       return;
     }
 
-    // Khi người dùng phân trang, cuộn đến phần mô tả sản phẩm
     const titleElement = document.querySelector(".text_describe");
     if (titleElement) {
       titleElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [currentPage]); // Mỗi khi currentPage thay đổi (tức là khi phân trang)
+  }, [currentPage]);
 
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
@@ -68,30 +102,24 @@ function Reviews() {
         </h3>
       </div>
 
-      <div className=" ml-[1.5%] bg-white border rounded-2xl p-4 shadow-lg">
+      <div className="ml-[1.3%] bg-white border rounded-2xl p-4 shadow-lg">
         <div className="mt-4 space-y-4">
           {currentReviews.map((review) => (
-            <div key={review.id} className="flex items-center p-4 rounded ">
+            <div
+              key={review.review_id}
+              className="flex items-center p-4 rounded"
+            >
               <div className="w-12 h-12 rounded-full mr-4">
-                <img
-                  src={review.userImage}
-                  alt={review.user}
-                  className="w-full h-full rounded-full object-cover"
-                />
+                <FaUserCircle className="text-lg bg-blue-500 text-white w-full h-full rounded-full object-cover" />
               </div>
               <div className="flex flex-col flex-1 mr-4">
-                <p className="font-[600] text-left ml-10">{review.user}</p>
+                <p className="font-[600] text-left ml-10">{review.user_id}</p>
                 <p className="text-sm text-gray-500 text-left ml-10">
-                  {formatDate(review.date)}
+                  {formatDate(review.review_date)}
                 </p>
               </div>
               <div className="flex justify-center items-center mr-4">
-                <p className="text-center text-yellow-500 text-xl">
-                  {"★".repeat(review.rating)}{" "}
-                  <span className="text-gray-600 text-sm ">
-                    {review.rating}
-                  </span>
-                </p>
+                <Rating value={review.rating} readOnly />
               </div>
               <div className="flex flex-col flex-1">
                 <p className="text-gray-600">{review.comment}</p>

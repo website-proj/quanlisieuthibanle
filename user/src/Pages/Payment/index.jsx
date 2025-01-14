@@ -1,11 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import InvoiceForm from "../../components/InvoiceForm";
 import PaymentMethod from "../../components/PaymentMethod";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
+import axios from "axios";
 
 const Payment = () => {
+  const [cities, setCities] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+
+  useEffect(() => {
+    // Gọi API danh sách tỉnh/thành phố
+    axios.get("https://provinces.open-api.vn/api/").then((response) => {
+      setCities(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (selectedCity) {
+      // Gọi API danh sách quận/huyện
+      axios
+        .get(`https://provinces.open-api.vn/api/d/`, {
+          params: { province_code: selectedCity },
+        })
+        .then((response) => {
+          setDistricts(response.data);
+          setWards([]); // Xóa danh sách phường/xã khi chọn tỉnh/thành phố mới
+        });
+    }
+  }, [selectedCity]);
+
+  useEffect(() => {
+    if (selectedDistrict) {
+      // Gọi API danh sách phường/xã
+      axios
+        .get(`https://provinces.open-api.vn/api/w/`, {
+          params: { district_code: selectedDistrict },
+        })
+        .then((response) => {
+          setWards(response.data);
+        });
+    }
+  }, [selectedDistrict]);
+
   return (
     <>
       <Header />
@@ -96,20 +137,17 @@ const Payment = () => {
               </label>
               <select
                 id="city"
-                className="w-3/4 border border-gray-300 rounded-md p-2"
+                className="w-3/4  border border-gray-300 rounded-md p-2"
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
                 required
               >
                 <option value="">Chọn Tỉnh / Thành phố</option>
-                <option value="">Hưng Yên </option>
-                <option value="">Hải Dương </option>
-                <option value="">Hải Phòng </option>
-                <option value="">Quảng Ninh </option>
-                <option value="">Nam Định </option>
-                <option value="">Thái Bình </option>
-                <option value="">Ninh Bình</option>
-                <option value="">Hòa Bình </option>
-
-                {/* Thêm các tùy chọn tại đây */}
+                {cities.map((city) => (
+                  <option key={city.code} value={city.code}>
+                    {city.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -124,14 +162,17 @@ const Payment = () => {
               <select
                 id="district"
                 className="w-3/4 border border-gray-300 rounded-md p-2"
+                value={selectedDistrict}
+                onChange={(e) => setSelectedDistrict(e.target.value)}
                 required
+                disabled={!selectedCity}
               >
                 <option value="">Chọn Quận / Huyện</option>
-                <option value="">Hà Đông</option>
-                <option value="">Thanh Xuân </option>
-                <option value="">Ba Đình</option>
-
-                {/* Thêm các tùy chọn tại đây */}
+                {districts.map((district) => (
+                  <option key={district.code} value={district.code}>
+                    {district.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -147,9 +188,14 @@ const Payment = () => {
                 id="ward"
                 className="w-3/4 border border-gray-300 rounded-md p-2"
                 required
+                disabled={!selectedDistrict}
               >
                 <option value="">Chọn Phường / Xã</option>
-                {/* Thêm các tùy chọn tại đây */}
+                {wards.map((ward) => (
+                  <option key={ward.code} value={ward.code}>
+                    {ward.name}
+                  </option>
+                ))}
               </select>
             </div>
 

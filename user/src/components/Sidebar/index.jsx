@@ -64,7 +64,7 @@ const Sidebar = () => {
             {subcategories.map((sub, idx) => (
               <li key={idx}>
                 <label className="flex items-center space-x-2">
-                  <Checkbox />
+                  <Checkbox checked={sub.category_id === categoryId} />
                   <span className="text-sm">{sub.category_name}</span>
                 </label>
               </li>

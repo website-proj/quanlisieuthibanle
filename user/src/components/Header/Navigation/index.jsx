@@ -40,7 +40,6 @@ const Navigation = () => {
 
     fetchCategories(); // Gọi API khi component được render
   }, []);
-
   const handleMouseEnter = (category) => {
     setActiveCategory(category); // Hiển thị submenu khi hover
   };
@@ -87,7 +86,7 @@ const Navigation = () => {
                           className="relative group"
                           onMouseEnter={() => handleMouseEnter(category.name)}
                           onMouseLeave={handleMouseLeave}
-                          onClick={handleCategoryClick} // Ẩn hộp thoại khi nhấp
+                          onClick={handleCategoryClick}
                         >
                           <Link
                             to={`/products/${category.name}?parentId=${category.subcategories[0]?.parent_category_id}`}
@@ -111,11 +110,10 @@ const Navigation = () => {
                               {category.subcategories.map((sub, idx) => (
                                 <li key={idx}>
                                   <Link
-                                    to={`/products/${category.name}/${sub.category_name}?categoryId=${sub.category_id}`}
+                                    to={`/products/${category.name}/${sub.category_name}?parentId=${category.subcategories[0]?.parent_category_id}&categoryId=${sub.category_id}`}
                                   >
                                     <Button className="w-full !text-black text-left nav_menu">
-                                      {sub.category_name}{" "}
-                                      {/* Hiển thị tên phụ mục */}
+                                      {sub.category_name}
                                     </Button>
                                   </Link>
                                 </li>

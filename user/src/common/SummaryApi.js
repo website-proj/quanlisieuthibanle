@@ -31,7 +31,7 @@ const SummaryApi = {
   },
   login_gg_token: {
     url: "/api/login/token",
-    method: "getget",
+    method: "get",
   },
 
   discount_products: {
@@ -117,6 +117,23 @@ const SummaryApi = {
   },
   footBanner: {
     url: "/api/banner/bottom",
+    method: "get",
+  },
+  parent_categories: {
+    url: "/api/admin/product/parent_category",
+    method: "get",
+  },
+
+  create_reviews: {
+    url: "/api/review/",
+    method: "post",
+  },
+  orders: {
+    url: "/api/order/",
+    method: "get",
+  },
+  reviews_product: {
+    url: "/api/product/get_reviews_of_product",
     method: "get",
   },
 };

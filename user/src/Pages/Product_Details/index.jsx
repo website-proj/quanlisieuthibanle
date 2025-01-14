@@ -8,10 +8,8 @@ import { FiShoppingCart } from "react-icons/fi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-
 import "./style.css";
 import { useLocation } from "react-router-dom";
-
 // import required modules
 import { Navigation } from "swiper/modules";
 import ScrollToTopButton from "../../components/ScrollTop";
@@ -159,7 +157,7 @@ const Product_Details = () => {
                   Mô tả sản phẩm
                 </h3>
               </div>
-              <div className="border bg-white rounded-2xl p-6 shadow-lg ml-[1%] h-[90.5%]">
+              <div className="border bg-white rounded-2xl p-6 shadow-lg ml-[1.1%] h-[90.5%]">
                 <div className="text-left text-black">
                   {sentences.map((sentence, index) => (
                     <p key={index} className="mb-2">
@@ -171,7 +169,7 @@ const Product_Details = () => {
             </div>
 
             <div>
-              <Reviews />
+              <Reviews productId={product.product_id} />
             </div>
           </div>
 

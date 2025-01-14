@@ -135,13 +135,13 @@ const ProductCard = ({ product }) => {
           <h1 className="text-left text-2xl font-[500]">
             {product.name || "Tên sản phẩm"}
           </h1>
-          <p className="text-left text-lg text-black-500 mt-2">
+          <p className="text-left text-lg text-black-500 ml-1 mt-2">
             Giá bán lẻ:{" "}
             <span className="text-black-500 font-500 ml-40">
               {product.old_price ? product.old_price.toLocaleString() : "N/A"}đ
             </span>
           </p>
-          <p className="text-black-500 text-left text-lg mt-2">
+          <p className="text-black-500 text-left ml-[2px] text-lg mt-2">
             Giá khuyến mãi:{" "}
             <span className="text-red-500 font-bold ml-[7.5rem]">
               {product.price ? product.price.toLocaleString() : "N/A"}đ
