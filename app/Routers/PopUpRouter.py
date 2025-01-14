@@ -20,7 +20,7 @@ def get_pop_up(db:Session=Depends(get_db)):
 @router.post("/" , dependencies=[Depends(check_admin_role)])
 def create_pop_up( status  , start_date , end_date ,   file: UploadFile = File(...),
                      db: Session = Depends(get_db)):
-    popup = PopUpService.create_popup(content , status ,start_date , end_date ,file ,db)
+    popup = PopUpService.create_popup( status ,start_date , end_date ,file ,db)
     return ResponseHandler.success("PopUp create successfully" , popup)
 @router.delete("/" , dependencies=[Depends(check_admin_role)])
 def delete_pop_up(popup_id : str ,db : Session=Depends(get_db)):
@@ -30,5 +30,5 @@ def delete_pop_up(popup_id : str ,db : Session=Depends(get_db)):
 def update_pop_up(popup_id : str, status : Optional[str]  = None , start_date : Optional[datetime]  = None ,
                      end_date : Optional[datetime] = None ,file : Optional[UploadFile] = None ,
         db: Session = Depends(get_db)):
-    popup = PopUpService.update_popup(popup_id , content , status , start_date , end_date ,file , db)
+    popup = PopUpService.update_popup(popup_id , status , start_date , end_date ,file , db)
     return ResponseHandler.success("PopUp update successfully" , popup)

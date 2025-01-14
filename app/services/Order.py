@@ -107,6 +107,7 @@ class OrderService:
             order_id = order.order_id
             if order_id not in result:
                 result[order_id] = {
+                    "order_status" : order.status,
                     "product": []
                 }
             if product :
