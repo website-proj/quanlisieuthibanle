@@ -76,7 +76,7 @@ def get_product_count(db: Session = Depends(get_db)):
 @router.get("/relevant_products")
 def get_relevant_products(product_id : str , db: Session = Depends(get_db)):
     products = ProductService.relevant_products(product_id,db)
-    return ResponseHandler.success("products relevant", products)
+    return products
 @router.get("/get_product_filter_by_price")
 def get_product_of_sub_category_filter_by_price(category_id : str , bottom_price : float ,
                                                 up_price : float , db: Session = Depends(get_db)):
