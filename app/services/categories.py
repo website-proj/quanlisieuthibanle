@@ -141,7 +141,8 @@ class CategoryService:
             db.commit()
             return parent_category
         db.delete(parent_category)
-        db.delete(sub_category)
+        for cat in sub_category:
+            db.delete(cat)
         db.commit()
         return parent_category
     @staticmethod
