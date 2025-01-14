@@ -69,8 +69,8 @@ class Chart:
 
     def count_product_by_category(db: Session):
         cats = db.query(Category).filter(Category.parent_category_id == None).all()
-        data = db.query(Category, Product).outerjoin(
-            Product, Product.category_id == Category.category_id
+        data = db.query(Product , Category).join(
+            Category, Product.category_id == Category.category_id
         ).all()
 
         result = {}
@@ -80,7 +80,7 @@ class Chart:
                 "product_count": 0
             }
 
-        for category, product in data:
+        for product  , category in data:
             if category.parent_category_id in result:
                 result[category.parent_category_id]["product_count"] += 1
 
