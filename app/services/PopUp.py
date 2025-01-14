@@ -20,7 +20,7 @@ class PopUpService:
             raise HTTPException(status_code=404, detail="popup not found")
         return popup
 
-    def create_popup(content: str, status: str, start_date: str, end_date: str,
+    def create_popup( status: str, start_date: str, end_date: str,
                      file: UploadFile = File(...), db: Session = Depends(get_db)):
         try:
             # Chuyển đổi start_date và end_date sang datetime
@@ -37,7 +37,6 @@ class PopUpService:
 
             # Tạo Popup
             popup = Popup(
-                content=content,
                 status=status,
                 start_date=start_date_obj,
                 end_date=end_date_obj,
@@ -52,7 +51,7 @@ class PopUpService:
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
 
-    def update_popup(popup_id : str , content : Optional[str] = None , status : Optional[str]  = None , start_date : Optional[datetime]  = None ,
+    def update_popup(popup_id : str  , status : Optional[str]  = None , start_date : Optional[datetime]  = None ,
                      end_date : Optional[datetime] = None ,file : Optional[UploadFile] = None ,
         db: Session = Depends(get_db)):
         popup = db.query(Popup).filter(Popup.popup_id == popup_id  ).first()
@@ -79,7 +78,6 @@ class PopUpService:
                 # Kiểm tra logic ngày tháng
                 if start_date_obj >= end_date_obj:
                     raise HTTPException(status_code=400, detail="start_date must be earlier than end_date")
-            popup.content = content if content is not None else popup.content
             popup.image = image_url if image_url is not None else popup.image
             popup.status = status if status is not None else popup.status
             popup.start_date = start_date if start_date is not None else popup.start_date
