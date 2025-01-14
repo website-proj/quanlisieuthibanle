@@ -162,9 +162,14 @@ class CartService:
         for cart_item  , cart , user , product in data :
             cart_id = cart.cart_id
             quantity = cart_item.quantity
-            old_price = product.old_price*quantity
+            old_price = product.old_price
+            price = cart_item.price_at_add * quantity
+            if not old_price:
+                money_save = 0
+            else :
+                old_price = old_price * quantity
+                money_save = old_price - price
             price = cart_item.price_at_add*quantity
-            money_save =  old_price -price
             membership_discount = {"Gold" :0.1, "Diamond" :0.15 , "Silver":0.05}
             user_membership = user.membership_status
             discount = price*membership_discount[user_membership]

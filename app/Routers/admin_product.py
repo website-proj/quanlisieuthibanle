@@ -25,7 +25,7 @@ def create_product(
     old_price: Optional[float] = None,
     original_price: float = Form(...),
     discount: float = Form(...),
-    unit: int = Form(...),
+    unit: str = Form(...),
     stock_quantity: int = Form(...),
     star_product: bool = Form(...),
     expiration_date: datetime = Form(...),
