@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends, Query, status, HTTPException
 from starlette.status import HTTP_200_OK
+
+from app.helper.login_manager import login_required
 from app.utils.responses import ResponseHandler
 from app.db.base import  get_db
 from app.services.products import ProductService
@@ -90,3 +92,7 @@ def get_best_seller_products(db: Session = Depends(get_db)):
 def get_best_sellers_for_sub_category(subcategory_id : str , db: Session = Depends(get_db)):
     product = ProductService.get_best_seller_for_sub_category(subcategory_id,db)
     return ResponseHandler.success("best seller for category", product)
+@router.get("/get_product_by_sub_category" , dependencies=[Depends(login_required)])
+def get_product_by_sub_category(category_id : str , db: Session = Depends(get_db)):
+    product = ProductService.get_product_by_sub_category(category_id,db)
+    return ResponseHandler.success("product", product)
