@@ -480,4 +480,24 @@ class ProductService:
             return result
         except Exception as e :
             raise e
-
+    @staticmethod
+    def get_discount_product_for_parent_category(category_id :str , db:Session):
+        # sub_cat = aliased(Category)
+        # parent_cat = aliased(Category)
+        # data = db.query(Product , ).outerjoin(
+        #     sub_cat , sub_cat.category_id == Product.category_id
+        # ).outerjoin(
+        #     parent_cat, parent_cat.category_id == sub_cat.parent_category_id
+        # ).filter(sub_cat.category_id == category_id).all()
+        #
+        data = db.query(Product , Category).join(
+            Category, Product.category_id == Category.category_id
+        ).filter(Category.parent_category_id == category_id).all()
+        result = []
+        for product , category in data :
+            if not product or not category:
+                continue
+            discount = product.discount
+            if discount > 0 :
+                result.append(product)
+        return result
