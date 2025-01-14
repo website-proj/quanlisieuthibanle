@@ -507,3 +507,56 @@ class ProductService:
             if discount > 0 :
                 result.append(product)
         return result
+
+    @staticmethod
+    def get_best_seller_for_parent_category(parent_category_id: str, db: Session):
+        sub_categories = db.query(Category).filter(Category.parent_category_id == parent_category_id).all()
+
+        if not sub_categories:
+            raise HTTPException(status_code=404, detail="No subcategories found for the parent category")
+
+        sub_category_ids = [sub_cat.category_id for sub_cat in sub_categories]
+
+        order_items_pass = (
+            db.query(OrderItems, Orders, Product)
+            .join(Orders, Orders.order_id == OrderItems.order_id)
+            .join(Product, Product.product_id == OrderItems.product_id)
+            .filter(
+                Orders.status == "Delivered",
+                Product.category_id.in_(sub_category_ids)  # Lọc theo danh mục con
+            )
+            .all()
+        )
+
+        if not order_items_pass:
+            raise HTTPException(status_code=404, detail="No order_items_pass found")
+
+        products = dict()
+        for order_item, _, _ in order_items_pass:
+            product_id = order_item.product_id
+            quantity = order_item.quantity
+            if product_id not in products:
+                products[product_id] = quantity
+            else:
+                products[product_id] += quantity
+
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+
+        products = sorted(products.items(), key=lambda item: item[1], reverse=True)
+        products = dict(products)
+
+        data = []
+        for product_id in products:
+            product = db.query(Product).filter(Product.product_id == product_id).first()
+            category = db.query(Category).filter(Category.category_id == product.category_id).first()
+            parent_cat = db.query(Category).filter(Category.category_id == category.parent_category_id).first()
+            detail_product = {
+                "sold": products[product_id],
+                "product": product.__dict__ if product else None,
+                "Category of product": category.__dict__ if category else None,
+                "Parent Category of Product": parent_cat.__dict__ if parent_cat else None,
+            }
+            data.append(detail_product)
+
+        return data

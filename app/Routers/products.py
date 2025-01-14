@@ -100,3 +100,7 @@ def get_product_by_sub_category(category_id : str , db: Session = Depends(get_db
 def get_product_discount_for_parent_category(category_id : str , db: Session = Depends(get_db)):
     product = ProductService.get_discount_product_for_parent_category(category_id,db)
     return ResponseHandler.success("product", product)
+@router.get("/get_product_best_sellers_for_parent_category_id" , dependencies=[Depends(login_required)])
+def get_products_best_seller_for_parent_category_id(category_id : str , db: Session = Depends(get_db)):
+    products = ProductService.get_best_seller_for_parent_category(category_id,db)
+    return ResponseHandler.success("products best seller", products)
