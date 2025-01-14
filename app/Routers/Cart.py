@@ -60,5 +60,9 @@ def get_membership_status(db : Session = Depends(get_db) , token : str = Depends
     user = AuthService.get_current_user(db , token)
     member_ship = user.membership_status
     return member_ship
+@router.get("/get_bill" , dependencies=[Depends(login_required )])
+def get_bill(db : Session = Depends(get_db), token : str = Depends(AuthService.oauth2_scheme)):
+    bill = CartService.get_bill(db , token)
+    return bill
 
 

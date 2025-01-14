@@ -6,6 +6,7 @@ from starlette import status
 
 from app.db.base import get_db
 from app.model.Products_Categories import Product
+from app.model.users import User
 from app.schemas.schema_cart import CartItemCreate, CartItemUpdate
 from app.model.cart_model import CartItem, Cart
 from app.services.auth import AuthService
@@ -132,4 +133,42 @@ class CartService:
         if not count:
             raise HTTPException(status_code=404 , detail = "no cart found")
         return count
+    @staticmethod
+    def get_bill(db:Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme)) :
+        user = AuthService.get_current_user(db , token)
+        data = db.query(CartItem , Cart , User , Product ).join(
+            Cart , Cart.cart_id == CartItem.cart_id
+        ).join(
+            User , User.user_id == Cart.user_id
+        ).join(
+            Product , Product.product_id == CartItem.product_id
+        ).filter(User.user_id == user.user_id).all()
+        if not data:
+            raise HTTPException(status_code=404 , detail = "no cart found")
+        result = {}
+        for cart_item  , cart , user , product in data :
+            cart_id = cart.cart_id
+            quantity = cart_item.quantity
+            old_price = product.old_price*quantity
+            price = cart_item.price_at_add*quantity
+            money_save =  old_price -price
+            membership_discount = {"Gold" :0.1, "Diamond" :0.15 , "Silver":0.05}
+            user_membership = user.membership_status
+            discount = price*membership_discount[user_membership]
+            actually_paid = price - discount
+            if cart_id not in result :
+                result[cart_id]={
+                    "total" : 0,
+                    "money saved" : 0 ,
+                    "discount" : 0 ,
+                    "actually paid" : 0
+                }
+            result[cart_id]["total"] += price
+            result[cart_id]["money saved"] += money_save
+            result[cart_id]["discount"] += discount
+            result[cart_id]["actually paid"] += actually_paid
+        return result
+
+
+
 
