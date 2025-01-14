@@ -1,6 +1,7 @@
 
 
 from fastapi import Depends, HTTPException
+from redis.commands.search.reducers import quantile
 from sqlalchemy.orm import Session
 from starlette import status
 
@@ -126,13 +127,25 @@ class CartService:
     @staticmethod
     def count_product_in_cart(db: Session , token : str = Depends(AuthService.oauth2_scheme)) :
         current_user = AuthService.get_current_user(db , token)
-        count = db.query(Cart , CartItem).join(
-            CartItem , Cart.cart_id == CartItem.cart_id).filter(
-            Cart.user_id == current_user.user_id
-        ).count()
-        if not count:
-            raise HTTPException(status_code=404 , detail = "no cart found")
-        return count
+        data = db.query(CartItem , Cart).join(
+            Cart , Cart.cart_id == CartItem.cart_id
+        ).filter(Cart.user_id == current_user.user_id).all()
+        result = {}
+        if not data :
+            raise HTTPException(status_code = 400 , detail = "no cart found")
+        for cart_item  , cart in data :
+            if not cart_item or not cart:
+                continue
+            cart_id = cart.cart_id
+            if cart_id not in result :
+                result[cart_id] = {
+                    "quantity" : 0,
+                }
+            result[cart_id]["quantity"] += cart_item.quantity
+        return result
+
+
+
     @staticmethod
     def get_bill(db:Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme)) :
         user = AuthService.get_current_user(db , token)
