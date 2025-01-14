@@ -471,12 +471,12 @@ class ProductService:
         result  = {}
         try:
             for review , product in data :
-                if product not in result :
+                if product.product_id not in result :
                     result[product.product_id] = {
                         "product" : product.__dict__ if product else None,
-                        "review" : {}
+                        "review" : []
                     }
-                    result[product.product_id]["review"] = review
+                result[product.product_id]["review"].append(review)
             return result
         except Exception as e :
             raise e
