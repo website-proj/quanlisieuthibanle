@@ -1,10 +1,16 @@
 import uuid
 from datetime import datetime
+from winreg import HKEY_CURRENT_USER
 
-from fastapi import Depends
+import pytz
+from fastapi import Depends, HTTPException
+from fastapi.encoders import jsonable_encoder
+from sqlalchemy import func
 from sqlalchemy.orm import Session
+from win32con import HTSIZELAST
 
 from app.db.base import get_db
+from app.model.Products_Categories import Product
 from app.model.addres_model import Address
 from app.model.cart_model import Cart, CartItem
 from app.model.model_orders import Orders, OrderItems
@@ -75,6 +81,35 @@ class PaymentService:
             status="Successful",
         )
         db.add(payment_record)
-        CartService.delete_cart(db , token )
+        data = (db.query(CartItem , Product , Cart)
+                .join(Product , Product.product_id == CartItem.product_id).join(
+            Cart , Cart.cart_id == CartItem.cart_id
+        ).filter(Cart.user_id == current_user.user_id).all())
+        if not data :
+            raise HTTPException(status_code = 404 , detail = "No products found")
+        result = {}
+        local_timezone = pytz.timezone("Asia/Ho_Chi_Minh")
+
+        # Lấy thời gian hiện tại và chuyển sang múi giờ địa phương
+        local_time = datetime.now(local_timezone)
+
+        result[order.order_id] = {
+            "amount": total_amount,
+            "date": local_time.isoformat(),  # Định dạng ISO với múi giờ
+            "payment_method": payment_record.payment_method,
+            "product": []
+        }
+        for item, product, cart in data:
+            if not product :
+                raise HTTPException(status_code = 404 , detail = "product error")
+            product = {
+                "name": product.name,
+                "image": product.image,
+                "price": product.price,
+                "quantity": item.quantity
+            }
+            result[order.order_id]["product"].append(product)
+        CartService.delete_cart(db,token)
         db.commit()
-        return payment_record
+
+        return result
