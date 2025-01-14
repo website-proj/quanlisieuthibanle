@@ -26,7 +26,7 @@ import {
 import { AiOutlineProduct } from "react-icons/ai";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-function Sidebar({ isOpen, toggleSidebar }) {
+function Sidebar({ isOpen }) {
   const [openCategories, setOpenCategories] = React.useState(false);
   const [openProducts, setOpenProducts] = React.useState(false);
   const [openUsers, setOpenUsers] = React.useState(false);

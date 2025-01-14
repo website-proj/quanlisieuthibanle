@@ -5,7 +5,7 @@ import './CategorySelect.css';
 function CategorySelect({ category, onCategoryChange, uniqueCategories }) {
   return (
     <FormControl variant="outlined" fullWidth sx={{ width: '300px' }}>
-      <InputLabel>Tất cả</InputLabel>
+      <InputLabel>Danh mục</InputLabel>
       <Select
         value={category}
         onChange={onCategoryChange}

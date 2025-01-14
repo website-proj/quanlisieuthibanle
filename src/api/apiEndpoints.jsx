@@ -13,7 +13,23 @@ const ENDPOINTS = {
   char: {
     countChild: "/char/count_child",
     countProducts: "/char/count_products_of_category",
-    revenueCategories: "/char/revenue_category"
+    revenueCategories: "/char/revenue_category",
+
+    users14days: "/char/user_create_14_day",
+    users12months: "/char/user_create_12_month",
+    users3years: "/char/user_create_3_years",
+
+    revenue14days: "/char/revenue_14_day",
+    cost14days: "/char/cost_14_day",
+    profit14days: "/char/profit_14_day",
+
+    revenue12months: "/char/revenue_12_month",
+    cost12months: "/char/cost_12_month",
+    profit12months: "/char/profit_12_month",
+
+    revenue3years: "/char/Revenue_3_years",
+    cost3years: "/char/cost_3_years",
+    profit3years: "/char/profit_3_years",
   },
 
   categories: {
@@ -30,7 +46,11 @@ const ENDPOINTS = {
 
   products: {
     allProducts: "/admin/products",
-    bestSellerProducts: "/productbest_sellers"
+    bestSellerProducts: "/productbest_sellers",
+    viewProductDetails: "/admin/reviews_of_product?product_id=",
+    deleteProduct: "/admin/product?product_id=",
+    addProduct: "/admin/products",
+    editProduct: "/admin/product",
   }
 
 
@@ -39,13 +59,12 @@ const ENDPOINTS = {
     detailsUser: "/admin/users",
     editUser: "/admin/user",
     deleteUser: "/admin/user?user_id=",
+    addUser: "/admin/user",
   },
 
-
-
-  // getCategories: "/categories/list",
-  // getUserInfo: "/user/info",
-  // updateProfile: "/user/update",
+  banners: {
+    allBanners: "/banner/",
+  }
 };
 
 export { BASE_URL, ENDPOINTS };

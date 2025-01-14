@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Typography, TextField } from '@mui/material';
-
 const ProductDetails = ({ formData, errors, handleInputChange }) => {
   return (
     <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
@@ -31,11 +30,11 @@ const ProductDetails = ({ formData, errors, handleInputChange }) => {
         <Typography variant="h6" className="add-products-list">Đơn vị</Typography>
         <TextField
           fullWidth
-          type="number"
+          type="string"
           variant="outlined"
           placeholder="Nhập đơn vị"
           value={formData.unit}
-          onChange={(e) => handleInputChange('unit', Math.max(1, e.target.value))}
+          onChange={(e) => handleInputChange('unit', e.target.value)}
           error={!!errors.unit}
           helperText={errors.unit}
         />

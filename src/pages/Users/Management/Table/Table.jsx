@@ -28,6 +28,7 @@ import ViewUser from "./ViewUser";
 import EditUser from "./EditUser";
 import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx";
 import axios from "axios";
+import { decodeJwt } from 'jose'; 
 
 function UserTable() {
   const [users, setUsers] = useState([]);
@@ -43,6 +44,15 @@ function UserTable() {
   const [editUser, setEditUser] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const jwtToken = localStorage.getItem("jwtToken");
+    if (jwtToken) {
+      const decodedToken = decodeJwt(jwtToken);
+      setUserRole(decodedToken.role);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -78,8 +88,15 @@ function UserTable() {
             address: user.address,
             membership_status: user.membership_status,
           }));
-          setUsers(formattedUsers);
-          setFilteredUsers(formattedUsers);
+
+          if (userRole === "SuperAdmin") {
+            setUsers(formattedUsers); 
+            setFilteredUsers(formattedUsers);
+          } else if (userRole === "Admin") {
+            const customerUsers = formattedUsers.filter(user => user.account_type === "Customer");
+            setUsers(customerUsers); 
+            setFilteredUsers(customerUsers);
+          }
         }
       } catch (error) {
         console.error("Lỗi khi tải dữ liệu từ API:", error);
@@ -87,7 +104,7 @@ function UserTable() {
     };
 
     fetchUsers();
-  }, []);
+  }, [userRole]);
 
   useEffect(() => {
     const filtered = users.filter(
@@ -160,14 +177,6 @@ function UserTable() {
     setRole(event.target.value);
   };
 
-  // const formatDate = (dateString) => {
-  //   const date = new Date(dateString);
-  //   const day = String(date.getDate()).padStart(2, "0");
-  //   const month = String(date.getMonth() + 1).padStart(2, "0");
-  //   const year = date.getFullYear();
-  //   return `${day}/${month}/${year}`;
-  // };
-
   const totalUsers = filteredUsers.length;
   const paginatedUsers = sortedUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
@@ -178,7 +187,6 @@ function UserTable() {
   const handleCloseViewUser = () => {
     setSelectedUser(null);
   };
-
 
   return (
     <Box>
@@ -197,14 +205,23 @@ function UserTable() {
         marginTop="-15px"
       >
         <Box display="flex" alignItems="center" flexGrow={1}>
-          <FormControl sx={{ minWidth: 120, scale: "0.95" }}>
-            <InputLabel>Vai trò</InputLabel>
-            <Select value={role} onChange={handleRoleChange} label="Vai trò">
-              <MenuItem value="Customer">Khách hàng</MenuItem>
-              <MenuItem value="Admin">Quản trị viên</MenuItem>
-              {/* <MenuItem value="All">Tất cả</MenuItem> */}
-            </Select>
-          </FormControl>
+          {userRole === "SuperAdmin" && (
+            <FormControl sx={{ minWidth: 120, scale: "0.95" }}>
+              <InputLabel>Vai trò</InputLabel>
+              <Select value={role} onChange={handleRoleChange} label="Vai trò">
+                <MenuItem value="Customer">Khách hàng</MenuItem>
+                <MenuItem value="Admin">Quản trị viên</MenuItem>
+              </Select>
+            </FormControl>
+          )}
+          {userRole === "Admin" && (
+            <FormControl sx={{ minWidth: 120, scale: "0.95" }}>
+              <InputLabel>Vai trò</InputLabel>
+              <Select value={role} onChange={handleRoleChange} label="Vai trò">
+                <MenuItem value="Customer">Khách hàng</MenuItem>
+              </Select>
+            </FormControl>
+          )}
         </Box>
 
         <TextField
@@ -265,37 +282,18 @@ function UserTable() {
                     Giới tính
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
-                  <TableSortLabel
-                    active={sortBy === "phone_number"}
-                    direction={sortOrder}
-                    onClick={() => handleSort("phone_number")}
-                  >
-                    Số điện thoại
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
-                  <TableSortLabel
-                    active={sortBy === "email"}
-                    direction={sortOrder}
-                    onClick={() => handleSort("email")}
-                  >
-                    Email
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>Chức năng</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>Số điện thoại</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>Email</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>Hành động</TableCell>
               </TableRow>
             </TableHead>
+
             <TableBody>
               {paginatedUsers.map((user, index) => (
                 <TableRow key={index}>
                   <TableCell sx={{ textAlign: "center" }}>{user.username}</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {user.gender === "Male"
-                      ? "Nam"
-                      : user.gender === "Female"
-                      ? "Nữ"
-                      : "Khác"}
+                    {user.gender === "Male" ? "Nam" : user.gender === "Female" ? "Nữ" : "Khác"}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>{user.phone_number}</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>{user.email}</TableCell>
@@ -303,7 +301,7 @@ function UserTable() {
                     <IconButton color="info" onClick={() => handleViewUser(user)}>
                       <AiOutlineEye />
                     </IconButton>
-                    <IconButton sx={{ color: "green"}} onClick={() => handleEditUser(user)}>
+                    <IconButton sx={{ color: "green" }} onClick={() => handleEditUser(user)}>
                       <AiOutlineEdit />
                     </IconButton>
                     <IconButton sx={{ color: "red" }} onClick={() => handleDeleteUser(user)}>
@@ -316,7 +314,6 @@ function UserTable() {
           </Table>
         </TableContainer>
       )}
-
       <Box
         sx={{
           display: "flex",
@@ -339,24 +336,24 @@ function UserTable() {
             `${from}-${to} trên ${count}`
           }
         />
-        {editUser && (
-        <EditUser open={!!editUser} onClose={handleCloseEditUser} user={editUser} />
-      )}
       </Box>
+      {selectedUser && (
+        <ViewUser user={selectedUser} open={!!selectedUser} onClose={handleCloseViewUser} />
+      )}
 
-      <BackdropWrapper open={isBackdropOpen} onClose={() => setIsBackdropOpen(false)}>
-        <AddUserForm />
-      </BackdropWrapper>
+      {editUser && (
+        <EditUser user={editUser} open={!!editUser} onClose={handleCloseEditUser} />
+      )}
 
-      
-      <ViewUser open={!!selectedUser} onClose={handleCloseViewUser} user={selectedUser} />
-    
       <ConfirmDeleteDialog
         open={openDeleteDialog}
         onClose={() => setOpenDeleteDialog(false)}
         onConfirm={confirmDelete}
-        itemName={userToDelete ? userToDelete.username : ""}
       />
+
+      <BackdropWrapper open={isBackdropOpen} onClose={() => setIsBackdropOpen(false)}>
+        <AddUserForm onClose={() => setIsBackdropOpen(false)} />
+      </BackdropWrapper>
     </Box>
   );
 }

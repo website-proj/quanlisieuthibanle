@@ -22,9 +22,8 @@ function EditUser({ open, onClose, user }) {
     try {
       const jwtToken = localStorage.getItem("jwtToken");
       
-      // Construct the request body according to API requirements
       const requestBody = {
-        user_id: formData.id, // Make sure this matches with your user data
+        user_id: formData.id, 
         username: formData.username,
         email: formData.email,
         phone_number: formData.phone_number,
@@ -33,7 +32,7 @@ function EditUser({ open, onClose, user }) {
         membership_status: formData.membership_status
       };
 
-      console.log('Sending request with body:', requestBody); // For debugging
+      console.log('Sending request with body:', requestBody);
 
       const response = await fetch(`${BASE_URL}${ENDPOINTS.users.editUser}`, {
         method: "PUT",
@@ -53,7 +52,7 @@ function EditUser({ open, onClose, user }) {
       setSuccessMessage("Cập nhật thông tin người dùng thành công!");
       setTimeout(() => {
         onClose();
-        window.location.reload(); // Refresh the page to show updated data
+        window.location.reload(); 
       }, 1500);
     } catch (error) {
       console.error('Error updating user:', error);

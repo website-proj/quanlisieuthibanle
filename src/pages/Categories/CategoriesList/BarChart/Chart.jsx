@@ -7,7 +7,7 @@ import DownloadMenu from "/src/components/Download/CsvJsonPng";
 import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
 
 const materialColors = [
-  "#ADD8E6", "#87CEFA", "#4682B4", "#9998FF", "#5F9EA0",
+  "#ADD8E6", "#87CEFA", "#7B68EE", "#4169E1",  "#4682B4", "#9998FF", "#5F9EA0",
   "#00BFFF", "#1E90FF", "#B0E0E6", "#6495ED", "#9966FF",
   "#4169E1", "#6A5ACD", "#7B68EE", "#4169E1",
 ];
@@ -79,7 +79,7 @@ const CategoryChart = () => {
       tooltip: {
         callbacks: {
           label: function (context) {
-            return `${context.label}: ${context.raw}`;
+            return `${context.label}: ${context.raw} sản phẩm`;
           },
         },
       },

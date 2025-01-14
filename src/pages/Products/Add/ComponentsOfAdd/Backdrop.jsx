@@ -129,7 +129,7 @@ const SuccessBackdrop = ({ open, handleCloseSuccess, addedCategory }) => {
         
         )}
 
-        <Divider sx={{ my: 2 }} />
+        {/* <Divider sx={{ my: 2 }} />
 
         <Box sx={{ mb: 3 }}>
           <Typography variant="h6" sx={{ fontSize: '1.2em', fontWeight: '500', mb: 2 }}>
@@ -137,7 +137,7 @@ const SuccessBackdrop = ({ open, handleCloseSuccess, addedCategory }) => {
           </Typography>
           <InfoRow label="Danh mục" value={addedCategory?.category} />
           <InfoRow label="Danh mục con" value={addedCategory?.subcategory} />
-        </Box>
+        </Box> */}
 
         <Divider sx={{ my: 2 }} />
 
@@ -168,9 +168,10 @@ const SuccessBackdrop = ({ open, handleCloseSuccess, addedCategory }) => {
             onClick={handleCloseSuccess}
             sx={{
               borderRadius: '15px',
-              minWidth: '50%',
+              minWidth: '100%',
               textTransform: 'none',
-              fontSize: '1em'
+              fontSize: '1em',
+              boxShadow: 'none',
             }}
           >
             Đóng

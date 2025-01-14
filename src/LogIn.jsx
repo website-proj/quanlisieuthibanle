@@ -34,7 +34,7 @@ function LogIn({ onLogin }) {
         localStorage.setItem("jwtToken", data.access_token);
 
         const decodedToken = decodeJwt(data.access_token);
-
+        console.log(decodedToken)
         if (!decodedToken || !decodedToken.role) {
           setError("Dữ liệu token không hợp lệ.");
           return;
@@ -48,7 +48,7 @@ function LogIn({ onLogin }) {
 
         const userRole = decodedToken.role;
 
-        if (userRole === "SuperAdmin") {
+        if (userRole === "SuperAdmin" || userRole === "Admin") {
           onLogin();
           navigate("/dashboard");
         } else {

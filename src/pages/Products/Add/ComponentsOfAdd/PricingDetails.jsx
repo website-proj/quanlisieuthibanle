@@ -1,32 +1,34 @@
 import React from 'react';
-import { Box, Typography, TextField, FormControl, Select, MenuItem } from '@mui/material';
+import { Box, Typography, TextField, FormControl, Select, MenuItem, FormHelperText } from '@mui/material';
 
 const PricingDetails = ({ formData, errors, handleInputChange }) => {
   return (
     <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', paddingTop: '20px' }}>
-      <Box>
-        <Typography variant="h6" className="add-products-list">Giá nhập</Typography>
-        <TextField
-          fullWidth
-          type="number"
-          placeholder="Nhập giá nhập"
-          value={formData.price}
-          onChange={(e) => handleInputChange('price', Math.max(0, e.target.value))}
-          error={!!errors.price}
-          helperText={errors.price}
-        />
-      </Box>
-
       <Box>
         <Typography variant="h6" className="add-products-list">Giá bán</Typography>
         <TextField
           fullWidth
           type="number"
           placeholder="Nhập giá bán"
-          value={formData.secondaryPrice}
-          onChange={(e) => handleInputChange('secondaryPrice', Math.max(0, e.target.value))}
-          error={!!errors.secondaryPrice}
-          helperText={errors.secondaryPrice}
+          value={formData.sellPrice || 0}
+          onChange={(e) => handleInputChange('sellPrice', Math.max(0, e.target.value))}
+          error={!!errors.sellPrice}
+          helperText={errors.sellPrice}
+          inputProps={{ step: 1000 }} // Tăng/giảm theo 1000
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" className="add-products-list">Giá gốc</Typography>
+        <TextField
+          fullWidth
+          type="number"
+          placeholder="Nhập giá gốc"
+          value={formData.oldPrice || 0}
+          onChange={(e) => handleInputChange('oldPrice', Math.max(0, e.target.value))}
+          error={!!errors.oldPrice}
+          helperText={errors.oldPrice}
+          inputProps={{ step: 1000 }} // Tăng/giảm theo 1000
         />
       </Box>
 
@@ -36,8 +38,8 @@ const PricingDetails = ({ formData, errors, handleInputChange }) => {
           fullWidth
           type="number"
           placeholder="Nhập giảm giá"
-          value={formData.discount}
-          onChange={(e) => handleInputChange('discount', Math.min(100, Math.max(0, e.target.value)))}
+          value={formData.discount || 0}
+          onChange={(e) => handleInputChange('discount', Math.max(0, e.target.value))}
           error={!!errors.discount}
           helperText={errors.discount}
         />
@@ -45,14 +47,15 @@ const PricingDetails = ({ formData, errors, handleInputChange }) => {
 
       <Box>
         <Typography variant="h6" className="add-products-list">Sản phẩm nổi bật</Typography>
-        <FormControl fullWidth>
+        <FormControl fullWidth error={Boolean(errors.featuredProduct)}>
           <Select
-            value={formData.featuredProduct}
+            value={formData.featuredProduct || 'false'}
             onChange={(e) => handleInputChange('featuredProduct', e.target.value)}
           >
-            <MenuItem value="Không">Không</MenuItem>
-            <MenuItem value="Có">Có</MenuItem>
+            <MenuItem value="false">Không</MenuItem>
+            <MenuItem value="true">Có</MenuItem>
           </Select>
+          <FormHelperText>{errors.featuredProduct}</FormHelperText>
         </FormControl>
       </Box>
     </Box>

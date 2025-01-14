@@ -16,20 +16,6 @@
         "quantity": 1,
         "price": 250000,
         "total_price": 250000
-      },
-      {
-        "product_id": "SP001",
-        "product_name": "Áo sơ mi nữ",
-        "quantity": 1,
-        "price": 250000,
-        "total_price": 250000
-      },
-      {
-        "product_id": "SP001",
-        "product_name": "Áo sơ mi nữ",
-        "quantity": 1,
-        "price": 250000,
-        "total_price": 250000
       }
     ],
     "delivery_address": {

@@ -1,3 +1,12 @@
 .add-products-list {
     font-size: 1.05em !important;
 }
+
+.add-container {
+    max-width: 600px; 
+    margin: 0 auto; 
+    padding: 16px; 
+    border: 1px solid #ccc; 
+    border-radius: 8px; 
+    background-color: #f9f9f9; 
+}

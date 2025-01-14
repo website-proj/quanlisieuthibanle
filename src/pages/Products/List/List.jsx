@@ -5,7 +5,6 @@ import ContentCard from "/src/components/ContentCard/ContentCard";
 import Stats from '/src/pages/Products/List/Stats/Stats.jsx'
 import BestSellingProducts from '/src/pages/Products/List/BestSellingProducts/Table.jsx'
 import Products from '/src/pages/Products/List/Products/Table.jsx'
-// import ProductTable from '/src/pages/Products/List/Products/ProductTable.jsx'
 function List() {
   const breadcrumbs = [
     { label: "Tổng quan", link: "/dashboard" },

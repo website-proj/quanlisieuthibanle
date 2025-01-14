@@ -423,7 +423,7 @@ export default function SubcategoryTable() {
           onClose={handleCloseEditBackdrop}
           subcategoryDetails={selectedSubcategoryEdit}
           onSave={handleSaveEditedSubcategory}
-        />;
+        />
 
         <ConfirmDeleteDialog
                 open={openDeleteDialog}

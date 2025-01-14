@@ -3,7 +3,7 @@ import { Box, Button, FormHelperText } from '@mui/material';
 
 const ImageUpload = ({ imagePreview, errors, previewImage }) => {
   return (
-    <Box sx={{ width: '48%', textAlign: 'center', position: 'relative', paddingTop: '2em' }}>
+    <Box sx={{ width: '48%', textAlign: 'center', position: 'relative', paddingTop: '1.8em' }}>
       <input
         type="file"
         id="product-image"
@@ -47,10 +47,10 @@ const ImageUpload = ({ imagePreview, errors, previewImage }) => {
           textTransform: 'none',
           borderRadius: '10px',
           width: '100%',
-          backgroundColor: '#1976d2',
-          '&:hover': {
-            backgroundColor: '#1565c0',
-          },
+          // backgroundColor: '#1976d2',
+          // '&:hover': {
+          //   backgroundColor: '#1565c0',
+          // },
           boxShadow: 'none',
         }}
         onClick={() => document.getElementById('product-image').click()}

@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { Line } from "react-chartjs-2";
 import { saveAs } from "file-saver";
-import dailyData from "./Daily.json";
-import monthlyData from "./Monthly.json";
-import yearlyData from "./Yearly.json";
 import TimeFrameSelector from "/src/components/Chart/TimeFrameSelector";
 import DownloadMenu from "/src/components/Download/CsvJsonPng";
 import {
@@ -18,6 +15,8 @@ import {
   Tooltip,
   Filler,
 } from "chart.js";
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
+import axios from "axios";
 
 ChartJS.register(LineElement, PointElement, LinearScale, Title, CategoryScale, Legend, Tooltip, Filler);
 
@@ -27,39 +26,133 @@ const UserChart = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [downloadAnchorEl, setDownloadAnchorEl] = useState(null);
 
+  const jwtToken = localStorage.getItem("jwtToken");
+
   useEffect(() => {
-    let filteredData;
+    const fetchData = async () => {
+      let filteredData = [];
+      let endpoint = '';
 
-    if (timeFrame === "14days") {
-      filteredData = dailyData.slice(-14);
-    } else if (timeFrame === "12months") {
-      filteredData = monthlyData.slice(-12);
-    } else if (timeFrame === "3years") {
-      filteredData = yearlyData.slice(-3);
-    }
+      try {
+        if (timeFrame === "14days") {
+          endpoint = ENDPOINTS.char.users14days;
+        } else if (timeFrame === "12months") {
+          endpoint = ENDPOINTS.char.users12months;
+        } else if (timeFrame === "3years") {
+          endpoint = ENDPOINTS.char.users3years;
+        }
 
-    setChartData({
-      labels: filteredData.map((item) => item.date),
-      datasets: [
-        {
-          label: "Người dùng",
-          data: filteredData.map((item) => item.users),
-          borderColor: "#6f42c1", // Màu tím đậm cho đường kẻ
-          backgroundColor: "rgba(111, 66, 193, 0.2)", // Màu tím nhạt cho nền
-          fill: true,
-          tension: 0.5,
-        },
-      ],
-    });
+        const response = await axios.get(`${BASE_URL}${endpoint}`, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`
+          }
+        });
+
+        if (response.data.message === "success") {
+          filteredData = Object.entries(response.data.data).map(([date, users]) => ({
+            date,
+            users
+          }));
+
+          // Sắp xếp dữ liệu theo từng loại timeFrame
+          if (timeFrame === "14days") {
+            filteredData.sort((a, b) => {
+              const [dayA, monthA, yearA] = a.date.split("/");
+              const [dayB, monthB, yearB] = b.date.split("/");
+              const dateA = new Date(20 + yearA, monthA - 1, dayA);
+              const dateB = new Date(20 + yearB, monthB - 1, dayB);
+              return dateA - dateB;
+            });
+          } else if (timeFrame === "12months") {
+            filteredData.sort((a, b) => {
+              const [monthA, yearA] = a.date.split("/");
+              const [monthB, yearB] = b.date.split("/");
+              const dateA = new Date(20 + yearA, monthA - 1);
+              const dateB = new Date(20 + yearB, monthB - 1);
+              return dateA - dateB;
+            });
+          } else if (timeFrame === "3years") {
+            filteredData.sort((a, b) => Number(a.date) - Number(b.date));
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        return;
+      }
+
+      setChartData({
+        labels: filteredData.map((item) => item.date),
+        datasets: [
+          {
+            label: "Người đăng ký",
+            data: filteredData.map((item) => item.users),
+            borderColor: "#6f42c1",
+            backgroundColor: "rgba(111, 66, 193, 0.2)",
+            fill: true,
+            tension: 0.5,
+          },
+        ],
+      });
+    };
+
+    fetchData();
   }, [timeFrame]);
 
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "top",
+        labels: {
+          font: {
+            family: "'Poppins', sans-serif",
+            size: 14,
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: timeFrame === "14days" ? "Ngày" : timeFrame === "12months" ? "Tháng" : "Năm",
+        },
+        grid: {
+          display: false,
+        },
+        // ticks: {
+        //   maxRotation: 45,
+        //   minRotation: 45,
+        // },
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Số lượng người đăng ký",
+        },
+        grid: {
+          display: true,
+          color: "rgba(0, 0, 0, 0.1)",
+          drawBorder: true,
+          borderDash: [5, 5],
+        },
+        ticks: {
+          stepSize: 5,
+        },
+      },
+    },
+  };
+
   const handleDownloadCSV = () => {
-    let csv = "Ngày,Số lượng người dùng\n";
+    let csv = "Ngày,Số lượng người đăng ký\n";
     chartData.labels.forEach((label, index) => {
       csv += `${label},${chartData.datasets[0].data[index]}\n`;
     });
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, "so_luong_nguoi_dung.csv");
+    const bom = "\uFEFF";
+    const blob = new Blob([bom + csv], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "so_luong_nguoi_dang_ky.csv");
   };
 
   const handleDownloadJSON = () => {
@@ -68,13 +161,13 @@ const UserChart = () => {
       users: chartData.datasets[0].data[index],
     }));
     const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: "application/json" });
-    saveAs(blob, "so_luong_nguoi_dung.json");
+    saveAs(blob, "so_luong_nguoi_dang_ky.json");
   };
 
   const handleDownloadPNG = () => {
     const canvas = document.querySelector("canvas");
     canvas.toBlob((blob) => {
-      saveAs(blob, "bieu_do_nguoi_dung.png");
+      saveAs(blob, "bieu_do_nguoi_dang_ky.png");
     });
   };
 
@@ -94,7 +187,7 @@ const UserChart = () => {
   return (
     <Box>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h6">Số lượng người dùng</Typography>
+        <Typography variant="h6">Số lượng người đăng ký</Typography>
         <Box display="flex" gap={2}>
           <TimeFrameSelector
             timeFrame={timeFrame}
@@ -118,49 +211,7 @@ const UserChart = () => {
         {chartData.labels && chartData.labels.length > 0 ? (
           <Line
             data={chartData}
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  position: "top",
-                  labels: {
-                    font: {
-                      family: "'Poppins', sans-serif",
-                      size: 14,
-                    },
-                  },
-                },
-              },
-              scales: {
-                x: {
-                  title: {
-                    display: true,
-                    text: timeFrame === "14days" ? "Ngày" : timeFrame === "12months" ? "Tháng" : "Năm",
-                  },
-                  grid: {
-                    display: false,
-                  },
-                },
-                y: {
-                  beginAtZero: true,
-                  title: {
-                    display: true,
-                    text: "Số lượng người dùng",
-                  },
-                  ticks: {
-                    stepSize: 500,
-                  },
-                  grid: {
-                    display: true,
-                    drawBorder: true,
-                    drawOnChartArea: true,
-                    color: "rgba(0, 0, 0, 0.1)",
-                    borderDash: [5, 5],
-                  },
-                },
-              },
-            }}
+            options={chartOptions}
           />
         ) : (
           <Typography>Đang tải dữ liệu...</Typography>

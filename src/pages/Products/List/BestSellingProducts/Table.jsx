@@ -19,6 +19,8 @@ import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import CategorySelect from "./CategorySelect"; 
 import SearchField from "./SearchField"; 
 import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
+import ProductDetails from "/src/pages/Products/List/Products/ViewProducts.jsx";
+import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx";
 
 function BestSellingProductsTable() {
   const [products, setProducts] = useState([]);
@@ -29,6 +31,11 @@ function BestSellingProductsTable() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderDirection, setOrderDirection] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");
+  const [openBackdropView, setOpenBackdropView] = useState(false);
+  const [currentProductId, setCurrentProductId] = useState(null); 
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [parentCategories, setParentCategories] = useState([]); 
 
   const jwtToken = localStorage.getItem("jwtToken")
   useEffect(() => {
@@ -46,7 +53,6 @@ function BestSellingProductsTable() {
         return response.json();
       })
       .then((data) => {
-        // Check if the expected fields exist
         if (
           data &&
           data.message === "products best seller" &&
@@ -54,6 +60,11 @@ function BestSellingProductsTable() {
         ) {
           setProducts(data.data);
           setFilteredProducts(data.data);
+
+          const uniqueParentCategories = [
+            ...new Set(data.data.map((product) => product["Parent Category of Product"].category_name)),
+          ];
+          setParentCategories(uniqueParentCategories);
         } else {
           console.error("Unexpected API response structure:", data);
           throw new Error("Unexpected API response structure");
@@ -80,12 +91,12 @@ function BestSellingProductsTable() {
   const filterData = (searchValue, categoryValue) => {
     let filtered = products;
 
-    // Filter by category
     if (categoryValue) {
-      filtered = filtered.filter((product) => product["Category of product"].category_name === categoryValue);
+      filtered = filtered.filter(
+        (product) => product["Parent Category of Product"].category_name === categoryValue
+      );
     }
 
-    // Filter by search value
     if (searchValue) {
       filtered = filtered.filter((product) => {
         const nameMatch = product.product.name.toLowerCase().includes(searchValue);
@@ -164,6 +175,49 @@ function BestSellingProductsTable() {
     return `${day}/${month}/${year}`;
   };
 
+
+  const handleViewDetails = (productId) => {
+    setCurrentProductId(productId);
+    setOpenBackdropView(true);
+  };
+
+  const handleCloseDetails = () => {
+    setCurrentProductId(null);
+    setOpenBackdropView(false);
+  };
+
+  const handleDeleteProduct = (productId) => {
+    setProductToDelete(productId);
+    setOpenDeleteDialog(true);
+  };
+
+  const confirmDelete = () => {
+    if (productToDelete) {
+      const jwtToken = localStorage.getItem("jwtToken");
+      fetch(`${BASE_URL}${ENDPOINTS.products.deleteProduct}${productToDelete}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          setProducts((prevProducts) =>
+            prevProducts.filter((product) => product.product.product_id !== productToDelete)
+          );
+          setFilteredProducts((prevFiltered) =>
+            prevFiltered.filter((product) => product.product.product_id !== productToDelete)
+          );
+          setOpenDeleteDialog(false);
+          setProductToDelete(null);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi xóa sản phẩm:", error.message);
+        });
+    }
+  };
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
@@ -173,7 +227,7 @@ function BestSellingProductsTable() {
         <CategorySelect
           category={category}
           onCategoryChange={handleCategoryChange}
-          uniqueCategories={uniqueCategories}
+          uniqueCategories={parentCategories}
         />
         <SearchField search={search} onSearchChange={handleSearch} />
       </Box>
@@ -196,7 +250,7 @@ function BestSellingProductsTable() {
             <TableHead>
               <TableRow className="table-header">
                 <TableCell sx={{ textAlign: "center" }}>Hình ảnh</TableCell>
-                {[{ label: "Tên sản phẩm", key: "name" }, { label: "Danh mục", key: "category" }, { label: "Hết hạn", key: "expiration_date" }, { label: "Giá", key: "price" }, { label: "Đã bán", key: "sold" }].map((column) => (
+                {[{ label: "Tên sản phẩm", key: "name" }, { label: "Danh mục con", key: "category" }, { label: "Hết hạn", key: "expiration_date" }, { label: "Giá", key: "price" }, { label: "Đã bán", key: "sold" }].map((column) => (
                   column.key !== "image" && column.key !== "functions" ? (
                     <TableCell key={column.key} sx={{ textAlign: "center" }}>
                       <TableSortLabel
@@ -223,20 +277,23 @@ function BestSellingProductsTable() {
                     <img src={product.product.image} alt={product.product.name} style={{ width: "50px", height: "50px", borderRadius: "10px" }} />
                   </TableCell>
                   <TableCell sx={{ width: "200px" }}>{product.product.name}</TableCell>
-                  <TableCell sx={{ width: "150px" }}>{product["Category of product"].category_name}</TableCell>
+                  <TableCell sx={{ width: "200px" }}>{product["Category of product"].category_name}</TableCell>
                   <TableCell sx={{  width: "150px" }}>{formatDate(product.product.expiration_date)}</TableCell>
                   <TableCell sx={{ textAlign: "center", width: "20px" }}>{product.product.price.toString().replace(/\./g, ",")}</TableCell>
                   <TableCell sx={{ textAlign: "center", width: "150px" }}>{product.sold}</TableCell>
                   <TableCell sx={{ textAlign: "center", width: "200px" }}>
-                    <IconButton color="info">
+                    <IconButton color="info" onClick={() => handleViewDetails(product.product.product_id)}>
                       <AiOutlineEye />
                     </IconButton>
                     <IconButton sx={{ color: "green" }}>
                       <AiOutlineEdit />
                     </IconButton>
-                    <IconButton sx={{ color: "red" }}>
-                      <AiOutlineDelete />
-                    </IconButton>
+                    <IconButton
+                        sx={{ color: "red" }}
+                        onClick={() => handleDeleteProduct(product.product.product_id)} // Truyền đúng product_id
+                      >
+                        <AiOutlineDelete />
+                      </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
@@ -259,6 +316,13 @@ function BestSellingProductsTable() {
           labelDisplayedRows={({ from, to, count }) => `${from}-${to} trên ${count}`}
         />
       </Box>
+
+      <ProductDetails productId={currentProductId} onClose={handleCloseDetails} />
+      <ConfirmDeleteDialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+        onConfirm={confirmDelete}
+      />
     </Box>
   );
 }

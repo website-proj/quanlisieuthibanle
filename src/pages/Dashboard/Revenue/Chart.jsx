@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { Line } from "react-chartjs-2";
 import { saveAs } from "file-saver";
-import dailyData from "./RevenueDaily.json";
-import monthlyData from "./RevenueMonthly.json";
-import yearlyData from "./RevenueYearly.json";
 import TimeFrameSelector from "/src/components/Chart/TimeFrameSelector";
 import DownloadMenu from "/src/components/Download/CsvJsonPng";
 import {
@@ -18,6 +15,7 @@ import {
   Legend,
   Tooltip,
 } from "chart.js";
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
 
 ChartJS.register(LineElement, BarElement, PointElement, LinearScale, Title, CategoryScale, Legend, Tooltip);
 
@@ -27,40 +25,46 @@ const Chart = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [downloadAnchorEl, setDownloadAnchorEl] = useState(null);
 
-  useEffect(() => {
-    let filteredData;
+  const jwtToken = localStorage.getItem("jwtToken");
 
-    if (timeFrame === "14days") {
-      filteredData = dailyData.slice(-14);
-    } else if (timeFrame === "12months") {
-      filteredData = monthlyData.slice(-12);
-    } else if (timeFrame === "3years") {
-      filteredData = yearlyData.slice(-3);
-    }
+  const fetchData = async (timeFrame) => {
+    const endpointsMap = {
+      "14days": [ENDPOINTS.char.revenue14days, ENDPOINTS.char.cost14days, ENDPOINTS.char.profit14days],
+      "12months": [ENDPOINTS.char.revenue12months, ENDPOINTS.char.cost12months, ENDPOINTS.char.profit12months],
+      "3years": [ENDPOINTS.char.revenue3years, ENDPOINTS.char.cost3years, ENDPOINTS.char.profit3years],
+    };
 
-    filteredData.sort((a, b) => {
-      const [dayA, monthA, yearA] = a.date.split("/").map(Number);
-      const [dayB, monthB, yearB] = b.date.split("/").map(Number);
+    const [revenueEndpoint, costEndpoint, profitEndpoint] = endpointsMap[timeFrame];
+
+    const fetchApiData = async (endpoint) => {
+      const response = await fetch(`${BASE_URL}${endpoint}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${jwtToken}` },
+      });
+      const json = await response.json();
+      return json.data;
+    };
+
+    const [revenueData, costData, profitData] = await Promise.all([
+      fetchApiData(revenueEndpoint),
+      fetchApiData(costEndpoint),
+      fetchApiData(profitEndpoint),
+    ]);
+
+    const sortedKeys = Object.keys(revenueData).sort((a, b) => {
+      const [dayA, monthA, yearA] = a.split("/").map(Number);
+      const [dayB, monthB, yearB] = b.split("/").map(Number);
       if (yearA !== yearB) return yearA - yearB;
       if (monthA !== monthB) return monthA - monthB;
       return dayA - dayB;
     });
 
     setChartData({
-      labels: filteredData.map((item) => {
-        const dateParts = item.date.split("/");
-        if (timeFrame === "14days") {
-          return `${dateParts[0]}/${dateParts[1]}/${dateParts[2]}`;
-        } else if (timeFrame === "12months") {
-          return `${dateParts[0]}/${dateParts[1]}`;
-        } else {
-          return dateParts[0];
-        }
-      }),
+      labels: sortedKeys,
       datasets: [
         {
           label: "Doanh thu",
-          data: filteredData.map((item) => item.revenue / 1000000),
+          data: sortedKeys.map((key) => revenueData[key] / 1000000),
           borderColor: "#4caf50",
           fill: false,
           type: "line",
@@ -68,7 +72,7 @@ const Chart = () => {
         },
         {
           label: "Chi phí",
-          data: filteredData.map((item) => item.cost / 1000000),
+          data: sortedKeys.map((key) => costData[key] / 1000000),
           borderColor: "#ff655a",
           fill: false,
           type: "line",
@@ -76,12 +80,16 @@ const Chart = () => {
         },
         {
           label: "Lợi nhuận",
-          data: filteredData.map((item) => item.profit / 1000000),
+          data: sortedKeys.map((key) => profitData[key] / 1000000),
           backgroundColor: "#2999f0",
           type: "bar",
         },
       ],
     });
+  };
+
+  useEffect(() => {
+    fetchData(timeFrame);
   }, [timeFrame]);
 
   const handleDownloadCSV = () => {
@@ -89,7 +97,8 @@ const Chart = () => {
     chartData.labels.forEach((label, index) => {
       csv += `${label},${chartData.datasets[0].data[index]},${chartData.datasets[1].data[index]},${chartData.datasets[2].data[index]}\n`;
     });
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const bom = "\uFEFF";
+    const blob = new Blob([bom + csv], { type: "text/csv;charset=utf-8;" });
     saveAs(blob, "du_lieu_doanh_thu.csv");
   };
 
@@ -164,17 +173,28 @@ const Chart = () => {
                     },
                   },
                 },
+                tooltip: {
+                  callbacks: {
+                    title: (context) => `Ngày: ${context[0].label}`,
+                    label: (context) => {
+                      const datasetLabel = context.dataset.label || "";
+                      const value = context.raw || 0;
+                      return `${datasetLabel}: ${value} triệu VND`;
+                    },
+                  },
+                },
               },
               scales: {
                 x: {
                   beginAtZero: true,
                   title: {
                     display: true,
-                    text: timeFrame === "14days" ? "Thời gian (ngày)" : timeFrame === "12months" ? "Thời gian (tháng)" : "Thời gian (năm)",
-                    font: {
-                      family: "'Poppins', sans-serif",
-                      size: 16,
-                    },
+                    text:
+                      timeFrame === "14days"
+                        ? "Thời gian (ngày)"
+                        : timeFrame === "12months"
+                        ? "Thời gian (tháng)"
+                        : "Thời gian (năm)",
                   },
                   grid: {
                     display: false,
@@ -207,4 +227,3 @@ const Chart = () => {
 };
 
 export default Chart;
-

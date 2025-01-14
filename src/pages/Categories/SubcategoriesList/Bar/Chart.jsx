@@ -82,50 +82,71 @@ function Chart() {
       }
     : null;
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-        labels: {
-          font: {
-            size: 14,
-            family: "Roboto, sans-serif",
+    const options = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "top",
+          labels: {
+            font: {
+              size: 14,
+              family: "Roboto, sans-serif",
+            },
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              const value = context.raw;
+              let formattedValue;
+              
+              if (value >= 1_000_000_000) {
+                formattedValue = (value / 1_000_000_000).toFixed(2) + ' tỷ VNĐ'; 
+              } else if (value >= 1_000_000) {
+                formattedValue = (value / 1_000_000).toFixed(2) + ' triệu VNĐ'; 
+              } else if (value >= 1_000) {
+                formattedValue = (value / 1_000).toFixed(2) + ' nghìn VNĐ'; 
+              } else {
+                formattedValue = value.toLocaleString("vi-VN") + ' VNĐ'; 
+              }
+    
+              return `${context.label}: ${formattedValue}`;
+            },
           },
         },
       },
-    },
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: "Danh mục con",
-          font: {
-            size: 14,
-            family: "Roboto, sans-serif",
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: "Danh mục con",
+            font: {
+              size: 14,
+              family: "Roboto, sans-serif",
+            },
+          },
+          grid: {
+            display: false,
           },
         },
-        grid: {
-          display: false,
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: "Doanh thu (VNĐ)",
-          font: {
-            size: 14,
-            family: "Roboto, sans-serif",
+        y: {
+          title: {
+            display: true,
+            text: "Doanh thu (VNĐ)",
+            font: {
+              size: 14,
+              family: "Roboto, sans-serif",
+            },
+          },
+          grid: {
+            display: true,
+            color: "#e0e0e0",
+            drawBorder: false,
           },
         },
-        grid: {
-          display: true,
-          color: "#e0e0e0",
-          drawBorder: false,
-        },
       },
-    },
-  };
+    };
+    
 
   const handleDownloadCSV = () => {
     let csv = "Danh mục con,Doanh thu\n";

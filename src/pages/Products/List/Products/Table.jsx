@@ -1,112 +1,113 @@
-import React, { useState, useEffect, useRef } from "react";
-import './Table.css'
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
-  Typography,
-  FormControl,
-  Select,
-  MenuItem,
-  TextField,
-  Button,
-  Backdrop,
-  Alert,
-  CircularProgress,
-  TableSortLabel,
-  TablePagination,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography, FormControl, Select, MenuItem, TextField, Button, TableSortLabel, TablePagination, Alert, Backdrop, InputLabel  } from "@mui/material";
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
-import AddProducts from "/src/pages/Products/Add/Add.jsx";
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
+import axios from "axios";
+import ProductDetails from "./ViewProducts.jsx";
+import AddProducts from '/src/pages/Products/Add/Add.jsx';
+import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx";
 
 export default function ProductTable() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState({});
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [subcategories, setSubcategories] = useState([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [openBackdrop, setOpenBackdrop] = useState(false);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortField, setSortField] = useState("name");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
-  const categoryRef = useRef(null);
+  const [openBackdrop, setOpenBackdrop] = useState(false);
+  const [openBackdropView, setOpenBackdropView] = useState(false);
+  const [currentProductId, setCurrentProductId] = useState(null); 
+  const jwtToken = localStorage.getItem("jwtToken");
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [noProducts, setNoProducts] = useState(false); 
+
 
   useEffect(() => {
-    fetch("/src/pages/Products/List/Products/Products.json")
-      .then((response) => response.json())
-      .then((data) => {
-        setCategories(data.categories);
-      })
-      .catch((error) => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}${ENDPOINTS.products.allProducts}`, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        });
+        if (response.data.message === "success query") {
+          setCategories(response.data.data);
+        }
+      } catch (error) {
         console.error("Error loading data:", error);
-      });
-  }, []);
+      }
+    };
+    fetchProducts();
+  }, [jwtToken]);
 
   const handleCategoryChange = (event) => {
     const selected = event.target.value;
     setSelectedCategory(selected);
-    const category = categories.find((cat) => cat.category === selected);
-    setSubcategories(category ? category.subcategories : []);
     setSelectedSubcategory("");
     setProducts([]);
+    setNoProducts(false);
   };
 
   const handleSubcategoryChange = (event) => {
     const selected = event.target.value;
     setSelectedSubcategory(selected);
-    const category = categories.find((cat) => cat.category === selectedCategory);
-    const subcategory = category?.subcategories.find(
-      (sub) => sub.subcategory === selected
-    );
-    setProducts(subcategory ? subcategory.products : []);
+    if (categories[selectedCategory] && selected) {
+      const productsForSubcategory = categories[selectedCategory][selected] || [];
+      setProducts(productsForSubcategory);
+      setNoProducts(productsForSubcategory.length === 0); 
+    }
+  };
+  
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("vi-VN");
+  };
+
+  const handleViewDetails = (productId) => {
+    setCurrentProductId(productId);
+    setOpenBackdropView(true);
+  };
+
+  const handleCloseDetails = () => {
+    setCurrentProductId(null);
+    setOpenBackdropView(false);
   };
 
   const filteredProducts = products.filter((prod) =>
-    Object.values(prod).some((value) =>
-      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    prod.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    prod.name_brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    prod.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
 
-  const sortedProducts = filteredProducts.sort((a, b) => {
-    if (sortField === "price" || sortField === "quantity") {
-      return sortOrder === "asc"
-        ? a[sortField] - b[sortField]
-        : b[sortField] - a[sortField];
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    let aValue = a[sortField];
+    let bValue = b[sortField];
+
+    if (sortField === "price") {
+      aValue = parseFloat(a.price);
+      bValue = parseFloat(b.price);
+    } else if (sortField === "expiration_date") {
+      aValue = new Date(a.expiration_date);
+      bValue = new Date(b.expiration_date);
+    }
+
+    if (sortOrder === "asc") {
+      return aValue > bValue ? 1 : -1;
     } else {
-      return sortOrder === "asc"
-        ? a[sortField].localeCompare(b[sortField])
-        : b[sortField].localeCompare(a[sortField]);
+      return aValue < bValue ? 1 : -1;
     }
   });
 
-  const handleAddProduct = () => {
-    setOpenBackdrop(true);
-  };
-
-  const handleCloseBackdrop = () => {
-    setOpenBackdrop(false);
-  };
+  const paginatedProducts = sortedProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const handleSort = (field) => {
     setSortField(field);
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
-
-  const paginatedProducts = sortedProducts.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
-
-  const totalProducts = filteredProducts.length;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -116,7 +117,37 @@ export default function ProductTable() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  
+  const handleDeleteProduct = (productId) => {
+      setProductToDelete(productId);
+      setOpenDeleteDialog(true);
+    };
+  
+    const confirmDelete = async () => {
+      if (productToDelete) {
+        try {
+          const response = await axios.delete(
+            `${BASE_URL}${ENDPOINTS.products.deleteProduct}${productToDelete}`,
+            {
+              headers: {
+                Authorization: `Bearer ${jwtToken}`,
+              },
+            }
+          );
+    
+          if (response.status === 200) {
+            setProducts((prevProducts) =>
+              prevProducts.filter((prod) => prod.product_id !== productToDelete)
+            );
+            setOpenDeleteDialog(false);
+            setProductToDelete(null);
+          }
+        } catch (error) {
+          console.error("Lỗi khi xóa sản phẩm:", error.message);
+        }
+      }
+    };
+    
   return (
     <Box>
       <Box
@@ -136,7 +167,7 @@ export default function ProductTable() {
             minWidth: "20%",
             boxShadow: "none",
           }}
-          onClick={handleAddProduct}
+          onClick={() => setOpenBackdrop(true)}
         >
           Thêm sản phẩm
         </Button>
@@ -144,48 +175,61 @@ export default function ProductTable() {
 
       <Box display="flex" gap={2} sx={{ marginBottom: 3 }}>
         <FormControl fullWidth>
-          <TextField
+        <InputLabel>Danh mục</InputLabel>
+          <Select
             select
             label="Chọn danh mục"
             value={selectedCategory}
             onChange={handleCategoryChange}
             sx={{ borderRadius: "10px" }}
-            // InputLabelProps={{
-            //   shrink: true,
-            // }}
+            MenuProps={{
+              PaperProps: {
+                style: { 
+                  maxHeight: 200, 
+                  overflowY: 'auto',
+                },
+              },
+            }}
           >
-            <MenuItem value="" disabled>
+            <MenuItem value="" disabled >
               Chọn danh mục
             </MenuItem>
-            {categories.map((item) => (
-              <MenuItem key={item.category} value={item.category}>
-                {item.category}
+            {Object.keys(categories).map((category) => (
+              <MenuItem key={category} value={category} >
+                {category}
               </MenuItem>
             ))}
-          </TextField>
+          </Select>
         </FormControl>
 
         <FormControl fullWidth>
-          <TextField
+          <InputLabel >Danh mục con</InputLabel>
+          <Select
             select
             label="Chọn danh mục con"
             value={selectedSubcategory}
             onChange={handleSubcategoryChange}
             sx={{ borderRadius: "10px" }}
-            // InputLabelProps={{
-            //   shrink: true,
-            // }}
             disabled={!selectedCategory}
+            MenuProps={{
+              PaperProps: {
+                style: { 
+                  maxHeight: 200, 
+                  overflowY: 'auto',
+                },
+              },
+            }}
           >
             <MenuItem value="" disabled>
               Chọn danh mục con
             </MenuItem>
-            {subcategories.map((item) => (
-              <MenuItem key={item.subcategory} value={item.subcategory}>
-                {item.subcategory}
-              </MenuItem>
-            ))}
-          </TextField>
+            {selectedCategory &&
+              Object.keys(categories[selectedCategory] || {}).map((subcategory) => (
+                <MenuItem key={subcategory} value={subcategory}>
+                  {subcategory}
+                </MenuItem>
+              ))}
+          </Select>
         </FormControl>
 
         <TextField
@@ -197,20 +241,20 @@ export default function ProductTable() {
         />
       </Box>
 
-        <TableContainer
-          component={Paper}
-          sx={{
-            borderRadius: "15px",
-            boxShadow: "none",
-            fontFamily: "Roboto",
-            minHeight: "400px", 
-          }}
-        >
+      <TableContainer
+        component={Paper}
+        sx={{
+          borderRadius: "15px",
+          boxShadow: "none",
+          fontFamily: "Roboto",
+          minHeight: "400px",
+        }}
+      >
         <Table>
           <TableHead>
             <TableRow className="table-header">
-              <TableCell  sx={{textAlign: "center"}}>Hình ảnh</TableCell>
-              <TableCell sx={{textAlign: "center"}}>
+              <TableCell sx={{textAlign: "center" }}>Hình ảnh</TableCell>
+              <TableCell sx={{ textAlign: "center" }}>
                 <TableSortLabel
                   active={sortField === "name"}
                   direction={sortOrder}
@@ -219,16 +263,16 @@ export default function ProductTable() {
                   Tên sản phẩm
                 </TableSortLabel>
               </TableCell>
-              <TableCell sx={{textAlign: "center"}}>
+              <TableCell sx={{ textAlign: "center" }}>
                 <TableSortLabel
-                  active={sortField === "expiryDate"}
+                  active={sortField === "expiration_date"}
                   direction={sortOrder}
-                  onClick={() => handleSort("expiryDate")}
+                  onClick={() => handleSort("expiration_date")}
                 >
                   Ngày hết hạn
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{textAlign: "center"}}>
+              <TableCell sx={{ textAlign: "center" }}>
                 <TableSortLabel
                   active={sortField === "price"}
                   direction={sortOrder}
@@ -237,16 +281,16 @@ export default function ProductTable() {
                   Giá bán
                 </TableSortLabel>
               </TableCell>
-              <TableCell sx={{textAlign: "center"}}>
+              <TableCell sx={{ textAlign: "center" }}>
                 <TableSortLabel
-                  active={sortField === "quantity"}
+                  active={sortField === "stock_quantity"}
                   direction={sortOrder}
-                  onClick={() => handleSort("quantity")}
+                  onClick={() => handleSort("stock_quantity")}
                 >
                   Số lượng
                 </TableSortLabel>
               </TableCell>
-              <TableCell sx={{textAlign: "center"}}>Chức năng</TableCell>
+              <TableCell sx={{ textAlign: "center" }}>Chức năng</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -266,10 +310,16 @@ export default function ProductTable() {
                   </Alert>
                 </TableCell>
               </TableRow>
+            ) : noProducts ? (
+                <TableCell colspan={6} sx={{textAlign: "center"}}>
+                  <Alert severity="info" sx={{borderRadius: "10px"}}>
+                    Không có sản phẩm cho danh mục và danh mục con đã chọn.
+                  </Alert>
+                </TableCell>
             ) : (
-              paginatedProducts.map((prod, index) => (
-                <TableRow key={index}>
-                  <TableCell sx={{ textAlign: "center" }}>
+              paginatedProducts.map((prod) => (
+                <TableRow key={prod.product_id}>
+                  <TableCell sx={{width: '100px', textAlign: "center" }}>
                     <img
                       src={prod.image}
                       alt={prod.name}
@@ -281,26 +331,34 @@ export default function ProductTable() {
                       }}
                     />
                   </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{prod.name}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{prod.expiryDate}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{prod.price}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{prod.quantity}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
-                    <IconButton color="info">
-                      <AiOutlineEye />
+                  <TableCell sx={{width: '200px', textAlign: "center" }}>{prod.name}</TableCell>
+                  <TableCell sx={{width: '150px', textAlign: "center" }}>
+                    {formatDate(prod.expiration_date)}
+                  </TableCell>
+                  <TableCell sx={{width: '150px', textAlign: "center" }}>
+                    {prod.price}
+                  </TableCell>
+                  <TableCell sx={{width: '100px', textAlign: "center" }}>
+                    {prod.stock_quantity}
+                  </TableCell>
+                  <TableCell sx={{width: '200px', textAlign: "center" }}>
+                  <IconButton color="info" onClick={() => handleViewDetails(prod.product_id)}>
+                  <AiOutlineEye />
                     </IconButton>
                     <IconButton sx={{ color: "green" }}>
                       <AiOutlineEdit />
                     </IconButton>
-                    <IconButton sx={{ color: "red" }}>
-                      <AiOutlineDelete />
-                    </IconButton>
+                    <IconButton
+                        sx={{ color: "red" }}
+                        onClick={() => handleDeleteProduct(prod.product_id)} 
+                      >
+                        <AiOutlineDelete />
+                      </IconButton>
                   </TableCell>
                 </TableRow>
               ))
             )}
           </TableBody>
-
         </Table>
       </TableContainer>
 
@@ -313,11 +371,13 @@ export default function ProductTable() {
             marginTop: "16px",
           }}
         >
-          <Typography variant="subtitle2">Tổng số sản phẩm: {totalProducts}</Typography>
+          <Typography variant="subtitle2">
+            Tổng số sản phẩm: {filteredProducts.length}
+          </Typography>
           <TablePagination
             rowsPerPageOptions={[5, 10, 15]}
             component="div"
-            count={totalProducts}
+            count={filteredProducts.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -330,40 +390,50 @@ export default function ProductTable() {
         </Box>
       )}
 
-<Backdrop
-  open={openBackdrop}
-  onClick={() => setOpenBackdrop(false)}
-  sx={{
-    zIndex: (theme) => theme.zIndex.drawer + 1,
-    backdropFilter: "blur(3px)",
-    position: "fixed", 
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    overflowY: "auto", 
-    borderRadius: 2,
+      <Backdrop
+        open={openBackdrop}
+        onClick={() => setOpenBackdrop(false)}
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          backdropFilter: "blur(3px)",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          overflowY: "auto",
+          borderRadius: 2,
+        }}
+      >
+        <Paper
+          onClick={(e) => e.stopPropagation()}
+          sx={{
+            position: 'fixed',
+            padding: 2,
+            width: "60%",
+            height: "90%",
+            margin: "auto",
+            borderRadius: 5,
+            boxShadow: 0,
+            overflowY: "auto",
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#ccc transparent'
+          }}
+        >
+          <Typography variant="h6" sx={{ textAlign: 'center', marginBottom: '-1.1em' }}>
+            Thông tin sản phẩm
+          </Typography>
+          <AddProducts onClose={() => setOpenBackdrop(false)} />
+        </Paper>
+      </Backdrop>
 
-  }}
->
-    <Paper
-    onClick={(e) => e.stopPropagation()}
-    sx={{
-      padding: 2,
-      maxWidth: '60%',
-      width: "90%",
-      margin: "auto",
-      borderRadius: 2,
-      boxShadow: 3,
-      maxHeight: "90%", 
-      overflowY: "auto", 
-    }}
-  >
-  <Typography variant="h6" sx={{textAlign: 'center', marginBottom: '-1.1em'}}>Thông tin sản phẩm</Typography>
-    <AddProducts onClose={() => setOpenBackdrop(false)} />
-  </Paper>
-</Backdrop>
-
+      <ConfirmDeleteDialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+        onConfirm={confirmDelete}
+      />
+      
+        <ProductDetails productId={currentProductId} onClose={handleCloseDetails} />
     </Box>
   );
-};
+}
