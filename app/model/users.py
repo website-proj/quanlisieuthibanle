@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, DateTime ,  Enum
+from sqlalchemy import Column, String, DateTime, Enum, func
 from datetime import datetime
 from sqlalchemy.orm import relationship
 from app.model.model_base import Base
@@ -17,8 +17,9 @@ class User(Base):
     gender = Column(Enum("Male" , "Female" , "Other" ,name = "gender") , nullable = True)
     account_type = Column(Enum("Admin" , "Customer" , "SuperAdmin" , name = "account_type"), default="Customer")
     membership_status = Column(Enum("Gold" , "Diamond" , "Silver", name="membership_status_enum"), default="Silver")
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at =  Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime,server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(),onupdate=func.now())
+
     #relationship
     cart = relationship("Cart" , back_populates="user")
     orders = relationship("Orders" , back_populates="user")

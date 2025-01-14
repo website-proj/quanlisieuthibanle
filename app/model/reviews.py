@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Column, String, ForeignKey, Integer, Text, DateTime
+from sqlalchemy import Column, String, ForeignKey, Integer, Text, DateTime, func
 from sqlalchemy.orm import relationship
 
 from app.model.model_base import Base
@@ -15,7 +15,7 @@ class Reviews(Base):
     order_id = Column(String(50) , ForeignKey('orders.order_id',ondelete='CASCADE') , nullable = False)
     rating = Column(Integer)
     comment = Column(Text)
-    review_date = Column(DateTime , default=datetime.utcnow)
+    review_date = Column(DateTime,server_default=func.now())
     # relationship
     products = relationship("Product", back_populates="reviews")
     user = relationship("User", back_populates="reviews")

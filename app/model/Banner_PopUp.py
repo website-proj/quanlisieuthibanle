@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Column, String, Enum, Integer, DateTime, Text
+from sqlalchemy import Column, String, Enum, Integer, DateTime, Text, func
 
 from app.model.model_base import Base
 
@@ -24,7 +24,7 @@ class Popup(Base):
     status = Column(Enum("Active" , "Inactive", name = "popup_status") , nullable = False)
     start_date = Column(DateTime , default=datetime.utcnow)
     end_date = Column(DateTime )
-    date_created = Column(DateTime , default=datetime.utcnow)
-    date_updated= Column(DateTime , default=datetime.utcnow)
+    date_created =  Column(DateTime,server_default=func.now())
+    date_updated= Column(DateTime, server_default=func.now(),onupdate=func.now())
 
 
