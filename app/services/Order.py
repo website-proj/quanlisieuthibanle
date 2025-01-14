@@ -90,7 +90,17 @@ class OrderService:
             Order , Order.order_id == OrderItems.order_id
         ).join(
             Product , Product.product_id == OrderItems.product_id
-        )
+        ).filter(Cart.user_id == current_user.user_id).all()
+        result  = {}
+        for item , order , product in data:
+            order_id = order.order_id
+            if order_id not in result:
+                result[order_id] = {
+                    "product" : []
+                }
+            if not product :
+                result[order_id]["product"].append(product)
+        return result
     @staticmethod
     def detail_order(order_id , db : Session) :
         order_items = db.query(OrderItems).filter(OrderItems.order_id == order_id).all()

@@ -269,7 +269,7 @@ class DataService:
             order_id = order.order_id
             voucher_id = None
             amount = order.total_amount
-            payment_method = "Card"
+            payment_method = "Cash"
             payment_date  = self.random_date(datetime(2024 ,1,6), datetime(2025 ,12,31))
             status = "Successful"
             payment = Payment(
@@ -317,13 +317,12 @@ class DataService:
     def main(self):
         with next(get_db()) as db :
             # self.create_user_data(db)
-            self.create_address_data(db)
             # self.create_order(db)
-            # self.update_origin_price_of_product(db)
+            # self.create_address_data(db)
             # self.add_reviews_data(db)
             # self.add_voucher_data(db)
             # self.add_payment_data(db)
-            # self.cart_data(db)
+            self.cart_data(db)
             # print("hello world")
 if __name__ == '__main__':
     data = DataService()
