@@ -162,10 +162,12 @@ class DataService:
             db.add(user)
             db.commit()
     def create_address_data(self , db:Session):
-        users = db.query(User).all()
-        for user in users :
+        orders = db.query(Orders , User ).join( Orders ,
+            Orders.user_id == User.user_id
+        ).all()
+        for order , user in orders :
             address_id = f"address_{uuid.uuid4().hex[:8]}"
-            user_id = user.user_id
+            user_id = order.user_id
             user_name = user.username
             address_obj  = AddressData()
             address = address_obj.random_address()
@@ -314,11 +316,11 @@ class DataService:
                 db.commit()
     def main(self):
         with next(get_db()) as db :
-            self.create_user_data(db)
-            # self.create_address_data(db)
+            # self.create_user_data(db)
+            self.create_address_data(db)
             # self.create_order(db)
             # self.update_origin_price_of_product(db)
-            self.add_reviews_data(db)
+            # self.add_reviews_data(db)
             # self.add_voucher_data(db)
             # self.add_payment_data(db)
             # self.cart_data(db)

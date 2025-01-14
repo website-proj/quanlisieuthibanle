@@ -128,53 +128,46 @@ class OrderService:
 
     @staticmethod
     def admin_get_all_order(db: Session):
+        # Truy vấn dữ liệu
         order_data = (
-            db.query(Orders, OrderItems, Product, Address , Payment)
+            db.query(Orders, OrderItems, Product, Address, Payment)
             .outerjoin(OrderItems, Orders.order_id == OrderItems.order_id)
             .outerjoin(Product, Product.product_id == OrderItems.product_id)
-            .outerjoinouterjoin(Address, Address.user_id == Orders.user_id)
+            .outerjoin(Address, Address.user_id == Orders.user_id)
             .outerjoin(Payment, Payment.order_id == Orders.order_id)
             .all()
         )
 
-        dic = {}
-        for order, order_items, product, address , payment in order_data:
+        # Tạo dictionary chứa dữ liệu đơn hàng
+        result = {}
+        for order, order_items, product, address, payment in order_data:
             order_id = order.order_id
-            product = {
-                "product_id" : product.product_id,
-                "product_name" : product.name,
-                "quantity" :order_items.quantity,
-                "price" : product.price,
-                "total_amount" : order_items.price
-            }
-            payment  = {
-                "payment_method":payment.payment_method
-            }
-            if order_id not in dic:
-                dic[order_id] = {
-                    "order": order.__dict__,  # Chuyển `order` thành dict
-                    "products": [],  # Danh sách sản phẩm
-                    "address": address.__dict__ if address else None,
-                    "payment" : payment
+
+            # Nếu chưa có order_id trong result, thêm mới
+            if order_id not in result:
+                result[order_id] = {
+                    "order": {k: v for k, v in order.__dict__.items() if k != "_sa_instance_state"},
+                    "products": [],
+                    "address": (
+                        {k: v for k, v in address.__dict__.items() if k != "_sa_instance_state"}
+                        if address else None
+                    ),
+                    "payment": {
+                        "payment_method": payment.payment_method if payment else None
+                    },
                 }
 
-            # Chỉ thêm sản phẩm nếu `product` không phải là `None`
-            if product:
-                dic[order_id]["products"].append(product)
+            # Thêm thông tin sản phẩm nếu tồn tại
+            if product and order_items:
+                result[order_id]["products"].append({
+                    "product_id": product.product_id,
+                    "product_name": product.name,
+                    "quantity": order_items.quantity,
+                    "price": product.price,
+                    "total_amount": order_items.price,
+                })
 
-        # Loại bỏ `_sa_instance_state` khỏi kết quả
-        for order_id, data in dic.items():
-            if "_sa_instance_state" in data["order"]:
-                del data["order"]["_sa_instance_state"]
-
-            if data["address"] and "_sa_instance_state" in data["address"]:
-                del data["address"]["_sa_instance_state"]
-
-            for product in data["products"]:
-                if "_sa_instance_state" in product:
-                    del product["_sa_instance_state"]
-
-        return dic
+        return result
 
     @staticmethod
     def update_order_satatus(order_id : str , Status : str , db : Session):

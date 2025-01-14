@@ -7,12 +7,12 @@ from app.services.Order import OrderService
 from app.utils.responses import ResponseHandler
 
 router = APIRouter()
-@router.get("/" , dependencies= [Depends(check_admin_role)])
+@router.get("/get_all_order" , dependencies= [Depends(check_admin_role)])
 def get_orders(db : Session = Depends(get_db)):
     order = OrderService.admin_get_all_order(db)
 
     return ResponseHandler.success("order response" , order)
-@router.put("/" , dependencies= [Depends(check_admin_role)])
+@router.put("/update_order" , dependencies= [Depends(check_admin_role)])
 def update_order(order_id : str , status : str , db : Session = Depends(get_db)):
     """
     'Processing', 'Delivered', 'Canceled'
