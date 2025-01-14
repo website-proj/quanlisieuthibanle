@@ -52,7 +52,7 @@ class ReviewsService:
     def get_reviews_of_product(product_id : str , db : Session = Depends(get_db),
                                token : str = Depends(AuthService.oauth2_scheme)):
         current_user = AuthService.get_current_user(db , token)
-        reviews = db.query(Reviews).filter(Reviews.product_id == product_id , Reviews.user_id == current_user.user_id).first()
+        reviews = db.query(Reviews).filter(Reviews.product_id == product_id , Reviews.user_id == current_user.user_id).all()
         if not reviews:
             raise HTTPException(status_code=404, detail="Product reviews not found")
         return reviews
