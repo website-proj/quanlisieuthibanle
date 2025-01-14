@@ -81,8 +81,7 @@ async def auth(request: Request, db: Session = Depends(get_db)):
             email = user_info["email"],
             password = hash_password
         )
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
-        return new_user
-    return user
+        token = create_access_token(new_user.email , db)
+        return token
+    token = create_access_token(user.email , db)
+    return {"access_token": token, "token_type": "bearer"}
