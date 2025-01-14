@@ -3,30 +3,54 @@ import { Checkbox } from "@mui/material";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
 import "./style.css";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
+import SummaryApi, { baseURL } from "../../common/SummaryApi";
 
 const Sidebar = () => {
   const [value, setValue] = useState([10000, 500000]);
   const [subcategories, setSubcategories] = useState([]);
   const { categoryName } = useParams(); // Lấy category từ URL
+  const [searchParams] = useSearchParams(); // Lấy các tham số query từ URL
+  const parentId = searchParams.get("parentId");
+  const categoryId = searchParams.get("categoryId");
 
   // Hàm format tiền tệ
   const formatCurrency = (num) => num.toLocaleString("vi-VN") + "đ";
 
+  // Gọi API lấy danh mục sản phẩm
   useEffect(() => {
-    // Fetch dữ liệu subcategories theo categoryName
-    fetch("/API/categories.json") // Gọi API từ file JSON
-      .then((response) => response.json())
-      .then((data) => {
-        const category = data.find((item) => item.name === categoryName); // Tìm kiếm category tương ứng
-        if (category) {
-          setSubcategories(category.subcategories); // Cập nhật subcategories
-        } else {
-          console.error("Category not found");
+    const fetchSubcategories = async () => {
+      try {
+        const response = await fetch(`${baseURL}${SummaryApi.categories.url}`);
+        const data = await response.json();
+
+        // Tìm danh mục cha theo `parentId`
+        const parentCategory = Object.keys(data)
+          .map((parentName) => ({
+            name: parentName,
+            subcategories: data[parentName],
+          }))
+          .find((cat) =>
+            cat.subcategories.some((sub) => sub.parent_category_id === parentId)
+          );
+
+        if (parentCategory) {
+          // Lọc danh mục con nếu có `categoryId`
+          const filteredSubcategories = categoryId
+            ? parentCategory.subcategories.filter(
+                (sub) => sub.category_id === categoryId
+              )
+            : parentCategory.subcategories;
+
+          setSubcategories(filteredSubcategories);
         }
-      })
-      .catch((error) => console.error("Error fetching categories:", error));
-  }, [categoryName]);
+      } catch (error) {
+        console.error("Lỗi khi tải danh mục con:", error);
+      }
+    };
+
+    fetchSubcategories();
+  }, [parentId, categoryId]); // Gọi lại khi `parentId` hoặc `categoryId` thay đổi
 
   return (
     <div className="col1 bg-white p-2 shadow rounded-lg sideBar">
@@ -41,7 +65,7 @@ const Sidebar = () => {
               <li key={idx}>
                 <label className="flex items-center space-x-2">
                   <Checkbox />
-                  <span className="text-sm">{sub}</span>
+                  <span className="text-sm">{sub.category_name}</span>
                 </label>
               </li>
             ))}

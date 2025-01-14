@@ -89,7 +89,9 @@ const Navigation = () => {
                           onMouseLeave={handleMouseLeave}
                           onClick={handleCategoryClick} // Ẩn hộp thoại khi nhấp
                         >
-                          <Link to={`/products/${category.name}`}>
+                          <Link
+                            to={`/products/${category.name}?parentId=${category.subcategories[0]?.parent_category_id}`}
+                          >
                             <Button className="w-full !text-black flex items-center navigationMenu group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
                               <span className="text-left flex-1 group-hover:text-white">
                                 {category.name}
@@ -109,7 +111,7 @@ const Navigation = () => {
                               {category.subcategories.map((sub, idx) => (
                                 <li key={idx}>
                                   <Link
-                                    to={`/products/${category.name}/${sub.category_name}`}
+                                    to={`/products/${category.name}/${sub.category_name}?categoryId=${sub.category_id}`}
                                   >
                                     <Button className="w-full !text-black text-left nav_menu">
                                       {sub.category_name}{" "}

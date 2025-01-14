@@ -54,6 +54,10 @@ const SummaryApi = {
     url: "/api/product/search",
     method: "get",
   },
+  relevantProduct: {
+    url: "/api/product/relevant_products",
+    method: "get",
+  },
   addToCart: {
     url: "/api/cart/",
     method: "post",

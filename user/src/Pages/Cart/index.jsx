@@ -110,7 +110,7 @@ const Cart = () => {
   };
 
   // Hàm tăng số lượng
-  // Hàm tăng số lượng
+
   const increaseQuantity = async (id) => {
     const updatedItem = cartItems.find((item) => item.product_id === id);
     const newQuantity = updatedItem.quantity + 1;
