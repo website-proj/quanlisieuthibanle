@@ -127,7 +127,8 @@ function Reviews({ productId }) {
             </div>
           ))}
         </div>
-        <Cmt />
+        <Cmt productId={productId} />
+
         <Stack spacing={2} className="mt-4 pagination">
           <Pagination
             count={Math.ceil(reviews.length / reviewsPerPage)}

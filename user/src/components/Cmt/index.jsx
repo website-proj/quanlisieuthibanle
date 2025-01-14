@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
-import SummaryApi from "../../common/SummaryApi"; // Import SummaryApi vào file
+import SummaryApi, { baseURL } from "../../common/SummaryApi"; // Import SummaryApi
 
-const Cmt = ({ productId, orderId }) => {
+const Cmt = ({ productId }) => {
   const [rating, setRating] = useState(1);
   const [hover, setHover] = useState(0);
   const [reviewText, setReviewText] = useState("");
@@ -12,35 +12,52 @@ const Cmt = ({ productId, orderId }) => {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [orderStatus, setOrderStatus] = useState(""); // Trạng thái đơn hàng: "Đã giao", "Đang giao", "Chưa mua"
+  const [orderId, setOrderId] = useState(null); // Thêm state để lưu orderId
 
-  // Kiểm tra trạng thái đơn hàng
+  // Kiểm tra trạng thái đơn hàng và lấy orderId
   useEffect(() => {
-    const fetchOrderStatus = async () => {
+    const fetchOrderId = async () => {
       try {
         const token = localStorage.getItem("token")?.split(" ")[1];
         if (!token) return;
 
-        const response = await axios.get(
-          `http://localhost:8000/api/order/${orderId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        // Gọi API để lấy danh sách đơn hàng
+        const response = await axios.get(`${baseURL}${SummaryApi.orders.url}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Lọc ra đơn hàng có trạng thái "Delivered" hoặc trạng thái hợp lệ khác
+        const deliveredOrder = response.data.data.find(
+          (order) => order.status === "Delivered"
         );
-        const status = response.data.status; // Trạng thái đơn hàng trả về từ API (VD: 'delivered', 'shipping', 'not_purchased')
-        setOrderStatus(status);
+
+        if (deliveredOrder) {
+          setOrderId(deliveredOrder.order_id); // Lưu orderId vào state
+          setOrderStatus(deliveredOrder.status); // Lưu trạng thái đơn hàng vào state
+        } else {
+          setAlertMessage("Bạn chưa có đơn hàng đã giao.");
+          setAlertSeverity("warning");
+          setAlertOpen(true);
+          setTimeout(() => setAlertOpen(false), 3000);
+        }
       } catch (error) {
         console.error("Lỗi khi lấy trạng thái đơn hàng:", error);
       }
     };
 
-    fetchOrderStatus();
-  }, [orderId]);
+    fetchOrderId();
+  }, []);
 
   const handleSubmit = async () => {
     if (rating === 0 || reviewText.trim() === "") {
       setAlertMessage("Vui lòng chọn số sao và nhập đánh giá!");
+      setAlertSeverity("error");
+      setAlertOpen(true);
+      setTimeout(() => setAlertOpen(false), 3000);
+    } else if (!orderId) {
+      setAlertMessage("Không tìm thấy đơn hàng hợp lệ để đánh giá.");
       setAlertSeverity("error");
       setAlertOpen(true);
       setTimeout(() => setAlertOpen(false), 3000);
@@ -49,13 +66,13 @@ const Cmt = ({ productId, orderId }) => {
         const token = localStorage.getItem("token")?.split(" ")[1];
         if (!token) return;
 
-        // Sử dụng SummaryApi để gọi API
+        // Sử dụng SummaryApi để gọi API tạo đánh giá
         const response = await axios({
           url: `${baseURL}${SummaryApi.create_reviews.url}`, // Kết hợp baseURL và URL của API
           method: SummaryApi.create_reviews.method,
           data: {
-            product_id: productId,
-            order_id: orderId,
+            order_id: orderId, // Sử dụng orderId từ state
+            product_id: productId, // Sử dụng productId từ prop
             rating: rating,
             comment: reviewText,
           },
@@ -95,7 +112,7 @@ const Cmt = ({ productId, orderId }) => {
           Đơn hàng của bạn đang giao, bạn không thể đánh giá ngay lúc này.
         </Alert>
       )}
-      {orderStatus === "delivered" && (
+      {orderStatus === "Delivered" && (
         <>
           <textarea
             className="w-full h-24 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
