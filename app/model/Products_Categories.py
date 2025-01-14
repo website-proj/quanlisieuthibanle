@@ -36,7 +36,7 @@ class Product(Base):
     stock_quantity = Column(Integer, default=0)
     image = Column(String(255))
     original_price = Column(Float)
-    date_created = created_at = Column(DateTime,server_default=func.now())
+    date_created =  Column(DateTime,server_default=func.now())
     updated_at =  Column(DateTime, server_default=func.now(),onupdate=func.now())
     expiration_date = Column(Date)
     star_product = Column(Boolean , default=False)
