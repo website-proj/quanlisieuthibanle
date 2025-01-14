@@ -12,6 +12,7 @@ from app.model.users import User
 from app.model.voucher_payment import Payment, Voucher
 from app.schemas.payment import payment
 from app.services.auth import AuthService
+from app.services.cart import CartService
 
 
 class PaymentService:
@@ -74,7 +75,6 @@ class PaymentService:
             status="Successful",
         )
         db.add(payment_record)
-
+        CartService.delete_cart(db , token )
         db.commit()
-
         return payment_record

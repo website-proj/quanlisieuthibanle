@@ -101,7 +101,7 @@ class CartService:
         db.commit()
         return cart_item
     @staticmethod
-    def deletet_all_items( db : Session  , token : str = Depends(AuthService.oauth2_scheme)) :
+    def delete_cart( db : Session  , token : str = Depends(AuthService.oauth2_scheme)) :
         cur_user = AuthService.get_current_user(db , token)
         cart_exist = db.query(Cart).filter(Cart.user_id == cur_user.user_id).first()
         cart_items = db.query(CartItem).filter(CartItem.cart_id == cart_exist.cart_id).all()
@@ -109,7 +109,8 @@ class CartService:
             raise HTTPException(status_code = 404 , detail = "No products found")
         for cart_item in cart_items:
             db.delete(cart_item)
-            db.commit()
+        db.delete(cart_exist)
+        db.commit()
         return cart_items
     @staticmethod
     def total_price( db: Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme)) :

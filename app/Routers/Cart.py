@@ -44,7 +44,7 @@ def delete_cart_item( product_id , db : Session = Depends(get_db) , token  :str 
     return ResponseHandler.success("deleted cart item" , cart_item)
 @router.delete("/cart" , dependencies=[Depends(login_required)])
 def delete_cart( db : Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme)):
-    cart = CartService.deletet_all_items(db , token)
+    cart = CartService.delete_cart(db , token)
     return ResponseHandler.success("deleted cart" , cart)
 @router.get("/totalPrice" , dependencies=[Depends(login_required )])
 def get_total_price( db : Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme)):
