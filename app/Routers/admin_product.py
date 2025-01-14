@@ -22,7 +22,6 @@ def create_product(
     name_brand: str = Form(...),
     description: str = Form(...),
     price: float = Form(...),
-    old_price: Optional[float] = None,
     original_price: float = Form(...),
     discount: float = Form(...),
     unit: str = Form(...),
@@ -40,7 +39,6 @@ def create_product(
             name_brand=name_brand,
             description=description,
             price=price,
-            old_price=old_price,
             original_price=original_price,
             discount=discount,
             unit=unit,
@@ -51,7 +49,7 @@ def create_product(
             file=file,
             db=db,
         )
-        return ResponseHandler.success("Product created successfully", product)
+        return  product
 
     except HTTPException as http_err:
         # Trả về lỗi ứng dụng
