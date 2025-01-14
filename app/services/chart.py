@@ -130,6 +130,8 @@ class Chart:
             month = order.order_date.strftime("%m/%Y")
             if month not in result:
                 result[month] = 0
+            if not order or not order_item or not product :
+                continue
             original_price = product.original_price
             quantity = order_item.quantity
             cost = int(original_price) * quantity
@@ -200,6 +202,8 @@ class Chart:
 
         for order, order_item, product in data:
             day = order.order_date.strftime("%d/%m/%Y")
+            if not order or not order_item or not product :
+                continue
             if day not in result:
                 result[day] = 0
             original_price = product.original_price
@@ -239,6 +243,8 @@ class Chart:
         result = {}
 
         for order, order_item, product in data:
+            if not order or not order_item or not product :
+                continue
             year = order.order_date.strftime("%Y")
             if year not in result:
                 result[year] = 0
