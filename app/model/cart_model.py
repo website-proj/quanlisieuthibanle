@@ -17,7 +17,7 @@ class CartItem(Base):
     product_id = Column(String(50) , ForeignKey("products.product_id" , ondelete = "CASCADE") , nullable= False)
     quantity = Column(Integer, nullable = True)
     price_at_add = Column(Float, nullable = True)
-    created_at = Column(DateTime,server_default=func.now())
+    added_date = Column(DateTime, default=func.now())
 
     cart = relationship("Cart", back_populates = "cart_items")
     products = relationship("Product", back_populates = "cart_items")
