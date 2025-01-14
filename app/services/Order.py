@@ -86,8 +86,11 @@ class OrderService:
     @staticmethod
     def get_orders(db : Session = Depends(get_db) , token : str = Depends(AuthService.oauth2_scheme)):
         current_user = AuthService.get_current_user(db , token)
-        orders = db.query(Orders).filter(Orders.user_id == current_user.user_id).all()
-        return orders
+        data = db.query(OrderItems , Order , Product ).join(
+            Order , Order.order_id == OrderItems.order_id
+        ).join(
+            Product , Product.product_id == OrderItems.product_id
+        )
     @staticmethod
     def detail_order(order_id , db : Session) :
         order_items = db.query(OrderItems).filter(OrderItems.order_id == order_id).all()

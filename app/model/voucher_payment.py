@@ -26,7 +26,7 @@ class Payment(Base):
     order_id = Column(String(50), ForeignKey('orders.order_id'), nullable=False)
     voucher_id = Column(String(50), ForeignKey('vouchers.voucher_id') , default = None)
     amount = Column(Float, nullable=False)
-    payment_method = Column(Enum('Credit Card' , 'Debit Card' , 'Card' , name = "payment method"), nullable=False)
+    payment_method = Column(Enum('Credit Card' , 'Debit Card' , 'Cash' , name = "payment method"), nullable=False)
     payment_date = Column(DateTime, nullable=False , default = datetime.utcnow)
     status = Column(Enum('Successful', 'Failed', 'Pending',name = "status") , nullable=False)
     #relationship
