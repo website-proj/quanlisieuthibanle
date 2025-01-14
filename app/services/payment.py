@@ -1,13 +1,9 @@
 import uuid
 from datetime import datetime
-from winreg import HKEY_CURRENT_USER
 
 import pytz
 from fastapi import Depends, HTTPException
-from fastapi.encoders import jsonable_encoder
-from sqlalchemy import func
 from sqlalchemy.orm import Session
-from win32con import HTSIZELAST
 
 from app.db.base import get_db
 from app.model.Products_Categories import Product
