@@ -466,8 +466,6 @@ class ProductService:
         data = db.query(Reviews , Product).join(
             Product , Product.product_id == Reviews.product_id
         ).filter(Product.product_id == product_id).all()
-        if not data:
-            raise  HTTPException(status_code=404, detail="no reviews found")
         result  = {}
         try:
             for review , product in data :
@@ -477,6 +475,14 @@ class ProductService:
                         "review" : []
                     }
                 result[product.product_id]["review"].append(review)
+            new_product = db.query(Product).filter(Product.product_id == product_id).first()
+            if not new_product:
+                raise HTTPException(status_code=404, detail="no products found")
+            if new_product.product_id not in result:
+                result[new_product.product_id] = {
+                    "product": new_product.__dict__ if new_product else None,
+                    "review" : []
+                }
             return result
         except Exception as e :
             raise e

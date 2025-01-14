@@ -59,6 +59,11 @@ def Cost_3_years(db:Session = Depends(get_db)):
     chart = Chart()
     cost = chart.cost_last_3_years(db)
     return ResponseHandler.success("success" , cost)
+@router.get("/profit_3_years" , dependencies=[Depends(check_admin_role)])
+def Profit_3_years(db:Session = Depends(get_db)):
+    chart = Chart()
+    profit = chart.profit_3_years(db)
+    return ResponseHandler.success("success" , profit)
 @router.get("/user_create_14_day" , dependencies=[Depends(check_admin_role)])
 def User_create_14_day(db:Session = Depends(get_db)):
     chart = Chart()

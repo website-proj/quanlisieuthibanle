@@ -290,6 +290,15 @@ class Chart:
         sorted_data = {year: filtered_data[year] for year in sorted(filtered_data.keys(), reverse=True)}
 
         return sorted_data
+
+    def profit_3_years(self, db: Session):
+        cost = self.cost_last_3_years(db)
+        revenue = self.revenue_last_3_years(db)
+        result = {}
+        for i, j in zip(revenue, cost):
+            result[i] = revenue[i] - cost[i]
+        return result
+
     @staticmethod
     def user_create_in_14_day(db : Session):
         now = datetime.now()
