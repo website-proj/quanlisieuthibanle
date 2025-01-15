@@ -580,3 +580,11 @@ class ProductService:
         else :
             products = ProductService.get_best_seller_for_parent_category(parent , db )
             return products
+    @staticmethod
+    def discount_2cat(parent : str , sub : str ,  db : Session):
+        if sub :
+            products = ProductService.get_product_discount_for_sub_category(sub , db)
+            return products
+        else :
+            products = ProductService.get_discount_product_for_parent_category(parent , db)
+            return products
