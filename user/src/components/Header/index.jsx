@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/Header/Logo.png";
 import Search from "../Search";
 import "./style.css";
@@ -18,6 +18,11 @@ import { CartContext } from "../../Context/CartContext";
 const Header = () => {
   const context = useContext(MyContext);
   const { cartCount } = useContext(CartContext);
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Xóa token
+    navigate("/signIn"); // Điều hướng đến trang đăng nhập
+  };
+  const navigate = useNavigate();
   return (
     <>
       <header>
@@ -63,12 +68,12 @@ const Header = () => {
                       >
                         <TbFileSpreadsheet className="text-lg" /> Quản lý đơn
                       </Link>
-                      <Link
-                        to="/signIn"
-                        className="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 flex items-center gap-x-2 rounded-md"
+                      <button
+                        onClick={handleLogout}
+                        className="block px-4 w-full py-2 text-sm text-black-700 hover:bg-gray-100 flex items-center gap-x-2 rounded-md"
                       >
                         <IoIosLogOut className="text-lg" /> Đăng xuất
-                      </Link>
+                      </button>
                     </div>
                   </div>
                 )}

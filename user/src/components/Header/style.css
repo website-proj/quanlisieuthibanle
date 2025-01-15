@@ -128,3 +128,8 @@ body {
   z-index: 1000;
   opacity: 1;
 }
+
+.profile-menu button {
+  color: #000 !important;
+  font-size: 0.875em !important;
+}

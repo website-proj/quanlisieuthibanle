@@ -24,6 +24,54 @@ const SignIn = () => {
   const [snackbarMessage, setSnackbarMessage] = useState(""); // Thông báo snackbar
   const [snackbarSeverity, setSnackbarSeverity] = useState("success"); // Mức độ nghiêm trọng
 
+  const handleGoogleLogin = async () => {
+    const storedToken = localStorage.getItem("token");
+
+    if (storedToken) {
+      // Nếu đã lưu token, điều hướng người dùng đến trang Home
+      window.location.href = `${baseURL}/api/login/token=${storedToken}`;
+      return;
+    }
+
+    try {
+      // Nếu chưa có token, thực hiện xác thực qua Google
+      window.location.href = `${baseURL}/api/login/`;
+      setSnackbarMessage("Đang kết nối với Google...");
+      setSnackbarSeverity("info");
+    } catch (error) {
+      setSnackbarMessage("Lỗi khi kết nối với Google.");
+      setSnackbarSeverity("error");
+    }
+  };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const googleResponse = urlParams.get("google_response");
+
+    if (googleResponse) {
+      // Giả sử phản hồi từ Google là token, lưu token vào localStorage
+      const token = decodeURIComponent(googleResponse);
+
+      // Lưu token vào localStorage
+      localStorage.setItem("token", token);
+
+      // Điều hướng đến trang Home
+      navigate("/home");
+    }
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      // Người dùng đã đăng nhập, điều hướng đến Home
+      navigate("/home");
+    } else {
+      // Hiển thị giao diện đăng nhập
+      context.setisHeaderFooterShow(false);
+    }
+  }, []);
+
   useEffect(() => {
     context.setisHeaderFooterShow(false);
   }, []);
@@ -32,25 +80,6 @@ const SignIn = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleGoogleLogin = async () => {
-    const storedToken = localStorage.getItem("token");
-
-    if (storedToken) {
-      // Nếu đã lưu token Google, điều hướng người dùng đến trang
-      window.location.href = `${baseURL}/api/login?token=${storedToken}`;
-      return;
-    }
-
-    try {
-      // Nếu chưa có token, thực hiện xác thực qua Google
-      window.location.href = `${baseURL}/api/login_gg`;
-      setSnackbarMessage("Đang kết nối với Google...");
-      setSnackbarSeverity("info");
-    } catch (error) {
-      setSnackbarMessage("Lỗi khi kết nối với Google.");
-      setSnackbarSeverity("error");
-    }
-  };
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const googleResponse = urlParams.get("google_response");

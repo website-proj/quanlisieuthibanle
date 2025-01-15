@@ -6,7 +6,7 @@ import { baseURL } from "../common/SummaryApi";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartCount, setCartCount] = useState();
+  const [cartCount, setCartCount] = useState(0);
 
   // Hàm lấy số lượng sản phẩm từ API
   const fetchCartCount = async () => {

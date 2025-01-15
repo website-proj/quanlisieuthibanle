@@ -136,6 +136,18 @@ const SummaryApi = {
     url: "/api/product/get_reviews_of_product",
     method: "get",
   },
+  payment: {
+    url: "/api/payment/",
+    method: "post",
+  },
+  membership: {
+    url: "/api/cart/get_membership_status",
+    method: "get",
+  },
+  get_bill: {
+    url: "/api/cart/get_bill",
+    method: "get",
+  },
 };
 
 export default SummaryApi;

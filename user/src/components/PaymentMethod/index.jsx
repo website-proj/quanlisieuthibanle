@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 
-const PaymentMethod = () => {
-  const [selectedMethod, setSelectedMethod] = useState("COD");
-
+const PaymentMethod = ({ selectedMethod, setSelectedMethod }) => {
   const handleChange = (event) => {
-    setSelectedMethod(event.target.value);
+    // Lấy giá trị của phương thức thanh toán
+    const value = event.target.value;
+
+    // Chỉ cập nhật nếu giá trị là 'Cash', 'Debit Card' hoặc 'Credit Card'
+    if (["Cash", "Debit Card", "Credit Card"].includes(value)) {
+      setSelectedMethod(value);
+    }
   };
 
   return (
-    <div className=" bg-white  rounded-md mx-auto">
+    <div className="bg-white rounded-md mx-auto">
       <h2 className="text-lg font-[600] mt-4 mb-4 text-left">
         Phương thức thanh toán
       </h2>
@@ -18,42 +22,42 @@ const PaymentMethod = () => {
           <label className="flex items-center cursor-pointer border rounded-lg p-3 hover:border-black transition duration-200 ease-in-out">
             <input
               type="radio"
-              value="COD"
+              value="Cash"
               name="paymentMethod"
-              checked={selectedMethod === "COD"}
+              checked={selectedMethod === "Cash"}
               onChange={handleChange}
               className="form-radio text-black h-5 w-5 mr-3"
             />
             <span className="text-sm font-medium text-gray-500">
-              Tiền mặt (COD)
+              Tiền mặt (Cash)
             </span>
           </label>
 
           <label className="flex items-center cursor-pointer border rounded-lg p-3 hover:border-black transition duration-200 ease-in-out">
             <input
               type="radio"
-              value="Online"
+              value="Debit Card"
               name="paymentMethod"
-              checked={selectedMethod === "Online"}
+              checked={selectedMethod === "Debit Card"}
               onChange={handleChange}
               className="form-radio text-black h-5 w-5 mr-3"
             />
             <span className="text-sm font-medium text-gray-500">
-              Thanh toán trực tuyến (Online)
+              Thẻ ghi nợ (Debit Card)
             </span>
           </label>
 
           <label className="flex items-center cursor-pointer border rounded-lg p-3 hover:border-black transition duration-200 ease-in-out">
             <input
               type="radio"
-              value="CreditCard"
+              value="Credit Card"
               name="paymentMethod"
-              checked={selectedMethod === "CreditCard"}
+              checked={selectedMethod === "Credit Card"}
               onChange={handleChange}
               className="form-radio text-black h-5 w-5 mr-3"
             />
             <span className="text-sm font-medium text-gray-500">
-              Thẻ tín dụng/Ghi nợ
+              Thẻ tín dụng (Credit Card)
             </span>
           </label>
         </div>

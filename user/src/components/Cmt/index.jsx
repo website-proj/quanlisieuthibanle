@@ -101,9 +101,6 @@ const Cmt = ({ productId }) => {
 
   return (
     <div className="ml-[4%] mr-[5%] mx-auto p-6 mt-3 bg-white">
-      <p className="text-md font-[600] text-left mb-4 text-gray-700">
-        Viết đánh giá
-      </p>
       {orderStatus === "not_purchased" && (
         <Alert severity="error">Bạn cần mua sản phẩm trước khi đánh giá!</Alert>
       )}
@@ -114,6 +111,9 @@ const Cmt = ({ productId }) => {
       )}
       {orderStatus === "Delivered" && (
         <>
+          <p className="text-md font-[600] text-left mb-4 text-gray-700">
+            Viết đánh giá
+          </p>
           <textarea
             className="w-full h-24 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
             placeholder="Viết đánh giá sản phẩm"

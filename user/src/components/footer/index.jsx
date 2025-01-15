@@ -44,7 +44,7 @@ const Footer = () => {
               <span>Giá độc quyền hội viên</span>
             </div>
           </div>
-          <div className="row mt-4 info">
+          <div className="row mt-2 info">
             <div className="col d-flex align-items-center footer-info">
               <img src={Logo} />
 
