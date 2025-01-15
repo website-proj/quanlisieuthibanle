@@ -571,3 +571,12 @@ class ProductService:
                 return products
         except Exception as e :
             raise e
+
+    @staticmethod
+    def get_best_seller2_cat(parent : str , sub : str , db : Session):
+        if sub :
+            products = ProductService.get_best_seller_for_sub_category(sub , db )
+            return products
+        else :
+            products = ProductService.get_best_seller_for_parent_category(parent , db )
+            return products

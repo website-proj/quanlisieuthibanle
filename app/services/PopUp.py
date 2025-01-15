@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from fastapi import HTTPException, UploadFile
+from fastapi import HTTPException, UploadFile, Form
 from fastapi.params import File, Depends
 
 from sqlalchemy.orm import Session
@@ -20,12 +20,12 @@ class PopUpService:
             raise HTTPException(status_code=404, detail="popup not found")
         return popup
 
-    def create_popup( status: str, start_date: str, end_date: str,
+    def create_popup(status: str, start_date: str, end_date: str,
                      file: UploadFile = File(...), db: Session = Depends(get_db)):
         try:
-            # Chuyển đổi start_date và end_date sang datetime
-            start_date_obj = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
-            end_date_obj = datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%S")
+            # Chuyển đổi start_date và end_date sang datetime chỉ có ngày
+            start_date_obj = datetime.strptime(start_date, "%Y-%m-%d").date()
+            end_date_obj = datetime.strptime(end_date, "%Y-%m-%d").date()
 
             # Kiểm tra logic ngày tháng
             if start_date_obj >= end_date_obj:
@@ -51,49 +51,48 @@ class PopUpService:
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
 
-    def update_popup(popup_id : str  , status : Optional[str]  = None , start_date : Optional[datetime]  = None ,
-                     end_date : Optional[datetime] = None ,file : Optional[UploadFile] = None ,
-        db: Session = Depends(get_db)):
-        popup = db.query(Popup).filter(Popup.popup_id == popup_id  ).first()
+    def update_popup(popup_id: str, status: Optional[str], start_date: Optional[str],
+                     end_date: Optional[str], file: Optional[UploadFile], db: Session):
+        # Lấy popup từ cơ sở dữ liệu
+        popup = db.query(Popup).filter(Popup.popup_id == popup_id).first()
+
         if not popup:
-            raise HTTPException(status_code=404, detail="popup not found")
-        try :
-            if file :
+            raise HTTPException(status_code=404, detail="Popup not found")
+
+        try:
+            # Xử lý file nếu có
+            if file:
                 image = UploadImage.upload_image(file)
                 image_url = image["secure_url"]
-            else :
-                image_url = None
-            if start_date is not None and end_date is not None:
-                start_date_obj = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
-                end_date_obj = datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%S")
+            else:
+                image_url = popup.image  # Nếu không có file, sử dụng ảnh cũ trong cơ sở dữ liệu
 
-                # Kiểm tra logic ngày tháng
+            # Xử lý ngày tháng nếu có
+            if start_date and end_date:
+                start_date_obj = datetime.strptime(start_date, "%Y-%m-%d")
+                end_date_obj = datetime.strptime(end_date, "%Y-%m-%d")
                 if start_date_obj >= end_date_obj:
                     raise HTTPException(status_code=400, detail="start_date must be earlier than end_date")
-            # if start_date is None and end_date is not None :
-            #     start_date = popup.start_date if popup.start_date is not None else None
-            #     start_date_obj = datetime.strptime(popup.start_date if , "%Y-%m-%dT%H:%M:%S")
-            #     end_date_obj = datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%S")
+            else:
+                start_date_obj = popup.start_date if not start_date else datetime.strptime(start_date, "%Y-%m-%d")
+                end_date_obj = popup.end_date if not end_date else datetime.strptime(end_date, "%Y-%m-%d")
 
-                # Kiểm tra logic ngày tháng
-                if start_date_obj >= end_date_obj:
-                    raise HTTPException(status_code=400, detail="start_date must be earlier than end_date")
-            popup.image = image_url if image_url is not None else popup.image
-            popup.status = status if status is not None else popup.status
-            popup.start_date = start_date if start_date is not None else popup.start_date
-            popup.end_date = end_date if end_date is not None else popup.end_date
+            # Cập nhật dữ liệu
+            popup.status = status if status else popup.status
+            popup.start_date = start_date_obj if start_date else popup.start_date
+            popup.end_date = end_date_obj if end_date else popup.end_date
             popup.image = image_url
+
+            # Cập nhật cơ sở dữ liệu
             db.commit()
             db.refresh(popup)
+
             return popup
+
         except ValueError:
-            raise HTTPException(status_code=400, detail="start_date and end_date must be in format YYYY-MM-DDTHH:MM:SS")
+            raise HTTPException(status_code=400, detail="start_date and end_date must be in format YYYY-MM-DD")
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
-
-
-
-
 
     def delete_popup(popup_id: str, db: Session):
         popup = db.query(Popup).filter(Popup.popup_id == popup_id).first()
