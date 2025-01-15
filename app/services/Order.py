@@ -111,7 +111,12 @@ class OrderService:
                     "product": []
                 }
             if product :
-                result[order_id]["product"].append(product)
+                result[order_id]["product"].append({
+                    "quantity" : item.quantity,
+                    "product_name" : product.name,
+                    "image" : product.image,
+                    "price" : product.price
+                })
         return result
 
     @staticmethod

@@ -36,6 +36,7 @@ def register_user(user : UserRegisterRequest  , db: Session = Depends(get_db) ):
         }
         redis_client.setex(f"pending_user:{email}", 300, json.dumps(user_data))
         auth.send_verification_email(email)
+        return "Code send successful "
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 @router.post("/register/check_code")
