@@ -1,9 +1,9 @@
 import "./App.css";
+import React from "react";
+
 import "./index.css";
 import Footer from "./components/footer";
 import Header from "./components/Header";
-import Home from "./Pages/Home";
-import Product from "./Pages/Product";
 import {
   BrowserRouter,
   Route,
@@ -11,20 +11,24 @@ import {
   useLocation,
   Navigate,
 } from "react-router-dom";
-import Product_Details from "./Pages/Product_Details";
-import Account from "./Pages/Account";
-import Cart from "./Pages/Cart";
-import SignIn from "./Pages/SignIn";
-import { createContext, useState, useEffect } from "react";
-import SignUp from "./Pages/SignUp";
-import Verify from "./Pages/Verify";
-import Success from "./Pages/Success";
-import ForgotPassword from "./Pages/ForgotPassword";
-import Payment from "./Pages/Payment";
-import Order from "./Pages/Order";
+import { createContext, useState, useEffect, Suspense } from "react";
 import { CartProvider } from "./Context/CartContext";
-import ResetPassword from "./Pages/ResetPassword";
-import VerifyDK from "./Pages/VerifyDK";
+
+// Lazy load các trang
+const Home = React.lazy(() => import("./Pages/Home"));
+const Product = React.lazy(() => import("./Pages/Product"));
+const Product_Details = React.lazy(() => import("./Pages/Product_Details"));
+const Account = React.lazy(() => import("./Pages/Account"));
+const Cart = React.lazy(() => import("./Pages/Cart"));
+const SignIn = React.lazy(() => import("./Pages/SignIn"));
+const SignUp = React.lazy(() => import("./Pages/SignUp"));
+const Verify = React.lazy(() => import("./Pages/Verify"));
+const Success = React.lazy(() => import("./Pages/Success"));
+const ForgotPassword = React.lazy(() => import("./Pages/ForgotPassword"));
+const Payment = React.lazy(() => import("./Pages/Payment"));
+const Order = React.lazy(() => import("./Pages/Order"));
+const ResetPassword = React.lazy(() => import("./Pages/ResetPassword"));
+const VerifyDK = React.lazy(() => import("./Pages/VerifyDK"));
 
 const MyContext = createContext();
 
@@ -73,7 +77,6 @@ function HeaderFooterWrapper({ setisHeaderFooterShow }) {
       "/signIn",
       "/signUp",
       "/verify",
-      // "/success",
       "/forgotPassword",
       "/resetPassword",
       "/otp",
@@ -94,40 +97,45 @@ function HeaderFooterWrapper({ setisHeaderFooterShow }) {
     <>
       {/* Header và Footer chỉ render nếu không bị ẩn */}
       {!hideHeaderInitially && <Header />}
-      <Routes>
-        <Route path={"/home"} exact={true} element={<Home />} />
-        <Route path="/" element={<Navigate to="/signIn" replace />} />
-        <Route
-          path="/products/:categoryName"
-          exact={true}
-          element={<Product />}
-        />
-        <Route path="/Account" exact={true} element={<Account />} />
-        <Route
-          path="/product_detials/:id"
-          exact={true}
-          element={<Product_Details />}
-        />
-        <Route path={"/cart"} exact={true} element={<Cart />} />
-        <Route path={"/payment"} exact={true} element={<Payment />} />
-        <Route path="/signIn" exact={true} element={<SignIn />} />
-        <Route path="/signUp" exact={true} element={<SignUp />} />
-        <Route path="/resetPassword" exact={true} element={<ResetPassword />} />
-        <Route path="/verify" exact={true} element={<Verify />} />
-        <Route path="/otp" exact={true} element={<VerifyDK />} />
-        <Route path="/success" exact={true} element={<Success />} />
-        <Route path="/order" exact={true} element={<Order />} />
-        <Route
-          path="/forgotPassword"
-          exact={true}
-          element={<ForgotPassword />}
-        />
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path={"/home"} exact={true} element={<Home />} />
+          <Route path="/" element={<Navigate to="/signIn" replace />} />
+          <Route
+            path="/products/:categoryName"
+            exact={true}
+            element={<Product />}
+          />
+          <Route path="/Account" exact={true} element={<Account />} />
+          <Route
+            path="/product_detials/:id"
+            exact={true}
+            element={<Product_Details />}
+          />
+          <Route path={"/cart"} exact={true} element={<Cart />} />
+          <Route path={"/payment"} exact={true} element={<Payment />} />
+          <Route path="/signIn" exact={true} element={<SignIn />} />
+          <Route path="/signUp" exact={true} element={<SignUp />} />
+          <Route
+            path="/resetPassword"
+            exact={true}
+            element={<ResetPassword />}
+          />
+          <Route path="/verify" exact={true} element={<Verify />} />
+          <Route path="/otp" exact={true} element={<VerifyDK />} />
+          <Route path="/success" exact={true} element={<Success />} />
+          <Route path="/order" exact={true} element={<Order />} />
+          <Route
+            path="/forgotPassword"
+            exact={true}
+            element={<ForgotPassword />}
+          />
+        </Routes>
+      </Suspense>
       {!hideHeaderInitially && <Footer />}
     </>
   );
 }
 
 export default App;
-
 export { MyContext };
