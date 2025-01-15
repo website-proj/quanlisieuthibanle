@@ -8,6 +8,7 @@ from app.core.security import create_access_token , get_password_hash
 from app.core.config import settings
 from app.db.base import get_db
 from app.model.users import User
+from starlette.responses import RedirectResponse
 
 router = APIRouter()
 
@@ -81,7 +82,11 @@ async def auth(request: Request, db: Session = Depends(get_db)):
             email = user_info["email"],
             password = hash_password
         )
+        db.add(new_user)
+        db.commit()
+
         token = create_access_token(new_user.email , db)
-        return token
-    token = create_access_token(user.email , db)
-    return {"access_token": token, "token_type": "bearer"}
+    # return token
+    frontend_url = "http://localhost:5173/home"  # Your frontend URL
+    redirect_url = f"{frontend_url}?access_token={token}&token_type=Bearer"
+    return RedirectResponse(url=redirect_url)

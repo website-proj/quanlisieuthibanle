@@ -34,7 +34,7 @@ def create_banner(position : str , status : str , priority : int , file: UploadF
     return ResponseHandler.success("banner create successfully",banner)
 @router.put("/",dependencies=[Depends(check_admin_role)])
 def update_banner(banner_id :str  , position : Optional[str] = None  , status : Optional[str] = None  ,
-                  priority : Optional[int] = None , file: UploadFile = File(...),db : Session = Depends(get_db)):
+                  priority : Optional[int] = None , file: Optional[UploadFile] = None,db : Session = Depends(get_db)):
     banner = BannerService.update_banner(banner_id , position , status , priority , file ,db)
     return ResponseHandler.success("banner update successfully",banner)
 @router.delete("/",dependencies=[Depends(check_admin_role)])
