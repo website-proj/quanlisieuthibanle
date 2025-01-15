@@ -51,6 +51,20 @@ const Sidebar = () => {
 
     fetchSubcategories();
   }, [parentId, categoryId]); // Gọi lại khi `parentId` hoặc `categoryId` thay đổi
+  useEffect(() => {
+    // Kiểm tra nếu categoryId trong URL khớp với danh mục con nào đó
+    const selectedSubcategory = subcategories.find(
+      (sub) => sub.category_id === categoryId
+    );
+    if (selectedSubcategory) {
+      // Mark as checked when categoryId matches
+      setSubcategories(
+        subcategories.map((sub) =>
+          sub.category_id === categoryId ? { ...sub, checked: true } : sub
+        )
+      );
+    }
+  }, [categoryId, subcategories]); // Gọi lại mỗi khi categoryId thay đổi
 
   return (
     <div className="col1 bg-white p-2 shadow rounded-lg sideBar">

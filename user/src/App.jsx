@@ -105,6 +105,11 @@ function HeaderFooterWrapper({ setisHeaderFooterShow }) {
             path="/products/:categoryName"
             exact={true}
             element={<Product />}
+          />{" "}
+          <Route
+            path="/products/:categoryName/:subcategoryName"
+            exact={true}
+            element={<Product />}
           />
           <Route path="/Account" exact={true} element={<Account />} />
           <Route

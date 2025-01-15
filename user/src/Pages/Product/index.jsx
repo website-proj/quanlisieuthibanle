@@ -1,14 +1,19 @@
-import Sidebar from "../../components/Sidebar";
+import RangeSlider from "react-range-slider-input";
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "@mui/material";
-import { Link, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useParams,
+  useSearchParams,
+  useNavigate,
+} from "react-router-dom";
+
 import "./style.css";
 
 import { FiShoppingCart } from "react-icons/fi";
 import ScrollToTopButton from "../../components/ScrollTop";
 
 import { CartContext } from "../../Context/CartContext";
-import Header from "../../components/Header";
 import SummaryApi, { baseURL } from "../../common/SummaryApi";
 
 const Product = () => {
@@ -22,109 +27,141 @@ const Product = () => {
   const categoryId = searchParams.get("categoryId"); // Lấy categoryId từ URL (nếu có)
 
   useEffect(() => {
+    if (!parentId) return; // Chỉ tiếp tục nếu có parentId
+
     const fetchProducts = async () => {
       try {
         const url = categoryId
-          ? `${baseURL}${SummaryApi.parent_categories.url}` // Nếu có categoryId
-          : `${baseURL}/api/products?parentId=${parentId}`; // Nếu chỉ có parentId
+          ? `${baseURL}${SummaryApi.get_product_categories.url}?parent_category_id=${parentId}&sub_category_id=${categoryId}`
+          : `${baseURL}${SummaryApi.get_product_categories.url}?parent_category_id=${parentId}`;
 
-        const response = await fetch(url, {
-          method: "GET",
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Failed to fetch products");
 
         const data = await response.json();
-        setProducts(data); // Cập nhật sản phẩm
+        setProducts(data.data || []);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
 
-    if (parentId) {
-      fetchProducts(); // Gọi API khi parentId hoặc categoryId thay đổi
-    }
-  }, [parentId, categoryId]);
+    fetchProducts();
+  }, [parentId, categoryId]); // Khi thay đổi categoryId, sản phẩm sẽ được tải lại
+
   const handleShowAll = () => {
     setVisibleProducts((prev) => prev + 12);
   };
 
-  const handleAddToCart = (e, product, quantity = 1) => {
-    const imgElement = document.createElement("img");
-    imgElement.src = product.image;
-    imgElement.className = "flying-img";
-    document.body.appendChild(imgElement);
+  const { categoryName } = useParams(); // Lấy category từ URL
 
-    const rect = e.target.getBoundingClientRect();
-    const cartRect = document
-      .getElementById("cart-icon")
-      .getBoundingClientRect();
+  const [subcategories, setSubcategories] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null); // Lưu ID của nút đang được chọn
 
-    const startX = rect.left + window.scrollX;
-    const startY = rect.top + window.scrollY;
-    const endX = cartRect.left + window.scrollX;
-    const endY = cartRect.top + window.scrollY;
+  const formatCurrency = (num) => num.toLocaleString("vi-VN") + "đ";
 
-    imgElement.style.position = "absolute";
-    imgElement.style.left = `${startX}px`;
-    imgElement.style.top = `${startY}px`;
-    imgElement.style.width = "50px";
-    imgElement.style.height = "50px";
-    imgElement.style.zIndex = "1000";
-    imgElement.style.transition =
-      "transform 1s ease-in-out, opacity 1s ease-in-out";
-    imgElement.style.transform = `translate(${endX - startX}px, ${
-      endY - startY
-    }px) scale(0.2)`;
-    imgElement.style.opacity = "0";
+  useEffect(() => {
+    const fetchSubcategories = async () => {
+      try {
+        const response = await fetch(`${baseURL}${SummaryApi.categories.url}`);
+        const data = await response.json();
 
-    setTimeout(() => {
-      imgElement.remove();
-      incrementCartCount(quantity);
-    }, 1000);
+        const parentCategory = Object.keys(data)
+          .map((parentName) => ({
+            name: parentName,
+            subcategories: data[parentName],
+          }))
+          .find((cat) =>
+            cat.subcategories.some((sub) => sub.parent_category_id === parentId)
+          );
+
+        if (parentCategory) {
+          const filteredSubcategories = categoryId
+            ? parentCategory.subcategories.filter(
+                (sub) => sub.category_id === categoryId
+              )
+            : parentCategory.subcategories;
+
+          setSubcategories(filteredSubcategories);
+          setSelectedCategoryId(categoryId || null); // Đặt ID danh mục đã chọn
+        }
+      } catch (error) {
+        console.error("Lỗi khi tải danh mục con:", error);
+      }
+    };
+
+    fetchSubcategories();
+  }, [parentId, categoryId]);
+
+  const navigate = useNavigate();
+
+  const handleButtonClick = (id) => {
+    // Cập nhật trạng thái danh mục con được chọn
+    setSelectedCategoryId(id === selectedCategoryId ? null : id); // Chọn hoặc bỏ chọn
+    // Điều này sẽ không làm thay đổi các danh mục con khác, chỉ chọn hoặc bỏ chọn một danh mục con.
+    navigate(
+      `?parentId=${parentId}&categoryId=${id === selectedCategoryId ? "" : id}`
+    );
   };
 
   return (
     <>
-      <Header />
       <section className="product_listing_Page">
         <div className="container">
           <div className="productListing flex">
             <div className="w-1/5">
-              <Sidebar />
+              <div className="col1 bg-white p-4 shadow rounded-xl">
+                <div className="mb-6">
+                  <h6 className="font-medium text-2xl mb-3 text-center">
+                    {categoryName}
+                  </h6>
+                  <div className="h-auto">
+                    <ul className="space-y-3">
+                      {subcategories.map((sub, idx) => (
+                        <li key={idx}>
+                          <button
+                            className={`block w-full text-left py-2 px-4 rounded-lg transition-all ${
+                              selectedCategoryId === sub.category_id
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-100 hover:bg-blue-100"
+                            }`}
+                            onClick={() => handleButtonClick(sub.category_id)}
+                          >
+                            {sub.category_name}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="w-4/5 pl-4 Cart">
               <div className="flex items-center space-x-4 mb-4">
-                <Link to="">
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "#FFFFFF",
-                      color: "#000000",
-                      borderRadius: "10px",
-                      "&:hover": { backgroundColor: "#F0F0F0" },
-                    }}
-                    className="capitalize"
-                  >
-                    Bán chạy
-                  </Button>
-                </Link>
-                <Link to="">
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "#FFFFFF",
-                      color: "#000000",
-                      borderRadius: "10px",
-                      "&:hover": { backgroundColor: "#F0F0F0" },
-                    }}
-                    className="capitalize"
-                  >
-                    Khuyến mại
-                  </Button>
-                </Link>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#FFFFFF",
+                    color: "#000000",
+                    borderRadius: "10px",
+                    "&:hover": { backgroundColor: "#F0F0F0" },
+                  }}
+                  className="capitalize"
+                >
+                  Bán chạy
+                </Button>
+
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#FFFFFF",
+                    color: "#000000",
+                    borderRadius: "10px",
+                    "&:hover": { backgroundColor: "#F0F0F0" },
+                  }}
+                  className="capitalize"
+                >
+                  Khuyến mại
+                </Button>
               </div>
 
               <div className="grid grid-cols-4 gap-8 productList">

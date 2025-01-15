@@ -33,7 +33,7 @@ const HomeBanner = () => {
   return (
     <>
       <div className="homeSlide py-4">
-        <div className="px-[5em]">
+        <div className="px-[4em]">
           <Swiper
             key={banners.length}
             loop={true}

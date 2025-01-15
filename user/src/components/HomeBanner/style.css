@@ -1,5 +1,5 @@
 .sliderHome {
-  overflow: inherit !important;
+  overflow: hidden !important;
   top: 4em;
 }
 .bannerImg {
