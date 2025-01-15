@@ -123,10 +123,20 @@ const Payment = () => {
         setSnackbarMessage("Thanh toán thành công!");
         setSnackbarSeverity("success");
 
-        // Xử lý sản phẩm trả về từ API
+        // Xử lý dữ liệu từ API
         const orderData = response.data.data;
-        console.log("Order details:", orderData);
-        navigate("/success", { state: { orderData } }); // Gửi dữ liệu qua state khi chuyển hướng
+        const [orderKey] = Object.keys(orderData);
+        const orderDetails = orderData[orderKey];
+
+        const successState = {
+          products: orderDetails.product,
+          paymentMethod: orderDetails.payment_method,
+          totalAmount: orderDetails.amount,
+          date: orderDetails.date,
+        };
+
+        // Chuyển hướng với state
+        navigate("/success", { state: successState });
       } else {
         setSnackbarMessage("Thanh toán không thành công. Vui lòng thử lại.");
         setSnackbarSeverity("error");

@@ -73,7 +73,7 @@ function HeaderFooterWrapper({ setisHeaderFooterShow }) {
       "/signIn",
       "/signUp",
       "/verify",
-      "/success",
+      // "/success",
       "/forgotPassword",
       "/resetPassword",
       "/otp",

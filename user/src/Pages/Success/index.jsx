@@ -1,30 +1,50 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Header from "../../components/Header";
 
 const Success = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Lấy dữ liệu từ location.state hoặc đặt giá trị mặc định
+  // Nhận dữ liệu từ location.state
   const {
     products = [],
     paymentMethod = "Không xác định",
     totalAmount = 0,
-    date = new Date().toLocaleDateString("vi-VN"),
   } = location.state || {};
 
-  // Kiểm tra dữ liệu trong location
-  console.log("location", location);
+  // Lấy ngày hiện tại
+  const date = new Date().toLocaleDateString("vi-VN");
 
   return (
     <>
-      <Header />
-      <section className="mt-36 mb-4">
+      <section className="mt-36 mb-8">
         <div className="container mx-auto flex flex-col items-center">
           <h1 className="text-3xl font-[600] text-center mb-6 shadow-text">
             Hoàn thành!
           </h1>
+          {/* Thanh tiến trình */}
+          <div className="flex items-center justify-between w-full max-w-4xl">
+            <div className="flex items-center w-full">
+              <div className="flex items-center justify-center">
+                <div className="w-8 h-8 flex justify-center items-center rounded-full bg-red-300 text-white font-bold">
+                  ✓
+                </div>
+              </div>
+              <div className="flex-grow border-t-4 border-red-300 mx-2"></div>
+              <div className="flex items-center justify-center">
+                <div className="w-8 h-8 flex justify-center items-center rounded-full bg-red-300 text-white font-bold">
+                  ✓
+                </div>
+              </div>
+              <div className="flex-grow border-t-4 border-red-300 mx-2"></div>
+              <div className="flex items-center justify-center">
+                <div className="w-8 h-8 flex justify-center items-center rounded-full bg-blue-500 text-white font-bold">
+                  3
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="w-full mt-3 shadow-lg max-w-4xl bg-white p-4 py-5 rounded-xl mx-auto flex flex-col justify-center items-center gap-5">
             <h1 className="text-2xl font-bold text-center text-cyan-500">
               🎉 Đặt hàng thành công!
@@ -46,7 +66,7 @@ const Success = () => {
                     />
                     <div>
                       <p className="font-medium">{product.name}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm !text-left text-gray-500">
                         Số lượng: {product.quantity}
                       </p>
                     </div>
@@ -83,7 +103,7 @@ const Success = () => {
             </div>
             <button
               onClick={() => navigate("/order")}
-              className="w-1/3 bg-blue-500 text-white py-3 rounded-md text-center font-medium"
+              className="w-1/3 bg-blue-500 !rounded-xl text-white py-3 rounded-md text-center font-medium"
             >
               Lịch sử mua hàng
             </button>
