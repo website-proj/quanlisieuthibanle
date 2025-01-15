@@ -8,3 +8,16 @@
   background-image: linear-gradient(to bottom, #1d4ed8, #bce6ff);
   color: rgb(197, 46, 46);
 }
+.btn-buy-again {
+  background-color: #fd5353;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-buy-again:hover {
+  background-color: #fe2020;
+}

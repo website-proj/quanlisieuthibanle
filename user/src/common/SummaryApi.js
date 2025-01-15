@@ -148,6 +148,9 @@ const SummaryApi = {
     url: "/api/cart/get_bill",
     method: "get",
   },
+  order: {
+    url: "/api/order/",
+    method: "get",
+  },
 };
-
 export default SummaryApi;
