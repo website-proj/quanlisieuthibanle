@@ -14,7 +14,7 @@ from app.model.reviews import Reviews
 from app.schemas.schema_order import OrderItem
 from app.services.uploadImage import UploadImage
 from app.utils.responses import ResponseHandler
-from app.schemas.schema_product import ProductCreate, ProductUpdate
+from app.schemas.schema_product import ProductCreate, ProductUpdate, Product_2Category
 
 
 class ProductService:
@@ -558,3 +558,16 @@ class ProductService:
             data.append(detail_product)
 
         return data
+    @staticmethod
+    def get_product(parent_category_id : str , sub_category_id : Optional[str] = None ,  db : Session = Depends(get_db)):
+        try :
+            if sub_category_id :
+                products = db.query(Product).filter(Product.category_id == sub_category_id).all()
+                return products
+            else :
+                products = db.query(Product ).join(Category , Product.category_id == Category.category_id).filter(
+                    Category.parent_category_id == parent_category_id
+                ).all()
+                return products
+        except Exception as e :
+            raise e

@@ -93,6 +93,7 @@ def send_email_code(email : str ):
     try :
         auth = AuthService()
         auth.send_verification_email(email)
+        return "success send email code"
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 @router.put("/check_code")

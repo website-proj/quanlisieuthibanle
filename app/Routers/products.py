@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends, Query, status, HTTPException
 from starlette.status import HTTP_200_OK
 
@@ -6,7 +8,7 @@ from app.utils.responses import ResponseHandler
 from app.db.base import  get_db
 from app.services.products import ProductService
 from sqlalchemy.orm import Session
-from app.schemas.schema_product import ProductResponse, ProductsResponse, ProductBase
+from app.schemas.schema_product import ProductResponse, ProductsResponse, ProductBase, Product_2Category
 import logging
 from app.model.Products_Categories import Product
 router = APIRouter()
@@ -108,3 +110,7 @@ def get_products_best_seller_for_parent_category_id(category_id : str , db: Sess
 def get_reviews_of_product(product_id : str , db: Session = Depends(get_db)):
     reviews = ProductService.get_reviews_of_product(product_id,db)
     return reviews
+@router.get("/get_product_by_2_categoryID")
+def get_product_by_2_category(parent_category_id : str , sub_category_id : Optional[str] = None ,  db : Session = Depends(get_db)):
+    product = ProductService.get_product(parent_category_id , sub_category_id , db)
+    return ResponseHandler.success("product", product)

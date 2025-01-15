@@ -70,3 +70,12 @@ class ProductUpdate(BaseModel):
     star_product: bool = Field(False)
     expiration_date: datetime
     category_id: str
+class Product_2Category(BaseModel):
+    parent_category_id : str
+    sub_category_id : Optional[str] = None
+
+    @validator("sub_category_id", pre=True, always=True)
+    def empty_string_to_none(cls, value):
+        if value == "" or value is None:
+            return None
+        return value
