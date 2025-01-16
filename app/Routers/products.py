@@ -128,3 +128,4 @@ def filter_product_of_2cat(parent_cat_id : str ,bottom_price: float, up_price: f
                            sub_cat_id : Optional[str] = None ,
                            db : Session = Depends(get_db)):
     product = ProductService.filter_product_of_category_by_price(parent_cat_id, sub_cat_id , bottom_price,up_price,db)
+    return product
