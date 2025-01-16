@@ -27,8 +27,11 @@ def delete_pop_up(popup_id : str ,db : Session=Depends(get_db)):
     popup = PopUpService.delete_popup(popup_id , db)
     return ResponseHandler.success("PopUp delete successfully" , popup)
 @router.put("/" , dependencies=[Depends(check_admin_role)])
-def update_pop_up(popup_id : str = Form(...), status : Optional[str]  = None , start_date : Optional[str]  = None ,
-                     end_date : Optional[str] = None ,file : Optional[UploadFile] = None ,
-        db: Session = Depends(get_db)):
+def update_pop_up(popup_id : str = Form(...),
+                  status : Optional[str]  = None ,
+                  start_date : Optional[str]  = None ,
+                  end_date : Optional[str] = None ,
+                  file : Optional[UploadFile] = None ,
+                  db: Session = Depends(get_db)):
     popup = PopUpService.update_popup(popup_id , status , start_date , end_date ,file , db)
     return ResponseHandler.success("PopUp update successfully" , popup)

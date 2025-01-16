@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import HTTPException, Depends, UploadFile
+from fastapi import HTTPException, Depends, UploadFile, Form
 from fastapi.params import File
 
 from sqlalchemy.orm import Session
@@ -48,23 +48,29 @@ class BannerService :
             return banner
         except Exception as e:
             raise e
-    def update_banner(banner_id :str  , position : Optional[str] = None  , status : Optional[str] = None  ,
-                  priority : Optional[int] = None , file: UploadFile = File(...),db : Session = Depends(get_db)):
+
+    @staticmethod
+    def update_banner(banner_id, position, status, priority, file, db: Session):
         banner = db.query(Banner).filter(Banner.banner_id == banner_id).first()
-        if not banner :
+        if not banner:
             raise HTTPException(status_code=404, detail="Banner not found")
-        try :
-            if file :
-                image = UploadImage.upload_image(file)
-                image_url = image["secure_url"]
-            else :
-                image_url = None
-            banner.position = position if position is not None else banner.position
-            banner.status = status if status is not None else banner.status
-            banner.priority = priority if priority is not None else banner.priority
-            banner.image = image_url if image_url is not None else banner.image
-        except Exception as e:
-            raise e
+
+        if file:
+            # Upload file and get URL
+            image = UploadImage.upload_image(file)
+            image_url = image["secure_url"]
+        else:
+            image_url = banner.image  # Keep the existing image URL if no new file
+
+        # Update only if values are provided
+        banner.position = position if position is not None else banner.position
+        banner.status = status if status is not None else banner.status
+        banner.priority = priority if priority is not None else banner.priority
+        banner.image = image_url
+
+        db.commit()
+        db.refresh(banner)
+        return banner
     def delete_banner(banner_id : str , db : Session):
         banner = db.query(Banner).filter(Banner.banner_id == banner_id).first()
         if not banner :

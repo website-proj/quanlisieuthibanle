@@ -243,7 +243,7 @@ class ProductService:
             pro.name_brand = name_brand if name_brand is not None else pro.name_brand
             pro.description = description if description is not None else pro.description
             pro.price = price if price is not None else pro.price
-            pro.old_price = pro.price if pro.price is not None else pro.old_price  # Đảm bảo không ghi đè nếu old_price không được cập nhật
+            pro.old_price = pro.price if pro.price is not None else pro.old_price
             pro.discount = discount if discount is not None else pro.discount
             pro.original_price = original_price if not original_price else pro.original_price
             pro.unit = unit if unit is not None else pro.unit

@@ -51,8 +51,11 @@ class PopUpService:
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
 
-    def update_popup(popup_id: str, status: Optional[str], start_date: Optional[str],
-                     end_date: Optional[str], file: Optional[UploadFile], db: Session):
+    def update_popup(popup_id: str = Form(...),
+                     status: Optional[str]  =None ,
+                     start_date: Optional[str] = None ,
+                     end_date: Optional[str] = None ,
+                     file: Optional[UploadFile] = None , db: Session = Depends(get_db)):
         # Lấy popup từ cơ sở dữ liệu
         popup = db.query(Popup).filter(Popup.popup_id == popup_id).first()
 
@@ -78,9 +81,9 @@ class PopUpService:
                 end_date_obj = popup.end_date if not end_date else datetime.strptime(end_date, "%Y-%m-%d")
 
             # Cập nhật dữ liệu
-            popup.status = status if status else popup.status
-            popup.start_date = start_date_obj if start_date else popup.start_date
-            popup.end_date = end_date_obj if end_date else popup.end_date
+            popup.status = status if status is not None else popup.status
+            popup.start_date = start_date_obj if start_date is not None  else popup.start_date
+            popup.end_date = end_date_obj if end_date is not None  else popup.end_date
             popup.image = image_url
 
             # Cập nhật cơ sở dữ liệu

@@ -1,9 +1,10 @@
 from typing import Optional
 
-from fastapi import APIRouter, Depends, UploadFile
+from fastapi import APIRouter, Depends, UploadFile, Form, HTTPException
 from fastapi.params import File
 
 from sqlalchemy.orm import Session
+from starlette.responses import JSONResponse
 
 from app.db.base import get_db
 from app.helper.login_manager import check_admin_role
@@ -32,11 +33,20 @@ def get_bottom_banner(db:Session=Depends(get_db)):
 def create_banner(position : str , status : str , priority : int , file: UploadFile = File(...),db : Session = Depends(get_db)):
     banner = BannerService.create_banner(position , status , priority , file ,db)
     return ResponseHandler.success("banner create successfully",banner)
-@router.put("/",dependencies=[Depends(check_admin_role)])
-def update_banner(banner_id :str  , position : Optional[str] = None  , status : Optional[str] = None  ,
-                  priority : Optional[int] = None , file: Optional[UploadFile] = None,db : Session = Depends(get_db)):
-    banner = BannerService.update_banner(banner_id , position , status , priority , file ,db)
-    return ResponseHandler.success("banner update successfully",banner)
+@router.put("/", dependencies=[Depends(check_admin_role)])
+def update_banner(
+    banner_id: str = Form(...),
+    position: Optional[str] = Form(None),
+    status: Optional[str] = Form(None),
+    priority: Optional[int] = Form(None),
+    file: Optional[UploadFile] = None,
+    db: Session = Depends(get_db),
+):
+    try:
+        banner = BannerService.update_banner(banner_id, position, status, priority, file, db)
+        return ResponseHandler.success("banner update successfully",banner)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 @router.delete("/",dependencies=[Depends(check_admin_role)])
 def delete_banner(banner_id : str , db : Session = Depends(get_db)):
     banner = BannerService.delete_banner(banner_id,db)
