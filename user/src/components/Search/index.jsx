@@ -3,6 +3,7 @@ import { IoSearch } from "react-icons/io5";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../Search/style.css";
+import SummaryApi, { baseURL } from "../../common/SummaryApi";
 
 const Search = () => {
   const [searchText, setSearchText] = useState("");
@@ -17,10 +18,9 @@ const Search = () => {
         return;
       }
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/product/search`,
-          { params: { search: searchText } }
-        );
+        const response = await axios.get(`${baseURL}${SummaryApi.search.url}`, {
+          params: { search: searchText },
+        });
         setResults(response.data.data);
       } catch (error) {
         console.error(error);
@@ -49,7 +49,7 @@ const Search = () => {
 
       {/* Hiển thị kết quả gợi ý */}
       {showDropdown && results.length > 0 && (
-        <ul className="absolute top-[2.5em] left-0 w-full bg-white border border-gray-300 rounded-2xl shadow-lg z-10">
+        <ul className="absolute top-[2.5em] max-h-56 overflow-y-auto left-0 w-full bg-white border border-gray-300 rounded-2xl shadow-lg z-10">
           {results.map((product) => (
             <li
               key={product.product_id}
