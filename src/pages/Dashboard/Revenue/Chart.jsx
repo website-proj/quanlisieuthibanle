@@ -175,7 +175,7 @@ const Chart = () => {
                 },
                 tooltip: {
                   callbacks: {
-                    title: (context) => `Ngày: ${context[0].label}`,
+                    title: (context) => `${context[0].label}`,
                     label: (context) => {
                       const datasetLabel = context.dataset.label || "";
                       const value = context.raw || 0;

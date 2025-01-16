@@ -21,7 +21,7 @@ function ViewUser({ open, onClose, user }) {
   const translateMembership = (membership) => {
     if (membership === "Silver") return "Bạc";
     if (membership === "Gold") return "Vàng";
-    if (membership === "Platinum") return "Platinum";
+    if (membership === "Diamond") return "Kim cương";
     return membership;
   };
 

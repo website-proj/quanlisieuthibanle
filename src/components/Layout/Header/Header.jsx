@@ -5,6 +5,7 @@ import { LuMoon, LuSun, LuUser } from "react-icons/lu";
 import { MdLogout, MdNotificationsNone, MdOutlineAccountCircle, MdMenuOpen, MdOutlineMenu } from "react-icons/md";
 import Sidebar from "/src/components/Layout/Sidebar/Sidebar.jsx";
 import "./Header.css";
+import {toast} from 'react-toastify'
 
 function Header({ toggleSidebar, isSidebarOpen }) {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -20,9 +21,19 @@ function Header({ toggleSidebar, isSidebarOpen }) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = (path) => {
-    setAnchorEl(null); 
-    if (path) navigate(path);
+  const handleMenuClose = () => {
+    localStorage.removeItem("isLoggIn");
+    localStorage.removeItem("jwtToken");
+    navigate('/login');
+    toast.success('Bạn đã đăng xuất thành công', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+    // setTimeout(4000)
   };
 
   const isMenuOpen = Boolean(anchorEl);

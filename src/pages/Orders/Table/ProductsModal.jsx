@@ -5,7 +5,7 @@ import { modalStyle } from './ModalStyles';
 
 export const ProductsModal = ({ products, onClose }) => {
   if (!products) return null;
-  
+
   return (
     <Modal open={Boolean(products)} onClose={onClose}>
       <Box sx={modalStyle}>
@@ -15,15 +15,32 @@ export const ProductsModal = ({ products, onClose }) => {
             <CloseIcon />
           </IconButton>
         </Box>
-        <TableContainer>
+        
+        <TableContainer
+          sx={{
+            maxHeight: 400,
+            overflowY: 'auto',
+            borderRadius: '20px',
+            '&::-webkit-scrollbar': {
+              width: '6px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#888',
+              borderRadius: '100px',
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              backgroundColor: '#555',
+            }
+          }}
+        >
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align="center">Mã sản phẩm</TableCell>
-                <TableCell align="center">Tên sản phẩm</TableCell>
-                <TableCell align="center">Số lượng</TableCell>
-                <TableCell align="center">Giá</TableCell>
-                <TableCell align="center">Tổng tiền</TableCell>
+                <TableCell align="center" sx={{ position: 'sticky', top: 0, backgroundColor: 'white' }}>Mã sản phẩm</TableCell>
+                <TableCell align="center" sx={{ position: 'sticky', top: 0, backgroundColor: 'white' }}>Tên sản phẩm</TableCell>
+                <TableCell align="center" sx={{ position: 'sticky', top: 0, backgroundColor: 'white' }}>Số lượng</TableCell>
+                <TableCell align="center" sx={{ position: 'sticky', top: 0, backgroundColor: 'white' }}>Giá</TableCell>
+                <TableCell align="center" sx={{ position: 'sticky', top: 0, backgroundColor: 'white' }}>Tổng tiền</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -33,7 +50,7 @@ export const ProductsModal = ({ products, onClose }) => {
                   <TableCell align="center">{product.product_name}</TableCell>
                   <TableCell align="center">{product.quantity}</TableCell>
                   <TableCell align="center">{product.price.toLocaleString()}</TableCell>
-                  <TableCell align="center">{product.total_price.toLocaleString()}</TableCell>
+                  <TableCell align="center">{product.total_amount.toLocaleString()}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -44,7 +61,6 @@ export const ProductsModal = ({ products, onClose }) => {
   );
 };
 
-// components/AddressModal.jsx
 export const AddressModal = ({ address, onClose }) => {
   if (!address) return null;
 
@@ -57,13 +73,30 @@ export const AddressModal = ({ address, onClose }) => {
             <CloseIcon />
           </IconButton>
         </Box>
-        <TableContainer>
+        
+        <TableContainer
+          sx={{
+            maxHeight: 400,
+            overflowY: 'auto',
+            borderRadius: '10px',
+            '&::-webkit-scrollbar': {
+              width: '8px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#888',
+              borderRadius: '10px',
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              backgroundColor: '#555',
+            },
+          }}
+        >
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align="center">Họ và tên người nhận</TableCell>
-                <TableCell align="center">Số điện thoại</TableCell>
-                <TableCell align="center">Địa chỉ</TableCell>
+                <TableCell align="center" sx={{ position: 'sticky', top: 0, backgroundColor: 'white' }}>Họ và tên người nhận</TableCell>
+                <TableCell align="center" sx={{ position: 'sticky', top: 0, backgroundColor: 'white' }}>Số điện thoại</TableCell>
+                <TableCell align="center" sx={{ position: 'sticky', top: 0, backgroundColor: 'white' }}>Địa chỉ</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

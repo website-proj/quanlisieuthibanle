@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from "react-router-dom";
 import { ToastContainer } from 'react-toastify'; 
 import "./App.css";
 import LogIn from "./LogIn.jsx";
@@ -23,8 +23,6 @@ import AddBanner from "./pages/Banners/Add/AddBanners.jsx";
 import PopupsList from "./pages/Popups/List/List.jsx";
 import AddPopups from "./pages/Popups/Add/AddPopups.jsx";
 import Settings from './pages/Settings/Settings.jsx'; 
-
-import PrivateRoute from "./routes/PrivateRoute";  
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); 
@@ -59,45 +57,114 @@ function App() {
       <div className={`App ${isDarkMode ? "dark" : ""}`}>
         <ToastContainer />
         <Routes>
+          {/* Route đăng nhập */}
           <Route path="/login" element={<LogIn onLogin={handleLogin} />} />
-          <Route
+          
+          {/* Route gốc: Nếu chưa đăng nhập, chuyển hướng về login */}
+          {/* <Route
             path="/"
             element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
           />
+          <Route
+            path="/dashboard"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/categories-list"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/subcategories-list"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/add-categories"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/subcategories-list"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/add-subcategories"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/products-list"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/add-products"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/orders"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/users-management"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/add-user"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/banners-list"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/add-banner"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/add-popup"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/settings"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
+          /> */}
+
+
+          {/* If logged in, show layout with header, sidebar */}
+          {isLoggedIn && (
+            <Route element={<Layout isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} toggleTheme={toggleTheme} />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/categories-list" element={<CategoriesList />} />
+              <Route path="/add-categories" element={<AddCategories />} />
+              <Route path="/subcategories-list" element={<SubcategoriesList />} />
+              <Route path="/add-subcategories" element={<AddSubcategories />} />
+              <Route path="/products-list" element={<ProductsList />} />
+              <Route path="/add-products" element={<AddProducts />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/users-management" element={<UsersManagement />} />
+              <Route path="/add-user" element={<AddUser />} />
+              <Route path="/banners-list" element={<BannersList />} />
+              <Route path="/add-banner" element={<AddBanner />} />
+              <Route path="/popups-list" element={<PopupsList />} />
+              <Route path="/add-popup" element={<AddPopups />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
+          )}
         </Routes>
-        {isLoggedIn && (
-          <div className={`App ${isDarkMode ? "dark" : ""}`}>
-            <Header toggleSidebar={toggleSidebar} toggleTheme={toggleTheme} isSidebarOpen={isSidebarOpen} />
-            <div className="layout">
-              <Sidebar 
-                isOpen={isSidebarOpen} 
-                handleLogout={handleLogout} />
-              <Content isSidebarOpen={isSidebarOpen}>
-                <div className="content-wrapper">
-                  <Routes>
-                    <Route path="/dashboard" element={<PrivateRoute isLoggedIn={isLoggedIn}><Dashboard /></PrivateRoute>} />
-                    <Route path="/categories-list" element={<PrivateRoute isLoggedIn={isLoggedIn}><CategoriesList /></PrivateRoute>} />
-                    <Route path="/add-categories" element={<PrivateRoute isLoggedIn={isLoggedIn}><AddCategories /></PrivateRoute>} />
-                    <Route path="/subcategories-list" element={<PrivateRoute isLoggedIn={isLoggedIn}><SubcategoriesList /></PrivateRoute>} />
-                    <Route path="/add-subcategories" element={<PrivateRoute isLoggedIn={isLoggedIn}><AddSubcategories /></PrivateRoute>} />
-                    <Route path="/products-list" element={<PrivateRoute isLoggedIn={isLoggedIn}><ProductsList /></PrivateRoute>} />
-                    <Route path="/add-products" element={<PrivateRoute isLoggedIn={isLoggedIn}><AddProducts /></PrivateRoute>} />
-                    <Route path="/orders" element={<PrivateRoute isLoggedIn={isLoggedIn}><Orders /></PrivateRoute>} />
-                    <Route path="/users-management" element={<PrivateRoute isLoggedIn={isLoggedIn}><UsersManagement /></PrivateRoute>} />
-                    <Route path="/add-user" element={<PrivateRoute isLoggedIn={isLoggedIn}><AddUser /></PrivateRoute>} />
-                    <Route path="/banners-list" element={<PrivateRoute isLoggedIn={isLoggedIn}><BannersList /></PrivateRoute>} />
-                    <Route path="/add-banner" element={<PrivateRoute isLoggedIn={isLoggedIn}><AddBanner /></PrivateRoute>} />
-                    <Route path="/popups-list" element={<PrivateRoute isLoggedIn={isLoggedIn}><PopupsList /></PrivateRoute>} />
-                    <Route path="/add-popup" element={<PrivateRoute isLoggedIn={isLoggedIn}><AddPopups /></PrivateRoute>} />
-                    <Route path="/settings" element={<PrivateRoute isLoggedIn={isLoggedIn}><Settings /></PrivateRoute>} />
-                  </Routes>
-                </div>
-              </Content>
-            </div>
-          </div>
-        )}
       </div>
     </Router>
+  );
+}
+
+// Layout component to wrap Sidebar and Header around protected routes
+function Layout({ isSidebarOpen, toggleSidebar, toggleTheme }) {
+  return (
+    <div className="layout">
+      <Header toggleSidebar={toggleSidebar} toggleTheme={toggleTheme} isSidebarOpen={isSidebarOpen} />
+      <Sidebar isOpen={isSidebarOpen} />
+      <Content isSidebarOpen={isSidebarOpen}>
+        <div className="content-wrapper">
+          <Outlet />
+        </div>
+      </Content>
+    </div>
   );
 }
 

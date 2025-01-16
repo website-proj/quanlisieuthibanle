@@ -18,13 +18,19 @@ import {
   Alert,
   TableSortLabel,
   TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Backdrop 
 } from "@mui/material";
 import HeaderCard from "/src/components/HeaderCard/HeaderCard";
 import ContentCard from "/src/components/ContentCard/ContentCard";
 import BackdropComponent from "./Backdrop.jsx";
-import Add from "/src/pages/Banners/Add/Add";
 import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints.jsx";
 import axios from "axios";
+import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx";
+import AddBanner from "/src/pages/Banners/Add/Add.jsx";
 
 function List() {
   const breadcrumbs = [
@@ -45,7 +51,42 @@ function List() {
   const [openBackdropView, setOpenBackdropView] = useState(false);
   const [selectedBanner, setSelectedBanner] = useState(null);
   const jwtToken = localStorage.getItem("jwtToken");
-
+  const [openBackdropEdit, setOpenBackdropEdit] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [bannerToDelete, setbannerToDelete] = useState(null);
+  const handleDeletebanner = (banner) => {
+    setbannerToDelete(banner);
+    setOpenDeleteDialog(true);
+  };
+  const confirmDelete = () => {
+    if (bannerToDelete) {
+      const jwtToken = localStorage.getItem("jwtToken");
+      axios
+        .delete(`${BASE_URL}${ENDPOINTS.banners.deletebanner}?banner_id=${bannerToDelete.banner_id}`, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        })
+        .then(() => {
+          setbanners(banners.filter(banner => banner.banner_id !== bannerToDelete.banner_id));
+          setFilteredbanners(filteredbanners.filter(banner => banner.banner_id !== bannerToDelete.banner_id));
+          setOpenDeleteDialog(false);
+          setbannerToDelete(null);
+        })
+        .catch((error) => {
+          console.error("Lỗi xóa banner: ", error);
+        });
+    }
+  };
+  const [openAdd, setOpenAdd] = useState(false);
+  const handleOpenAdd = () => {
+    setOpenAdd(true);
+  }
+  const handleCloseAdd = () => {
+    setOpenAdd(false);
+  };
   useEffect(() => {
     const fetchBanners = async () => {
       try {
@@ -120,6 +161,66 @@ function List() {
     banner.status.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleEditBanner = (banner) => {
+    setSelectedBanner(banner);
+    setSelectedBanner({ ...banner });
+    setImagePreview(banner.image);
+        setOpenBackdropEdit(true);
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUpdateBanner = async (bannerId, position, status, priority) => {
+    try {
+      const updateData = new FormData();
+      const imageToUpdate = selectedBanner.image || selectedImage;
+      console.log("Tệp ảnh được gửi đi:", selectedImage);
+      if (!imageToUpdate) {
+        console.error("Không có ảnh để cập nhật.");
+        return;
+      }
+      updateData.append("file", imageToUpdate); 
+      updateData.append("position", position);
+      updateData.append("status", status);
+      const priorityInt = parseInt(priority, 10);
+      if (isNaN(priorityInt)) {
+        console.error("Priority must be a valid integer.");
+        return;
+      }      updateData.append("banner_id", bannerId);  
+      console.log(error)
+      console.log("Tệp ảnh được gửi đi:", selectedBanner);
+
+      const response = await axios.put(
+        `${BASE_URL}${ENDPOINTS.banners.editBanner}?banner_id=${bannerId}&position=${position}&status=${status}&priority=${priority}`,
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            // 'Content-Type': 'multipart/form-data',
+          }
+        }
+      );
+  
+      if (response.data.message === "banner update successfully") {
+        setOpenBackdropEdit(false);
+        window.location.reload();
+
+      }
+    } catch (error) {
+      console.error("Error details:", error.response ? error.response.data : error.message);
+    }
+  };
+  
   return (
     <div>
       <HeaderCard title="Danh sách banner" breadcrumbs={breadcrumbs} />
@@ -136,7 +237,7 @@ function List() {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => setOpenBackdrop(true)}
+            onClick={handleOpenAdd}
             sx={{
               fontSize: "0.95em",
               textTransform: "none",
@@ -167,7 +268,7 @@ function List() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ textAlign: "center" }}>
+                  {/* <TableCell sx={{ textAlign: "center" }}>
                     <TableSortLabel
                       active={orderBy === "banner_id"}
                       direction={orderBy === "banner_id" ? order : "asc"}
@@ -175,7 +276,7 @@ function List() {
                     >
                       Mã banner
                     </TableSortLabel>
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell sx={{ textAlign: "center" }}>Hình ảnh</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     <TableSortLabel
@@ -186,7 +287,7 @@ function List() {
                       Vị trí
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
+                  {/* <TableCell sx={{ textAlign: "center" }}>
                     <TableSortLabel
                       active={orderBy === "priority"}
                       direction={orderBy === "priority" ? order : "asc"}
@@ -194,7 +295,7 @@ function List() {
                     >
                       Thứ tự ưu tiên
                     </TableSortLabel>
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell sx={{ textAlign: "center" }}>
                     <TableSortLabel
                       active={orderBy === "status"}
@@ -212,7 +313,7 @@ function List() {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((banner) => (
                     <TableRow key={banner.banner_id}>
-                      <TableCell sx={{ textAlign: "center" }}>{banner.banner_id}</TableCell>
+                      {/* <TableCell sx={{ textAlign: "center" }}>{banner.banner_id}</TableCell> */}
                       <TableCell sx={{ textAlign: "center" }}>
                         <img
                           src={banner.image}
@@ -221,7 +322,7 @@ function List() {
                         />
                       </TableCell>
                       <TableCell sx={{ textAlign: "center" }}>{banner.position}</TableCell>
-                      <TableCell sx={{ textAlign: "center" }}>{banner.priority}</TableCell>
+                      {/* <TableCell sx={{ textAlign: "center" }}>{banner.priority}</TableCell> */}
                       <TableCell sx={{ textAlign: "center" }}>
                         <Chip
                           label={banner.status === "Active" ? "Hoạt động" : "Không hoạt động"}
@@ -243,10 +344,13 @@ function List() {
                           <IconButton color="info" onClick={() => handleViewBanner(banner)}>
                             <AiOutlineEye />
                           </IconButton>
-                          <IconButton sx={{ color: "green" }}>
+                          <IconButton 
+                            sx={{ color: "green" }} 
+                            onClick={() => handleEditBanner(banner)}
+                          >
                             <AiOutlineEdit />
                           </IconButton>
-                          <IconButton sx={{ color: "red" }}>
+                          <IconButton sx={{ color: "red" }} onClick={() => handleDeletebanner(banner)}>
                             <AiOutlineDelete />
                           </IconButton>
                         </Box>
@@ -277,27 +381,195 @@ function List() {
       </ContentCard>
 
       <BackdropComponent open={openBackdropView} onClose={handleCloseBackdrop}>
-        {selectedBanner && (
-          <Box sx={{ padding: 2 }}>
-            <Typography variant="h6">Chi tiết banner</Typography>
-            <Box sx={{ marginBottom: "1em" }}>
-              <Typography><strong>Mã banner:</strong> {selectedBanner.banner_id}</Typography>
-              <Typography><strong>Tên banner:</strong> {selectedBanner.name}</Typography>
-              <Typography>
-                <strong>Hình ảnh banner:</strong>{" "}
-                <img src={selectedBanner.image} alt="Banner" style={{ width: "100px", height: "auto" }} />
-              </Typography>
-              <Typography><strong>Vị trí:</strong> {selectedBanner.position}</Typography>
-              <Typography><strong>Thứ tự ưu tiên:</strong> {selectedBanner.priority}</Typography>
-              <Typography><strong>Ngày tạo:</strong> {new Date(selectedBanner.created_at).toLocaleDateString()}</Typography>
+    {selectedBanner && (
+      <Box sx={{ padding: 2, backgroundColor: '#fff', borderRadius: '8px', boxShadow: 0 }}>
+        <Typography variant="h5" sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '1em' }}>
+          Chi tiết banner
+        </Typography>
+        <Box sx={{ marginBottom: "1.5em" }}>
+          <Typography variant="body1" sx={{ marginBottom: '0.5em' }}>
+            <strong>Mã banner:</strong> {selectedBanner.banner_id}
+          </Typography>
+          <Typography variant="body1" sx={{ marginBottom: '0.5em' }}>
+            <strong>Hình ảnh:</strong>
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+              <img
+                src={selectedBanner.image}
+                alt="Banner"
+                style={{ width: "60%", height: "auto", borderRadius: "20px" }}
+              />
             </Box>
-            <Button onClick={handleCloseBackdrop} variant="contained" color="secondary">
-              Đóng
+          </Typography>
+          <Typography variant="body1" sx={{ marginBottom: '0.5em' }}>
+            <strong>Vị trí:</strong> {selectedBanner.position}
+          </Typography>
+          <Typography variant="body1" sx={{ marginBottom: '0.5em' }}>
+            <strong>Thứ tự ưu tiên:</strong> {selectedBanner.priority}
+          </Typography>
+          <Typography variant="body1" sx={{ marginBottom: '1.5em' }}>
+          <strong>Ngày tạo:</strong> {new Date(selectedBanner.date_created).toLocaleDateString('vi-VN')}
+          </Typography>
+        </Box>
+        <Button
+          onClick={handleCloseBackdrop}
+          variant="contained"
+          color="primary"
+          sx={{
+            width: '100%',
+            textTransform: 'none',
+            boxShadow: 'none',
+            fontWeight: '1em',
+            borderRadius: '15px'
+          }}
+        >
+          Đóng
+        </Button>
+      </Box>
+  )}
+</BackdropComponent>
+
+    <BackdropComponent open={openBackdropEdit} onClose={() => setOpenBackdropEdit(false)}>
+  {selectedBanner && (
+    <Box sx={{ 
+      padding: 2, 
+      backgroundColor: '#fff', 
+      borderRadius: '10px', 
+      boxShadow: 0,
+      width: 'auto',
+      maxWidth: '90vw'
+    }}>
+      <Typography variant="h5" sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '1em' }}>
+        Chỉnh sửa banner
+      </Typography>
+      <Box sx={{ marginBottom: "1.5em" }}>
+        <Typography variant="body1" sx={{ marginBottom: '0.5em' }}>
+          <strong>Mã banner:</strong> {selectedBanner.banner_id}
+        </Typography>
+        
+        {/* Image Preview and Upload */}
+        <Box sx={{ marginY: 2 }}>
+          <Typography variant="body1" sx={{ marginBottom: '0.5em' }}>
+            <strong>Hình ảnh:</strong>
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2}}>
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                style={{ width: "60%", height: "auto", borderRadius: "20px", alignItems: 'center',textAlign: 'center'  }}
+              />
+            )}
+            <Button
+              variant="outlined"
+              component="label"
+              sx={{
+                textTransform: 'none',
+                borderRadius: '15px',
+                boxShadow: 'none',
+                width: '50%',
+                height: '30px'
+              }}
+            >
+              Tải ảnh lên
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={handleImageChange}
+              />
             </Button>
           </Box>
-        )}
-      </BackdropComponent>
+        </Box>
 
+               {/* Position Select */}
+        <FormControl fullWidth sx={{ marginY: 2 }}>
+          <InputLabel>Vị trí</InputLabel>
+          <Select
+            value={selectedBanner.position}
+            label="Vị trí"
+            onChange={(e) => setSelectedBanner({...selectedBanner, position: e.target.value})}
+          >
+            <MenuItem value="main">Main</MenuItem>
+            <MenuItem value="bottom">Bottom</MenuItem>
+            <MenuItem value="sidebar">Sidebar</MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* Status Select */}
+        <FormControl fullWidth sx={{ marginY: 2 }}>
+          <InputLabel>Trạng thái</InputLabel>
+          <Select
+            value={selectedBanner.status}
+            label="Trạng thái"
+            onChange={(e) => setSelectedBanner({...selectedBanner, status: e.target.value})}
+          >
+            <MenuItem value="Active">Hoạt động</MenuItem>
+            <MenuItem value="Inactive">Không hoạt động</MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* Priority Input */}
+        <TextField
+          fullWidth
+          label="Thứ tự ưu tiên"
+          type="number"
+          value={selectedBanner.priority}
+          onChange={(e) => setSelectedBanner({...selectedBanner, priority: e.target.value})}
+          sx={{ marginY: 2 }}
+        />
+      </Box>
+
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <Button
+          onClick={() => setOpenBackdropEdit(false)}
+          variant="outlined"
+          sx={{
+            width: '50%',
+            textTransform: 'none',
+            borderRadius: '15px'
+          }}
+        >
+          Hủy
+        </Button>
+        <Button
+          onClick={() => handleUpdateBanner(
+            selectedBanner.banner_id,
+            selectedBanner.position,
+            selectedBanner.status,
+            selectedBanner.priority
+          )}
+          variant="contained"
+          sx={{
+            width: '50%',
+            textTransform: 'none',
+            borderRadius: '15px',
+            boxShadow: 'none',
+          }}
+        >
+          Lưu
+        </Button>
+      </Box>
+    </Box>
+  )}
+</BackdropComponent>
+ <ConfirmDeleteDialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+        onConfirm={confirmDelete}
+      />
+
+<Backdrop
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          backdropFilter: 'blur(3px)',
+        }}
+        open={openAdd}
+        onClick={handleCloseAdd}
+      >
+        <div onClick={(e) => e.stopPropagation()} style={{ width: '40%', maxWidth: '1000px', paddingTop: '0', backgroundColor: '#fff', borderRadius: '15px' }}>
+          <AddBanner />
+        </div>
+      </Backdrop>   
     </div>
   );
 }

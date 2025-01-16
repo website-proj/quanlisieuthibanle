@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Box, Container } from "@mui/material";
 import { decodeJwt } from 'jose'; 
 import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
+import {toast} from 'react-toastify'
 
 function LogIn({ onLogin }) {
   const [username, setUsername] = useState("");
@@ -51,6 +52,14 @@ function LogIn({ onLogin }) {
         if (userRole === "SuperAdmin" || userRole === "Admin") {
           onLogin();
           navigate("/dashboard");
+          toast.success('Bạn đã đăng nhập thành công', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
         } else {
           setError("Bạn không có quyền admin.");
         }

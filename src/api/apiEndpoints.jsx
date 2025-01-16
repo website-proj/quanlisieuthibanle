@@ -51,19 +51,32 @@ const ENDPOINTS = {
     deleteProduct: "/admin/product?product_id=",
     addProduct: "/admin/products",
     editProduct: "/admin/product",
-  }
+  },
 
+  orders: {
+    allOrders: "/order_admin/get_all_order",
+  },
 
-  ,
   users: {
     detailsUser: "/admin/users",
     editUser: "/admin/user",
     deleteUser: "/admin/user?user_id=",
     addUser: "/admin/user",
+    addSuperAdmin: "/super_admin/",
   },
 
   banners: {
     allBanners: "/banner/",
+    editBanner: "/banner/",
+    deletebanner: "/banner/",
+    addBanner: "/banner/",
+  },
+
+  popups: {
+    allPopups: "/popup/",
+    editPopup: "/popup/",
+    deletepopup: "/popup/",
+    addPopup: "/popup/"
   }
 };
 

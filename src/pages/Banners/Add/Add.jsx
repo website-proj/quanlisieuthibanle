@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import HeaderCard from "/src/components/HeaderCard/HeaderCard";
 import ContentCard from "/src/components/ContentCard/ContentCard";
 import { TextField, MenuItem, Select, FormControl, Button, Typography, Box, Backdrop, CircularProgress } from '@mui/material';
+import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
+import axios from 'axios';
 
 function AddBanner() {
   const [formData, setFormData] = useState({
@@ -15,7 +17,7 @@ function AddBanner() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [loading, setLoading] = useState(false);  
   const [success, setSuccess] = useState(false);
-  const [addedCategory, setAddedCategory] = useState(null); 
+  const [addedCategory, setAddedCategory] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,41 +33,65 @@ function AddBanner() {
     if (file) {
       setFormData((prevData) => ({
         ...prevData,
-        bannerImage: URL.createObjectURL(file),
+        bannerImage: file,
       }));
       setErrors((prev) => ({ ...prev, bannerImage: '' }));
     }
   };
+const jwtToken = localStorage.getItem("jwtToken")
+const handleSubmit = (e) => {
+  e.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const newErrors = {};
+  if (!formData.position) newErrors.position = 'Vui lòng chọn vị trí.';
+  if (!formData.priority || Number(formData.priority) < 1)
+    newErrors.priority = 'Vui lòng nhập thứ tự ưu tiên lớn hơn hoặc bằng 1.';
+  if (!formData.status) newErrors.status = 'Vui lòng chọn trạng thái.';
+  if (!formData.bannerImage) newErrors.bannerImage = 'Vui lòng tải lên ảnh banner.';
 
-    const newErrors = {};
-    if (!formData.position) newErrors.position = 'Vui lòng chọn vị trí.';
-    if (!formData.priority || Number(formData.priority) < 1)
-      newErrors.priority = 'Vui lòng nhập thứ tự ưu tiên lớn hơn hoặc bằng 1.';
-    if (!formData.status) newErrors.status = 'Vui lòng chọn trạng thái.';
-    if (!formData.bannerImage) newErrors.bannerImage = 'Vui lòng tải lên ảnh banner.';
+  setErrors(newErrors);
 
-    setErrors(newErrors);
+  if (Object.keys(newErrors).length === 0) {
+    setLoading(true);
+    setOpenBackdrop(true);
 
-    if (Object.keys(newErrors).length === 0) {
-      setLoading(true);
-      setOpenBackdrop(true); 
+    const formDataRequest = new FormData();
+    formDataRequest.append('file', formData.bannerImage); // Chỉ thêm file vào FormData
 
-      setTimeout(() => {
-        setLoading(false);
-        setSuccess(true);
-        setAddedCategory({
-          position: formData.position,
-          priority: formData.priority,
-          status: formData.status,
-          image: formData.bannerImage,
+    const jwtToken = localStorage.getItem("jwtToken");
+
+    // Gửi yêu cầu POST với các tham số trong URL
+    axios.post(`${BASE_URL}${ENDPOINTS.banners.addBanner}?position=${formData.position}&status=${formData.status}&priority=${formData.priority}`, formDataRequest, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+        // 'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then((response) => {
+      setLoading(false);
+      setSuccess(true);
+      setAddedCategory({
+        position: formData.position,
+        priority: formData.priority,
+        status: formData.status,
+        image: URL.createObjectURL(formData.bannerImage),
+      });
+      setOpenBackdrop(false);
+    })
+    .catch((error) => {
+      setLoading(false);
+      setOpenBackdrop(false);
+      console.error("There was an error submitting the form:", error.response?.data || error);
+
+      if (error.response?.data?.detail) {
+        error.response.data.detail.forEach((err, index) => {
+          console.error(`Error ${index + 1}:`, err);
         });
-        setOpenBackdrop(false);
-      }, 2000); // Simulate a delay for loading effect
-    }
-  };
+      }
+    });
+  }
+};
 
   const handleCloseSuccess = () => {
     setSuccess(false);
@@ -75,6 +101,7 @@ function AddBanner() {
       status: '',
       bannerImage: null,
     });
+    window.location.reload()
   };
 
   return (
@@ -92,7 +119,7 @@ function AddBanner() {
                     onChange={handleChange}
                     displayEmpty
                   >
-                    <MenuItem value="header">Header</MenuItem>
+                    <MenuItem value="main">Main</MenuItem>
                     <MenuItem value="bottom">Bottom</MenuItem>
                     <MenuItem value="sidebar">Sidebar</MenuItem>
                   </Select>
@@ -101,7 +128,7 @@ function AddBanner() {
               </Box>
 
               <Box mb={3}>
-                <Typography variant="h6" sx={{ fontSize: '1em', fontWeight: 500 }}>Thứ tự ưu tiên</Typography>
+                <Typography variant="h6" sx={{ fontSize: '1em', fontWeight: '500' }}>Thứ tự ưu tiên</Typography>
                 <TextField
                   type="number"
                   fullWidth
@@ -123,8 +150,8 @@ function AddBanner() {
                     onChange={handleChange}
                     displayEmpty
                   >
-                    <MenuItem value="active">Đang hoạt động</MenuItem>
-                    <MenuItem value="inactive">Không hoạt động</MenuItem>
+                    <MenuItem value="Active">Đang hoạt động</MenuItem>
+                    <MenuItem value="Inactive">Không hoạt động</MenuItem>
                   </Select>
                   {errors.status && <Typography color="error">{errors.status}</Typography>}
                 </FormControl>
@@ -138,7 +165,7 @@ function AddBanner() {
                   onClick={() => document.getElementById('banner-upload').click()}
                 >
                   {formData.bannerImage ? (
-                    <img src={formData.bannerImage} alt="Preview" className="image-preview" />
+                    <img src={URL.createObjectURL(formData.bannerImage)} alt="Preview" className="image-preview" />
                   ) : (
                     <div className="upload-placeholder">
                       <div className="upload-icon">
@@ -188,74 +215,100 @@ function AddBanner() {
       </Backdrop>
 
       <Backdrop 
-        open={success} 
-        style={{
-          zIndex: 9999, 
-          backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center',
+  open={success} 
+  style={{
+    zIndex: 9999, 
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+  }}
+  onClick={handleCloseSuccess} 
+>
+  <Box
+    style={{
+      backgroundColor: 'white',
+      padding: '20px',
+      borderRadius: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      maxWidth: '60%',
+      maxHeight: '80%', 
+      width: 'auto',
+      height: 'auto',
+      overflowY: 'auto', 
+      transform: 'scale(0.85)', 
+      transformOrigin: 'center',
+      scrollbarColor: '#ccc transparent',
+            // '&::-webkit-scrollbar': {
+            //   width: '6px',
+            //   marginRight: '2px'
+            // },
+            // '&::-webkit-scrollbar-track': {
+            //   background: 'transparent',
+            //   marginTop: '10px',
+            //   marginBottom: '10px'
+            // },
+            // '&::-webkit-scrollbar-thumb': {
+            //   background: '#ccc',
+            //   borderRadius: '3px',
+            //   border: '2px solid transparent',
+            //   backgroundClip: 'padding-box'
+            // }
+    }}
+    onClick={(e) => e.stopPropagation()} 
+  >
+    <Typography variant="h5" style={{ fontWeight: '500', textAlign: 'center' }}>
+      Bạn đã thêm một banner!
+    </Typography>
+    <Box style={{ width: '80%', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+      <img 
+        src={addedCategory?.image} 
+        alt="Category" 
+        style={{ 
+          width: '50%', 
+          height: 'auto', 
+          objectFit: 'contain', 
+          maxWidth: '40em', 
+          borderRadius: '15px',
+          textAlign: 'center',
+          paddingBottom: '1em'
+        }} 
+      />
+    </Box>
+    <Typography variant='h6'> Vị trí: {addedCategory?.position}</Typography>
+    <Typography variant='h6'> 
+      Trạng thái: {addedCategory?.status === 'Active' ? 'Hoạt động' : 'Không hoạt động'}
+    </Typography>
+    <Typography variant='h6'> Thứ tự ưu tiên:  {addedCategory?.priority}</Typography>
+
+    <Box
+      style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        marginTop: '20px',
+      }}
+    >
+      <Button
+        variant="contained"
+        onClick={handleCloseSuccess}
+        fullWidth
+        sx={{
+          marginBottom: "0em",
+          borderRadius: "15px",
+          textTransform: 'none',
+          boxShadow: 'none',
+          fontSize: '1em',
         }}
-        onClick={handleCloseSuccess} 
       >
-        <Box
-        style={{
-            backgroundColor: 'white',
-            padding: '20px',
-            borderRadius: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            maxWidth: '60%',
-            maxHeight: '80%',
-            width: 'auto',
-            height: 'auto',
-            overflow: 'hidden',
-            transform: 'scale(0.85)', 
-            transformOrigin: 'center',
-        }}
-        onClick={(e) => e.stopPropagation()} 
-        >
-        <Typography variant="h5" style={{ fontWeight: '500', textAlign: 'center' }}>
-            Bạn đã thêm một banner!
-        </Typography>
-          <Box style={{ width: '80%', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-          <img 
-                src={addedCategory?.image} 
-                alt="Category" 
-                style={{ 
-                  width: '90%', 
-                  height: 'auto', 
-                  objectFit: 'contain', 
-                  maxWidth: '40em', 
-                  borderRadius: '15px',
-                }} />
-          </Box>
+        Đóng
+      </Button>
+    </Box>
+  </Box>
+</Backdrop>
 
-          <Box
-            style={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: '20px',
-            }}
-          >
-              <Typography variant="h6" style={{ fontWeight: '500' }}>
-                Vị trí: <span style={{ fontWeight: 'normal' }}>{addedCategory?.position}</span>
-              </Typography>
-              <Typography variant="h6" style={{ fontWeight: '500' }}>
-                Thứ tự ưu tiên: <span style={{ fontWeight: 'normal' }}>{addedCategory?.priority}</span>
-              </Typography>            <Typography variant="h6" style={{ fontWeight: '500' }}>
-                Trạng thái: <span style={{ fontWeight: 'normal' }}>
-                  {addedCategory?.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động'}
-                </span>
-              </Typography>              
-          </Box>
-        </Box>
-
-
-      </Backdrop>
     </div>
   );
 }

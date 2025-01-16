@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ContentCard from "/src/components/ContentCard/ContentCard";
 import { TextField, MenuItem, Select, FormControl, Button, Typography, Box, Backdrop, CircularProgress } from '@mui/material';
+import axios from 'axios';
+import { BASE_URL, ENDPOINTS } from '/src/api/apiEndpoints';
 
 function AddPopup() {
   const [formData, setFormData] = useState({
@@ -12,67 +14,101 @@ function AddPopup() {
 
   const [errors, setErrors] = useState({});
   const [openBackdrop, setOpenBackdrop] = useState(false);
-  const [loading, setLoading] = useState(false);  
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [addedCategory, setAddedCategory] = useState(null); 
+  const [addedCategory, setAddedCategory] = useState(null);
+  const jwtToken = localStorage.getItem("jwtToken");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prevData) => {
+      const updatedData = { ...prevData, [name]: value };
+      console.log("Updated formData:", updatedData); // log formData after change
+      return updatedData;
+    });
     setErrors((prev) => ({ ...prev }));
   };
+  
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setFormData((prevData) => ({
         ...prevData,
-        popupImage: URL.createObjectURL(file),
+        popupImage: file,
       }));
       setErrors((prev) => ({ ...prev, popupImage: '' }));
     }
   };
 
-  const handleSubmit = (e) => {
+  // Function to format the date to YYYY-MM-DD
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
   
     const newErrors = {};
-    if (!formData.start_date) newErrors.start_date = 'Vui lòng nhập ngày bắt đầu.';
-    if (!formData.end_date) newErrors.end_date = 'Vui lòng nhập ngày kết thúc.';
-    if (!formData.status) newErrors.status = 'Vui lòng chọn trạng thái.';
-    if (!formData.popupImage) newErrors.popupImage = 'Vui lòng tải lên ảnh popup.';
   
-    setErrors(newErrors);
+    if (!formData.start_date) newErrors.start_date = 'Ngày bắt đầu là bắt buộc';
+    if (!formData.end_date) newErrors.end_date = 'Ngày kết thúc là bắt buộc';
+    if (!formData.status) newErrors.status = 'Trạng thái là bắt buộc';
+    if (!formData.popupImage) newErrors.popupImage = 'Hình ảnh là bắt buộc';
   
-    if (Object.keys(newErrors).length === 0) {
-      setLoading(true);
-      setOpenBackdrop(true);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
   
-      // Format the dates to dd/mm/yyyy
-      const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = ("0" + date.getDate()).slice(-2);
-        const month = ("0" + (date.getMonth() + 1)).slice(-2);
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-      };
+    setLoading(true);
+    setOpenBackdrop(true);
   
-      setTimeout(() => {
-        setLoading(false);
-        setSuccess(true);
+    try {
+      const formattedStartDate = formatDate(formData.start_date);
+      const formattedEndDate = formatDate(formData.end_date);
+  
+      const formDataToSend = new FormData();
+      // Change 'popupImage' to 'file' to match the API expectation
+      formDataToSend.append('file', formData.popupImage);
+  
+      const response = await axios.post(
+        `${BASE_URL}${ENDPOINTS.popups.addPopup}?status=${formData.status}&start_date=${formattedStartDate}&end_date=${formattedEndDate}`,
+        formDataToSend,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        const { start_date, end_date, status } = response.data;
+  
         setAddedCategory({
-          start_date: formatDate(formData.start_date),
-          end_date: formatDate(formData.end_date),
-          status: formData.status,
-          image: formData.popupImage,
+          start_date,
+          end_date,
+          status,
+          image: URL.createObjectURL(formData.popupImage),
         });
-        setOpenBackdrop(false);
-      }, 2000);
+  
+        setSuccess(true);
+      }
+    } catch (error) {
+      console.error('Error adding popup:', error);
+      if (error.response && error.response.data) {
+        setErrors(error.response.data.errors || {});
+      }
+    } finally {
+      setLoading(false);
+      setOpenBackdrop(false);
     }
   };
+  
 
   const handleCloseSuccess = () => {
     setSuccess(false);
@@ -82,6 +118,7 @@ function AddPopup() {
       status: '',
       popupImage: null,
     });
+    window.location.reload();
   };
 
   return (
@@ -90,7 +127,6 @@ function AddPopup() {
         <form onSubmit={handleSubmit}>
           <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
             <Box flex={1}>
-
               <Box mb={3}>
                 <Typography variant="h6" sx={{ fontSize: '1em', fontWeight: '500' }}>Ngày bắt đầu</Typography>
                 <TextField
@@ -130,8 +166,8 @@ function AddPopup() {
                     onChange={handleChange}
                     displayEmpty
                   >
-                    <MenuItem value="active">Đang hoạt động</MenuItem>
-                    <MenuItem value="inactive">Không hoạt động</MenuItem>
+                    <MenuItem value="Active">Đang hoạt động</MenuItem>
+                    <MenuItem value="Inactive">Không hoạt động</MenuItem>
                   </Select>
                   {errors.status && <Typography color="error">{errors.status}</Typography>}
                 </FormControl>
@@ -145,7 +181,7 @@ function AddPopup() {
                   onClick={() => document.getElementById('popup-upload').click()}
                 >
                   {formData.popupImage ? (
-                    <img src={formData.popupImage} alt="Preview" className="image-preview" />
+                    <img src={URL.createObjectURL(formData.popupImage)} alt="Preview" className="image-preview" />
                   ) : (
                     <div className="upload-placeholder">
                       <div className="upload-icon">
@@ -194,16 +230,16 @@ function AddPopup() {
         <CircularProgress color="inherit" />
       </Backdrop>
 
-      <Backdrop 
-        open={success} 
+      <Backdrop
+        open={success}
         style={{
-          zIndex: 9999, 
-          backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-          display: 'flex', 
-          justifyContent: 'center', 
+          zIndex: 9999,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
           alignItems: 'center',
         }}
-        onClick={handleCloseSuccess} 
+        onClick={handleCloseSuccess}
       >
         <Box
           style={{
@@ -215,55 +251,42 @@ function AddPopup() {
             alignItems: 'center',
             maxWidth: '60%',
             maxHeight: '80%',
-            width: 'auto',
-            height: 'auto',
-            overflow: 'hidden',
-            transform: 'scale(0.85)', 
-            transformOrigin: 'center',
+            overflowY: 'auto',
+            scrollbarColor: '#ccc transparent',
+
           }}
-          onClick={(e) => e.stopPropagation()} 
+          onClick={(e) => e.stopPropagation()}
         >
           <Typography variant="h5" style={{ fontWeight: '500', textAlign: 'center' }}>
             Bạn đã thêm một popup!
           </Typography>
 
           <Box style={{ width: '80%', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-            <img 
-              src={addedCategory?.image} 
-              alt="Category" 
-              style={{ 
-                width: '90%', 
-                height: 'auto', 
-                objectFit: 'contain', 
-                maxWidth: '40em', 
+            <img
+              src={addedCategory?.image}
+              alt="Popup"
+              style={{
+                width: '90%',
+                height: 'auto',
+                objectFit: 'contain',
                 borderRadius: '15px',
-              }} 
+              }}
             />
           </Box>
 
-          <Box
-            style={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: '20px',
-            }}
-          >
-            <Typography variant="h6" style={{ fontWeight: '500' }}>
-              Ngày bắt đầu: <span style={{ fontWeight: 'normal' }}>{addedCategory?.start_date}</span>
+          {/* <Box style={{ marginTop: '20px' }}>
+            <Typography variant="h6">
+              Ngày bắt đầu: {addedCategory.start_date}
             </Typography>
-            <Typography variant="h6" style={{ fontWeight: '500' }}>
-              Ngày kết thúc: <span style={{ fontWeight: 'normal' }}>{addedCategory?.end_date}</span>
-            </Typography>            <Typography variant="h6" style={{ fontWeight: '500' }}>
-              Trạng thái: <span style={{ fontWeight: 'normal' }}>
-                {addedCategory?.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động'}
-              </span>
+            <Typography variant="h6">
+              Ngày kết thúc: {addedCategory.end_date}
             </Typography>
-          </Box>
+            <Typography variant="h6">
+              Trạng thái: {addedCategory?.status === 'Active' ? 'Đang hoạt động' : 'Không hoạt động'}
+            </Typography>
+          </Box> */}
         </Box>
-        </Backdrop>
-
+      </Backdrop>
     </div>
   );
 }

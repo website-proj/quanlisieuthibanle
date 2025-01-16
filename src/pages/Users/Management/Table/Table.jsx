@@ -28,7 +28,8 @@ import ViewUser from "./ViewUser";
 import EditUser from "./EditUser";
 import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx";
 import axios from "axios";
-import { decodeJwt } from 'jose'; 
+import { decodeJwt } from 'jose';
+import AddSuperAdmin from "../../Add/AddSuperAdmin";
 
 function UserTable() {
   const [users, setUsers] = useState([]);
@@ -40,6 +41,7 @@ function UserTable() {
   const [sortBy, setSortBy] = useState("username");
   const [role, setRole] = useState("Customer");
   const [isBackdropOpen, setIsBackdropOpen] = useState(false);
+  const [isBackdropOpenSA, setIsBackdropOpenSA] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [editUser, setEditUser] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -147,7 +149,7 @@ function UserTable() {
         });
     }
   };
-  
+
   const handleSort = (column) => {
     const newSortOrder = sortBy === column && sortOrder === "asc" ? "desc" : "asc";
     setSortBy(column);
@@ -189,172 +191,199 @@ function UserTable() {
   };
 
   return (
-    <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h6" gutterBottom>
-          Quản lý người dùng
-        </Typography>
-      </Box>
+<Box>
+  {/* Header */}
+  <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+    <Typography variant="h6" gutterBottom>
+      Quản lý người dùng
+    </Typography>
+  </Box>
 
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={2}
-        marginBottom="10px"
-        marginTop="-15px"
+  {/* Second row */}
+  <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+    <Box display="flex" justifyContent="flex-start" alignItems="center">
+      {/* Select box for role */}
+      {userRole === "SuperAdmin" && (
+        <FormControl sx={{ minWidth: 120, scale: "0.95" }}>
+          <InputLabel>Vai trò</InputLabel>
+          <Select value={role} onChange={handleRoleChange} label="Vai trò">
+            <MenuItem value="Customer">Khách hàng</MenuItem>
+            <MenuItem value="Admin">Quản trị viên</MenuItem>
+          </Select>
+        </FormControl>
+      )}
+
+      {userRole === "Admin" && (
+        <FormControl sx={{ minWidth: 120, scale: "0.95" }}>
+          <InputLabel>Vai trò</InputLabel>
+          <Select value={role} onChange={handleRoleChange} label="Vai trò">
+            <MenuItem value="Customer">Khách hàng</MenuItem>
+          </Select>
+        </FormControl>
+      )}
+    </Box>
+
+    <Box display="flex" alignItems="center">
+      {/* Search bar and Add User buttons */}
+      <TextField
+        label="Tìm kiếm"
+        variant="outlined"
+        size="small"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        sx={{ width: "300px", marginRight: "10px" }}
+      />
+      
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{
+          fontSize: "0.95em",
+          textTransform: "none",
+          borderRadius: "15px",
+          boxShadow: "none",
+          marginRight: "10px",
+        }}
+        onClick={() => setIsBackdropOpen(true)}
       >
-        <Box display="flex" alignItems="center" flexGrow={1}>
-          {userRole === "SuperAdmin" && (
-            <FormControl sx={{ minWidth: 120, scale: "0.95" }}>
-              <InputLabel>Vai trò</InputLabel>
-              <Select value={role} onChange={handleRoleChange} label="Vai trò">
-                <MenuItem value="Customer">Khách hàng</MenuItem>
-                <MenuItem value="Admin">Quản trị viên</MenuItem>
-              </Select>
-            </FormControl>
-          )}
-          {userRole === "Admin" && (
-            <FormControl sx={{ minWidth: 120, scale: "0.95" }}>
-              <InputLabel>Vai trò</InputLabel>
-              <Select value={role} onChange={handleRoleChange} label="Vai trò">
-                <MenuItem value="Customer">Khách hàng</MenuItem>
-              </Select>
-            </FormControl>
-          )}
-        </Box>
+        Thêm người dùng
+      </Button>
 
-        <TextField
-          label="Tìm kiếm"
-          variant="outlined"
-          size="small"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          sx={{ width: "300px", marginRight: "10px" }}
-        />
-
+      {userRole === "SuperAdmin" && (
         <Button
           variant="contained"
-          color="primary"
+          color="secondary"
           sx={{
             fontSize: "0.95em",
             textTransform: "none",
             borderRadius: "15px",
             boxShadow: "none",
           }}
-          onClick={() => setIsBackdropOpen(true)}
+          onClick={() => setIsBackdropOpenSA(true)}
         >
-          Thêm người dùng
+          Thêm Admin
         </Button>
-      </Box>
-
-      {totalUsers === 0 ? (
-        <Alert severity="warning" sx={{ borderRadius: "10px", mb: 2 }}>
-          Không tồn tại người dùng chứa "{search}".
-        </Alert>
-      ) : (
-        <TableContainer
-          component={Paper}
-          sx={{
-            borderRadius: "15px",
-            boxShadow: "none",
-            fontFamily: "Roboto",
-          }}
-        >
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ textAlign: "center" }}>
-                  <TableSortLabel
-                    active={sortBy === "username"}
-                    direction={sortOrder}
-                    onClick={() => handleSort("username")}
-                  >
-                    Tên người dùng
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
-                  <TableSortLabel
-                    active={sortBy === "gender"}
-                    direction={sortOrder}
-                    onClick={() => handleSort("gender")}
-                  >
-                    Giới tính
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>Số điện thoại</TableCell>
-                <TableCell sx={{ textAlign: "center" }}>Email</TableCell>
-                <TableCell sx={{ textAlign: "center" }}>Hành động</TableCell>
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {paginatedUsers.map((user, index) => (
-                <TableRow key={index}>
-                  <TableCell sx={{ textAlign: "center" }}>{user.username}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
-                    {user.gender === "Male" ? "Nam" : user.gender === "Female" ? "Nữ" : "Khác"}
-                  </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{user.phone_number}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{user.email}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
-                    <IconButton color="info" onClick={() => handleViewUser(user)}>
-                      <AiOutlineEye />
-                    </IconButton>
-                    <IconButton sx={{ color: "green" }} onClick={() => handleEditUser(user)}>
-                      <AiOutlineEdit />
-                    </IconButton>
-                    <IconButton sx={{ color: "red" }} onClick={() => handleDeleteUser(user)}>
-                      <AiOutlineDelete />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
       )}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "16px",
-        }}
-      >
-        <Typography variant="subtitle2">Tổng số người dùng: {totalUsers}</Typography>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={totalUsers}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage="Số người dùng mỗi trang:"
-          labelDisplayedRows={({ from, to, count }) =>
-            `${from}-${to} trên ${count}`
-          }
-        />
-      </Box>
-      {selectedUser && (
-        <ViewUser user={selectedUser} open={!!selectedUser} onClose={handleCloseViewUser} />
-      )}
-
-      {editUser && (
-        <EditUser user={editUser} open={!!editUser} onClose={handleCloseEditUser} />
-      )}
-
-      <ConfirmDeleteDialog
-        open={openDeleteDialog}
-        onClose={() => setOpenDeleteDialog(false)}
-        onConfirm={confirmDelete}
-      />
-
-      <BackdropWrapper open={isBackdropOpen} onClose={() => setIsBackdropOpen(false)}>
-        <AddUserForm onClose={() => setIsBackdropOpen(false)} />
-      </BackdropWrapper>
     </Box>
+  </Box>
+
+  {/* Table and Pagination */}
+  {totalUsers === 0 ? (
+    <Alert severity="warning" sx={{ borderRadius: "10px", mb: 2 }}>
+      Không tồn tại người dùng chứa "{search}".
+    </Alert>
+  ) : (
+    <TableContainer
+      component={Paper}
+      sx={{
+        borderRadius: "15px",
+        boxShadow: "none",
+        fontFamily: "Roboto",
+      }}
+    >
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ textAlign: "center" }}>
+              <TableSortLabel
+                active={sortBy === "username"}
+                direction={sortOrder}
+                onClick={() => handleSort("username")}
+              >
+                Tên người dùng
+              </TableSortLabel>
+            </TableCell>
+            <TableCell sx={{ textAlign: "center" }}>
+              <TableSortLabel
+                active={sortBy === "gender"}
+                direction={sortOrder}
+                onClick={() => handleSort("gender")}
+              >
+                Giới tính
+              </TableSortLabel>
+            </TableCell>
+            <TableCell sx={{ textAlign: "center" }}>Số điện thoại</TableCell>
+            <TableCell sx={{ textAlign: "center" }}>Email</TableCell>
+            <TableCell sx={{ textAlign: "center" }}>Hành động</TableCell>
+          </TableRow>
+        </TableHead>
+
+        <TableBody>
+          {paginatedUsers.map((user, index) => (
+            <TableRow key={index}>
+              <TableCell sx={{ textAlign: "center" }}>{user.username}</TableCell>
+              <TableCell sx={{ textAlign: "center" }}>
+                {user.gender === "Male" ? "Nam" : user.gender === "Female" ? "Nữ" : "Khác"}
+              </TableCell>
+              <TableCell sx={{ textAlign: "center" }}>{user.phone_number}</TableCell>
+              <TableCell sx={{ textAlign: "center" }}>{user.email}</TableCell>
+              <TableCell sx={{ textAlign: "center" }}>
+                <IconButton color="info" onClick={() => handleViewUser(user)}>
+                  <AiOutlineEye />
+                </IconButton>
+                <IconButton sx={{ color: "green" }} onClick={() => handleEditUser(user)}>
+                  <AiOutlineEdit />
+                </IconButton>
+                <IconButton sx={{ color: "red" }} onClick={() => handleDeleteUser(user)}>
+                  <AiOutlineDelete />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )}
+
+  {/* Pagination */}
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginTop: "16px",
+    }}
+  >
+    <Typography variant="subtitle2">Tổng số người dùng: {totalUsers}</Typography>
+    <TablePagination
+      rowsPerPageOptions={[5, 10, 15]}
+      component="div"
+      count={totalUsers}
+      rowsPerPage={rowsPerPage}
+      page={page}
+      onPageChange={handleChangePage}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+      labelRowsPerPage="Số người dùng mỗi trang:"
+      labelDisplayedRows={({ from, to, count }) =>
+        `${from}-${to} trên ${count}`
+      }
+    />
+  </Box>
+
+  {/* Modals and Backdrops */}
+  {selectedUser && (
+    <ViewUser user={selectedUser} open={!!selectedUser} onClose={handleCloseViewUser} />
+  )}
+
+  {editUser && (
+    <EditUser user={editUser} open={!!editUser} onClose={handleCloseEditUser} />
+  )}
+
+  <ConfirmDeleteDialog
+    open={openDeleteDialog}
+    onClose={() => setOpenDeleteDialog(false)}
+    onConfirm={confirmDelete}
+  />
+
+  <BackdropWrapper open={isBackdropOpen} onClose={() => setIsBackdropOpen(false)}>
+    <AddUserForm onClose={() => setIsBackdropOpen(false)} />
+  </BackdropWrapper>
+
+  <BackdropWrapper open={isBackdropOpenSA} onClose={() => setIsBackdropOpenSA(false)}>
+    <AddSuperAdmin onClose={() => setIsBackdropOpenSA(false)} />
+  </BackdropWrapper>
+</Box>
+
   );
 }
 

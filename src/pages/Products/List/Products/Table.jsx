@@ -6,6 +6,7 @@ import axios from "axios";
 import ProductDetails from "./ViewProducts.jsx";
 import AddProducts from '/src/pages/Products/Add/Add.jsx';
 import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx";
+import Edit from './EditProduct.jsx'
 
 export default function ProductTable() {
   const [categories, setCategories] = useState({});
@@ -24,7 +25,8 @@ export default function ProductTable() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
   const [noProducts, setNoProducts] = useState(false); 
-
+  const [openBackdropEdit, setOpenBackdropEdit] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -147,7 +149,19 @@ export default function ProductTable() {
         }
       }
     };
-    
+    const handleEditProduct = (product) => {
+      setSelectedProduct(product);
+      setOpenBackdropEdit(true);
+    };
+    const handleProductUpdate = (updatedProduct) => {
+      setProducts(prevProducts => 
+        prevProducts.map(prod => 
+          prod.product_id === selectedProduct.product_id 
+            ? { ...prod, ...updatedProduct }
+            : prod
+        )
+      );
+    };
   return (
     <Box>
       <Box
@@ -345,7 +359,10 @@ export default function ProductTable() {
                   <IconButton color="info" onClick={() => handleViewDetails(prod.product_id)}>
                   <AiOutlineEye />
                     </IconButton>
-                    <IconButton sx={{ color: "green" }}>
+                    <IconButton 
+                      sx={{ color: "green" }} 
+                      onClick={() => handleEditProduct(prod)}
+                    >
                       <AiOutlineEdit />
                     </IconButton>
                     <IconButton
@@ -432,7 +449,44 @@ export default function ProductTable() {
         onClose={() => setOpenDeleteDialog(false)}
         onConfirm={confirmDelete}
       />
-      
+
+        <Backdrop
+        open={openBackdropEdit}
+        onClick={() => setOpenBackdropEdit(false)}
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          backdropFilter: "blur(3px)",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          overflowY: "auto",
+          borderRadius: 2,
+        }}
+      >
+        <Paper
+          onClick={(e) => e.stopPropagation()}
+          sx={{
+            position: 'fixed',
+            padding: 2,
+            width: "60%",
+            height: "90%",
+            margin: "auto",
+            borderRadius: 5,
+            boxShadow: 0,
+            overflowY: "auto",
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#ccc transparent'
+          }}
+        >
+          <Edit 
+            product={selectedProduct}
+            onClose={() => setOpenBackdropEdit(false)}
+            onUpdate={handleProductUpdate}
+          />
+        </Paper>
+      </Backdrop>
         <ProductDetails productId={currentProductId} onClose={handleCloseDetails} />
     </Box>
   );

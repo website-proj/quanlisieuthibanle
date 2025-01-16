@@ -25,7 +25,7 @@ import {
 } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
+import '../../../LogIn.jsx'
 function Sidebar({ isOpen }) {
   const [openCategories, setOpenCategories] = React.useState(false);
   const [openProducts, setOpenProducts] = React.useState(false);
@@ -47,17 +47,22 @@ function Sidebar({ isOpen }) {
   const navigate = useNavigate();
 
   const onLogoutClick = () => {
-    handleLogout();
+    localStorage.removeItem("jwtToken");
+    localStorage.removeItem("isLoggedIn");
+    navigate('/login');
     toast.success('Bạn đã đăng xuất thành công', {
       position: "top-right",
-      autoClose: 3000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
     });
-    navigate('/login');
+    // setTimeout(() => {
+    //   // window.location.reload();
+    // }, 5000);
   };
+  
   return (
     <Drawer
       variant="persistent"

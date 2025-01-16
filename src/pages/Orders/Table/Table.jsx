@@ -1,10 +1,11 @@
-// components/Table.jsx
 import React, { useState, useEffect } from 'react';
-import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Paper, TextField, Typography, Alert, Button, Chip, TablePagination } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Paper, TextField, Typography, Button, Chip, TablePagination, Snackbar, Alert } from '@mui/material';
 import TableHeader from './TableHeader';
 import { ProductsModal, AddressModal } from './ProductsModal';
 import { getStatusColor, getComparator } from './TableHelper';
+import axios from 'axios';
 import './Table.css';
+import { BASE_URL, ENDPOINTS } from '/src/api/apiEndpoints';
 
 const OrderManagement = () => {
   const [orders, setOrders] = useState([]);
@@ -17,6 +18,9 @@ const OrderManagement = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderBy, setOrderBy] = useState('order_id');
   const [order, setOrder] = useState('asc');
+  const [alertMessage, setAlertMessage] = useState(null);
+  const [openAlert, setOpenAlert] = useState(false); // State for Snackbar
+  const jwtToken = localStorage.getItem("jwtToken");
 
   useEffect(() => {
     fetchOrders();
@@ -24,12 +28,52 @@ const OrderManagement = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('/src/pages/Orders/Orders.json');
-      if (!response.ok) throw new Error('Không thể tải dữ liệu đơn hàng');
-      const data = await response.json();
-      setOrders(data);
+      const response = await axios.get(`${BASE_URL}${ENDPOINTS.orders.allOrders}`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`
+        }
+      });
+
+      if (response.data.message === "order response" && response.data.data) {
+        const transformedOrders = Object.entries(response.data.data).map(([_, orderData]) => {
+          const orderInfo = orderData.order || {};
+          const addressInfo = orderData.address || {};
+          const paymentInfo = orderData.payment || {};
+          const productsInfo = orderData.products || [];
+
+          const addressParts = [
+            addressInfo.house_number,
+            addressInfo.street,
+            addressInfo.ward,
+            addressInfo.district,
+            addressInfo.state
+          ].filter(Boolean);
+
+          return {
+            order_id: orderInfo.order_id || '',
+            status: orderInfo.status || '',
+            products: productsInfo,
+            delivery_address: {
+              recipient_name: addressInfo.user_name || '',
+              phone_number: addressInfo.phone_number || '',
+              address: addressParts.length > 0 ? addressParts.join(', ') : 'Không có địa chỉ'
+            },
+            buyer_id: orderInfo.user_id || '',
+            total_amount: orderInfo.total_amount || 0,
+            payment_method: paymentInfo.payment_method || '',
+            order_date: orderInfo.order_date ?
+              new Date(orderInfo.order_date).toLocaleDateString('vi-VN') :
+              ''
+          };
+        });
+
+        setOrders(transformedOrders);
+      } else {
+        throw new Error('Định dạng dữ liệu không hợp lệ');
+      }
     } catch (err) {
-      setError(err.message);
+      console.error('Error fetching orders:', err);
+      setError(err.message || 'Không thể tải dữ liệu đơn hàng');
     } finally {
       setLoading(false);
     }
@@ -43,10 +87,10 @@ const OrderManagement = () => {
 
   const filteredOrders = orders
     .filter(order =>
-      order.order_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.buyer_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.order_date.toLowerCase().includes(searchTerm.toLowerCase())
+      (order.order_id?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (order.status?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (order.buyer_id?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (order.order_date?.toLowerCase() || '').includes(searchTerm.toLowerCase())
     )
     .sort(getComparator(order, orderBy));
 
@@ -57,6 +101,45 @@ const OrderManagement = () => {
 
   if (loading) return <div>Đang tải...</div>;
   if (error) return <div>Lỗi: {error}</div>;
+
+  const formatStatusText = (status) => {
+    const statusMap = {
+      'Processing': 'Đang xử lý',
+      'Delivered': 'Đã giao hàng',
+      'Canceled': 'Đã hủy',
+    };
+    return statusMap[status] || status || 'Không xác định';
+  };
+
+  const formatPaymentMethod = (method) => {
+    if (!method) return 'Không xác định';
+    if (method === 'Cash') return 'Tiền mặt';
+    if (method === 'Credit Card') return 'Thẻ tín dụng';
+    if (method === 'Debit Card') return 'Thẻ ghi nợ';
+    return method;
+  };
+
+  const handleViewProducts = (products) => {
+    if (!products || products.length === 0) {
+      setAlertMessage('Không có thông tin sản phẩm');
+      setOpenAlert(true);
+      return;
+    }
+    setSelectedProducts(products);
+  };
+
+  const handleViewAddress = (address) => {
+    if (!address || !address.recipient_name) {
+      setAlertMessage('Không có thông tin địa chỉ');
+      setOpenAlert(true); 
+      return;
+    }
+    setSelectedAddress(address);
+  };
+
+  const handleCloseAlert = () => {
+    setOpenAlert(false); 
+  };
 
   return (
     <Box>
@@ -76,55 +159,56 @@ const OrderManagement = () => {
           Không tìm thấy đơn hàng phù hợp với "{searchTerm}".
         </Alert>
       ) : (
-        <TableContainer component={Paper} sx={{ borderRadius: "15px", boxShadow: "none", width: '100%', overflowX: 'auto' }}>
-          <Table>
-            <TableHeader 
-              orderBy={orderBy} 
-              order={order} 
-              onSort={handleSort}
+<TableContainer component={Paper} sx={{ borderRadius: "15px", boxShadow: "none", width: '100%', overflowX: 'auto' }} className="table-container">
+  <Table>
+    <TableHeader 
+      orderBy={orderBy} 
+      order={order} 
+      onSort={handleSort}
+    />
+    <TableBody>
+      {paginatedOrders.map((order) => (
+        <TableRow key={order.order_id}>
+          <TableCell className="table-cell" align="center">{order.order_id || 'N/A'}</TableCell>
+          <TableCell className="table-cell" align="center">
+            <Chip
+              label={formatStatusText(order.status)}
+              size="small"
+              sx={{
+                fontWeight: '500',
+                borderRadius: '12px',
+                ...getStatusColor(order.status)
+              }}
             />
-            <TableBody>
-              {paginatedOrders.map((order) => (
-                <TableRow key={order.order_id}>
-                  <TableCell align="center">{order.order_id}</TableCell>
-                  <TableCell align="center">
-                    <Chip
-                      label={order.status}
-                      size="small"
-                      sx={{
-                        fontWeight: '500',
-                        borderRadius: '12px',
-                        ...getStatusColor(order.status)
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button
-                      variant="text"
-                      onClick={() => setSelectedProducts(order.products)}
-                      sx={{ textTransform: 'none' }}
-                    >
-                      Xem chi tiết
-                    </Button>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button
-                      variant="text"
-                      onClick={() => setSelectedAddress(order.delivery_address)}
-                      sx={{ textTransform: 'none' }}
-                    >
-                      Xem chi tiết
-                    </Button>
-                  </TableCell>
-                  <TableCell align="center">{order.buyer_id}</TableCell>
-                  <TableCell align="center">{order.total_amount.toLocaleString()}</TableCell>
-                  <TableCell align="center">{order.payment_method}</TableCell>
-                  <TableCell align="center">{order.order_date}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+          </TableCell>
+          <TableCell className="table-cell" align="center">
+            <Button
+              variant="text"
+              onClick={() => handleViewProducts(order.products)}
+              sx={{ textTransform: 'none' }}
+            >
+              Xem chi tiết
+            </Button>
+          </TableCell>
+          <TableCell className="table-cell" align="center">
+            <Button
+              variant="text"
+              onClick={() => handleViewAddress(order.delivery_address)}
+              sx={{ textTransform: 'none' }}
+            >
+              Xem chi tiết
+            </Button>
+          </TableCell>
+          <TableCell className="table-cell" align="center">{order.buyer_id || 'N/A'}</TableCell>
+          <TableCell className="table-cell" align="center">{(order.total_amount || 0).toLocaleString()}</TableCell>
+          <TableCell className="table-cell" align="center">{formatPaymentMethod(order.payment_method)}</TableCell>
+          <TableCell className="table-cell" align="center">{order.order_date || 'N/A'}</TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </Table>
+</TableContainer>
+
       )}
 
       <Box sx={{
@@ -161,6 +245,18 @@ const OrderManagement = () => {
         address={selectedAddress}
         onClose={() => setSelectedAddress(null)}
       />
+
+      {/* Snackbar for Alerts */}
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={4000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
+      >
+        <Alert onClose={handleCloseAlert} severity="warning" sx={{ width: '100%', borderRadius: '10px' }}>
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

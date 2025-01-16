@@ -1,28 +1,25 @@
 export const getStatusColor = (status) => {
-    switch (status) {
-      case 'Đang giao':
-        return {
-          color: 'primary.main',
-          backgroundColor: '#90caf9',
-        };
-      case 'Đã giao':
-        return {
-          color: 'success.main',
-          backgroundColor: '#e8f5e9',
-        };
-      case 'Đã hủy':
-        return {
-          color: 'error.main',
-          backgroundColor: '#ffebee',
-        };
-      default:
-        return {
-          color: 'text.primary',
-          backgroundColor: 'background.default',
-        };
-    }
-  };
-  
+  if (status === 'Processing') {
+    return {
+      backgroundColor: '#90caf9', // Màu nền pastel xanh dương
+      color: '#0063ED', // Màu chữ xanh dương đậm
+    };
+  }
+  if (status === 'Delivered') {
+    return {
+      backgroundColor: '#A8D5BA', // Màu nền pastel xanh lá
+      color: '#2F7D3F', // Màu chữ xanh lá đậm
+    };
+  }
+  if (status === 'Canceled') {
+    return {
+      backgroundColor: '#F2A1A1', // Màu nền pastel đỏ
+      color: '#D32F2F', // Màu chữ đỏ đậm
+    };
+  }
+  return {};
+};
+
   export const getComparator = (order, orderBy) => {
     return order === 'desc'
       ? (a, b) => descendingComparator(a, b, orderBy)
