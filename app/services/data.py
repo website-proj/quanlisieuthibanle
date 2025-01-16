@@ -35,7 +35,7 @@ class DataService:
         list_orders = []
         list_order_items = []
         try:
-            for i in range(1000):
+            for i in range(10):
                 # Tạo order
                 random_user = random.choice(users)
                 user_id = random_user.user_id
@@ -56,7 +56,7 @@ class DataService:
                     product_id = product.product_id
                     quantity = random.randint(1, 5)
                     price =  product.price
-                    total_amount += price
+                    total_amount += price*quantity
 
                     order_item = OrderItems(
                         order_item_id=order_item_id,
@@ -322,7 +322,7 @@ class DataService:
             # self.add_reviews_data(db)
             # self.add_voucher_data(db)
             # self.add_payment_data(db)
-            self.cart_data(db)
+            # self.cart_data(db)
             # print("hello world")
 if __name__ == '__main__':
     data = DataService()
