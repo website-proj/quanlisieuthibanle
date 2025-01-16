@@ -63,6 +63,7 @@ const ENDPOINTS = {
     deleteUser: "/admin/user?user_id=",
     addUser: "/admin/user",
     addSuperAdmin: "/super_admin/",
+    changePassword: "/users/changePassword",
   },
 
   banners: {
