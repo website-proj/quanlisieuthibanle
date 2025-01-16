@@ -113,7 +113,8 @@ def get_reviews_of_product(product_id : str , db: Session = Depends(get_db)):
 @router.get("/get_product_by_2_categoryID")
 def get_product_by_2_category(parent_category_id : str , sub_category_id : Optional[str] = None ,  db : Session = Depends(get_db)):
     product = ProductService.get_product(parent_category_id , sub_category_id , db)
-    return ResponseHandler.success("product", product)
+    return product
+    # return ResponseHandler.success("product", product)
 @router.get("/get_best_seller_2cat" )
 def get_best_seller_2cat(parent_id : str , sub_id : Optional[str] = None , db : Session = Depends(get_db)):
     products = ProductService.get_best_seller2_cat(parent_id, sub_id, db)

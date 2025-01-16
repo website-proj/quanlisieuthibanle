@@ -486,14 +486,6 @@ class ProductService:
             raise e
     @staticmethod
     def get_discount_product_for_parent_category(category_id :str , db:Session):
-        # sub_cat = aliased(Category)
-        # parent_cat = aliased(Category)
-        # data = db.query(Product , ).outerjoin(
-        #     sub_cat , sub_cat.category_id == Product.category_id
-        # ).outerjoin(
-        #     parent_cat, parent_cat.category_id == sub_cat.parent_category_id
-        # ).filter(sub_cat.category_id == category_id).all()
-        #
         data = db.query(Product , Category).join(
             Category, Product.category_id == Category.category_id
         ).filter(Category.parent_category_id == category_id).all()
@@ -561,24 +553,99 @@ class ProductService:
     @staticmethod
     def get_product(parent_category_id : str , sub_category_id : Optional[str] = None ,  db : Session = Depends(get_db)):
         try :
+            data = []
             if sub_category_id :
                 products = db.query(Product).filter(Product.category_id == sub_category_id).all()
-                return products
+                for product in products :
+                    data.append(product)
+                    return data
             else :
                 products = db.query(Product ).join(Category , Product.category_id == Category.category_id).filter(
                     Category.parent_category_id == parent_category_id
                 ).all()
-                return products
+                for product in products :
+                    data.append(product)
+                return data
         except Exception as e :
             raise e
 
     @staticmethod
+    def best_seller_parent_2cat(parent_category_id: str, db: Session):
+        sub_categories = db.query(Category).filter(Category.parent_category_id == parent_category_id).all()
+
+        if not sub_categories:
+            raise HTTPException(status_code=404, detail="No subcategories found for the parent category")
+
+        sub_category_ids = [sub_cat.category_id for sub_cat in sub_categories]
+
+        order_items_pass = (
+            db.query(OrderItems, Orders, Product)
+            .join(Orders, Orders.order_id == OrderItems.order_id)
+            .join(Product, Product.product_id == OrderItems.product_id)
+            .filter(
+                Orders.status == "Delivered",
+                Product.category_id.in_(sub_category_ids)  # Lọc theo danh mục con
+            )
+            .all()
+        )
+
+        if not order_items_pass:
+            raise HTTPException(status_code=404, detail="No order_items_pass found")
+
+        products = dict()
+        for order_item, _, _ in order_items_pass:
+            product_id = order_item.product_id
+            quantity = order_item.quantity
+            if product_id not in products:
+                products[product_id] = quantity
+            else:
+                products[product_id] += quantity
+
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+
+        products = sorted(products.items(), key=lambda item: item[1], reverse=True)
+        products = dict(products)
+
+        data = []
+        for product_id in products:
+            product = db.query(Product).filter(Product.product_id == product_id).first()
+            data.append(product)
+
+        return data
+
+    @staticmethod
+    def get_best_seller_sub_2cat(sub_category_id: str, db: Session):
+        order_items_pass = (db.query(OrderItems, Orders, Product)
+                            .join(Orders, Orders.order_id == OrderItems.order_id)
+                            .join(Product, Product.product_id == OrderItems.product_id)
+                            .filter(Orders.status == "Delivered", Product.category_id == sub_category_id).all())
+        if not order_items_pass:
+            raise HTTPException(status_code=404, detail="no order_items_pass found")
+        products = dict()
+        for order_item, _, _ in order_items_pass:
+            product_id = order_item.product_id
+            quantity = order_item.quantity
+            if product_id not in products:
+                products[product_id] = quantity
+            else:
+                products[product_id] += quantity
+        data = []
+        products = sorted(products.items(), key=lambda item: item[1], reverse=True)
+        products = dict(products)
+        if not products:
+            raise HTTPException(status_code=404, detail="No products found")
+        for product_id in products:
+            product = db.query(Product).filter(Product.product_id == product_id).first()
+            data.append(product)
+        return data
+    @staticmethod
     def get_best_seller2_cat(parent : str , sub : str , db : Session):
         if sub :
-            products = ProductService.get_best_seller_for_sub_category(sub , db )
+            products = ProductService.get_best_seller_sub_2cat(sub , db )
             return products
         else :
-            products = ProductService.get_best_seller_for_parent_category(parent , db )
+            products = ProductService.best_seller_parent_2cat(parent , db )
             return products
     @staticmethod
     def discount_2cat(parent : str , sub : str ,  db : Session):
