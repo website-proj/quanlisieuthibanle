@@ -17,7 +17,7 @@ function Settings() {
   ];
 
   const [activeTab, setActiveTab] = useState(
-    location.search.includes("account") ? "account" : "interface"
+    location.search.includes("interface") ? "interface" : "account"
   );
 
   const [mode, setMode] = useState(localStorage.getItem("mode") || "Sáng");
@@ -59,19 +59,19 @@ function Settings() {
       <ContentCard>
         <div className="settings-container">
           <div className="sidebar">
+          <button
+              className={`sidebar-item ${activeTab === "account" ? "active" : ""}`}
+              onClick={() => setActiveTab("account")}
+              style={{ fontSize: `${fontSize}px` }}
+            >
+              Tài khoản
+            </button>
             <button
               className={`sidebar-item ${activeTab === "interface" ? "active" : ""}`}
               onClick={() => setActiveTab("interface")}
               style={{ fontSize: `${fontSize}px` }}
             >
               Giao diện
-            </button>
-            <button
-              className={`sidebar-item ${activeTab === "account" ? "active" : ""}`}
-              onClick={() => setActiveTab("account")}
-              style={{ fontSize: `${fontSize}px` }}
-            >
-              Tài khoản
             </button>
           </div>
           <div className="content">

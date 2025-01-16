@@ -50,7 +50,7 @@ const ENDPOINTS = {
     viewProductDetails: "/admin/reviews_of_product?product_id=",
     deleteProduct: "/admin/product?product_id=",
     addProduct: "/admin/products",
-    editProduct: "/admin/product",
+    editProduct: "/admin/product/",
   },
 
   orders: {

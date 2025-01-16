@@ -4,11 +4,8 @@ import {
   TextField,
   Button,
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
-  Switch,
-  FormControlLabel,
   Typography,
   Alert,
   Grid,
@@ -26,10 +23,14 @@ export default function Edit({ product, onClose, onUpdate }) {
     discount: "",
     unit: "",
     stock_quantity: "",
-    star_product: false,
+    star_product: "false",
     expiration_date: "",
     category_id: "",
+    image: null,
   });
+
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [currentImage, setCurrentImage] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const jwtToken = localStorage.getItem("jwtToken");
@@ -45,12 +46,48 @@ export default function Edit({ product, onClose, onUpdate }) {
         discount: product.discount || "",
         unit: product.unit || "",
         stock_quantity: product.stock_quantity || "",
-        star_product: product.star_product || false,
+        star_product: product.star_product ? "true" : "false",
         expiration_date: product.expiration_date ? product.expiration_date.split('T')[0] : "",
         category_id: product.category_id || "",
+        image: null,
       });
+      setCurrentImage(product.image || "");
     }
   }, [product]);
+
+  const validateField = (name, value) => {
+    let error = "";
+    
+    switch (name) {
+      case 'price':
+      case 'original_price':
+        if (value && (isNaN(value) || value < 0)) {
+          error = 'Giá trị phải là số dương';
+        }
+        break;
+      case 'discount':
+        if (value && (isNaN(value) || value < 0 || value > 100)) {
+          error = 'Giảm giá phải từ 0 đến 100';
+        }
+        break;
+      case 'stock_quantity':
+        if (value && (isNaN(value) || value < 0 || !Number.isInteger(Number(value)))) {
+          error = 'Số lượng phải là số nguyên dương';
+        }
+        break;
+      case 'expiration_date':
+        if (value) {
+          const year = new Date(value).getFullYear();
+          if (year < 2000 || year > 3000) {
+            error = 'Năm phải nằm trong khoảng 2000-3000';
+          }
+        }
+        break;
+      default:
+        break;
+    }
+    return error;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,12 +95,29 @@ export default function Edit({ product, onClose, onUpdate }) {
       ...prev,
       [name]: value
     }));
+
+    const error = validateField(name, value);
+    setFieldErrors(prev => ({
+      ...prev,
+      [name]: error
+    }));
   };
 
-  const handleSwitchChange = (e) => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData(prev => ({
+        ...prev,
+        image: file
+      }));
+      setCurrentImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleStarProductChange = (e) => {
     setFormData(prev => ({
       ...prev,
-      star_product: e.target.checked
+      star_product: e.target.value
     }));
   };
 
@@ -72,39 +126,81 @@ export default function Edit({ product, onClose, onUpdate }) {
     setError("");
     setSuccess(false);
 
+    // Kiểm tra xem có lỗi validation không
+    const hasErrors = Object.values(fieldErrors).some(error => error !== "");
+    if (hasErrors) {
+      setError("Vui lòng sửa các lỗi trước khi cập nhật");
+      return;
+    }
+
     try {
-      const queryParams = new URLSearchParams();
+      const formDataToSend = new FormData();
+      formDataToSend.append("product_id", product.product_id);
+      
+      if (formData.image) {
+        formDataToSend.append("file", formData.image);
+      }
+
+      const changedFields = {};
+      
       Object.entries(formData).forEach(([key, value]) => {
-        if (value !== "") {
-          if (typeof value === 'boolean') {
-            queryParams.append(key, value);
+        if (key !== 'image' && value !== '' && value !== product[key]) {
+          if (key === 'price' || key === 'original_price' || key === 'stock_quantity') {
+            changedFields[key] = parseInt(value);
+          } else if (key === 'discount') {
+            changedFields[key] = parseFloat(value);
+          } else if (key === 'star_product') {
+            changedFields[key] = value === 'true';
           } else {
-            queryParams.append(key, encodeURIComponent(value));
+            changedFields[key] = value;
           }
         }
       });
 
-      const response = await axios.put(
-        `${BASE_URL}${ENDPOINTS.products.editProduct}?${queryParams.toString()}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
+      const queryParams = new URLSearchParams();
+      Object.entries(changedFields).forEach(([key, value]) => {
+        queryParams.append(key, value);
+      });
+
+      const url = `${BASE_URL}${ENDPOINTS.products.editProduct}?${queryParams.toString()}`;
+
+      const response = await axios.put(url, formDataToSend, {
+        headers: {
+          'Authorization': `Bearer ${jwtToken}`,
+          'Content-Type': 'multipart/form-data',
         }
-      );
+      });
 
       if (response.status === 200) {
         setSuccess(true);
-        if (onUpdate) onUpdate(formData);
+        if (onUpdate) onUpdate(response.data);
         setTimeout(() => {
-          onClose();
+          window.location.reload(); // Reload trang sau khi cập nhật thành công
         }, 1500);
       }
     } catch (error) {
+      console.error("Error response:", error.response);
       setError(error.response?.data?.message || "Có lỗi xảy ra khi cập nhật sản phẩm");
     }
   };
+
+  const renderTextField = (name, label, type = "text", multiline = false, rows = 1) => (
+    <>
+      <Typography variant="subtitle2" sx={{ mb: 1 }}>{label}</Typography>
+      <TextField
+        fullWidth
+        name={name}
+        type={type}
+        value={formData[name]}
+        onChange={handleChange}
+        multiline={multiline}
+        rows={rows}
+        error={!!fieldErrors[name]}
+        helperText={fieldErrors[name]}
+        sx={{ mb: 2 }}
+      />
+    </>
+  );
 
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ p: 3 }}>
@@ -113,121 +209,76 @@ export default function Edit({ product, onClose, onUpdate }) {
       </Typography>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
+        <Alert severity="error" sx={{ position: 'fixed', top: 16, right: 16, mb: 2 }}>
           {error}
         </Alert>
       )}
 
       {success && (
-        <Alert severity="success" sx={{ mb: 2 }}>
+        <Alert severity="success" sx={{ position: 'fixed', top: 16, right: 16, mb: 2 }}>
           Cập nhật sản phẩm thành công!
         </Alert>
       )}
 
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <TextField
-            fullWidth
-            label="Tên sản phẩm"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            sx={{ mb: 2 }}
-          />
+          <Typography variant="subtitle2" sx={{ mb: 1 }}>Ảnh sản phẩm</Typography>
+          <Box sx={{ mb: 2 }}>
+            {currentImage && (
+              <Box sx={{ mb: 1 }}>
+                <img 
+                  src={currentImage} 
+                  alt="Current product" 
+                  style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'contain' }}
+                />
+              </Box>
+            )}
+            <Button
+              variant="contained"
+              component="span"
+              onClick={() => document.getElementById('file-upload').click()}
+              sx={{
+                mt: 2,
+                borderRadius: "15px",
+                boxShadow: "none",
+                backgroundColor: "primary.main",
+              }}
+            >
+              Tải ảnh lên
+            </Button>
+            <input
+              accept="image/*"
+              id="file-upload"
+              type="file"
+              style={{ display: 'none' }}
+              onChange={handleImageChange}
+            />
+          </Box>
 
-          <TextField
-            fullWidth
-            label="Tên nhãn hàng"
-            name="name_brand"
-            value={formData.name_brand}
-            onChange={handleChange}
-            sx={{ mb: 2 }}
-          />
-
-          <TextField
-            fullWidth
-            label="Mô tả"
-            name="description"
-            multiline
-            rows={4}
-            value={formData.description}
-            onChange={handleChange}
-            sx={{ mb: 2 }}
-          />
-
-          <TextField
-            fullWidth
-            label="Giá bán"
-            name="price"
-            type="number"
-            value={formData.price}
-            onChange={handleChange}
-            sx={{ mb: 2 }}
-          />
-
-          <TextField
-            fullWidth
-            label="Giá gốc"
-            name="original_price"
-            type="number"
-            value={formData.original_price}
-            onChange={handleChange}
-            sx={{ mb: 2 }}
-          />
+          {renderTextField("name", "Tên sản phẩm")}
+          {renderTextField("name_brand", "Tên nhãn hàng")}
+          {renderTextField("description", "Mô tả", "text", true, 4)}
+          {renderTextField("price", "Giá bán", "number")}
         </Grid>
 
         <Grid item xs={6}>
-          <TextField
-            fullWidth
-            label="Giảm giá"
-            name="discount"
-            type="number"
-            value={formData.discount}
-            onChange={handleChange}
-            sx={{ mb: 2 }}
-          />
+          {renderTextField("original_price", "Giá gốc", "number")}
+          {renderTextField("discount", "Giảm giá", "number")}
+          {renderTextField("unit", "Đơn vị")}
+          {renderTextField("stock_quantity", "Số lượng trong kho", "number")}
+          {renderTextField("expiration_date", "Ngày hết hạn", "date")}
 
-          <TextField
-            fullWidth
-            label="Đơn vị"
-            name="unit"
-            value={formData.unit}
-            onChange={handleChange}
-            sx={{ mb: 2 }}
-          />
-
-          <TextField
-            fullWidth
-            label="Số lượng trong kho"
-            name="stock_quantity"
-            type="number"
-            value={formData.stock_quantity}
-            onChange={handleChange}
-            sx={{ mb: 2 }}
-          />
-
-          <TextField
-            fullWidth
-            label="Ngày hết hạn"
-            name="expiration_date"
-            type="date"
-            value={formData.expiration_date}
-            onChange={handleChange}
-            InputLabelProps={{ shrink: true }}
-            sx={{ mb: 2 }}
-          />
-
-          <FormControlLabel
-            control={
-              <Switch
-                checked={formData.star_product}
-                onChange={handleSwitchChange}
-                name="star_product"
-              />
-            }
-            label="Sản phẩm nổi bật"
-            sx={{ mb: 2 }}
-          />
+          <Typography variant="subtitle2" sx={{ mb: 1 }}>Sản phẩm nổi bật</Typography>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <Select
+              value={formData.star_product}
+              name="star_product"
+              onChange={handleStarProductChange}
+            >
+              <MenuItem value="true">Có</MenuItem>
+              <MenuItem value="false">Không</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
       </Grid>
 
@@ -243,6 +294,7 @@ export default function Edit({ product, onClose, onUpdate }) {
           type="submit"
           variant="contained"
           sx={{ borderRadius: "10px" }}
+          disabled={Object.values(fieldErrors).some(error => error !== "")}
         >
           Cập nhật
         </Button>

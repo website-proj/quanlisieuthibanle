@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography, FormControl, Select, MenuItem, TextField, Button, TableSortLabel, TablePagination, Alert, Backdrop, InputLabel  } from "@mui/material";
-import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { Box, Typography, Button, Backdrop, Paper } from "@mui/material";
 import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
 import axios from "axios";
 import ProductDetails from "./ViewProducts.jsx";
 import AddProducts from '/src/pages/Products/Add/Add.jsx';
 import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx";
-import Edit from './EditProduct.jsx'
+import Edit from './EditProduct.jsx';
+import ProductFilters from './ProductFilters.jsx';
+import ProductList from './ProductList';
+import ProductPagination from './ProductPagination';
 
 export default function ProductTable() {
   const [categories, setCategories] = useState({});
@@ -63,11 +65,6 @@ export default function ProductTable() {
       setNoProducts(productsForSubcategory.length === 0); 
     }
   };
-  
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("vi-VN");
-  };
 
   const handleViewDetails = (productId) => {
     setCurrentProductId(productId);
@@ -121,47 +118,50 @@ export default function ProductTable() {
   };
   
   const handleDeleteProduct = (productId) => {
-      setProductToDelete(productId);
-      setOpenDeleteDialog(true);
-    };
-  
-    const confirmDelete = async () => {
-      if (productToDelete) {
-        try {
-          const response = await axios.delete(
-            `${BASE_URL}${ENDPOINTS.products.deleteProduct}${productToDelete}`,
-            {
-              headers: {
-                Authorization: `Bearer ${jwtToken}`,
-              },
-            }
-          );
-    
-          if (response.status === 200) {
-            setProducts((prevProducts) =>
-              prevProducts.filter((prod) => prod.product_id !== productToDelete)
-            );
-            setOpenDeleteDialog(false);
-            setProductToDelete(null);
+    setProductToDelete(productId);
+    setOpenDeleteDialog(true);
+  };
+
+  const confirmDelete = async () => {
+    if (productToDelete) {
+      try {
+        const response = await axios.delete(
+          `${BASE_URL}${ENDPOINTS.products.deleteProduct}${productToDelete}`,
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
           }
-        } catch (error) {
-          console.error("Lỗi khi xóa sản phẩm:", error.message);
+        );
+  
+        if (response.status === 200) {
+          setProducts((prevProducts) =>
+            prevProducts.filter((prod) => prod.product_id !== productToDelete)
+          );
+          setOpenDeleteDialog(false);
+          setProductToDelete(null);
         }
+      } catch (error) {
+        console.error("Lỗi khi xóa sản phẩm:", error.message);
       }
-    };
-    const handleEditProduct = (product) => {
-      setSelectedProduct(product);
-      setOpenBackdropEdit(true);
-    };
-    const handleProductUpdate = (updatedProduct) => {
-      setProducts(prevProducts => 
-        prevProducts.map(prod => 
-          prod.product_id === selectedProduct.product_id 
-            ? { ...prod, ...updatedProduct }
-            : prod
-        )
-      );
-    };
+    }
+  };
+
+  const handleEditProduct = (product) => {
+    setSelectedProduct(product);
+    setOpenBackdropEdit(true);
+  };
+
+  const handleProductUpdate = (updatedProduct) => {
+    setProducts(prevProducts => 
+      prevProducts.map(prod => 
+        prod.product_id === selectedProduct.product_id 
+          ? { ...prod, ...updatedProduct }
+          : prod
+      )
+    );
+  };
+
   return (
     <Box>
       <Box
@@ -187,225 +187,40 @@ export default function ProductTable() {
         </Button>
       </Box>
 
-      <Box display="flex" gap={2} sx={{ marginBottom: 3 }}>
-        <FormControl fullWidth>
-        <InputLabel>Danh mục</InputLabel>
-          <Select
-            select
-            label="Chọn danh mục"
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-            sx={{ borderRadius: "10px" }}
-            MenuProps={{
-              PaperProps: {
-                style: { 
-                  maxHeight: 200, 
-                  overflowY: 'auto',
-                },
-              },
-            }}
-          >
-            <MenuItem value="" disabled >
-              Chọn danh mục
-            </MenuItem>
-            {Object.keys(categories).map((category) => (
-              <MenuItem key={category} value={category} >
-                {category}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      <ProductFilters
+        categories={categories}
+        selectedCategory={selectedCategory}
+        selectedSubcategory={selectedSubcategory}
+        searchTerm={searchTerm}
+        handleCategoryChange={handleCategoryChange}
+        handleSubcategoryChange={handleSubcategoryChange}
+        setSearchTerm={setSearchTerm}
+      />
 
-        <FormControl fullWidth>
-          <InputLabel >Danh mục con</InputLabel>
-          <Select
-            select
-            label="Chọn danh mục con"
-            value={selectedSubcategory}
-            onChange={handleSubcategoryChange}
-            sx={{ borderRadius: "10px" }}
-            disabled={!selectedCategory}
-            MenuProps={{
-              PaperProps: {
-                style: { 
-                  maxHeight: 200, 
-                  overflowY: 'auto',
-                },
-              },
-            }}
-          >
-            <MenuItem value="" disabled>
-              Chọn danh mục con
-            </MenuItem>
-            {selectedCategory &&
-              Object.keys(categories[selectedCategory] || {}).map((subcategory) => (
-                <MenuItem key={subcategory} value={subcategory}>
-                  {subcategory}
-                </MenuItem>
-              ))}
-          </Select>
-        </FormControl>
+      <ProductList
+        selectedCategory={selectedCategory}
+        selectedSubcategory={selectedSubcategory}
+        filteredProducts={filteredProducts}
+        searchTerm={searchTerm}
+        noProducts={noProducts}
+        paginatedProducts={paginatedProducts}
+        sortField={sortField}
+        sortOrder={sortOrder}
+        handleSort={handleSort}
+        handleViewDetails={handleViewDetails}
+        handleEditProduct={handleEditProduct}
+        handleDeleteProduct={handleDeleteProduct}
+      />
 
-        <TextField
-          label="Tìm kiếm sản phẩm"
-          variant="outlined"
-          fullWidth
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </Box>
-
-      <TableContainer
-        component={Paper}
-        sx={{
-          borderRadius: "15px",
-          boxShadow: "none",
-          fontFamily: "Roboto",
-          minHeight: "400px",
-        }}
-      >
-        <Table>
-          <TableHead>
-            <TableRow className="table-header">
-              <TableCell sx={{textAlign: "center" }}>Hình ảnh</TableCell>
-              <TableCell sx={{ textAlign: "center" }}>
-                <TableSortLabel
-                  active={sortField === "name"}
-                  direction={sortOrder}
-                  onClick={() => handleSort("name")}
-                >
-                  Tên sản phẩm
-                </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ textAlign: "center" }}>
-                <TableSortLabel
-                  active={sortField === "expiration_date"}
-                  direction={sortOrder}
-                  onClick={() => handleSort("expiration_date")}
-                >
-                  Ngày hết hạn
-                </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ textAlign: "center" }}>
-                <TableSortLabel
-                  active={sortField === "price"}
-                  direction={sortOrder}
-                  onClick={() => handleSort("price")}
-                >
-                  Giá bán
-                </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ textAlign: "center" }}>
-                <TableSortLabel
-                  active={sortField === "stock_quantity"}
-                  direction={sortOrder}
-                  onClick={() => handleSort("stock_quantity")}
-                >
-                  Số lượng
-                </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ textAlign: "center" }}>Chức năng</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {selectedCategory === "" || selectedSubcategory === "" ? (
-              <TableRow>
-                <TableCell colSpan={6} sx={{ textAlign: "center" }}>
-                  <Alert severity="info" sx={{ borderRadius: "10px" }}>
-                    Vui lòng chọn danh mục và danh mục con.
-                  </Alert>
-                </TableCell>
-              </TableRow>
-            ) : filteredProducts.length === 0 && searchTerm !== "" ? (
-              <TableRow>
-                <TableCell colSpan={6} sx={{ textAlign: "center" }}>
-                  <Alert severity="warning" sx={{ borderRadius: "10px" }}>
-                    Không tồn tại sản phẩm "{searchTerm}".
-                  </Alert>
-                </TableCell>
-              </TableRow>
-            ) : noProducts ? (
-                <TableCell colspan={6} sx={{textAlign: "center"}}>
-                  <Alert severity="info" sx={{borderRadius: "10px"}}>
-                    Không có sản phẩm cho danh mục và danh mục con đã chọn.
-                  </Alert>
-                </TableCell>
-            ) : (
-              paginatedProducts.map((prod) => (
-                <TableRow key={prod.product_id}>
-                  <TableCell sx={{width: '100px', textAlign: "center" }}>
-                    <img
-                      src={prod.image}
-                      alt={prod.name}
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                        objectFit: "cover",
-                        borderRadius: "5px",
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell sx={{width: '200px', textAlign: "center" }}>{prod.name}</TableCell>
-                  <TableCell sx={{width: '150px', textAlign: "center" }}>
-                    {formatDate(prod.expiration_date)}
-                  </TableCell>
-                  <TableCell sx={{width: '150px', textAlign: "center" }}>
-                    {prod.price}
-                  </TableCell>
-                  <TableCell sx={{width: '100px', textAlign: "center" }}>
-                    {prod.stock_quantity}
-                  </TableCell>
-                  <TableCell sx={{width: '200px', textAlign: "center" }}>
-                  <IconButton color="info" onClick={() => handleViewDetails(prod.product_id)}>
-                  <AiOutlineEye />
-                    </IconButton>
-                    <IconButton 
-                      sx={{ color: "green" }} 
-                      onClick={() => handleEditProduct(prod)}
-                    >
-                      <AiOutlineEdit />
-                    </IconButton>
-                    <IconButton
-                        sx={{ color: "red" }}
-                        onClick={() => handleDeleteProduct(prod.product_id)} 
-                      >
-                        <AiOutlineDelete />
-                      </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      {selectedCategory !== "" && selectedSubcategory !== "" && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: "16px",
-          }}
-        >
-          <Typography variant="subtitle2">
-            Tổng số sản phẩm: {filteredProducts.length}
-          </Typography>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 15]}
-            component="div"
-            count={filteredProducts.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage="Số sản phẩm mỗi trang:"
-            labelDisplayedRows={({ from, to, count }) =>
-              `${from}-${to} trên ${count}`
-            }
-          />
-        </Box>
-      )}
+      <ProductPagination
+        selectedCategory={selectedCategory}
+        selectedSubcategory={selectedSubcategory}
+        filteredProducts={filteredProducts}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+      />
 
       <Backdrop
         open={openBackdrop}
@@ -450,7 +265,7 @@ export default function ProductTable() {
         onConfirm={confirmDelete}
       />
 
-        <Backdrop
+      <Backdrop
         open={openBackdropEdit}
         onClick={() => setOpenBackdropEdit(false)}
         sx={{
@@ -487,7 +302,8 @@ export default function ProductTable() {
           />
         </Paper>
       </Backdrop>
-        <ProductDetails productId={currentProductId} onClose={handleCloseDetails} />
+
+      <ProductDetails productId={currentProductId} onClose={handleCloseDetails} />
     </Box>
   );
 }

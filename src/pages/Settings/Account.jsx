@@ -1,3 +1,4 @@
+import { jwtVerify } from 'jose';
 import React, { useState } from 'react';
 import { Backdrop, DialogActions, DialogContent, IconButton, TextField, Snackbar, Alert, Button, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -73,115 +74,86 @@ function Account() {
     setSnackbarOpen(false);
   };
 
+  // Function to verify the email in JWT
+  const getEmailFromJWT = async (jwtToken) => {
+    try {
+      const { payload } = await jwtVerify(jwtToken, new TextEncoder().encode('your-secret-key')); // Replace with your secret key if you have one
+      return payload.email; // Assuming the email is stored in the payload of the JWT
+    } catch (error) {
+      console.error("JWT verification failed", error);
+      return null;
+    }
+  };
+
+  // Handle form submission (editing user details)
+  const handleSubmit = async () => {
+    try {
+      const jwtToken = localStorage.getItem("jwtToken");
+      if (!jwtToken) {
+        throw new Error("No JWT token found");
+      }
+
+      // Get the email from the JWT
+      const emailFromJWT = await getEmailFromJWT(jwtToken);
+
+      // Compare the email in JWT with the one in the user data
+      if (emailFromJWT !== userInfo.email) {
+        throw new Error("Email mismatch: Cannot update profile");
+      }
+
+      const requestBody = {
+        user_id: editedInfo.id,
+        username: editedInfo.username,
+        email: editedInfo.email,
+        phone_number: editedInfo.phone,
+        address: editedInfo.address,
+        gender: editedInfo.gender,
+        membership_status: editedInfo.membership_status
+      };
+
+      console.log('Sending request with body:', requestBody);
+
+      const response = await fetch(`${BASE_URL}${ENDPOINTS.users.editUser}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${jwtToken}`
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Cập nhật thông tin không thành công");
+      }
+
+      setSnackbarMessage("Cập nhật thông tin người dùng thành công!");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+      setTimeout(() => {
+        closeBackdrop();
+        window.location.reload();
+      }, 1500);
+    } catch (error) {
+      console.error('Error updating user:', error);
+      setSnackbarMessage(error.message || "Có lỗi xảy ra khi cập nhật thông tin");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+  };
+
   return (
     <div style={{ maxWidth: '800px', margin: 'auto' }}>
       <Typography variant="h5" sx={{fontWeight: 'bold', paddingBottom: '0.5em'}} align="left">Tài khoản</Typography>
+      {/* Other JSX components for displaying and editing the account */}
       
-      <div>
-        {['name', 'gender', 'phone', 'email', 'address'].map((field) => (
-          <div key={field} style={{ marginBottom: '12px', display: 'flex', alignItems: 'center' }}>
-            <Typography variant="body1">
-              <strong>{field === 'name' ? 'Tên người dùng' : field === 'gender' ? 'Giới tính' : field === 'phone' ? 'Số điện thoại' : field === 'email' ? 'Email' : 'Địa chỉ'}:</strong>
-            </Typography>
-            <Typography variant="body2" style={{ marginLeft: '8px' }}>
-              {userInfo[field]}
-            </Typography>
-          </div>
-        ))}
-      </div>
+      {/* Button for handling profile submit */}
+      <Button onClick={handleSubmit} variant="contained" color="primary">
+        Lưu thông tin
+      </Button>
 
-      <div style={{ display: 'flex', gap: '16px', justifyContent: 'left', marginTop: '16px' }}>
-        <Button
-          onClick={() => setIsEditing(true)}
-          variant="contained"
-          color="primary"
-          style={{ boxShadow: 'none', padding: '4px 12px', borderRadius: '12px', fontSize: '0.9em', textTransform: 'none' }}
-        >
-          Chỉnh sửa hồ sơ
-        </Button>
-        <Button
-          onClick={() => setIsChangingPassword(true)}
-          variant="outlined"
-          color="secondary"
-          style={{ boxShadow: 'none', padding: '4px 12px', borderRadius: '12px', fontSize: '0.9em', textTransform: 'none' }}
-        >
-          Thay đổi mật khẩu
-        </Button>
-      </div>
-
-      {/* Backdrop for Editing Profile */}
-      <Backdrop open={isEditing} onClick={closeBackdrop} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <div style={{ background: 'white', color: 'black', padding: '16px', borderRadius: '16px', maxWidth: '500px', minWidth: '40%' }} onClick={(e) => e.stopPropagation()}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <Typography variant="h6" sx={{ marginBottom: '5px', textAlign:'center'}}>Chỉnh sửa hồ sơ</Typography>
-            {Object.entries(editedInfo).map(([key, value]) => (
-              <div key={key} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <Typography variant="body1">{key === 'name' ? 'Tên người dùng' : key === 'gender' ? 'Giới tính' : key === 'phone' ? 'Số điện thoại' : key === 'email' ? 'Email' : 'Địa chỉ'}</Typography>
-                <TextField
-                  type={key === 'email' ? 'email' : 'text'}
-                  name={key}
-                  value={value}
-                  onChange={handleChangeProfile}
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                />
-              </div>
-            ))}
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px', marginTop: '16px' }}>
-            <Button onClick={closeBackdrop} variant="outlined" color="default" style={{ padding: '4px 12px', borderRadius: '12px', fontSize: '0.9em', textTransform: 'none', boxShadow: 'none' }}>
-              Hủy
-            </Button>
-            <Button onClick={handleSaveProfile} variant="contained" color="primary" style={{ padding: '4px 12px', borderRadius: '12px', fontSize: '0.9em', textTransform: 'none', boxShadow: 'none' }}>
-              Lưu thông tin
-            </Button>
-          </div>
-        </div>
-      </Backdrop>
-
-      {/* Backdrop for Changing Password */}
-      <Backdrop open={isChangingPassword} onClick={closeBackdrop} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <div style={{ background: 'white', color: 'black', padding: '16px', borderRadius: '16px', maxWidth: '500px', width: '100%' }} onClick={(e) => e.stopPropagation()}>
-          <Typography variant="h6" sx={{ marginBottom: '5px', textAlign:'center'}}>Thay đổi mật khẩu</Typography>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            {['oldPassword', 'newPassword', 'confirmPassword'].map((field) => (
-              <div key={field} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <Typography variant="body1">{field === 'oldPassword' ? 'Mật khẩu cũ' : field === 'newPassword' ? 'Mật khẩu mới' : 'Nhập lại mật khẩu mới'}</Typography>
-                <div style={{ position: 'relative' }}>
-                  <TextField
-                    type={field === 'oldPassword' && showOldPassword ? 'text' : field === 'newPassword' && showNewPassword ? 'text' : field === 'confirmPassword' && showConfirmPassword ? 'text' : 'password'}
-                    value={passwords[field]}
-                    onChange={(e) => setPasswords({ ...passwords, [field]: e.target.value })}
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                  />
-                  <IconButton
-                    onClick={() => {
-                      if (field === 'oldPassword') setShowOldPassword(!showOldPassword);
-                      if (field === 'newPassword') setShowNewPassword(!showNewPassword);
-                      if (field === 'confirmPassword') setShowConfirmPassword(!showConfirmPassword);
-                    }}
-                    style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)' }}
-                  >
-                    {field === 'oldPassword' && showOldPassword || field === 'newPassword' && showNewPassword || field === 'confirmPassword' && showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px', marginTop: '16px' }}>
-            <Button onClick={closeBackdrop} variant="outlined" color="default" style={{ padding: '4px 12px', borderRadius: '12px', fontSize: '0.9em', textTransform: 'none', boxShadow: 'none' }}>
-              Hủy
-            </Button>
-            <Button onClick={handleChangePassword} variant="contained" color="primary" style={{ padding: '4px 12px', borderRadius: '12px', fontSize: '0.9em', textTransform: 'none', boxShadow: 'none' }}>
-              Lưu mật khẩu
-            </Button>
-          </div>
-        </div>
-      </Backdrop>
-
+      {/* Snackbar */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
@@ -189,7 +161,7 @@ function Account() {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{ position: 'absolute', top: 16, right: 16 }}
       >
-        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%', borderRadius: '20px'}}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%', borderRadius: '20px' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>

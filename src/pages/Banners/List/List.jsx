@@ -183,30 +183,24 @@ function List() {
   const handleUpdateBanner = async (bannerId, position, status, priority) => {
     try {
       const updateData = new FormData();
-      const imageToUpdate = selectedBanner.image || selectedImage;
-      console.log("Tệp ảnh được gửi đi:", selectedImage);
-      if (!imageToUpdate) {
-        console.error("Không có ảnh để cập nhật.");
-        return;
+      
+      // Chỉ thêm file mới nếu người dùng đã chọn file mới
+      if (selectedImage) {
+        updateData.append("file", selectedImage);
       }
-      updateData.append("file", imageToUpdate); 
-      updateData.append("position", position);
+      
+      updateData.append("banner_id", bannerId);
+      updateData.append("position", position); 
       updateData.append("status", status);
-      const priorityInt = parseInt(priority, 10);
-      if (isNaN(priorityInt)) {
-        console.error("Priority must be a valid integer.");
-        return;
-      }      updateData.append("banner_id", bannerId);  
-      console.log(error)
-      console.log("Tệp ảnh được gửi đi:", selectedBanner);
-
+      updateData.append("priority", priority);
+  
       const response = await axios.put(
-        `${BASE_URL}${ENDPOINTS.banners.editBanner}?banner_id=${bannerId}&position=${position}&status=${status}&priority=${priority}`,
+        `${BASE_URL}${ENDPOINTS.banners.editBanner}`,
         updateData,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
-            // 'Content-Type': 'multipart/form-data',
+            'Content-Type': 'multipart/form-data',
           }
         }
       );
@@ -214,7 +208,6 @@ function List() {
       if (response.data.message === "banner update successfully") {
         setOpenBackdropEdit(false);
         window.location.reload();
-
       }
     } catch (error) {
       console.error("Error details:", error.response ? error.response.data : error.message);

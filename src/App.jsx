@@ -60,12 +60,12 @@ function App() {
           {/* Route đăng nhập */}
           <Route path="/login" element={<LogIn onLogin={handleLogin} />} />
           
-          {/* Route gốc: Nếu chưa đăng nhập, chuyển hướng về login */}
-          {/* <Route
+           <Route
             path="/"
             element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
           />
-          <Route
+          
+          {/* <Route
             path="/dashboard"
             element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
           />

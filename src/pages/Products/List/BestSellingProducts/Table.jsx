@@ -14,6 +14,7 @@ import {
   TablePagination,
   IconButton,
   Alert,
+  Backdrop,
 } from "@mui/material";
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import CategorySelect from "./CategorySelect"; 
@@ -21,6 +22,7 @@ import SearchField from "./SearchField";
 import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
 import ProductDetails from "/src/pages/Products/List/Products/ViewProducts.jsx";
 import ConfirmDeleteDialog from "/src/components/ConfirmDeleteDialog/ConfirmDeleteDialog.jsx";
+import Edit from '/src/pages/Products/List/Products/EditProduct.jsx';
 
 function BestSellingProductsTable() {
   const [products, setProducts] = useState([]);
@@ -36,6 +38,17 @@ function BestSellingProductsTable() {
   const [productToDelete, setProductToDelete] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [parentCategories, setParentCategories] = useState([]); 
+  const [openBackdropEdit, setOpenBackdropEdit] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  
+  const handleEditProduct = (product) => {
+    // Get the complete product data from products array
+    const productToEdit = products.find(p => p.product.product_id === product.product.product_id);
+    if (productToEdit) {
+      setSelectedProduct(productToEdit.product);  // Pass the complete product object
+      setOpenBackdropEdit(true);
+    }
+  };
 
   const jwtToken = localStorage.getItem("jwtToken")
   useEffect(() => {
@@ -80,6 +93,23 @@ function BestSellingProductsTable() {
     const value = e.target.value.toLowerCase();
     setSearch(value);
     filterData(value, category);
+  };
+
+  const handleProductUpdate = (updatedProduct) => {
+    setProducts(prevProducts => 
+      prevProducts.map(prod => 
+        prod.product.product_id === selectedProduct.product_id 
+          ? { ...prod, product: { ...prod.product, ...updatedProduct } }
+          : prod
+      )
+    );
+    setFilteredProducts(prevFiltered => 
+      prevFiltered.map(prod => 
+        prod.product.product_id === selectedProduct.product_id 
+          ? { ...prod, product: { ...prod.product, ...updatedProduct } }
+          : prod
+      )
+    );
   };
 
   const handleCategoryChange = (e) => {
@@ -175,7 +205,6 @@ function BestSellingProductsTable() {
     return `${day}/${month}/${year}`;
   };
 
-
   const handleViewDetails = (productId) => {
     setCurrentProductId(productId);
     setOpenBackdropView(true);
@@ -218,6 +247,7 @@ function BestSellingProductsTable() {
         });
     }
   };
+
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
@@ -276,24 +306,24 @@ function BestSellingProductsTable() {
                   <TableCell sx={{ textAlign: "center", width: "100px" }}>
                     <img src={product.product.image} alt={product.product.name} style={{ width: "50px", height: "50px", borderRadius: "10px" }} />
                   </TableCell>
-                  <TableCell sx={{ width: "200px" }}>{product.product.name}</TableCell>
+                  <TableCell sx={{ width: "100px" }}>{product.product.name}</TableCell>
                   <TableCell sx={{ width: "200px" }}>{product["Category of product"].category_name}</TableCell>
-                  <TableCell sx={{  width: "150px" }}>{formatDate(product.product.expiration_date)}</TableCell>
-                  <TableCell sx={{ textAlign: "center", width: "20px" }}>{product.product.price.toString().replace(/\./g, ",")}</TableCell>
-                  <TableCell sx={{ textAlign: "center", width: "150px" }}>{product.sold}</TableCell>
+                  <TableCell sx={{ width: "100px" }}>{formatDate(product.product.expiration_date)}</TableCell>
+                  <TableCell sx={{ textAlign: "center"}}>{product.product.price.toString().replace(/\./g, ",")}</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>{product.sold}</TableCell>
                   <TableCell sx={{ textAlign: "center", width: "200px" }}>
                     <IconButton color="info" onClick={() => handleViewDetails(product.product.product_id)}>
                       <AiOutlineEye />
                     </IconButton>
-                    <IconButton sx={{ color: "green" }}>
+                    <IconButton sx={{ color: "green" }} onClick={() => handleEditProduct(product)}>
                       <AiOutlineEdit />
                     </IconButton>
                     <IconButton
-                        sx={{ color: "red" }}
-                        onClick={() => handleDeleteProduct(product.product.product_id)} // Truyền đúng product_id
-                      >
-                        <AiOutlineDelete />
-                      </IconButton>
+                      sx={{ color: "red" }}
+                      onClick={() => handleDeleteProduct(product.product.product_id)} 
+                    >
+                      <AiOutlineDelete />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
@@ -323,6 +353,44 @@ function BestSellingProductsTable() {
         onClose={() => setOpenDeleteDialog(false)}
         onConfirm={confirmDelete}
       />
+
+      <Backdrop
+        open={openBackdropEdit}
+        onClick={() => setOpenBackdropEdit(false)}
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          backdropFilter: "blur(3px)",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          overflowY: "auto",
+          borderRadius: 2,
+        }}
+      >
+        <Paper
+          onClick={(e) => e.stopPropagation()}
+          sx={{
+            position: 'fixed',
+            padding: 2,
+            width: "60%",
+            height: "90%",
+            margin: "auto",
+            borderRadius: 5,
+            boxShadow: 0,
+            overflowY: "auto",
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#ccc transparent'
+          }}
+        >
+          <Edit 
+            product={selectedProduct}
+            onClose={() => setOpenBackdropEdit(false)}
+            onUpdate={handleProductUpdate}
+          />
+        </Paper>
+      </Backdrop>
     </Box>
   );
 }

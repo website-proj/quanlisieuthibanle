@@ -59,12 +59,12 @@ function ConfirmDeleteDialog({ open, onClose, onConfirm, itemName }) {
 
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000} // Đóng sau 3 giây
+        autoHideDuration={3000} 
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: "100%" }}>
-          Đã xóa {itemName} thành công!
+          Bạn đã xóa thành công!
         </Alert>
       </Snackbar>
     </>

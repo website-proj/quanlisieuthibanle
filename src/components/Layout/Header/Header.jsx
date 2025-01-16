@@ -21,10 +21,16 @@ function Header({ toggleSidebar, isSidebarOpen }) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
+  const handleAccountMenuClose = () => {
+    navigate('/settings?account'); 
+    setAnchorEl(null); 
+  };
+
+  const handleLogout = () => {
     localStorage.removeItem("isLoggIn");
     localStorage.removeItem("jwtToken");
-    navigate('/login');
+    navigate('/login'); // Chuyển hướng đến trang đăng nhập
+    setAnchorEl(null); // Đóng menu
     toast.success('Bạn đã đăng xuất thành công', {
       position: "top-right",
       autoClose: 3000,
@@ -33,7 +39,6 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       pauseOnHover: true,
       draggable: true,
     });
-    // setTimeout(4000)
   };
 
   const isMenuOpen = Boolean(anchorEl);
@@ -71,17 +76,17 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       <Menu
         anchorEl={anchorEl}
         open={isMenuOpen}
-        onClose={() => handleMenuClose(null)} 
+        onClose={() => setAnchorEl(null)} 
         PaperProps={{
           sx: { mt: 1.5, boxShadow: "0px 4px 6px rgba(0,0,0,0.1)", borderRadius: "8px" },
         }}
         className="account-menu"
       >
-        <MenuItem onClick={() => handleMenuClose("/settings?account")} className="menu-item">
+        <MenuItem onClick={handleAccountMenuClose} className="menu-item">
           <LuUser className="menu-icon" />
           <span className="menu-text">Tài khoản</span>
         </MenuItem>
-        <MenuItem onClick={() => handleMenuClose("/sidebar?logout=true")} className="menu-item logout-item">
+        <MenuItem onClick={handleLogout} className="menu-item logout-item">
           <MdLogout className="menu-icon" />
           <span className="menu-text">Đăng xuất</span>
         </MenuItem>

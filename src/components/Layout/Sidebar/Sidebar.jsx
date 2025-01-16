@@ -78,6 +78,7 @@ function Sidebar({ isOpen }) {
           justifyContent: "space-between",
           borderRight: 0,
           zIndex: 1200,
+          // scrollbarColor: '1 solod #ccc transparent',
         },
       }}
     >
