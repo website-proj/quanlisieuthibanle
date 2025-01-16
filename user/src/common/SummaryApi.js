@@ -156,5 +156,9 @@ const SummaryApi = {
     url: "/api/product/get_product_by_2_categoryID",
     method: "get",
   },
+  get_bestseller: {
+    url: "/api/product/get_best_seller_2cat",
+    method: "get",
+  },
 };
 export default SummaryApi;

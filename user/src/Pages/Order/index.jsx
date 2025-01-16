@@ -56,9 +56,9 @@ const Order = () => {
           id: orderId,
           status: orderData.order_status,
           products: orderData.product.map((product) => ({
-            name: product.name,
+            name: product.product_name,
             image_url: product.image,
-            quantity: product.stock_quantity,
+            quantity: product.quantity,
             price_original: product.old_price,
             price_discounted: product.price,
           })),
@@ -214,9 +214,9 @@ const Order = () => {
                                 <h3 className="font-medium text-gray-900 text-[1.1rem]">
                                   {product.name}
                                 </h3>
-                                {/* <p className="text-gray-600 mt-2 text-left">
+                                <p className="text-gray-600 mt-2 text-left">
                                   Số lượng: {product.quantity}
-                                </p> */}
+                                </p>
                               </div>
                             </div>
                             <div className="flex flex-col items-end">

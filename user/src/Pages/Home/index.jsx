@@ -184,7 +184,7 @@ const Home = () => {
                         </Link>
                         <Button
                           onClick={(e) => handleAddToCart(e, product, 1)} // Sử dụng số lượng mặc định là 1
-                          className="productCart"
+                          className="productCart flex items-center whitespace-nowrap"
                         >
                           <FiShoppingCart className="text-[2em] mt-auto pr-2" />
                           Thêm vào giỏ hàng

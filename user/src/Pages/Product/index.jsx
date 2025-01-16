@@ -17,7 +17,7 @@ import { CartContext } from "../../Context/CartContext";
 import SummaryApi, { baseURL } from "../../common/SummaryApi";
 
 const Product = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]); // Sản phẩm
   const [loading, setLoading] = useState(false);
   const [visibleProducts, setVisibleProducts] = useState(12);
   const { incrementCartCount } = useContext(CartContext);
@@ -26,26 +26,52 @@ const Product = () => {
   const parentId = searchParams.get("parentId"); // Lấy parentId từ URL
   const categoryId = searchParams.get("categoryId"); // Lấy categoryId từ URL (nếu có)
 
+  // Hàm gọi API lấy sản phẩm bán chạy
+  const fetchBestSellers = async () => {
+    if (!parentId) return;
+
+    setLoading(true);
+    try {
+      const url = categoryId
+        ? `${baseURL}${SummaryApi.get_bestseller.url}?parent_id=${parentId}&sub_id=${categoryId}`
+        : `${baseURL}${SummaryApi.get_bestseller.url}?parent_id=${parentId}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Failed to fetch bestseller products");
+
+      const data = await response.json();
+      setProducts(data.data || []);
+    } catch (error) {
+      console.error("Error fetching bestseller products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Hàm gọi API lấy tất cả sản phẩm theo danh mục
+  const fetchProducts = async () => {
+    if (!parentId) return;
+
+    setLoading(true);
+    try {
+      const url = categoryId
+        ? `${baseURL}${SummaryApi.get_product_categories.url}?parent_category_id=${parentId}&sub_category_id=${categoryId}`
+        : `${baseURL}${SummaryApi.get_product_categories.url}?parent_category_id=${parentId}`;
+
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Failed to fetch products");
+
+      const data = await response.json();
+      setProducts(data.data || []);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!parentId) return; // Chỉ tiếp tục nếu có parentId
-
-    const fetchProducts = async () => {
-      try {
-        const url = categoryId
-          ? `${baseURL}${SummaryApi.get_product_categories.url}?parent_category_id=${parentId}&sub_category_id=${categoryId}`
-          : `${baseURL}${SummaryApi.get_product_categories.url}?parent_category_id=${parentId}`;
-
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Failed to fetch products");
-
-        const data = await response.json();
-        setProducts(data.data || []);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
+    fetchProducts(); // Lấy sản phẩm khi trang load
   }, [parentId, categoryId]); // Khi thay đổi categoryId, sản phẩm sẽ được tải lại
 
   const handleShowAll = () => {
@@ -146,6 +172,7 @@ const Product = () => {
                     "&:hover": { backgroundColor: "#F0F0F0" },
                   }}
                   className="capitalize"
+                  onClick={fetchBestSellers} // Gọi API bán chạy khi nhấn nút
                 >
                   Bán chạy
                 </Button>
