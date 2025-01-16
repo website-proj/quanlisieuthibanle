@@ -55,7 +55,7 @@ const Product = () => {
       const url = categoryId
         ? `${baseURL}${SummaryApi.get_discount.url}?parent_id=${parentId}&sub_id=${categoryId}`
         : `${baseURL}${SummaryApi.get_discount.url}?parent_id=${parentId}`;
-      console.log("Discount URL:", url);
+      console.log("Fetch Discount URL:", url);
 
       const response = await fetch(url);
       if (!response.ok) throw new Error("Failed to fetch discount products");
