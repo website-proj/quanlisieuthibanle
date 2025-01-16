@@ -6,6 +6,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios"; // Đảm bảo bạn đã cài đặt axios
+import SummaryApi, { baseURL } from "../../common/SummaryApi";
+import Alert from "@mui/material/Alert"; // Đảm bảo bạn đã import Alert component
 
 const ResetPassword = () => {
   const context = useContext(MyContext);
@@ -75,13 +77,13 @@ const ResetPassword = () => {
     const { email, code: otp } = location.state || {};
 
     if (!email || !otp || !password) {
-      console.error("Email, OTP hoặc mật khẩu không hợp lệ");
+      alert("Email, OTP hoặc mật khẩu không hợp lệ");
       return;
     }
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/users/resetPassword`,
+        `${baseURL}${SummaryApi.resetPassword.url}`,
         {},
         {
           params: {
@@ -96,10 +98,10 @@ const ResetPassword = () => {
       if (response.data.message === "reset_password success") {
         navigate("/signIn"); // Chuyển hướng tới trang đăng nhập
       } else {
-        console.error("Đổi mật khẩu thất bại.");
+        alert("Đổi mật khẩu thất bại.");
       }
     } catch (error) {
-      console.error("API Error:", error.message);
+      alert("API Error: " + error.message);
     }
   };
 
