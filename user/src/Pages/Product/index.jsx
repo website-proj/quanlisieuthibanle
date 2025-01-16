@@ -378,7 +378,7 @@ const Product = () => {
               <div className="grid grid-cols-4 gap-8 productList">
                 {products.slice(0, visibleProducts).map((product) => (
                   <div
-                    className="border rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+                    className="border flex flex-col justify-between rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
                     key={product.product_id}
                   >
                     <Link

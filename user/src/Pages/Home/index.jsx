@@ -158,8 +158,8 @@ const Home = () => {
                               className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                             />
                           </div>
-                          {product.discount && (
-                            <span className="absolute top-[1.5em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                          {product.discount > 0 && (
+                            <span className="absolute top-[0.5em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
                               {product.discount}%
                             </span>
                           )}
