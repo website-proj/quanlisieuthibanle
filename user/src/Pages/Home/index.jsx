@@ -159,7 +159,7 @@ const Home = () => {
                             />
                           </div>
                           {product.discount > 0 && (
-                            <span className="absolute top-[0.5em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                            <span className="absolute top-[2em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
                               {product.discount}%
                             </span>
                           )}

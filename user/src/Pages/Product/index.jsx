@@ -391,12 +391,12 @@ const Product = () => {
                           alt={product.name}
                           className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                         />
-                        {product.discount > 0 && (
-                          <span className="absolute top-[0.5em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                            {product.discount}%
-                          </span>
-                        )}
                       </div>
+                      {product.discount > 0 && (
+                        <span className="absolute top-[2em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                          {product.discount}%
+                        </span>
+                      )}
                       <div className="mt-4">
                         <h5 className="text-[0.9em] text-left">
                           {product.name}

@@ -169,7 +169,7 @@ const NewProducts = () => {
 
             <Button
               onClick={(e) => handleAddToCart(e, product, 1)}
-              className="productCart"
+              className="productCart flex items-center whitespace-nowrap"
             >
               <FiShoppingCart className="text-[2em] pr-2" />
               Thêm vào giỏ hàng

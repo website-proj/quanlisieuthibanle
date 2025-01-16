@@ -203,11 +203,11 @@ const Product_Details = () => {
                         className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                       />
                     </div>
-                    {/* {product.discount && (
-                                <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                                  {product.discount}%
-                                </span>
-                              )} */}
+                    {product.discount > 0 && (
+                      <span className="absolute top-[2em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                        {product.discount}%
+                      </span>
+                    )}
                     <div className="mt-4">
                       <h5 className="text-[0.9em] text-left">{product.name}</h5>
                       <p className="text-[0.72em] text-black-500 text-left">
@@ -226,7 +226,7 @@ const Product_Details = () => {
 
                   <Button
                     onClick={(e) => handleAddToCart(e, product, 1)}
-                    className="productCart"
+                    className="productCart flex items-center whitespace-nowrap"
                   >
                     <FiShoppingCart className="text-[2em] pr-2" />
                     Thêm vào giỏ hàng
