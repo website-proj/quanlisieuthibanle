@@ -160,9 +160,9 @@ class OrderService:
     @staticmethod
     def admin_get_all_order(db: Session):
         # Truy vấn dữ liệu
-        order_data = (
-            db.query(Orders, OrderItems, Product, Address, Payment)
-            .outerjoin(OrderItems, Orders.order_id == OrderItems.order_id)
+        order_item_data = (
+            db.query(OrderItems, Orders, Product, Address, Payment)
+            .outerjoin(Orders, Orders.order_id == OrderItems.order_id)
             .outerjoin(Product, Product.product_id == OrderItems.product_id)
             .outerjoin(Address, Address.user_id == Orders.user_id)
             .outerjoin(Payment, Payment.order_id == Orders.order_id)
@@ -171,13 +171,16 @@ class OrderService:
 
         # Tạo dictionary chứa dữ liệu đơn hàng
         result = {}
-        for order, order_items, product, address, payment in order_data:
-            order_id = order.order_id
+        for order_item, order, product, address, payment in order_item_data:
+            order_id = order_item.order_id
 
             # Nếu chưa có order_id trong result, thêm mới
             if order_id not in result:
                 result[order_id] = {
-                    "order": {k: v for k, v in order.__dict__.items() if k != "_sa_instance_state"},
+                    "order": (
+                        {k: v for k, v in order.__dict__.items() if k != "_sa_instance_state"}
+                        if order else None
+                    ),
                     "products": [],
                     "address": (
                         {k: v for k, v in address.__dict__.items() if k != "_sa_instance_state"}
@@ -188,15 +191,17 @@ class OrderService:
                     },
                 }
 
-            # Thêm thông tin sản phẩm nếu tồn tại
-            if product and order_items:
-                result[order_id]["products"].append({
+            # Kiểm tra và thêm thông tin sản phẩm nếu chưa tồn tại
+            if product:
+                product_entry = {
                     "product_id": product.product_id,
                     "product_name": product.name,
-                    "quantity": order_items.quantity,
+                    "quantity": order_item.quantity,
                     "price": product.price,
-                    "total_amount": order_items.price,
-                })
+                    "total_amount": order_item.price * order_item.quantity,
+                }
+                if product_entry not in result[order_id]["products"]:
+                    result[order_id]["products"].append(product_entry)
 
         return result
 

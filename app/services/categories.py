@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session, aliased
 from starlette import status
 
 from app.db.base import get_db
-from app.model.Products_Categories import Category
+from app.model.Products_Categories import Category, Product
 from app.schemas.schema_category import CategoryUpdate, SubCategoryCreate
 from app.services.uploadImage import UploadImage
 from app.utils.responses import ResponseHandler
@@ -122,29 +122,43 @@ class CategoryService:
         if not cats:
             raise HTTPException(status_code= 404 , detail="Category not found")
         return cats
+
     @staticmethod
-    def delete_sub_category(sub_category_id : str, db : Session):
+    def delete_sub_category(sub_category_id: str, db: Session):
         cat = db.query(Category).filter(Category.category_id == sub_category_id).first()
         if not cat:
-            raise HTTPException(status_code = 404 , detail="Category not found")
-        db.delete(cat)
-        db.commit()
-        return cat
+            raise HTTPException(status_code=404, detail="Category not found")
+
+        try:
+            # Xóa toàn bộ sản phẩm liên quan trong một lệnh
+            db.query(Product).filter(Product.category_id == sub_category_id).delete()
+            db.delete(cat)  # Xóa danh mục con
+            db.commit()
+            return cat
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail=f"Error deleting sub-category: {str(e)}")
+
     @staticmethod
-    def delete_parent_category(parent_category_id : str , db : Session ):
-        parent_category = db.query(Category).filter(Category.category_id== parent_category_id).first()
+    def delete_parent_category(parent_category_id: str, db: Session):
+        parent_category = db.query(Category).filter(Category.category_id == parent_category_id).first()
         if not parent_category:
-            raise HTTPException(status_code = 404 , detail="Category not found")
-        sub_category = db.query(Category).filter(Category.parent_category_id == parent_category_id).all()
-        if not sub_category :
+            raise HTTPException(status_code=404, detail="Category not found")
+
+        try:
+            # Lấy tất cả danh mục con
+            sub_categories = db.query(Category).filter(Category.parent_category_id == parent_category_id).all()
+            # Xóa danh mục cha
             db.delete(parent_category)
+            # Xóa từng danh mục con
+            for sub_cat in sub_categories:
+                CategoryService.delete_sub_category(sub_cat.category_id, db)
             db.commit()
             return parent_category
-        db.delete(parent_category)
-        for cat in sub_category:
-            db.delete(cat)
-        db.commit()
-        return parent_category
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail=f"Error deleting parent category: {str(e)}")
+
     @staticmethod
     def count_category(db : Session):
         return db.query(Category).filter(Category.parent_category_id == None).count()
