@@ -36,15 +36,19 @@ const SignUp = () => {
     e.preventDefault();
 
     try {
-      const response = await axios({
-        method: SummaryApi.register.method,
-        url: baseURL + SummaryApi.register.url,
-        data: {
+      const response = await axios.post(
+        `${baseURL}${SummaryApi.register.url}`,
+        {
           username,
           email,
           password,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       setSnackbarMessage("Đăng ký thành công!");
       setSnackbarSeverity("success");
@@ -53,7 +57,7 @@ const SignUp = () => {
     } catch (error) {
       if (error.response) {
         setSnackbarMessage(
-          `Lỗi: ${error.response.data.message || "Đăng ký thất bại."}`
+          `Lỗi: ${error.response.data.detail || "Đăng ký thất bại."}`
         );
         setSnackbarSeverity("error");
       } else {
@@ -62,6 +66,7 @@ const SignUp = () => {
       }
     }
   };
+
   const handleGoogleLogin = async () => {
     const storedToken = localStorage.getItem("token");
 

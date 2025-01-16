@@ -57,7 +57,6 @@ const SignIn = () => {
 
       // Điều hướng đến trang Home
       navigate("/home");
-      
     }
   }, []);
 
@@ -110,18 +109,29 @@ const SignIn = () => {
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${baseURL}${SummaryApi.signIn.url}`,
-        new URLSearchParams({
-          username: email,
-          password: password,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
+      const handleForgotPassword = async () => {
+        try {
+          const response = await axios.put(
+            `${baseURL}/get_code_forgotPassword`,
+            new URLSearchParams({
+              email: email, // email từ trường nhập
+            }),
+            {
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            }
+          );
+
+          setSnackbarMessage("Gửi mã xác nhận thành công!");
+          setSnackbarSeverity("success");
+        } catch (error) {
+          setSnackbarMessage(
+            error.response?.data?.detail || "Lỗi khi gửi mã xác nhận."
+          );
+          setSnackbarSeverity("error");
         }
-      );
+      };
 
       const { access_token, token_type } = response.data;
       localStorage.setItem("token", `${token_type} ${access_token}`);
