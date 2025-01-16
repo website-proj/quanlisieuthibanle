@@ -39,9 +39,34 @@ const Product = () => {
       if (!response.ok) throw new Error("Failed to fetch bestseller products");
 
       const data = await response.json();
-      setProducts(data.data || []);
+      setProducts(data || []);
     } catch (error) {
       console.error("Error fetching bestseller products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  // Hàm gọi API lấy sản phẩm khuyến mại
+  const fetchDiscount = async () => {
+    if (!parentId) return;
+
+    setLoading(true);
+    try {
+      const url = categoryId
+        ? `${baseURL}${SummaryApi.get_discount.url}?parent_id=${parentId}&sub_id=${categoryId}`
+        : `${baseURL}${SummaryApi.get_discount.url}?parent_id=${parentId}`;
+      console.log("Discount URL:", url);
+
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Failed to fetch discount products");
+
+      const data = await response.json();
+      console.log("Fetched discount products:", data);
+
+      setProducts(data || []);
+    } catch (error) {
+      console.error("Error fetching discount products:", error);
+      alert("Không thể tải dữ liệu khuyến mại. Vui lòng thử lại sau.");
     } finally {
       setLoading(false);
     }
@@ -61,7 +86,7 @@ const Product = () => {
       if (!response.ok) throw new Error("Failed to fetch products");
 
       const data = await response.json();
-      setProducts(data.data || []);
+      setProducts(data || []);
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
@@ -186,6 +211,7 @@ const Product = () => {
                     "&:hover": { backgroundColor: "#F0F0F0" },
                   }}
                   className="capitalize"
+                  onClick={fetchDiscount}
                 >
                   Khuyến mại
                 </Button>
@@ -198,7 +224,7 @@ const Product = () => {
                     key={product.product_id}
                   >
                     <Link
-                      to={`/product_details/${product.product_id}`}
+                      to={`/product_detials/${product.product_id}`}
                       state={product}
                     >
                       <div className="relative overflow-hidden rounded-lg">

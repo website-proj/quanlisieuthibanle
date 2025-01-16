@@ -336,8 +336,7 @@ const Cart = () => {
         alert("Không thể xóa giỏ hàng!");
       }
     } catch (error) {
-      console.error("Lỗi khi xóa giỏ hàng:", error);
-      alert("Có lỗi xảy ra khi xóa giỏ hàng!");
+      window.location.reload();
     }
   };
 

@@ -160,5 +160,9 @@ const SummaryApi = {
     url: "/api/product/get_best_seller_2cat",
     method: "get",
   },
+  get_discount: {
+    url: "/api/product/discount_2cat",
+    method: "get",
+  },
 };
 export default SummaryApi;
