@@ -16,6 +16,7 @@ import "./style.css";
 import Popup from "../../components/Popup";
 import axios from "axios";
 import SummaryApi, { baseURL } from "../../common/SummaryApi";
+import CardLoading from "../../components/CardLoading";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -125,6 +126,18 @@ const Home = () => {
       console.error("Error adding product to cart:", error);
     }
   };
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true); // Bắt đầu tải
+      // Giả lập thời gian tải dữ liệu (thay bằng API thực tế nếu cần)
+      setTimeout(() => {
+        setLoading(false); // Dữ liệu đã tải xong
+      }, 2000); // Thời gian giả lập tải dữ liệu (2 giây)
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
     <>
@@ -137,61 +150,66 @@ const Home = () => {
               <BannerSlide />
               <div className="w-3/4 productSale">
                 <Timer duration={2 * 24 * 60 * 60 * 1000} />
-                <div className="grid grid-cols-4 gap-5 productList">
-                  {products?.slice(0, 12).map((product) => {
-                    const formatCurrency = (value) =>
-                      value.toLocaleString("vi-VN") + "đ";
 
-                    return (
-                      <div
-                        className="border rounded-xl p-4 flex flex-col justify-between shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
-                        key={product.product_id}
-                      >
-                        <Link
-                          to={`/product_detials/${product.product_id}`}
-                          state={product}
-                        >
-                          <div className="relative overflow-hidden rounded-lg">
-                            <img
-                              src={product.image}
-                              alt={product.name}
-                              className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
-                            />
-                          </div>
-                          {product.discount > 0 && (
-                            <span className="absolute top-[2em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                              {product.discount}%
-                            </span>
-                          )}
-                          <div className="mt-4">
-                            <h5 className="text-[0.9em] text-left">
-                              {product.name}
-                            </h5>
-                            <p className="text-[0.72em] text-black-500 text-left">
-                              ĐVT: {product.unit}
-                            </p>
-                            <div className="flex items-center justify-between mt-2 space-x-2">
-                              <span className="text-red-500 text-base font-bold">
-                                {formatCurrency(product.price)}
-                              </span>
-                              {product.old_price && (
-                                <span className="line-through text-sm text-gray-400">
-                                  {formatCurrency(product.old_price)}
+                <div className="grid grid-cols-4 gap-5 productList">
+                  {loading
+                    ? Array.from({ length: 12 }).map((_, index) => (
+                        <CardLoading key={index} /> // Hiển thị skeleton cards khi loading
+                      ))
+                    : products?.slice(0, 12).map((product) => {
+                        const formatCurrency = (value) =>
+                          value.toLocaleString("vi-VN") + "đ";
+
+                        return (
+                          <div
+                            className="border rounded-xl p-4 flex flex-col justify-between shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+                            key={product.product_id}
+                          >
+                            <Link
+                              to={`/product_detials/${product.product_id}`}
+                              state={product}
+                            >
+                              <div className="relative overflow-hidden rounded-lg">
+                                <img
+                                  src={product.image}
+                                  alt={product.name}
+                                  className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
+                                />
+                              </div>
+                              {product.discount > 0 && (
+                                <span className="absolute top-[2em] left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
+                                  {product.discount}%
                                 </span>
                               )}
-                            </div>
+                              <div className="mt-4">
+                                <h5 className="text-[0.9em] text-left">
+                                  {product.name}
+                                </h5>
+                                <p className="text-[0.72em] text-black-500 text-left">
+                                  ĐVT: {product.unit}
+                                </p>
+                                <div className="flex items-center justify-between mt-2 space-x-2">
+                                  <span className="text-red-500 text-base font-bold">
+                                    {formatCurrency(product.price)}
+                                  </span>
+                                  {product.old_price && (
+                                    <span className="line-through text-sm text-gray-400">
+                                      {formatCurrency(product.old_price)}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </Link>
+                            <Button
+                              onClick={(e) => handleAddToCart(e, product, 1)} // Sử dụng số lượng mặc định là 1
+                              className="productCart flex items-center whitespace-nowrap"
+                            >
+                              <FiShoppingCart className="text-[2em] mt-auto pr-2" />
+                              Thêm vào giỏ hàng
+                            </Button>
                           </div>
-                        </Link>
-                        <Button
-                          onClick={(e) => handleAddToCart(e, product, 1)} // Sử dụng số lượng mặc định là 1
-                          className="productCart flex items-center whitespace-nowrap"
-                        >
-                          <FiShoppingCart className="text-[2em] mt-auto pr-2" />
-                          Thêm vào giỏ hàng
-                        </Button>
-                      </div>
-                    );
-                  })}
+                        );
+                      })}
                 </div>
               </div>
             </div>
