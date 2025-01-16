@@ -65,7 +65,7 @@ const ChangePassword = ({ open, onClose }) => {
       }
     } catch (error) {
       console.log("Error during password change request:", error);
-      setSnackbarMessage("Lỗi hệ thống. Vui lòng thử lại sau.");
+      setSnackbarMessage("Mật khẩu hiện tại không đúng!");
       setSnackbarSeverity("error");
     }
   
