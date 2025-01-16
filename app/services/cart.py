@@ -37,7 +37,7 @@ class CartService:
         product_price = product.price
         if exist_cart_item:
             exist_cart_item.quantity += cart_item.quantity
-            exist_cart_item.price_at_add = product_price + exist_cart_item.price_at_add
+            exist_cart_item.price_at_add = product_price
             db.commit()
             db.refresh(exist_cart_item)
             return exist_cart_item
