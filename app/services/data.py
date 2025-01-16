@@ -55,7 +55,7 @@ class DataService:
                     product = random.choice(products)
                     product_id = product.product_id
                     quantity = random.randint(1, 5)
-                    price = quantity * product.price
+                    price =  product.price
                     total_amount += price
 
                     order_item = OrderItems(
@@ -317,7 +317,7 @@ class DataService:
     def main(self):
         with next(get_db()) as db :
             # self.create_user_data(db)
-            # self.create_order(db)
+            self.create_order(db)
             # self.create_address_data(db)
             # self.add_reviews_data(db)
             # self.add_voucher_data(db)
