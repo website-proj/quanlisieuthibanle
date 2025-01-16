@@ -303,13 +303,35 @@ class ProductService:
                 continue
             data.append(product)
         return data
+
     @staticmethod
-    def filter_product_of_category_by_price(category_id , bottom_price : float ,
-                                            up_price : float , db : Session):
-        products = db.query(Product).filter(Product.category_id == category_id , Product.price < up_price , Product.price > bottom_price ).all()
-        if not products:
-            raise HTTPException(status_code=404, detail="No products found")
-        return products
+    def filter_product_of_category_by_price(parent: str, sub: Optional[str], bottom_price: float,
+                                            up_price: float, db: Session):
+        from sqlalchemy import and_
+
+        # Nếu có sub-category, lọc theo danh mục con
+        if sub:
+            products = db.query(Product).filter(
+                and_(
+                    Product.category_id == sub,
+                    Product.price.between(bottom_price, up_price)
+                )
+            ).all()
+            return products
+
+        # Nếu không có sub-category, lọc theo danh mục cha
+        if parent:
+            products = db.query(Product).join(Category, Category.category_id == Product.category_id).filter(
+                and_(
+                    Category.parent_category_id == parent,
+                    Product.price.between(bottom_price, up_price)
+                )
+            ).all()
+            return products
+
+        # Nếu cả sub và parent đều không có
+        raise HTTPException(status_code=400, detail="Either 'parent' or 'sub' category must be provided")
+
     @staticmethod
     def get_detail_product_by_admin(product_id : str , db : Session):
         product = db.query(Product).filter(Product.product_id == product_id).first()
@@ -558,7 +580,7 @@ class ProductService:
                 products = db.query(Product).filter(Product.category_id == sub_category_id).all()
                 for product in products :
                     data.append(product)
-                    return data
+                return data
             else :
                 products = db.query(Product ).join(Category , Product.category_id == Category.category_id).filter(
                     Category.parent_category_id == parent_category_id
