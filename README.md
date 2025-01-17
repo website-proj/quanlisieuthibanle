@@ -1,4 +1,4 @@
-# Tài Liệu Cài Đặt và Hướng Dẫn Sử Dụng
+# Cài Đặt và Hướng Dẫn Sử Dụng
 
 ## 1. Giới Thiệu
 Dự án web bán hàng siêu thị bán lẻ được thiết kế để cung cấp giao diện quản lý sản phẩm, đơn hàng, và hệ thống API tích hợp.
@@ -24,7 +24,7 @@ cd quanlisieuthibanle
 Tạo tệp `.env` trong thư mục chính, thêm các biến môi trường như sau:
 ```env
 # Database Configuration
-DB_HOST=<AWS_RDS_ENDPOINT>
+DB_HOST=<YOUR_HOST>
 DB_PORT=5432
 DB_NAME=<DATABASE_NAME>
 DB_USER=<USERNAME>
