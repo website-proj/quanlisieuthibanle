@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, Button, Backdrop } from "@mui/material";
-
+import './ViewUser.css'
 function ViewUser({ open, onClose, user }) {
   if (!user) return null;
 
@@ -35,59 +35,87 @@ function ViewUser({ open, onClose, user }) {
           borderRadius: "15px",
           display: "flex",
           flexDirection: "column",
+          maxWidth: "500px", // Adjust max width for mobile
+          margin: "0 auto",
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <Typography variant="h5" sx={{ textAlign: "center", fontWeight: "bold", color: "black", marginBottom: 2, marginTop: "-0.2em" }}>
+        <Typography
+          variant="h5"
+          sx={{
+            textAlign: "center",
+            fontWeight: "bold",
+            color: "black",
+            marginBottom: 2,
+            marginTop: "-0.2em",
+          }}
+        >
           Thông tin người dùng
         </Typography>
-    <Box sx={{ display: "flex", justifyContent: "space-between", gap: 4 }}>
-        <Box sx={{ display: "flex", flexDirection: "column", marginBottom: 0, rowGap: '0.5em' }}>
-          <Typography variant="body1" sx={{ color: "black" }}>
-            <strong>Tên người dùng:</strong> {user.username}
-          </Typography>
-          <Typography variant="body1" sx={{ color: "black" }}>
-            <strong>Số điện thoại:</strong> {user.phone_number}
-          </Typography>
-          <Typography variant="body1" sx={{ color: "black" }}>
-            <strong>Email:</strong> {user.email}
-          </Typography>
-          <Typography variant="body1" sx={{ color: "black" }}>
-            <strong>Địa chỉ:</strong> {user.address}
-          </Typography>
+
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5em",
+              width: "100%",
+            }}
+          >
+            <Typography variant="body1" sx={{ color: "black" }}>
+              <strong>Tên người dùng:</strong> {user.username}
+            </Typography>
+            <Typography variant="body1" sx={{ color: "black" }}>
+              <strong>Số điện thoại:</strong> {user.phone_number}
+            </Typography>
+            <Typography variant="body1" sx={{ color: "black" }}>
+              <strong>Email:</strong> {user.email}
+            </Typography>
+            <Typography variant="body1" sx={{ color: "black" }}>
+              <strong>Địa chỉ:</strong> {user.address}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5em",
+              width: "100%",
+            }}
+          >
+            <Typography variant="body1" sx={{ color: "black" }}>
+              <strong>Giới tính:</strong>{" "}
+              {user.gender === "Male" ? "Nam" : user.gender === "Female" ? "Nữ" : "Khác"}
+            </Typography>
+            <Typography variant="body1" sx={{ color: "black" }}>
+              <strong>ID người dùng:</strong> {user.id}
+            </Typography>
+            <Typography variant="body1" sx={{ color: "black" }}>
+              <strong>Ngày tạo tài khoản:</strong> {formatDate(user.created_at)}
+            </Typography>
+            <Typography variant="body1" sx={{ color: "black" }}>
+              <strong>Hạng thành viên:</strong> {translateMembership(user.membership_status)}
+            </Typography>
+          </Box>
         </Box>
 
-        <Box sx={{ display: "flex", flexDirection: "column", marginBottom: 0, rowGap: '0.5em' }}>
-          <Typography variant="body1" sx={{ color: "black" }}>
-            <strong>Giới tính:</strong> {user.gender === "Male" ? "Nam" : user.gender === "Female" ? "Nữ" : "Khác"}
-          </Typography>
-          <Typography variant="body1" sx={{ color: "black" }}>
-            <strong>ID người dùng:</strong> {user.id}
-          </Typography>
-          <Typography variant="body1" sx={{ color: "black" }}>
-            <strong>Ngày tạo tài khoản:</strong> {formatDate(user.created_at)}
-          </Typography>
-          <Typography variant="body1" sx={{ color: "black" }}>
-            <strong>Hạng thành viên:</strong> {translateMembership(user.membership_status)}
-          </Typography>
-        </Box>
-    </Box>
-        <Box sx={{ marginTop: 2.5, marginBottom: '-1em', textAlign: "center" }}>
+        <Box sx={{ marginTop: 2.5, marginBottom: "-1em", textAlign: "center" }}>
           <Button
-                            variant="contained"
-                            onClick={onClose}
-                            fullWidth
-                            sx={{
-                              marginBottom: "0.5em",
-                              borderRadius: "15px",
-                              textTransform: 'none',
-                              boxShadow: 'none',
-                              fontSize: '1em',
-                              padding: '0.2em'
-                            }}
-                          >
-                            Đóng
-                          </Button>
+            variant="contained"
+            onClick={onClose}
+            fullWidth
+            sx={{
+              marginBottom: "0.5em",
+              borderRadius: "15px",
+              textTransform: "none",
+              boxShadow: "none",
+              fontSize: "1em",
+              padding: "0.2em",
+            }}
+          >
+            Đóng
+          </Button>
         </Box>
       </Box>
     </Backdrop>

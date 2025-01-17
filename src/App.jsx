@@ -57,76 +57,14 @@ function App() {
       <div className={`App ${isDarkMode ? "dark" : ""}`}>
         <ToastContainer />
         <Routes>
-          {/* Route đăng nhập */}
+          {/* Route login */}
           <Route path="/login" element={<LogIn onLogin={handleLogin} />} />
           
-           <Route
+          <Route
             path="/"
             element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
           />
           
-          {/* <Route
-            path="/dashboard"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/categories-list"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/subcategories-list"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/add-categories"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/subcategories-list"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/add-subcategories"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/products-list"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/add-products"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/orders"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/users-management"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/add-user"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/banners-list"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/add-banner"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/add-popup"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/settings"
-            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-          /> */}
-
-
           {/* If logged in, show layout with header, sidebar */}
           {isLoggedIn && (
             <Route element={<Layout isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} toggleTheme={toggleTheme} />}>

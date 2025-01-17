@@ -11,4 +11,34 @@ body, html {
     border-top-left-radius: 16px;
     overflow: hidden; 
   }
-  
+  /* CSS cho content */
+
+.content-container {
+  background-color: var(--light-purple);
+  padding: 16px;
+  min-height: calc(100vh - 64px);
+  border-top-left-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+/* Mobile styles */
+@media (max-width: 46.1875em) {
+  .content-container {
+    margin-left: 0 !important; /* Khi sidebar mở trên mobile, sẽ đè lên */
+    padding: 10px;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+  .content-container {
+    padding: 14px;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 64em) {
+  .content-container {
+    padding: 16px;
+  }
+}

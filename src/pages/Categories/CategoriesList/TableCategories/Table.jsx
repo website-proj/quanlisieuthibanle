@@ -151,7 +151,15 @@ function ProductTable() {
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} 
+      sx={{
+          flexWrap: 'wrap', // Cho phép xuống hàng
+          gap: '10px', // Khoảng cách giữa các phần tử
+          '@media (max-width: 600px)': {
+            flexDirection: 'column', // Xếp thành cột trên màn hình nhỏ
+          },
+        }
+      }>
         <Typography variant="h6" gutterBottom>
           Danh mục sản phẩm
         </Typography>
@@ -162,7 +170,11 @@ function ProductTable() {
             size="small"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            sx={{ width: "300px" }}
+            sx={{
+              width: "300px",
+              '@media (max-width: 600px)': {
+                width: '100%',
+              }}}            
           />
           <Button
             variant="contained"
@@ -174,7 +186,9 @@ function ProductTable() {
               textTransform: "none",
               borderRadius: '15px',
               boxShadow: 'none',
-            }}
+              '@media (max-width: 600px)': {
+                width: '100%'
+            }}}
           >
             Thêm danh mục
           </Button>

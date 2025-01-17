@@ -5,10 +5,22 @@ function ContentCard({ children }) {
   return (
     <Box
       sx={{
-        padding: "20px",
+        padding: {
+          xs: '10px', // Mobile
+          sm: '15px', // Tablet
+          md: '20px', // Desktop
+        },
         backgroundColor: "#fff",
-        borderRadius: "15px",
-        marginTop: "20px",
+        borderRadius: {
+          xs: '10px', // Mobile
+          sm: '12px', // Tablet
+          md: '15px', // Desktop
+        },
+        marginTop: {
+          xs: '10px', // Mobile
+          sm: '15px', // Tablet
+          md: '20px', // Desktop
+        },
       }}
     >
       {children}

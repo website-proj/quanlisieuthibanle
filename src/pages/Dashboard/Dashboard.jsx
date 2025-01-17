@@ -1,43 +1,50 @@
-import React from 'react';
-import { Box } from '@mui/material';
+import React from "react";
+import { Box, Grid } from "@mui/material";
 
-import Stats from '/src/pages/Dashboard/Stats/Stats';
-import ContentCard from '/src/components/ContentCard/ContentCard';
-import CustomContent from '/src/components/ContentCard/CustomContent';
-import RenevenueChart from '/src/pages/Dashboard/Revenue/Chart';
-import UserChart from '/src/pages/Users/Management/Line/Chart';
-import CategoryChart from '/src/pages/Categories/CategoriesList/PieChart/Chart';
-import BestSellingProductsTable from '/src/pages/Products/List/BestSellingProducts/Table';
+import Stats from "/src/pages/Dashboard/Stats/Stats";
+import ContentCard from "/src/components/ContentCard/ContentCard";
+import CustomContent from "/src/components/ContentCard/CustomContent";
+import RenevenueChart from "/src/pages/Dashboard/Revenue/Chart";
+import UserChart from "/src/pages/Users/Management/Line/Chart";
+import CategoryChart from "/src/pages/Categories/CategoriesList/PieChart/Chart";
+import BestSellingProductsTable from "/src/pages/Products/List/BestSellingProducts/Table";
 
 export default function Dashboard() {
   return (
-    <>
-      <Stats></Stats>
+    <Box sx={{ padding: "1px" }}>
+      {/* Stats Section */}
+      <Stats />
+
+      {/* Revenue Chart Section */}
       <ContentCard>
-        <RenevenueChart></RenevenueChart>
+        <RenevenueChart />
       </ContentCard>
+
+      {/* Charts Section */}
       <Box
         sx={{
-          marginTop: "0.2%",
-          display: "flex", 
+          marginTop: "16px",
+          display: "grid",
           gap: "20px",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "1fr", 
+            md: "2fr 1fr", 
+          },
         }}
       >
-        <Box sx={{ flex: 2 }}>
-          <CustomContent>
-            <UserChart></UserChart>
-          </CustomContent>
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <CustomContent>
-            <CategoryChart></CategoryChart>
-          </CustomContent>
-        </Box>
+        <CustomContent>
+          <UserChart />
+        </CustomContent>
+        <CustomContent>
+          <CategoryChart />
+        </CustomContent>
       </Box>
 
-      <ContentCard>
-        <BestSellingProductsTable></BestSellingProductsTable>
+      {/* Best Selling Products Section */}
+      <ContentCard sx={{ marginTop: "16px" }}>
+        <BestSellingProductsTable />
       </ContentCard>
-    </>
+    </Box>
   );
 }

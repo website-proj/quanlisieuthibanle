@@ -24,6 +24,8 @@ const CsvJsonPng = ({
           boxShadow: 'none',
           minWidth: 50,
           padding: 0,
+          '@media (max-width: 600px)': {
+              width: '0.5rem',}
         }}  
       >
         <FiDownload />
@@ -49,9 +51,8 @@ const CsvJsonPng = ({
             transition: 'background-color 0.2s',
             '&:hover': {
               backgroundColor: '#cce5ff',
-            },
           },
-        }}
+        }}}
       >
         <MenuItem onClick={() => { handleDownloadCSV(); handleMenuClose(); }}>CSV</MenuItem>
         <MenuItem onClick={() => { handleDownloadJSON(); handleMenuClose(); }}>JSON</MenuItem>

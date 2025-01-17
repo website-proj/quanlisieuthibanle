@@ -1,0 +1,29 @@
+
+
+/* Mobile styles (max-width: 46.1875em) */
+@media (max-width: 46.1875em) {
+  .timeframe-button {
+    font-size: 12px; /* Smaller text size on mobile */
+    padding: 5px 8px; /* Adjust padding to fit */
+    min-width: 120px; /* Make the button a bit smaller */
+  }
+
+  .MuiMenuItem-root {
+    font-size: 12px; /* Adjust font size for mobile */
+  }
+}
+
+/* Tablet styles (min-width: 46.25em and max-width: 63.9375em) */
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+  .timeframe-button {
+    font-size: 13px; /* Slightly larger font size for tablet */
+    padding: 5px 10px; /* Moderate padding */
+    min-width: 130px; /* Adjust button width for tablet */
+  }
+
+  .MuiMenuItem-root {
+    font-size: 13px; /* Adjust font size for tablet */
+  }
+}
+
+

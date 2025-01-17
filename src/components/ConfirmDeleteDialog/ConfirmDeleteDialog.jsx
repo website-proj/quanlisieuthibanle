@@ -5,10 +5,9 @@ function ConfirmDeleteDialog({ open, onClose, onConfirm, itemName }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleConfirm = () => {
-    onConfirm();
+    onConfirm();  // Assuming onConfirm deletes the item
     setSnackbarOpen(true);
     onClose();
-    window.location.reload()
   };
 
   const handleSnackbarClose = (event, reason) => {
@@ -59,7 +58,7 @@ function ConfirmDeleteDialog({ open, onClose, onConfirm, itemName }) {
 
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000} 
+        autoHideDuration={3000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >

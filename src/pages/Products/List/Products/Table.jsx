@@ -279,6 +279,9 @@ export default function ProductTable() {
           overflowY: "auto",
           borderRadius: 2,
         }}
+        BackdropProps={{
+          style: { backgroundColor: "rgba(0, 0, 0, 0.5)" }, // Màu nền mờ
+        }}
       >
         <Paper
           onClick={(e) => e.stopPropagation()}

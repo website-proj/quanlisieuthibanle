@@ -1,3 +1,31 @@
+/* Thêm các thay đổi responsive cho sidebar */
+@media (max-width: 46.1875em) {
+  .MuiDrawer-paper {
+    width: 100%;
+    position: absolute;
+    z-index: 1100;
+    box-shadow: none; /* Xóa box-shadow khi sidebar mở */
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+  .MuiDrawer-paper {
+    width: 240px;
+    position: absolute;
+    z-index: 1100;
+    box-shadow: none;
+  }
+}
+
+@media (min-width: 64em) {
+  .MuiDrawer-paper {
+    width: 270px;
+    position: relative;
+    box-shadow: none;
+  }
+}
+
 .custom-list-item-text {
   color: var(--dark-grey);
   font-size: 0.4em !important;
@@ -8,7 +36,6 @@
   font-size: 1.1em;
   min-width: 40px;
   justify-content: center;
-  /* transition: color 0.3s ease;  */
 }
 
 .custom-list-item:hover .custom-list-item-text,
@@ -18,7 +45,7 @@
 
 .custom-list-item.active .custom-list-item-text,
 .custom-list-item.active .custom-list-item-icon {
-  color: var(--blue) !important; 
+  color: var(--blue) !important;
 }
 
 .submenu-text {

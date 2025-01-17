@@ -156,7 +156,14 @@ const Chart = () => {
         </Box>
       </Box>
 
-      <Box height="400px">
+      <Box
+        sx={{
+          height: { xs: "300px", md: "350px", lg: "400px" }, // Adjusted height for mobile, tablet, and desktop
+          padding: "16px",
+          borderRadius: "8px",
+          backgroundColor: "#fff",
+        }}
+      >
         {chartData.labels && chartData.labels.length > 0 ? (
           <Line
             data={chartData}

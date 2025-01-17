@@ -5,7 +5,7 @@ import { LuMoon, LuSun, LuUser } from "react-icons/lu";
 import { MdLogout, MdNotificationsNone, MdOutlineAccountCircle, MdMenuOpen, MdOutlineMenu } from "react-icons/md";
 import Sidebar from "/src/components/Layout/Sidebar/Sidebar.jsx";
 import "./Header.css";
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify';
 
 function Header({ toggleSidebar, isSidebarOpen }) {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -53,7 +53,7 @@ function Header({ toggleSidebar, isSidebarOpen }) {
             </Box>
             <Box className="sidebar-toggle-container">
               <IconButton onClick={toggleSidebar} className="custom-icon-button">
-                {isSidebarOpen ? <MdMenuOpen style={{ fontSize: "130%" }} /> : <MdOutlineMenu style={{ fontSize: "130%" }} />}
+                {isSidebarOpen ? <MdMenuOpen style={{ fontSize: "1.2em" }} /> : <MdOutlineMenu style={{ fontSize: "1.2em" }} />}
               </IconButton>
             </Box>
           </Box>
@@ -63,7 +63,7 @@ function Header({ toggleSidebar, isSidebarOpen }) {
               {isDarkMode ? <LuSun /> : <LuMoon />}
             </IconButton>
             <IconButton className="custom-icon-button">
-              <MdNotificationsNone style={{ fontSize: "110%" }} />
+              <MdNotificationsNone />
             </IconButton>
             <IconButton className="custom-icon-button" onClick={handleAccountClick}>
               <MdOutlineAccountCircle />

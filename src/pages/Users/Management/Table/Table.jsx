@@ -193,79 +193,117 @@ function UserTable() {
   return (
 <Box>
   {/* Header */}
-  <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-    <Typography variant="h6" gutterBottom>
-      Quản lý người dùng
-    </Typography>
-  </Box>
-
-  {/* Second row */}
-  <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-    <Box display="flex" justifyContent="flex-start" alignItems="center">
-      {/* Select box for role */}
-      {userRole === "SuperAdmin" && (
-        <FormControl sx={{ minWidth: 120, scale: "0.95" }}>
-          <InputLabel>Vai trò</InputLabel>
-          <Select value={role} onChange={handleRoleChange} label="Vai trò">
-            <MenuItem value="Customer">Khách hàng</MenuItem>
-            <MenuItem value="Admin">Quản trị viên</MenuItem>
-          </Select>
-        </FormControl>
-      )}
-
-      {userRole === "Admin" && (
-        <FormControl sx={{ minWidth: 120, scale: "0.95" }}>
-          <InputLabel>Vai trò</InputLabel>
-          <Select value={role} onChange={handleRoleChange} label="Vai trò">
-            <MenuItem value="Customer">Khách hàng</MenuItem>
-          </Select>
-        </FormControl>
-      )}
-    </Box>
-
-    <Box display="flex" alignItems="center">
-      {/* Search bar and Add User buttons */}
-      <TextField
-        label="Tìm kiếm"
-        variant="outlined"
-        size="small"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        sx={{ width: "300px", marginRight: "10px" }}
-      />
-      
-      <Button
-        variant="contained"
-        color="primary"
+  <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
         sx={{
-          fontSize: "0.95em",
-          textTransform: "none",
-          borderRadius: "15px",
-          boxShadow: "none",
-          marginRight: "10px",
+          flexDirection: { xs: "column", sm: "row" }, 
+          gap: { xs: 1, sm: 2 }, 
         }}
-        onClick={() => setIsBackdropOpen(true)}
       >
-        Thêm người dùng
-      </Button>
-
-      {userRole === "SuperAdmin" && (
-        <Button
-          variant="contained"
-          color="secondary"
-          sx={{
-            fontSize: "0.95em",
-            textTransform: "none",
-            borderRadius: "15px",
-            boxShadow: "none",
-          }}
-          onClick={() => setIsBackdropOpenSA(true)}
+        <Typography
+          variant="h6"
+          gutterBottom
+          sx={{ textAlign: { xs: "center", sm: "left" }, width: { xs: "100%", sm: "auto" } }}
         >
-          Thêm Admin
-        </Button>
-      )}
-    </Box>
-  </Box>
+          Quản lý người dùng
+        </Typography>
+      </Box>
+
+      {/* Second row */}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+        sx={{
+          flexDirection: { xs: "column", sm: "row" }, // Stack elements on mobile, row layout on tablet/desktop
+          gap: { xs: 2, sm: 1 }, // Adjust gap for mobile/tablet
+        }}
+      >
+        <Box
+          display="flex"
+          justifyContent="flex-start"
+          alignItems="center"
+          sx={{ width: { xs: "100%", sm: "auto" } }}
+        >
+          {/* Select box for role */}
+          {userRole === "SuperAdmin" && (
+            <FormControl sx={{ minWidth: 120, scale: "0.95", marginBottom: { xs: "10px", sm: "0" } }}>
+              <InputLabel>Vai trò</InputLabel>
+              <Select value={role} onChange={handleRoleChange} label="Vai trò">
+                <MenuItem value="Customer">Khách hàng</MenuItem>
+                <MenuItem value="Admin">Quản trị viên</MenuItem>
+              </Select>
+            </FormControl>
+          )}
+
+          {userRole === "Admin" && (
+            <FormControl sx={{ minWidth: 120, scale: "0.95", marginBottom: { xs: "10px", sm: "0" } }}>
+              <InputLabel>Vai trò</InputLabel>
+              <Select value={role} onChange={handleRoleChange} label="Vai trò">
+                <MenuItem value="Customer">Khách hàng</MenuItem>
+              </Select>
+            </FormControl>
+          )}
+        </Box>
+
+        <Box
+          display="flex"
+          alignItems="center"
+          sx={{ flexDirection: { xs: "column", sm: "row" }, gap: { xs: 2, sm: 1 } }} // Stack vertically on mobile
+        >
+          {/* Search bar */}
+          <TextField
+            label="Tìm kiếm"
+            variant="outlined"
+            size="small"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            sx={{
+              width: { xs: "100%", sm: "250px", md: "300px" }, // Full width on mobile, fixed width on tablet and desktop
+              marginBottom: { xs: "10px", sm: "0" }, // Add margin for mobile view
+            }}
+          />
+          
+          {/* Add User button */}
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              fontSize: "0.95em",
+              textTransform: "none",
+              borderRadius: "15px",
+              boxShadow: "none",
+              marginBottom: { xs: "10px", sm: "0" }, // Margin for mobile button
+              width: { xs: "100%", sm: "auto" }, // Full width on mobile
+            }}
+            onClick={() => setIsBackdropOpen(true)}
+          >
+            Thêm người dùng
+          </Button>
+
+          {/* Add Admin button */}
+          {userRole === "SuperAdmin" && (
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{
+                fontSize: "0.95em",
+                textTransform: "none",
+                borderRadius: "15px",
+                boxShadow: "none",
+                width: { xs: "100%", sm: "auto" }, // Full width on mobile
+              }}
+              onClick={() => setIsBackdropOpenSA(true)}
+            >
+              Thêm Admin
+            </Button>
+          )}
+        </Box>
+        </Box>
 
   {/* Table and Pagination */}
   {totalUsers === 0 ? (

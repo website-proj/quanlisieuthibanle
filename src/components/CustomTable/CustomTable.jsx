@@ -29,7 +29,18 @@ function CustomTable({
                 <TableCell
                   key={column.id}
                   align={column.align || "left"}
-                  style={{ minWidth: column.minWidth || 100 }}
+                  sx={{
+                    minWidth: column.minWidth || 100,
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    // Adjusting font size for responsiveness
+                    '@media (max-width: 46.1875em)': {
+                      fontSize: '12px',
+                    },
+                    '@media (min-width: 46.25em) and (max-width: 63.9375em)': {
+                      fontSize: '13px',
+                    },
+                  }}
                 >
                   {column.label}
                 </TableCell>
@@ -40,7 +51,20 @@ function CustomTable({
             {data.map((row, index) => (
               <TableRow key={index} hover>
                 {columns.map((column) => (
-                  <TableCell key={column.id} align={column.align || "left"}>
+                  <TableCell
+                    key={column.id}
+                    align={column.align || "left"}
+                    sx={{
+                      fontSize: "14px",
+                      // Adjusting font size for responsiveness
+                      '@media (max-width: 46.1875em)': {
+                        fontSize: '12px',
+                      },
+                      '@media (min-width: 46.25em) and (max-width: 63.9375em)': {
+                        fontSize: '13px',
+                      },
+                    }}
+                  >
                     {row[column.id]}
                   </TableCell>
                 ))}
@@ -57,6 +81,16 @@ function CustomTable({
         page={page}
         onPageChange={onPageChange}
         onRowsPerPageChange={onRowsPerPageChange}
+        sx={{
+          // Adjusting pagination for responsiveness
+          fontSize: '14px',
+          '@media (max-width: 46.1875em)': {
+            fontSize: '12px', // Smaller font for mobile
+          },
+          '@media (min-width: 46.25em) and (max-width: 63.9375em)': {
+            fontSize: '13px', // Medium font for tablets
+          },
+        }}
       />
     </Paper>
   );

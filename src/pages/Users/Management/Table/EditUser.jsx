@@ -21,7 +21,7 @@ function EditUser({ open, onClose, user }) {
   const handleSubmit = async () => {
     try {
       const jwtToken = localStorage.getItem("jwtToken");
-      
+
       const requestBody = {
         user_id: formData.id, 
         username: formData.username,
@@ -44,7 +44,7 @@ function EditUser({ open, onClose, user }) {
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.message || "Cập nhật thông tin không thành công");
       }
@@ -66,9 +66,9 @@ function EditUser({ open, onClose, user }) {
     <Backdrop open={open} onClick={onClose} sx={{ zIndex: 1300 }}>
       <Box
         sx={{
-          width: "50%",
+          width: { xs: "90%", sm: "70%", md: "50%" }, // Responsive width
           backgroundColor: "white",
-          padding: 2,
+          padding: { xs: 2, sm: 3, md: 4 },
           borderRadius: "15px",
           boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
           display: "flex",
@@ -93,6 +93,7 @@ function EditUser({ open, onClose, user }) {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          sx={{ marginBottom: { xs: 1, sm: 2 }, fontSize: { xs: '0.9em', sm: '1em' } }} // Adjust font size on small screens
         />
         <TextField
           label="Email"
@@ -101,6 +102,7 @@ function EditUser({ open, onClose, user }) {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          sx={{ marginBottom: { xs: 1, sm: 2 }, fontSize: { xs: '0.9em', sm: '1em' } }}
         />
         <TextField
           label="Số điện thoại"
@@ -109,6 +111,7 @@ function EditUser({ open, onClose, user }) {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          sx={{ marginBottom: { xs: 1, sm: 2 }, fontSize: { xs: '0.9em', sm: '1em' } }}
         />
         <TextField
           select
@@ -117,9 +120,9 @@ function EditUser({ open, onClose, user }) {
           value={formData.membership_status || ""}
           onChange={handleChange}
           fullWidth
-          margin="small"
+          margin="normal"
+          sx={{ marginBottom: { xs: 1, sm: 2 }, fontSize: { xs: '0.9em', sm: '1em' } }}
         >
-          {/* <MenuItem value="Bronze">Đồng</MenuItem> */}
           <MenuItem value="Silver">Bạc</MenuItem>
           <MenuItem value="Gold">Vàng</MenuItem>
           <MenuItem value="Diamond">Kim cương</MenuItem>
@@ -131,6 +134,7 @@ function EditUser({ open, onClose, user }) {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          sx={{ marginBottom: { xs: 1, sm: 2 }, fontSize: { xs: '0.9em', sm: '1em' } }}
         />
         <TextField
           select
@@ -140,38 +144,40 @@ function EditUser({ open, onClose, user }) {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          sx={{ marginBottom: { xs: 1, sm: 2 }, fontSize: { xs: '0.9em', sm: '1em' } }}
         >
           <MenuItem value="Male">Nam</MenuItem>
           <MenuItem value="Female">Nữ</MenuItem>
           <MenuItem value="Other">Khác</MenuItem>
         </TextField>
 
-        {/* <Box sx={{ textAlign: "center", mt: 2 }}>
-          <Button variant="contained" color="primary" onClick={handleSubmit} sx={{textTransform: 'none', fontSize: '1em', boxShadow: 'none', borderRadius: '15px'}}>
-            Lưu thay đổi
-          </Button>
-          <Button variant="outlined" color="secondary" onClick={onClose} sx={{textTransform: 'none', fontSize: '1em', boxShadow: 'none', borderRadius: '15px', ml: 2}}>
+        <DialogActions sx={{ p: 1, gap: 1 }}>
+          <Button
+            variant="outlined"
+            onClick={onClose}
+            fullWidth
+            sx={{
+              textTransform: 'none',
+              fontSize: { xs: '0.9em', sm: '1em' },
+              borderRadius: '20px',
+            }}
+          >
             Hủy
           </Button>
-        </Box> */}
-                      <DialogActions sx={{ p: 1, gap: 1 }}>
-                        <Button
-                          variant="outlined"
-                          onClick={onClose}
-                          fullWidth
-                          sx={{textTransform: 'none', fontSize: '1em', borderRadius: '20px' }}
-                        >
-                          Hủy
-                        </Button>
-                        <Button
-                          variant="contained"
-                          onClick={handleSubmit}                  
-                          fullWidth
-                          sx={{textTransform: 'none', fontSize: '1em', borderRadius: '20px', boxShadow: 'none' }}
-                        >
-                          Lưu
-                        </Button>
-                      </DialogActions>
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
+            fullWidth
+            sx={{
+              textTransform: 'none',
+              fontSize: { xs: '0.9em', sm: '1em' },
+              borderRadius: '20px',
+              boxShadow: 'none',
+            }}
+          >
+            Lưu
+          </Button>
+        </DialogActions>
       </Box>
     </Backdrop>
   );
