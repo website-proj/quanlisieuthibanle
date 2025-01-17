@@ -223,25 +223,25 @@ export default function Edit({ product, onClose, onUpdate }) {
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <Typography variant="subtitle2" sx={{ mb: 1 }}>Ảnh sản phẩm</Typography>
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: 2, textAlign: 'center'}}>
             {currentImage && (
               <Box sx={{ mb: 1 }}>
                 <img 
                   src={currentImage} 
                   alt="Current product" 
-                  style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'contain' }}
+                  style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'contain', borderRadius: '20px'}}
                 />
               </Box>
             )}
             <Button
-              variant="contained"
+              variant="outlined"
               component="span"
               onClick={() => document.getElementById('file-upload').click()}
               sx={{
                 mt: 2,
                 borderRadius: "15px",
-                boxShadow: "none",
-                backgroundColor: "primary.main",
+                boxShadow: "none"
+                , textTransform: 'none'
               }}
             >
               Tải ảnh lên

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TextField, Button, Typography, Box, Container } from "@mui/material";
-import { decodeJwt } from 'jose'; 
+import { TextField, Button, Box, Container, Typography } from "@mui/material";
+import { decodeJwt } from 'jose';
 import { BASE_URL, ENDPOINTS } from "/src/api/apiEndpoints";
-import {toast} from 'react-toastify'
-
+import { toast } from 'react-toastify';
+import './LogIn.css'
 function LogIn({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -35,13 +35,13 @@ function LogIn({ onLogin }) {
         localStorage.setItem("jwtToken", data.access_token);
 
         const decodedToken = decodeJwt(data.access_token);
-        console.log(decodedToken)
+        console.log(decodedToken);
         if (!decodedToken || !decodedToken.role) {
           setError("Dữ liệu token không hợp lệ.");
           return;
         }
 
-        const currentTime = Math.floor(Date.now() / 1000); 
+        const currentTime = Math.floor(Date.now() / 1000);
         if (decodedToken.exp < currentTime) {
           setError("Token đã hết hạn.");
           return;
@@ -73,6 +73,23 @@ function LogIn({ onLogin }) {
   };
 
   return (
+    <Box
+    sx={{
+      position: "relative",
+      minHeight: "1f00vh",
+      "&::before": {
+        position: "absolute",
+        content: '""',
+        height: "100%",
+        width: "100%",
+        top: 0,
+        left: 0,
+        backgroundImage: `linear-gradient(135deg, #1a37e8 0%, #b08bec 50%, #ffffff 100%), url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwMCIgaGVpZ2h0PSI1MDAiIHZpZXdCb3g9IjAgMCAxMDAwIDEwMDAiIHZlcnNpb249IjEu1m0gIjEwMDAgMCA1MDAgMSIgdmlld0NvbnRyb2wiOmlzZGVmPSJodHRwczovL3cL2MgbG9uIHMiL3ggP0cttGAhxcmcuYnByI3hwMW5hPCgUBtex*/')`,
+        opacity: 0.9,
+        zIndex: -1,
+      },
+    }}
+  >
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
@@ -80,50 +97,91 @@ function LogIn({ onLogin }) {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          height: "90vh",
+          minHeight: "100vh",
           padding: "20px",
-          backgroundColor: "#f4f4f4",
-          borderRadius: "15px",
-          boxShadow: 1,
-          marginTop: "20px",
+          position: "relative", // Ensuring the content is above the background
+          zIndex: 1, // Keeping content above the background
         }}
       >
-        <Typography variant="h5" component="h1" gutterBottom sx={{ fontWeight: "bold" }}>
-          Admin Login
-        </Typography>
-        <TextField
-          label="Username"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && (
-          <Typography variant="body2" color="error" sx={{ marginTop: "8px" }}>
-            {error}
-          </Typography>
-        )}
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ marginTop: "16px", borderRadius: "15px" }}
-          onClick={handleLogin}
+        <Box
+          sx={{
+            width: "100%",
+            backgroundColor: "white",
+            borderRadius: "15px",
+            padding: "30px",
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+          }}
         >
-          Login
-        </Button>
+          <Box
+            component="img"
+            src="/src/assets/logo.png"
+            alt="Admin Logo"
+            sx={{
+              width: "17em",
+              height: "auto",
+              display: "block",
+              margin: "0 auto 20px",
+            }}
+          />
+          <Typography variant="h6" sx={{ marginBottom: '-0.5em' }}>Tài khoản</Typography>
+          <TextField
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            sx={{
+              backgroundColor: "#f8f9fa",
+              borderRadius: "8px",
+            }}
+          />
+          <Typography variant="h6" sx={{marginTop: '0.5em', marginBottom: '-0.5em' }}>Mật khẩu</Typography>
+          <TextField
+            type="password"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            sx={{
+              backgroundColor: "#f8f9fa",
+              borderRadius: "8px",
+            }}
+          />
+          {error && (
+            <Box
+              sx={{
+                color: "error.main",
+                marginTop: "8px",
+                textAlign: "center",
+                fontSize: "0.875rem",
+              }}
+            >
+              {error}
+            </Box>
+          )}
+<Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                marginTop: "30px",
+                borderRadius: "15px",
+                padding: "12px",
+                boxShadow: 'none',
+                textTransform: 'none',
+                fontSize: '1em'
+              }}
+              onClick={handleLogin}
+            >
+              Đăng nhập
+            </Button>
+
+        </Box>
       </Box>
     </Container>
+  </Box>
+  
   );
 }
 
