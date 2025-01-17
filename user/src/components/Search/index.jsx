@@ -49,11 +49,14 @@ const Search = () => {
 
       {/* Hiển thị kết quả gợi ý */}
       {showDropdown && results.length > 0 && (
-        <ul className="absolute top-[2.5em] max-h-56 overflow-y-auto left-0 w-full bg-white border border-gray-300 rounded-2xl shadow-lg z-10">
+        <ul
+          className="absolute top-[2.5em] max-h-56 overflow-y-auto  left-0 w-full bg-white border border-gray-300 rounded-2xl shadow-lg z-10 custom-scrollbar  "
+          sx={{ scrollbarColor: "#ccc transparent" }}
+        >
           {results.map((product) => (
             <li
               key={product.product_id}
-              className="p-2 rounded-2xl hover:bg-gray-100 text-left"
+              className="p-2 rounded-2xl hover:bg-gray-100 "
             >
               <Link
                 to={`/product_detials/${product.product_id}`}

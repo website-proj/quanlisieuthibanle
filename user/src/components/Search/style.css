@@ -88,3 +88,21 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+.custom-scrollbar {
+  scrollbar-color: #ccc transparent; /* Màu cuộn: track (#ccc), thumb (transparent) */
+  scrollbar-width: thin; /* Độ dày thanh cuộn */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Độ rộng thanh cuộn (webkit) */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Màu của thanh trượt */
+  border-radius: 4px; /* Độ bo tròn */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent; /* Màu nền */
+}
