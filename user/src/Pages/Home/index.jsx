@@ -133,7 +133,7 @@ const Home = () => {
       // Giả lập thời gian tải dữ liệu (thay bằng API thực tế nếu cần)
       setTimeout(() => {
         setLoading(false); // Dữ liệu đã tải xong
-      }, 4000); // Thời gian giả lập tải dữ liệu (2 giây)
+      }, 0); // Thời gian giả lập tải dữ liệu (2 giây)
     };
 
     fetchProducts();
