@@ -9,6 +9,7 @@ import SummaryApi, { baseURL } from "../../common/SummaryApi";
 const NewProducts = () => {
   const [products, setProducts] = useState([]); // Dữ liệu sản phẩm
   const [visibleCount, setVisibleCount] = useState(10); // Số lượng sản phẩm hiển thị ban đầu
+  const [loading, setLoading] = useState(true); // Trạng thái loading
   const { incrementCartCount } = useContext(CartContext); // Lấy hàm tăng số lượng giỏ hàng từ context
 
   useEffect(() => {
@@ -26,6 +27,8 @@ const NewProducts = () => {
         }
       } catch (error) {
         console.error("Lỗi khi gọi API sản phẩm mới:", error);
+      } finally {
+        setLoading(false); // Đảm bảo trạng thái loading được tắt sau khi tải xong
       }
     };
 
@@ -133,49 +136,62 @@ const NewProducts = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 productListSale">
-        {products.slice(0, visibleCount).map((product) => (
-          <div
-            className="border flex flex-col justify-between shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
-            key={product.product_id}
-          >
-            <Link to={`/product_detials/${product.product_id}`} state={product}>
-              <div className="relative overflow-hidden rounded-lg">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
-                />
-              </div>
-              {/* {product.discount && (
-                <span className="absolute top-6 left-0 bg-[#1a73e8] text-white text-xs font-semibold px-2 py-1 rounded">
-                  {product.discount}%
-                </span>
-              )} */}
-              <div className="mt-4">
-                <h5 className="text-[0.9em] text-left">{product.name}</h5>
-                <p className="text-[0.72em] text-black-500 text-left">
-                  ĐVT: {product.unit}
-                </p>
-                <div className="flex items-center justify-between mt-2 space-x-2">
-                  <span className="text-red-500 text-base font-bold">
-                    {formatCurrency(product.price)}
-                  </span>
-                  {/* <span className="line-through text-sm text-gray-400">
-                    {formatCurrency(product.old_price)}
-                  </span> */}
+        {loading
+          ? // Hiển thị thẻ loading khi đang tải dữ liệu
+            Array.from({ length: visibleCount }).map((_, index) => (
+              <div
+                className="border flex flex-col justify-between shadow rounded-xl p-4 animate-pulse"
+                key={index}
+              >
+                <div className="relative overflow-hidden rounded-lg bg-gray-300 h-48"></div>
+                <div className="mt-4">
+                  <div className="bg-gray-300 h-6 w-3/4 mb-2"></div>
+                  <div className="bg-gray-300 h-4 w-1/2 mb-2"></div>
+                  <div className="flex items-center justify-between mt-2 space-x-2">
+                    <div className="bg-gray-300 h-6 w-20"></div>
+                  </div>
                 </div>
               </div>
-            </Link>
+            ))
+          : // Hiển thị sản phẩm sau khi tải dữ liệu
+            products.slice(0, visibleCount).map((product) => (
+              <div
+                className="border flex flex-col justify-between shadow rounded-xl p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
+                key={product.product_id}
+              >
+                <Link
+                  to={`/product_detials/${product.product_id}`}
+                  state={product}
+                >
+                  <div className="relative overflow-hidden rounded-lg">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
+                    />
+                  </div>
+                  <div className="mt-4">
+                    <h5 className="text-[0.9em] text-left">{product.name}</h5>
+                    <p className="text-[0.72em] text-black-500 text-left">
+                      ĐVT: {product.unit}
+                    </p>
+                    <div className="flex items-center justify-between mt-2 space-x-2">
+                      <span className="text-red-500 text-base font-bold">
+                        {formatCurrency(product.price)}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
 
-            <Button
-              onClick={(e) => handleAddToCart(e, product, 1)}
-              className="productCart flex items-center whitespace-nowrap"
-            >
-              <FiShoppingCart className="text-[2em] pr-2" />
-              Thêm vào giỏ hàng
-            </Button>
-          </div>
-        ))}
+                <Button
+                  onClick={(e) => handleAddToCart(e, product, 1)}
+                  className="productCart flex items-center whitespace-nowrap"
+                >
+                  <FiShoppingCart className="text-[2em] pr-2" />
+                  Thêm vào giỏ hàng
+                </Button>
+              </div>
+            ))}
       </div>
 
       <div className="flex justify-center mt-6">

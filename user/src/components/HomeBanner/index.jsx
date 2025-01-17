@@ -4,7 +4,7 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./style.css";
-import { baseURL } from "../../common/SummaryApi"; // Import baseURL từ SummaryApi
+import SummaryApi, { baseURL } from "../../common/SummaryApi"; // Import baseURL từ SummaryApi
 
 const HomeBanner = () => {
   const [banners, setBanners] = useState([]);
@@ -13,14 +13,12 @@ const HomeBanner = () => {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        // Sử dụng fetch để lấy dữ liệu từ API của bạn
-        const response = await fetch(`${baseURL}/api/banner/main`);
+        const response = await fetch(`${baseURL}${SummaryApi.homeBanner.url}`);
         if (!response.ok) {
           throw new Error("Không thể lấy dữ liệu từ API");
         }
         const data = await response.json();
 
-        // Set dữ liệu banner vào state
         setBanners(data.data);
       } catch (error) {
         console.error("Lỗi lấy banner :", error);
@@ -52,7 +50,8 @@ const HomeBanner = () => {
                   <img
                     src={banner.image}
                     alt={`Banner ${banner.banner_id}`}
-                    className="w-full h-[25em]  object-cover  bannerImg"
+                    className="w-full sm:h-[15em] lg:h-[20em] h-[25em] object-cover bannerImg"
+                    loading="lazy" // Thêm thuộc tính lazy loading
                   />
                   <div className="absolute bottom-10 left-10">
                     <a

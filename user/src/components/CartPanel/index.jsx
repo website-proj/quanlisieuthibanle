@@ -65,7 +65,7 @@ const CartPanel = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Đang tải dữ liệu .</div>;
   }
 
   const deleteCartItem = async (product_id) => {

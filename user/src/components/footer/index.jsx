@@ -49,12 +49,12 @@ const Footer = () => {
               <img src={Logo} />
 
               <span>
-                <FaLocationDot className="text-sm text-red-500 mr-2" />
+                <FaLocationDot className="text-sm text-red-500 mr-2  whitespace-nowrap" />
                 Số 334 Nguyễn Trãi, Thanh Xuân, Hà Nội
               </span>
             </div>
             <div className="info-bot">
-              <div className="col  footer-info">
+              <div className="col  footer-info  whitespace-nowrap">
                 <h4>Về chúng tôi</h4>
                 <ul>
                   <li>
@@ -77,7 +77,7 @@ const Footer = () => {
             </div>
 
             <div className="info-bot">
-              <div className="col  footer-info">
+              <div className="col  footer-info  whitespace-nowrap">
                 <h4>Hỗ trợ khách hàng</h4>
                 <ul>
                   <li>

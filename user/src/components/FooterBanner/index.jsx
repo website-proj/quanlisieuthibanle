@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { baseURL } from "../../common/SummaryApi"; // Đảm bảo import đúng baseURL từ SummaryApi
+import "./style.css";
 
 const BannerSlide = () => {
   const [banners, setBanners] = useState([]);
@@ -25,14 +26,14 @@ const BannerSlide = () => {
 
   return (
     <div className="container mx-auto mt-5 mb-5 botBanner">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-3 gap-5">
         {banners.map((banner, index) => (
           <div key={index} className="relative">
             <a href={banner.link || "#"} className="block w-full h-full">
               <img
                 src={banner.image}
                 alt={banner.banner_id}
-                className="w-full h-[13.375em] rounded-md shadow object-cover transition-opacity duration-300 ease-in-out hover:opacity-80"
+                className="w-full   sm:h-[5em] lg:h-[10em] h-[13.375em] rounded-md shadow object-cover transition-opacity duration-300 ease-in-out hover:opacity-80 "
               />
             </a>
           </div>

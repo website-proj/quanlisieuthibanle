@@ -11,7 +11,7 @@ const DiscountProducts = () => {
   const [products, setProducts] = useState([]);
   const [visibleCount, setVisibleCount] = useState(10); // Số lượng sản phẩm hiển thị ban đầu
   const { incrementCartCount } = useContext(CartContext); // Lấy hàm tăng số lượng giỏ hàng từ context
-  const [isLoading, setIsLoading] = useState(true); // Thêm state isLoading
+  const [loading, setLoading] = useState(true); // Thêm state isLoading
 
   useEffect(() => {
     const fetchDiscountProducts = async () => {
@@ -31,7 +31,9 @@ const DiscountProducts = () => {
         console.error("Error fetching discount products:", error);
         setProducts([]);
       } finally {
-        setIsLoading(false); // Đặt isLoading thành false sau khi tải xong
+        setTimeout(() => {
+          setLoading(false); // Thêm delay để hiển thị CardLoading lâu hơn
+        }, 2000); // 1 giây delay
       }
     };
 
@@ -137,8 +139,8 @@ const DiscountProducts = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 productListSale">
-        {isLoading
-          ? Array(visibleCount)
+        {loading
+          ? Array(visibleCount || 10)
               .fill(0)
               .map((_, index) => <CardLoading key={index} />)
           : products.slice(0, visibleCount).map((product) => (

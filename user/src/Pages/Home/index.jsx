@@ -133,7 +133,7 @@ const Home = () => {
       // Giả lập thời gian tải dữ liệu (thay bằng API thực tế nếu cần)
       setTimeout(() => {
         setLoading(false); // Dữ liệu đã tải xong
-      }, 2000); // Thời gian giả lập tải dữ liệu (2 giây)
+      }, 4000); // Thời gian giả lập tải dữ liệu (2 giây)
     };
 
     fetchProducts();
@@ -151,7 +151,7 @@ const Home = () => {
               <div className="w-3/4 productSale">
                 <Timer duration={2 * 24 * 60 * 60 * 1000} />
 
-                <div className="grid grid-cols-4 gap-5 productList">
+                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 productList">
                   {loading
                     ? Array.from({ length: 12 }).map((_, index) => (
                         <CardLoading key={index} /> // Hiển thị skeleton cards khi loading
@@ -204,7 +204,7 @@ const Home = () => {
                               onClick={(e) => handleAddToCart(e, product, 1)} // Sử dụng số lượng mặc định là 1
                               className="productCart flex items-center whitespace-nowrap"
                             >
-                              <FiShoppingCart className="text-[2em] mt-auto pr-2" />
+                              <FiShoppingCart className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 xl:w-10 xl:h-10  mt-auto pr-2" />
                               Thêm vào giỏ hàng
                             </Button>
                           </div>

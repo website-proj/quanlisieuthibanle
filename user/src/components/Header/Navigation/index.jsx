@@ -65,7 +65,7 @@ const Navigation = () => {
                     <span className="mr-2">
                       <FaListUl />
                     </span>
-                    <span className="font-[500] text-[1.1em]">
+                    <span className="font-[500] whitespace-nowrap sm:text-sm md:text-md lg:text-lg xl:text-xl">
                       Danh mục sản phẩm
                     </span>
                     <span className="ml-2 text-sm">
@@ -75,7 +75,7 @@ const Navigation = () => {
 
                   {/* Dropdown menu */}
                   <div
-                    className={`absolute top-[2.65em] left-[4em] w-[15em] bg-white rounded-lg shadow-lg border border-gray-200 transition-all duration-300 ${
+                    className={`absolute top-[2.65em] left-[4em] !sm:left[1em] lg:left-[2em] w-[15em] bg-white rounded-lg shadow-lg border border-gray-200 transition-all duration-300 ${
                       isHovered ? "opacity-100 visible" : "opacity-0 invisible"
                     }`}
                   >
@@ -133,10 +133,12 @@ const Navigation = () => {
           <div className="w-2/3 flex justify-end items-center mx-[6%]">
             <ul className="flex space-x-10">
               <li>
-                <div className="flex items-center h-full">
+                <div className="flex items-center h-full  whitespace-nowrap">
                   <Link to="/" className="flex items-center gap-2">
-                    <BiMessage className="text-xl" />
-                    <span className="text-base">Tin tức</span>
+                    <BiMessage className="text-xl sm:text-sm  lg:text-lg" />
+                    <span className="sm:text-[0.8em] lg:text-lg xl:text-xl">
+                      Tin tức
+                    </span>
                   </Link>
                 </div>
               </li>
@@ -145,8 +147,10 @@ const Navigation = () => {
                   <Link to="#">
                     <Tooltip title="123456789" arrow>
                       <Button className="flex !text-black items-center gap-2 whitespace-nowrap">
-                        <LuHeadphones className="text-xl" />
-                        <span>Chăm sóc khách hàng</span>
+                        <LuHeadphones className="xl:text-xl sm:text-[0.8em] md:[0.9em] lg:text-[1em]" />
+                        <span className="sm:text-[0.8em] md-[0.9em] lg:text-[1em] xl:text-xl">
+                          Chăm sóc khách hàng
+                        </span>
                       </Button>
                     </Tooltip>
                   </Link>

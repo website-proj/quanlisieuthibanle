@@ -28,17 +28,20 @@ const Header = () => {
       <header>
         <div className="header ">
           <div className="container flex items-center justify-between">
-            <div className="col1 w-1/5">
+            <div className="col1 xl:w-1/5 lg:w-1/6 md:w-1/6 sm:w-1/6">
               <Link to={"/home"}>
-                <img src={Logo} />
+                <img
+                  className="sm:h-[3.5em] md:h-[4em] lg-[5em] xl-[5em]"
+                  src={Logo}
+                />
               </Link>
             </div>
 
-            <div className="col2 w-3/5 flex items-center justify-center">
+            <div className="col2  sm:w-1/2 md-w:1/2 lg:w-3/5 xl:w-3/5 flex items-center justify-center">
               <Search />
             </div>
 
-            <div className="col3 carTab w-1/5 flex items-center">
+            <div className="col3 carTab sm:w-1/3 md:w-1/3 lg:w-1/5 xl:w-1/5 flex items-center">
               {/* Profile dropdown */}
               <div className="user relative">
                 {context.isLogin !== false ? (
@@ -51,7 +54,7 @@ const Header = () => {
                 ) : (
                   <div className="account-menu relative">
                     <div className="account-button flex items-center rounded-full text-white p-2 cursor-pointer">
-                      <FaUserCircle className="h-6 w-6" />
+                      <FaUserCircle className="xl:h-6 xl:w-6 sm:w-3 sm:h-3 md:w-4 md:h-4 lg:h-5 lg:w-5" />
                       <span className="ml-2 whitespace-nowrap">Tài khoản</span>
                     </div>
                     <div className="profile-menu ">
@@ -59,8 +62,8 @@ const Header = () => {
                         to="/Account"
                         className="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 flex items-center gap-x-2 rounded-md"
                       >
-                        <MdOutlineManageAccounts className="text-lg" /> Tài
-                        khoản
+                        <MdOutlineManageAccounts className="text-lg sm:text-sm md:text-md " />{" "}
+                        Tài khoản
                       </Link>
                       <Link
                         to="/order"
@@ -82,14 +85,14 @@ const Header = () => {
               {/* Shopping cart */}
               <div
                 id="cart-icon"
-                className="cart ml-3 flex items-center"
+                className="cart sm:ml-0 md:ml-0 lg:ml-0 xl:ml-3 flex items-center"
                 onClick={() => context.setOpenCartPanel(true)}
               >
-                <Button className="circle ml-2 ">
-                  <FiShoppingCart className="mr-2 h-10 w-10 " />
+                <Button className="circle xl:ml-2 lg:ml-2 md:ml-0 sm:ml-0 ">
+                  <FiShoppingCart className="mr-1 w-16 h-16 sm:w-8 sm:h-8 md:w-8 md:h-8 lg:w-12 lg:h-12 xl:w-10 xl:h-10" />
                   <span className="ml-2 whitespace-nowrap">Giỏ hàng</span>
                   <span
-                    className="count d-flex align-items-center justify-content-center"
+                    className="count   d-flex align-items-center justify-content-center"
                     style={{ marginLeft: "50%" }}
                   >
                     {cartCount}

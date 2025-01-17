@@ -43,7 +43,7 @@ header .carTab {
 }
 
 header .cart {
-  min-width: 2.8em !important;
+  /* min-width: 2.8em !important; */
   height: 2.8em !important;
   border-radius: 50% !important;
   padding: 0px;
@@ -132,4 +132,9 @@ body {
 .profile-menu button {
   color: #000 !important;
   font-size: 0.875em !important;
+}
+
+@media (max-width: 768px) {
+  .logoPi {
+  }
 }

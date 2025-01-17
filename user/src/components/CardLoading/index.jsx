@@ -7,17 +7,19 @@ const CardLoading = () => {
 
   // Hàm để tải thêm dữ liệu
   const fetchData = useCallback(() => {
+    if (isLoading) return; // Nếu đang tải thì không gọi lại
+
     setIsLoading(true);
     // Giả lập tải dữ liệu (có thể thay bằng API thực tế)
     setTimeout(() => {
       const newData = Array.from(
-        { length: 10 },
+        { length: 10 }, // Giả lập tải thêm 10 mục dữ liệu
         (_, i) => `Item ${data.length + i + 1}`
       );
       setData((prevData) => [...prevData, ...newData]);
       setIsLoading(false);
     }, 1000); // Giả lập thời gian tải 1 giây
-  }, [data]);
+  }, [data, isLoading]);
 
   // Intersection Observer để phát hiện khi cuộn đến cuối danh sách
   useEffect(() => {
@@ -27,7 +29,7 @@ const CardLoading = () => {
           fetchData(); // Tải thêm dữ liệu khi phần tử trong viewport
         }
       },
-      { threshold: 1.0 }
+      { threshold: 1.0 } // Ngưỡng khi phần tử đã vào hết viewport
     );
 
     if (observerRef.current) {
@@ -47,7 +49,7 @@ const CardLoading = () => {
         {data.map((item, index) => (
           <div
             key={index}
-            className="border py-2 lg:p-4 grid gap-1 lg:gap-3 min-w-36 lg:min-w-52 rounded-xl bg-white"
+            className="border h-48 py-2 lg:p-4 grid gap-1 lg:gap-3 min-w-36 lg:min-w-52 rounded-xl bg-white"
           >
             <div className="text-lg font-bold">{item}</div>
             <div className="min-h-24 bg-blue-50 rounded"></div>

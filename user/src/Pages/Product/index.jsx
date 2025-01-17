@@ -375,7 +375,7 @@ const Product = () => {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-4 gap-8 productList">
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 productList">
                 {products.slice(0, visibleProducts).map((product) => (
                   <div
                     className="border flex flex-col justify-between rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"

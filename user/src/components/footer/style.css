@@ -8,9 +8,9 @@ footer {
 }
 .topInfo {
   display: flex;
-  padding: 1em 1em;
+  /* padding: 1em 1em; */
   justify-content: space-between;
-  gap: 1em;
+  /* gap: 1em; */
   text-align: center;
   background: #f5f5f5;
 }
@@ -124,11 +124,57 @@ footer {
 /* Responsive: Điều chỉnh khi màn hình nhỏ */
 @media (max-width: 768px) {
   .topInfo {
-    flex-direction: column;
+    flex-direction: row;
     gap: 0.625em;
   }
 
   .footer-item {
     margin-bottom: 0.625em;
+  }
+}
+/* Định dạng chữ mặc định */
+
+/* Khi màn hình nhỏ hơn 1024px (Tablet) */
+@media (max-width: 1024px) {
+  footer {
+    font-size: 14px; /* Kích thước chữ nhỏ hơn trên Tablet */
+  }
+  .footer-info h4 {
+    font-size: 15px; /* Tiêu đề nhỏ hơn */
+  }
+  .footer-info ul li a {
+    font-size: 12px; /* Chữ trong danh sách nhỏ hơn */
+  }
+  .topInfo {
+    flex-wrap: wrap; /* Cho phép wrap khi màn hình trung bình */
+    justify-content: space-between;
+    margin-top: 0.5em;
+  }
+  .footer-item span {
+    font-size: 0.6em;
+  }
+  .social svg {
+    width: 1em;
+    height: 1em;
+  }
+}
+
+/* Khi màn hình nhỏ hơn 768px (Mobile) */
+@media (max-width: 768px) {
+  footer {
+    font-size: 12px; /* Kích thước chữ nhỏ hơn trên Mobile */
+  }
+  .footer-info h4 {
+    font-size: 8px !important  ; /* Tiêu đề nhỏ hơn */
+    margin-bottom: 0;
+  }
+  .footer-info ul li a {
+    font-size: 7px; /* Chữ trong danh sách nhỏ hơn */
+  }
+  .info-bot {
+    padding: 0 !important;
+  }
+  .footer-info span {
+    font-size: 6px;
   }
 }
