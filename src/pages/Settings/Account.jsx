@@ -96,8 +96,7 @@ function Account() {
   
       if (!response.ok) {
         throw new Error(data.message || "Cập nhật thông tin không thành công");
-      }
-  
+      } else {}
       setSnackbarMessage("Cập nhật thông tin người dùng thành công!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
@@ -116,7 +115,6 @@ function Account() {
 
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
-    window.location.reload();
   };
 
   const handleEditProfile = () => {
