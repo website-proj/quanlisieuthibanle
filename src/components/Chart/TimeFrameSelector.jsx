@@ -3,7 +3,6 @@ import { Button, Menu, MenuItem } from "@mui/material";
 
 const TimeFrameSelector = ({ timeFrame, setTimeFrame, handleMenuClick, anchorEl, handleMenuClose }) => {
   const buttonWidth = anchorEl?.offsetWidth || 150;
-  const isMobile = window.innerWidth <= 768;  // Kiểm tra nếu là mobile
 
   return (
     <div>
@@ -11,25 +10,14 @@ const TimeFrameSelector = ({ timeFrame, setTimeFrame, handleMenuClick, anchorEl,
         variant="outlined"
         onClick={handleMenuClick}
         sx={{
-          height: '100%',
-          borderRadius: "1em",
+          height: 30,
+          borderRadius: "10px",
           textTransform: "none",
           boxShadow: "none",
-          minWidth: '100%',
+          minWidth: 150,
         }}
       >
-        {isMobile
-          ? timeFrame === "14days"
-            ? "14 ngày"
-            : timeFrame === "12months"
-            ? "12 tháng"
-            : "3 năm "
-          : timeFrame === "14days"
-          ? "14 ngày"
-          : timeFrame === "12months"
-          ? "12 tháng"
-          : "3 năm "
-        }
+        {timeFrame === "14days" ? "14 ngày gần nhất" : timeFrame === "12months" ? "12 tháng gần nhất" : "3 năm gần nhất"}
       </Button>
       <Menu
         anchorEl={anchorEl}
@@ -52,9 +40,9 @@ const TimeFrameSelector = ({ timeFrame, setTimeFrame, handleMenuClick, anchorEl,
           },
         }}
       >
-        <MenuItem onClick={() => { setTimeFrame("14days"); handleMenuClose(); }}>14 ngày</MenuItem>
-        <MenuItem onClick={() => { setTimeFrame("12months"); handleMenuClose(); }}>12 tháng</MenuItem>
-        <MenuItem onClick={() => { setTimeFrame("3years"); handleMenuClose(); }}>3 năm</MenuItem>
+        <MenuItem onClick={() => { setTimeFrame("14days"); handleMenuClose(); }}>14 ngày gần nhất</MenuItem>
+        <MenuItem onClick={() => { setTimeFrame("12months"); handleMenuClose(); }}>12 tháng gần nhất</MenuItem>
+        <MenuItem onClick={() => { setTimeFrame("3years"); handleMenuClose(); }}>3 năm gần nhất</MenuItem>
       </Menu>
     </div>
   );
