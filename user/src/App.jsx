@@ -10,9 +10,10 @@ import {
   useLocation,
   Navigate,
 } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop"; // Import ScrollToTop
 import { CartProvider } from "./Context/CartContext";
 
-// Import trực tiếp các trang
+// Import các trang
 import Home from "./Pages/Home";
 import Product from "./Pages/Product";
 import Product_Details from "./Pages/Product_Details";
@@ -32,7 +33,6 @@ const MyContext = createContext();
 
 function App() {
   const [isHeaderFooterShow, setisHeaderFooterShow] = useState(true);
-  const [isRendered, setIsRendered] = useState(true); // Trạng thái render thực tế
   const [isLogin, setIsLogin] = useState(false);
   const [openCartPanel, setOpenCartPanel] = useState(false);
 
@@ -53,12 +53,11 @@ function App() {
   return (
     <CartProvider>
       <BrowserRouter>
+        <ScrollToTop /> {/* Cuộn lên đầu trang mỗi khi thay đổi đường dẫn */}
         <MyContext.Provider value={values}>
           <HeaderFooterWrapper
             isHeaderFooterShow={isHeaderFooterShow}
             setisHeaderFooterShow={setisHeaderFooterShow}
-            isRendered={isRendered}
-            setIsRendered={setIsRendered}
           />
         </MyContext.Provider>
       </BrowserRouter>
@@ -69,7 +68,6 @@ function App() {
 function HeaderFooterWrapper({ setisHeaderFooterShow }) {
   const location = useLocation();
 
-  // Xác định trạng thái ban đầu của header/footer
   const shouldHideHeader = (path) => {
     const hiddenPaths = [
       "/signIn",
@@ -82,18 +80,15 @@ function HeaderFooterWrapper({ setisHeaderFooterShow }) {
     return hiddenPaths.includes(path);
   };
 
-  // Cập nhật trạng thái ban đầu
   useEffect(() => {
     const hideHeader = shouldHideHeader(location.pathname);
     setisHeaderFooterShow(!hideHeader);
   }, [location.pathname, setisHeaderFooterShow]);
 
-  // Đảm bảo trạng thái ban đầu khớp với `location.pathname`
   const hideHeaderInitially = shouldHideHeader(location.pathname);
 
   return (
     <>
-      {/* Header và Footer chỉ render nếu không bị ẩn */}
       {!hideHeaderInitially && <Header />}
       <Routes>
         <Route path={"/home"} exact={true} element={<Home />} />
