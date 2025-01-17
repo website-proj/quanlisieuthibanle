@@ -42,7 +42,7 @@ export default function Edit({ product, onClose, onUpdate }) {
         name_brand: product.name_brand || "",
         description: product.description || "",
         price: product.price || "",
-        original_price: product.original_price || "",
+        original_price: product.original_price || "", // giữ giá gốc không thay đổi
         discount: product.discount || "",
         unit: product.unit || "",
         stock_quantity: product.stock_quantity || "",
@@ -57,7 +57,7 @@ export default function Edit({ product, onClose, onUpdate }) {
 
   const validateField = (name, value) => {
     let error = "";
-    
+
     switch (name) {
       case 'price':
       case 'original_price':
@@ -136,13 +136,13 @@ export default function Edit({ product, onClose, onUpdate }) {
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("product_id", product.product_id);
-      
+
       if (formData.image) {
         formDataToSend.append("file", formData.image);
       }
 
       const changedFields = {};
-      
+
       Object.entries(formData).forEach(([key, value]) => {
         if (key !== 'image' && value !== '' && value !== product[key]) {
           if (key === 'price' || key === 'original_price' || key === 'stock_quantity') {
@@ -223,25 +223,25 @@ export default function Edit({ product, onClose, onUpdate }) {
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <Typography variant="subtitle2" sx={{ mb: 1 }}>Ảnh sản phẩm</Typography>
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: 2, textAlign: 'center'}}>
             {currentImage && (
               <Box sx={{ mb: 1 }}>
                 <img 
                   src={currentImage} 
                   alt="Current product" 
-                  style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'contain' }}
+                  style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'contain', borderRadius: '10px' }}
                 />
               </Box>
             )}
             <Button
-              variant="contained"
+              variant="outlined"
               component="span"
               onClick={() => document.getElementById('file-upload').click()}
               sx={{
                 mt: 2,
                 borderRadius: "15px",
                 boxShadow: "none",
-                backgroundColor: "primary.main",
+                textTransform: 'none',
               }}
             >
               Tải ảnh lên
@@ -258,10 +258,10 @@ export default function Edit({ product, onClose, onUpdate }) {
           {renderTextField("name", "Tên sản phẩm")}
           {renderTextField("name_brand", "Tên nhãn hàng")}
           {renderTextField("description", "Mô tả", "text", true, 4)}
-          {renderTextField("price", "Giá bán", "number")}
         </Grid>
 
         <Grid item xs={6}>
+          {renderTextField("price", "Giá bán", "number")}
           {renderTextField("original_price", "Giá gốc", "number")}
           {renderTextField("discount", "Giảm giá", "number")}
           {renderTextField("unit", "Đơn vị")}
@@ -282,18 +282,18 @@ export default function Edit({ product, onClose, onUpdate }) {
         </Grid>
       </Grid>
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}>
+      <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
         <Button
           variant="outlined"
           onClick={onClose}
-          sx={{ borderRadius: "10px" }}
+          sx={{width: '100%', boxShadow: 'none', textTransform: 'none', borderRadius: "10px" }}
         >
           Hủy
         </Button>
         <Button
           type="submit"
           variant="contained"
-          sx={{ borderRadius: "10px" }}
+          sx={{width: '100%', boxShadow: 'none', textTransform: 'none', borderRadius: "10px" }}
           disabled={Object.values(fieldErrors).some(error => error !== "")}
         >
           Cập nhật

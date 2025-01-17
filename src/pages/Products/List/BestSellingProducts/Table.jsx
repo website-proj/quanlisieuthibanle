@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LazyLoadingTable from '/src/components/LazyLoading/Table';
 import './Table.css';
 import {
   Box,
@@ -306,9 +307,9 @@ function BestSellingProductsTable() {
                   <TableCell sx={{ textAlign: "center", width: "100px" }}>
                     <img src={product.product.image} alt={product.product.name} style={{ width: "50px", height: "50px", borderRadius: "10px" }} />
                   </TableCell>
-                  <TableCell sx={{ width: "100px" }}>{product.product.name}</TableCell>
-                  <TableCell sx={{ width: "200px" }}>{product["Category of product"].category_name}</TableCell>
-                  <TableCell sx={{ width: "100px" }}>{formatDate(product.product.expiration_date)}</TableCell>
+                  <TableCell sx={{}}>{product.product.name}</TableCell>
+                  <TableCell sx={{}}>{product["Category of product"].category_name}</TableCell>
+                  <TableCell sx={{}}>{formatDate(product.product.expiration_date)}</TableCell>
                   <TableCell sx={{ textAlign: "center"}}>{product.product.price.toString().replace(/\./g, ",")}</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>{product.sold}</TableCell>
                   <TableCell sx={{ textAlign: "center", width: "200px" }}>

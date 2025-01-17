@@ -27,10 +27,10 @@ function Header({ toggleSidebar, isSidebarOpen }) {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggIn");
     localStorage.removeItem("jwtToken");
-    navigate('/login'); // Chuyển hướng đến trang đăng nhập
-    setAnchorEl(null); // Đóng menu
+    localStorage.removeItem("isLoggedIn");
+    navigate('/login'); 
+    setAnchorEl(null); 
     toast.success('Bạn đã đăng xuất thành công', {
       position: "top-right",
       autoClose: 3000,
