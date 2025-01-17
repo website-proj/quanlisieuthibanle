@@ -1,0 +1,22 @@
+.css-70zvr5-MuiTableContainer-root {
+    border-radius: 15px !important;
+}
+.css-bmnu5q-MuiTableCell-root{
+     border-bottom: none !important;
+}
+.css-1v24lve-MuiPaper-root-MuiTableContainer-root{
+    border-radius: 16px !important;
+}
+
+.table-container {
+    table-layout: fixed !important;
+    width: 100% !important;
+  }
+  
+  .table-cell {
+    width: 100px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  

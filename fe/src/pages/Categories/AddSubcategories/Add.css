@@ -1,0 +1,26 @@
+/* .dropdown-categories, .input-subcategory {
+    padding: 0.8em;
+    font-size: 1em !important;
+    border: 1px solid #dbdbdb;
+    border-radius: 15px !important;
+    padding-left: 10px;
+} */
+
+/* .css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input {
+    height: 1.1em !important;
+} */
+
+.btn-add-subcategory {
+    border-radius: 15px !important;
+}
+
+.dropdown-categories option {
+    background-color: #fff;
+    color: var(--dark);
+    font-size: 1em;
+}
+
+.dropdown-categories option:hover {
+    color: white !important;
+    border-radius: 15px !important;
+}

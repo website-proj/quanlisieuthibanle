@@ -1,0 +1,81 @@
+.custom-list-item-text {
+  color: var(--dark-grey);
+  font-size: 0.4em !important;
+}
+
+.custom-list-item-icon {
+  color: var(--dark-grey) !important;
+  font-size: 1.1em;
+  min-width: 40px;
+  justify-content: center;
+  /* transition: color 0.3s ease;  */
+}
+
+.custom-list-item:hover .custom-list-item-text,
+.custom-list-item:hover .custom-list-item-icon {
+  color: var(--blue) !important;
+}
+
+.custom-list-item.active .custom-list-item-text,
+.custom-list-item.active .custom-list-item-icon {
+  color: var(--blue) !important; 
+}
+
+.submenu-text {
+  color: var(--dark-grey);
+  margin-left: 10px;
+}
+
+.submenu-text span {
+  font-size: 0.85em !important;
+}
+
+.submenu-list-item.active .submenu-text {
+  color: var(--blue) !important; 
+}
+
+.custom-list-item.active {
+  background-color: var(--hover-sidebar);
+  border-radius: 15px !important;
+}
+
+.custom-list-item:hover {
+  background-color: var(--hover-sidebar) !important;
+  border-radius: 15px !important;
+}
+
+.submenu-list-item.active {
+  background-color: var(--hover-sidebar);
+  border-radius: 15px !important;
+}
+
+.submenu-list-item:hover {
+  background-color: var(--hover-sidebar) !important;
+  border-radius: 15px !important;
+}
+
+.css-z2qibm-MuiListItem-root,
+.css-66b8d4-MuiListItem-root {
+  -webkit-transition: none !important;
+  transition: none !important;
+}
+
+/* Thanh cuộn */
+.MuiDrawer-paper::-webkit-scrollbar {
+  width: 0.25em;
+}
+
+.MuiDrawer-paper::-webkit-scrollbar-thumb {
+  background-color: #d8d8d877 !important;
+  border-radius: 3px;
+  height: 0.1em !important;
+}
+
+.submenu-list-item:hover .submenu-text {
+  color: var(--blue) !important;
+}
+
+.css-rizt0-MuiTypography-root {
+  font-size: 0.9rem !important;
+  font-weight: 500 !important; 
+}

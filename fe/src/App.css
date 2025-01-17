@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap'); 
+* {
+  	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+:root {
+	--white: #ffffff;
+	--light: #fefefe;
+	--blue: #2679ee;
+	--light-blue: #e0f0ff;
+	--grey: #f7f7f7;
+	--dark-grey: #2c2c2c;
+	--dark: rgb(0, 0, 0);
+	--red: #DB504A;
+	--yellow: #f6ff00cd;
+	--light-yellow: #FFF2C6;
+	--orange: #FD7238;
+	--light-orange: #f8d2c2;
+	--purple: #ab57f0;
+	--pink: #f5cbf3;
+	--green: #ddffce;
+	--light-purple: #dfdcff44;
+	--sidebar: #bad7ff;
+	--hover-sidebar: #f0f8ff;
+}
+
+body.dark {
+	--white: #111111;
+	--light: #111111;
+	--grey: #363744;
+	--dark: #ffffffe0;
+	--blue: #6eb9ff;
+	--light-blue: #438bf1e1;
+	--sidebar: #96c0fb94;
+	--light-yellow: #ffdf75d5;
+	--green: #ddffcecc;
+	--light-orange: #f8d2c2bf;
+	--hover-sidebar: #f0f8ff;
+	--dark-grey: #f8f8f8;
+	--light-purple: #dfdcff44;
+
+}
+
+body {
+	background: var(--white);
+	overflow-x: hidden;
+}
+
+.text {
+	color: var(--dark);
+  }
+
+  
