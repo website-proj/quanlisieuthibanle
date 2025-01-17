@@ -118,6 +118,13 @@ body {
 .profile-menu a:hover {
   background-color: #f5f5f5; /* Màu nền khi di chuột */
 }
+.account-menu:hover .profile-menu {
+  display: block; /* Hiển thị menu khi hover vào toàn bộ account-menu */
+}
+.profile-menu {
+  top: calc(100%); /* Đặt ngay bên dưới "account-button" */
+  margin: 0; /* Đảm bảo không có khoảng trống */
+}
 
 .flying-img {
   position: absolute;

@@ -95,7 +95,7 @@ const Header = () => {
                 onClick={() => context.setOpenCartPanel(true)}
               >
                 <Button className="circle xl:ml-2 lg:ml-2 md:ml-0 sm:ml-0">
-                  <FiShoppingCart className="mr-1 w-4 h-4 sm:w-8 sm:h-8 md:w-4 md:h-4 lg:w-12 lg:h-12 xl:w-10 xl:h-10" />
+                  <FiShoppingCart className="mr-1 w-4 h-4 sm:w-8 sm:h-8 md:w-8 md:h-8 lg:w-12 lg:h-12 xl:w-10 xl:h-10" />
                   <span className="ml-2 whitespace-nowrap hidden lg:block">
                     Giỏ hàng
                   </span>
