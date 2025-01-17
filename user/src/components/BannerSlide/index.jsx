@@ -38,7 +38,7 @@ const BannerSlide = () => {
   };
 
   return (
-    <div className="xl:w-1/4 lg:w-1/4 md:w-2/5 sm:w-1/2 p-2 banner sticky top-0 h-screen">
+    <div className="xl:w-1/4 lg:w-1/4 md:w-2/5 sm:w-1/2 w-0 p-2 banner sticky top-0 h-screen">
       {loading ? (
         <div className="flex justify-center items-center h-full">
           <div className="spinner"></div> {/* Thêm vòng xoay loading */}

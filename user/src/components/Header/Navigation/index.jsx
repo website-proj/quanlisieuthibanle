@@ -51,21 +51,21 @@ const Navigation = () => {
   return (
     <nav>
       <div className="container mx-auto">
-        <div className="flex items-center">
-          {/* Part 1 */}
-          <div className="container mx-auto relative">
+        <div className="flex items-center justify-between">
+          {/* Part 1 - Danh mục sản phẩm */}
+          <div className="relative flex w-full sm:w-auto">
             <div className="flex items-center">
               <div
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                className="w-2/3 "
+                className="w-2/3 sm:w-full"
               >
-                <div className="relative mt-1">
+                <div className="relative xl:ml-[25%]  mt-1">
                   <Button className="!text-black">
                     <span className="mr-2">
                       <FaListUl />
                     </span>
-                    <span className="font-[500] whitespace-nowrap sm:text-sm md:text-md lg:text-lg xl:text-xl">
+                    <span className="font-[500]  whitespace-nowrap sm:text-[0.7em] md:text-[0.8em] lg:text-[0.9em] xl:text-[1em]">
                       Danh mục sản phẩm
                     </span>
                     <span className="ml-2 text-sm">
@@ -75,7 +75,7 @@ const Navigation = () => {
 
                   {/* Dropdown menu */}
                   <div
-                    className={`absolute top-[2.65em] left-[4em] !sm:left[1em] lg:left-[2em] w-[15em] bg-white rounded-lg shadow-lg border border-gray-200 transition-all duration-300 ${
+                    className={`absolute top-[2.65em] left-0 sm:left-[1em] lg:left-[2em] w-[15em] bg-white rounded-lg shadow-lg border border-gray-200 transition-all duration-300 ${
                       isHovered ? "opacity-100 visible" : "opacity-0 invisible"
                     }`}
                   >
@@ -129,16 +129,14 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* Part 2 */}
+          {/* Part 2 - Tin tức & Chăm sóc khách hàng */}
           <div className="w-2/3 flex justify-end items-center mx-[6%]">
-            <ul className="flex space-x-10">
+            <ul className="flex space-x-10 sm:space-x-5">
               <li>
-                <div className="flex items-center h-full  whitespace-nowrap">
+                <div className="flex items-center h-full whitespace-nowrap">
                   <Link to="/" className="flex items-center gap-2">
-                    <BiMessage className="text-xl sm:text-sm  lg:text-lg" />
-                    <span className="sm:text-[0.8em] lg:text-lg xl:text-xl">
-                      Tin tức
-                    </span>
+                    <BiMessage className="sm:text-[0.7em] md:text-[0.8em] lg:text-[0.9em] xl:text-[1em]" />
+                    <span className="hidden lg:block">Tin tức</span>
                   </Link>
                 </div>
               </li>
@@ -147,8 +145,8 @@ const Navigation = () => {
                   <Link to="#">
                     <Tooltip title="123456789" arrow>
                       <Button className="flex !text-black items-center gap-2 whitespace-nowrap">
-                        <LuHeadphones className="xl:text-xl sm:text-[0.8em] md:[0.9em] lg:text-[1em]" />
-                        <span className="sm:text-[0.8em] md-[0.9em] lg:text-[1em] xl:text-xl">
+                        <LuHeadphones className="sm:text-[0.7em] md:text-[0.8em] lg:text-[0.9em] xl:text-[1em]" />
+                        <span className="hidden lg:block">
                           Chăm sóc khách hàng
                         </span>
                       </Button>

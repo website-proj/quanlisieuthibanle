@@ -113,7 +113,7 @@ const CartPanel = () => {
         </div>
       ) : (
         <div>
-          <div className="scroll w-full max-h-[35em] overflow-y-scroll overflow-x-hidden py-3 px-4">
+          <div className="scroll w-full max-h-[20em] overflow-y-scroll overflow-x-hidden py-3 px-4">
             {cartItems.map((product) => (
               <div
                 key={product.product_id}

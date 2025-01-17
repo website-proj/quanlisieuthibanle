@@ -23,21 +23,21 @@ const Timer = ({ duration }) => {
 
   return (
     <div className="flex justify-between items-center bg-gradient-to-br from-blue-800 to-blue-300 text-white py-2 px-4 rounded-lg">
-      <div className="xl:text-xl lg:text-lg md:text-md sm:text-sm font-extrabold animate-pulse whitespace-nowrap">
+      <div className="xl:text-xl lg:text-lg md:text-md sm:text-sm text-[0.8em] font-extrabold animate-pulse whitespace-nowrap">
         Duy nhất hôm nay
       </div>
       <div className="flex items-center gap-2 animate-pulse">
-        <span className="xl:text-[1.2em] lg:text-[1em] md:text-[0.9em] sm:text-[0.7em]">
+        <span className="xl:text-[1.2em] lg:text-[1em] md:text-[0.9em] sm:text-[0.7em] text-[0.6em]">
           Kết thúc trong
         </span>
         <div className="flex gap-2">
-          <div className="flex justify-center items-center bg-blue-500 text-white xl:w-12 xl:h-12 lg:w-11 lg:h-11 md:w-10 md:h-10 sm:w-9 sm:h-9 rounded-lg">
+          <div className="flex justify-center items-center bg-blue-500 text-white xl:w-12 xl:h-12 lg:w-11 lg:h-11 md:w-10 md:h-10 sm:w-9 sm:h-9 w-6 h-6 rounded-lg">
             {hours}
           </div>
-          <div className="flex justify-center items-center bg-blue-500 text-white xl:w-12 xl:h-12 lg:w-11 lg:h-11 md:w-10 md:h-10 sm:w-9 sm:h-9 rounded-lg">
+          <div className="flex justify-center items-center bg-blue-500 text-white xl:w-12 xl:h-12 lg:w-11 lg:h-11 md:w-10 md:h-10 sm:w-9 sm:h-9 w-6 h-6 rounded-lg">
             {minutes}
           </div>
-          <div className="flex justify-center items-center bg-blue-500 text-white xl:w-12 xl:h-12 lg:w-11 lg:h-11 md:w-10 md:h-10 sm:w-9 sm:h-9 rounded-lg">
+          <div className="flex justify-center items-center bg-blue-500 text-white xl:w-12 xl:h-12 lg:w-11 lg:h-11 md:w-10 md:h-10 sm:w-9 sm:h-9 w-6 h-6 rounded-lg">
             {seconds}
           </div>
         </div>

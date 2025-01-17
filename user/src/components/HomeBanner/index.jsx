@@ -31,7 +31,7 @@ const HomeBanner = () => {
   return (
     <>
       <div className="homeSlide py-4">
-        <div className="px-[4em]">
+        <div className="sm:px-[3.5em] px-[1em] ">
           <Swiper
             key={banners.length}
             loop={true}
@@ -50,7 +50,7 @@ const HomeBanner = () => {
                   <img
                     src={banner.image}
                     alt={`Banner ${banner.banner_id}`}
-                    className="w-full sm:h-[15em] lg:h-[20em] h-[25em] object-cover bannerImg"
+                    className="w-full h-[10em] sm:h-[15em] lg:h-[20em] xl:h-[25em] object-cover bannerImg"
                     loading="lazy" // Thêm thuộc tính lazy loading
                   />
                   <div className="absolute bottom-10 left-10">
@@ -61,7 +61,7 @@ const HomeBanner = () => {
                           section.scrollIntoView({ behavior: "smooth" });
                         }
                       }}
-                      className="px-6 py-3 text-black bg-white rounded-xl text-xl hover:bg-gradient-to-r hover:from-[#6297DB] hover:to-[#1EECFF] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500 cursor-pointer"
+                      className="px-6 py-3 text-black bg-white rounded-xl xl:text-xl lg:text-lg md:text-md sm:text-sm text-xs hover:bg-gradient-to-r hover:from-[#6297DB] hover:to-[#1EECFF] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500 cursor-pointer"
                     >
                       MUA NGAY
                     </a>

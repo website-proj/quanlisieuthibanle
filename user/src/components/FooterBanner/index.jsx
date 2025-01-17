@@ -33,7 +33,7 @@ const BannerSlide = () => {
               <img
                 src={banner.image}
                 alt={banner.banner_id}
-                className="w-full   sm:h-[5em] lg:h-[10em] h-[13.375em] rounded-md shadow object-cover transition-opacity duration-300 ease-in-out hover:opacity-80 "
+                className="w-full h-[3em]  sm:h-[5em] lg:h-[10em] h-[13.375em] rounded-md shadow object-cover transition-opacity duration-300 ease-in-out hover:opacity-80 "
               />
             </a>
           </div>

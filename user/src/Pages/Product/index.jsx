@@ -264,8 +264,8 @@ const Product = () => {
     <>
       <section className="product_listing_Page">
         <div className="container">
-          <div className="productListing flex">
-            <div className="w-1/5 mb-4">
+          <div className="productListing flex flex-col lg:flex-row">
+            <div className="w-full lg:w-1/5 mb-4">
               <div className="col1 bg-white p-4 shadow rounded-xl">
                 <div className="mb-6">
                   <h6 className="font-medium text-2xl mb-3 text-center">
@@ -297,7 +297,7 @@ const Product = () => {
                   </h6>
                   <Slider
                     value={value2}
-                    onChange={handleChange2} // Khi thay đổi giá trị, gọi fetchProductsByPrice
+                    onChange={handleChange2}
                     valueLabelDisplay="auto"
                     valueLabelFormat={(value) => formatCurrency(value)}
                     min={10000}
@@ -308,21 +308,21 @@ const Product = () => {
                     sx={{
                       width: "100%",
                       "& .MuiSlider-thumb": {
-                        backgroundColor: "#1976d2", // Màu của đầu kéo
-                        border: "2px solid #fff", // Viền trắng cho đầu kéo
-                        width: 24, // Kích thước đầu kéo
-                        height: 24, // Kích thước đầu kéo
-                        boxShadow: "0 0 5px rgba(0, 0, 0, 0.5)", // Hiệu ứng bóng cho đầu kéo
+                        backgroundColor: "#1976d2",
+                        border: "2px solid #fff",
+                        width: 24,
+                        height: 24,
+                        boxShadow: "0 0 5px rgba(0, 0, 0, 0.5)",
                       },
                       "& .MuiSlider-rail": {
-                        backgroundColor: "#ddd", // Màu đường ray
+                        backgroundColor: "#ddd",
                       },
                       "& .MuiSlider-track": {
-                        backgroundColor: "#1976d2", // Màu của thanh kéo
+                        backgroundColor: "#1976d2",
                       },
                       "& .MuiSlider-valueLabel": {
-                        backgroundColor: "transparent", // Không hiển thị nền của nhãn giá trị
-                        color: "#000", // Màu chữ nhãn giá trị
+                        backgroundColor: "transparent",
+                        color: "#000",
                       },
                     }}
                   />
@@ -344,8 +344,8 @@ const Product = () => {
                 </div>
               </div>
             </div>
-            <div className="w-4/5 pl-4 mb-6 Cart">
-              <div className="flex items-center space-x-4 mb-4">
+            <div className="w-full lg:w-4/5 pl-4 mb-6 Cart">
+              <div className="flex flex-wrap items-center justify-start space-x-4 mb-4">
                 <Button
                   variant="contained"
                   sx={{
@@ -355,7 +355,7 @@ const Product = () => {
                     "&:hover": { backgroundColor: "#F0F0F0" },
                   }}
                   className="capitalize"
-                  onClick={fetchBestSellers} // Gọi API bán chạy khi nhấn nút
+                  onClick={fetchBestSellers}
                 >
                   Bán chạy
                 </Button>
@@ -369,13 +369,13 @@ const Product = () => {
                     "&:hover": { backgroundColor: "#F0F0F0" },
                   }}
                   className="capitalize"
-                  onClick={fetchDiscount} // Gọi API khuyến mại khi nhấn nút
+                  onClick={fetchDiscount}
                 >
                   Khuyến mại
                 </Button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 productList">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-12 productList">
                 {products.slice(0, visibleProducts).map((product) => (
                   <div
                     className="border flex flex-col justify-between rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
@@ -417,7 +417,7 @@ const Product = () => {
                       </div>
                     </Link>
                     <Button
-                      onClick={(e) => handleAddToCart(e, product, 1)} // Sử dụng số lượng mặc định là 1
+                      onClick={(e) => handleAddToCart(e, product, 1)}
                       className="productCart flex items-center whitespace-nowrap"
                     >
                       <FiShoppingCart className="text-[2em] mt-auto pr-2" />
@@ -426,12 +426,6 @@ const Product = () => {
                   </div>
                 ))}
               </div>
-
-              {/* <div className="flex justify-center items-center all_pro_bot">
-                <Button onClick={handleShowAll} className="hover:text-gray-600">
-                  {loading ? "Đang tải..." : "Xem thêm sản phẩm"}
-                </Button>
-              </div> */}
             </div>
           </div>
         </div>

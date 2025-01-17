@@ -148,7 +148,7 @@ const Home = () => {
           <div className="container mx-auto px-4">
             <div className="flex w-full">
               <BannerSlide />
-              <div className="w-3/4 productSale">
+              <div className="lg:w-3/4 md:w-2/3 sm:w-1/2 w-full productSale">
                 <Timer duration={2 * 24 * 60 * 60 * 1000} />
 
                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 productList">
@@ -219,7 +219,7 @@ const Home = () => {
         <BestSellerProducts />
         <NewProducts />
         <FooterBanner />
-        <ScrollToTopButton />
+        <ScrollToTopButton className="hidden sm:block" />
       </div>
     </>
   );

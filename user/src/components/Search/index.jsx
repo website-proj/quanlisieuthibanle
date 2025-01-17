@@ -33,30 +33,27 @@ const Search = () => {
   }, [searchText]);
 
   return (
-    <div className="searchBox w-[80%] h-[2.5em] bg-[#FFFFFF] rounded-[1.25rem] relative p-2">
+    <div className="searchBox w-full sm:w-[80%] h-[2.5em] bg-white rounded-[2em] relative p-2">
       <input
         type="text"
         placeholder="Nhập nội dung tìm kiếm"
-        className="w-full h-[1.9em] focus:outline-none bg-inherit p-2 text-[0.9375em]"
+        className="w-full h-[1.9em] focus:outline-none rounded-[2em]  bg-inherit p-2 text-sm sm:text-base"
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
         onFocus={() => setShowDropdown(true)}
         onBlur={() => setTimeout(() => setShowDropdown(false), 200)} // Trì hoãn đóng dropdown để xử lý click
       />
       <button className="absolute right-4 top-[0.4em]">
-        <IoSearch />
+        <IoSearch className="hidden lg:block" />
       </button>
 
       {/* Hiển thị kết quả gợi ý */}
       {showDropdown && results.length > 0 && (
-        <ul
-          className="absolute top-[2.5em] max-h-56 overflow-y-auto  left-0 w-full bg-white border border-gray-300 rounded-2xl shadow-lg z-10 custom-scrollbar  "
-          sx={{ scrollbarColor: "#ccc transparent" }}
-        >
+        <ul className="absolute top-[2.5em] left-0 w-full bg-white border border-gray-300 rounded-2xl shadow-lg z-10 custom-scrollbar max-h-56 overflow-y-auto sm:max-h-72 lg:max-h-96">
           {results.map((product) => (
             <li
               key={product.product_id}
-              className="p-2 rounded-2xl hover:bg-gray-100 "
+              className="p-2 rounded-2xl hover:bg-gray-100"
             >
               <Link
                 to={`/product_detials/${product.product_id}`}
