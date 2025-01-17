@@ -1,7 +1,6 @@
 import uuid
 from datetime import datetime
 
-from pygments.lexer import default
 from sqlalchemy import Column, String, DateTime, ForeignKey, Enum, Float, Integer
 from sqlalchemy.orm import relationship
 from app.model.model_base import Base

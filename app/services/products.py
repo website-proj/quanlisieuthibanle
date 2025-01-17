@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Optional
 
-from IPython.terminal.shortcuts.auto_match import single_quote
 from fastapi import HTTPException, Form, UploadFile, File, Depends
 from sqlalchemy.orm import Session, aliased
 from sqlalchemy import or_, and_, func, desc, Float

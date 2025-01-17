@@ -365,8 +365,3 @@ class Chart:
         sorted_data = {year: filtered_data[year] for year in sorted(filtered_data.keys(), reverse=True)}
 
         return sorted_data
-
-
-
-
-

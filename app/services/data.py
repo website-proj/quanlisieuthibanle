@@ -317,11 +317,11 @@ class DataService:
     def main(self):
         with next(get_db()) as db :
             # self.create_user_data(db)
-            self.create_order(db)
+            # self.create_order(db)
             # self.create_address_data(db)
             # self.add_reviews_data(db)
             # self.add_voucher_data(db)
-            # self.add_payment_data(db)
+            self.add_payment_data(db)
             # self.cart_data(db)
             # print("hello world")
 if __name__ == '__main__':
