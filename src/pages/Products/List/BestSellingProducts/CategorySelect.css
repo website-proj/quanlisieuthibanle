@@ -1,0 +1,35 @@
+/* Các styles chung cho CategorySelect */
+.category-select {
+    min-width: 10% !important;
+  }
+  
+  /* Border Radius cho Input */
+  .MuiOutlinedInput-root {
+    border-radius: 15px !important;
+  }
+  
+  /* Mobile styles */
+  @media (max-width: 46.1875em) {
+    .category-select {
+      width: 100% !important; /* Chiều rộng 100% trên mobile */
+    }
+  
+    .MuiFormControl-root {
+      margin-bottom: 12px; /* Thêm khoảng cách dưới mỗi select */
+    }
+  }
+  
+  /* Tablet styles */
+  @media (min-width: 46.25em) and (max-width: 63.9375em) {
+    .category-select {
+      width: 250px !important; /* Điều chỉnh chiều rộng cho tablet */
+    }
+  }
+  
+  /* Desktop styles */
+  @media (min-width: 64em) {
+    .category-select {
+      width: 300px !important; /* Chiều rộng mặc định trên desktop */
+    }
+  }
+  

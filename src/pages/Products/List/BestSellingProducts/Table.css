@@ -1,0 +1,51 @@
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+.css-rxd7e6-MuiTableCell-root {
+    border-bottom: 0 !important;
+}
+
+.MuiTableCell-head {
+    background: linear-gradient(to bottom, #54b2ff, #edf7ff) !important;
+}
+
+.table-container {
+    border-radius: 15px !important;
+    box-shadow: none !important;
+    font-family: 'Roboto' !important;
+    min-height: 400px !important;
+}
+
+/* .table-header {
+    background: linear-gradient(to bottom, #54b2ff, #edf7ff) !important;
+} */
+
+.table-cell {
+    text-align: center !important;
+}
+
+.table-cell-functions {
+    text-align: center !important;
+}
+
+.table-row:hover {
+    background-color: #f3faff !important;
+    border-radius: 10px !important;
+}
+
+.alert-warning {
+    border-radius: 10px !important;
+}
+
+/* .css-1orzuox-MuiTableCell-root {
+    border-bottom: 0 !important;
+} */
+
+.css-1dc80h3-MuiTableCell-root, .css-x1ej28-MuiTableCell-root {
+    border-bottom: 1px solid #f1f1f1 !important; 
+}
+
+
+/* .text-field-1 {
+    border-radius: 10% !important;
+} */

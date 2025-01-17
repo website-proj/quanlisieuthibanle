@@ -1,0 +1,153 @@
+/* Global Styles */
+.app-bar {
+  background-color: var(--white) !important;
+  box-shadow: none !important;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo container styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-link img {
+  height: 2.6rem;
+  margin-left: 25%;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle-container {
+  display: flex;
+  align-items: center;
+  padding-left: 15.2%;
+}
+
+.actions-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-right: 5%;
+}
+
+/* Custom Icon Button styles */
+.custom-icon-button {
+  color: #1565c0 !important;
+  background-color: var(--hover-sidebar) !important;
+  border-radius: 30% !important;
+  padding: 5% 5% !important;
+}
+
+.custom-icon-button:hover {
+  color: var(--white) !important;
+  background-color: var(--blue) !important;
+}
+
+.custom-icon-button svg {
+  transform: scale(0.85);
+}
+
+/* Account Menu */
+.account-menu {
+  margin-top: -0.5em !important;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+}
+
+.menu-item:hover {
+  background-color: var(--hover-sidebar) !important;
+  border-radius: 15px !important;
+}
+
+.menu-text {
+  font-size: 1rem;
+}
+
+.menu-icon {
+  margin-right: 0.4em;
+}
+
+.logout-item .menu-icon {
+  color: red !important;
+}
+
+/* Responsive Design */
+
+/* Mobile */
+@media (max-width: 46.1875em) {
+  .toolbar {
+    padding: 0 10px;
+  }
+
+  .logo-link img {
+    height: 2rem;
+    margin-left: 10%;
+  }
+
+  .sidebar-toggle-container {
+    padding-left: 0;
+  }
+
+  .actions-container {
+    gap: 0.5rem;
+  }
+
+  .custom-icon-button {
+    padding: 4% !important;
+  }
+}
+
+/* Tablet */
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+  .toolbar {
+    padding: 0 15px;
+  }
+
+  .logo-link img {
+    height: 2.3rem;
+    margin-left: 20%;
+  }
+
+  .actions-container {
+    gap: 0.8rem;
+  }
+
+  .custom-icon-button {
+    padding: 5% !important;
+  }
+}
+
+/* Desktop */
+@media (min-width: 64em) {
+  .toolbar {
+    padding: 0 30px;
+  }
+
+  .logo-link img {
+    height: 2.6rem;
+    margin-left: 25%;
+  }
+
+  .actions-container {
+    gap: 1rem;
+  }
+
+  .custom-icon-button {
+    padding: 5% !important;
+  }
+}

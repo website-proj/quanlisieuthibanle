@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap'); 
+* {
+  	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+:root {
+	--white: #ffffff;
+	--light: #fefefe;
+	--blue: #2679ee;
+	--light-blue: #e0f0ff;
+	--grey: #f7f7f7;
+	--dark-grey: #2c2c2c;
+	--dark: rgb(0, 0, 0);
+	--red: #DB504A;
+	--yellow: #f6ff00cd;
+	--light-yellow: #FFF2C6;
+	--orange: #FD7238;
+	--light-orange: #f8d2c2;
+	--purple: #ab57f0;
+	--pink: #f5cbf3;
+	--green: #ddffce;
+	--light-purple: #dfdcff44;
+	--sidebar: #bad7ff;
+	--hover-sidebar: #f0f8ff;
+}
+
+body.dark {
+	--white: #111111;
+	--light: #111111;
+	--grey: #363744;
+	--dark: #ffffffe0;
+	--blue: #6eb9ff;
+	--light-blue: #438bf1e1;
+	--sidebar: #96c0fb94;
+	--light-yellow: #ffdf75d5;
+	--green: #ddffcecc;
+	--light-orange: #f8d2c2bf;
+	--hover-sidebar: #f0f8ff;
+	--dark-grey: #f8f8f8;
+	--light-purple: #dfdcff44;
+
+}
+
+body {
+	background: var(--white);
+	overflow-x: hidden;
+}
+
+.text {
+	color: var(--dark);
+  }
+
+  /* Global Styles: Apply these styles for all screen sizes */
+
+/* Base font size and layout for desktop */
+body {
+	font-family: Arial, sans-serif;
+	font-size: 16px;  /* Default font size for desktop */
+	margin: 0;
+	padding: 0;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+	font-family: 'Arial', sans-serif;
+	margin: 0;
+  }
+  
+  /* Container to center elements */
+  .container {
+	width: 90%;
+	max-width: 1200px;
+	margin: 0 auto;
+  }
+  
+  /* Flexbox layout */
+  .flex {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+  }
+  
+  /* Button styling */
+  button {
+	font-size: 16px;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+  }
+  
+  /* Mobile: (max-width: 46.1875em) */
+  @media (max-width: 46.1875em) {
+	/* Font size for mobile */
+	* {
+	  font-size: 14px; /* Smaller font size for mobile */
+	}
+  
+	/* Adjust button size */
+	button {
+	  font-size: 14px;
+	  padding: 8px 16px;
+	}
+  
+	/* Flex items shrink */
+	.flex {
+	  flex-direction: column;
+	  align-items: flex-start;
+	}
+  
+	/* Resize container */
+	.container {
+	  width: 95%;
+	  max-width: 100%;
+	}
+  
+	/* Resize headings */
+	h1 {
+	  font-size: 24px;
+	}
+	h2 {
+	  font-size: 22px;
+	}
+	h3 {
+	  font-size: 20px;
+	}
+	h4 {
+	  font-size: 18px;
+	}
+	h5 {
+	  font-size: 16px;
+	}
+	h6 {
+	  font-size: 14px;
+	}
+  }
+  
+  /* Tablet: (min-width: 46.25em) and (max-width: 63.9375em) */
+  @media (min-width: 46.25em) and (max-width: 63.9375em) {
+	/* Font size for tablet */
+	body {
+	  font-size: 15px; /* Slightly smaller font for tablet */
+	}
+  
+	/* Button size for tablet */
+	button {
+	  font-size: 15px;
+	  padding: 9px 18px;
+	}
+  
+	/* Flex items shrink */
+	.flex {
+	  flex-direction: row;
+	  justify-content: flex-start;
+	}
+  
+	/* Resize container */
+	.container {
+	  width: 90%;
+	  max-width: 100%;
+	}
+  
+	/* Resize headings */
+	h1 {
+	  font-size: 26px;
+	}
+	h2 {
+	  font-size: 24px;
+	}
+	h3 {
+	  font-size: 22px;
+	}
+	h4 {
+	  font-size: 20px;
+	}
+	h5 {
+	  font-size: 18px;
+	}
+	h6 {
+	  font-size: 16px;
+	}
+  }
+  
+  /* Desktop: (min-width: 64em) */
+  @media (min-width: 64em) {
+	/* Font size for desktop */
+	body {
+	  font-size: 16px; /* Default font for desktop */
+	}
+  
+	/* Button size for desktop */
+	button {
+	  font-size: 16px;
+	  padding: 10px 20px;
+	}
+  
+	/* Flexbox items */
+	.flex {
+	  flex-direction: row;
+	  justify-content: space-between;
+	}
+  
+	/* Resize container */
+	.container {
+	  width: 90%;
+	  max-width: 1200px;
+	}
+  
+	/* Resize headings */
+	h1 {
+	  font-size: 32px;
+	}
+	h2 {
+	  font-size: 28px;
+	}
+	h3 {
+	  font-size: 24px;
+	}
+	h4 {
+	  font-size: 22px;
+	}
+	h5 {
+	  font-size: 20px;
+	}
+	h6 {
+	  font-size: 18px;
+	}
+  }
+  @media (max-width: 46.1875em) {
+    body {
+        font-size: 13px !important;
+    }
+}
+
+

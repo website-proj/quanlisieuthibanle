@@ -1,0 +1,11 @@
+[data-testid="sentinelEnd"] {
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  .css-16htz67-MuiPaper-root-MuiDialog-paper {
+    border-radius: 20px !important;
+  }
+
+  

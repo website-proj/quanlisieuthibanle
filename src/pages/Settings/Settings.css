@@ -1,0 +1,120 @@
+body.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+  }
+  
+  body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+  }
+  
+  .settings-container {
+    display: flex;
+    gap: 16px;
+    /* background-color: #FFFFFF; */
+  }
+  
+  .sidebar {
+    /* padding-top: 10px; */
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 16px;
+    border-right: 1.5px solid #cccccca4;
+  }
+  
+  .sidebar-item {
+    padding: 8px 15px;
+    border: none;
+    text-align: left;
+    font-size: 0.9em !important;
+    border-radius: 10px;
+    background-color: white !important;
+    font-weight: 500 !important;
+    cursor: pointer;
+
+  }
+  
+  .sidebar-item.active {
+    background-color: var(--hover-sidebar) !important;
+    color: var(--blue);
+    font-weight: 500 !important;
+  }
+  
+  .sidebar-item:hover {
+    background-color: var(--hover-sidebar) !important;
+    color: var(--blue);
+    font-weight: 500 !important;
+  }
+  
+  /* Content */
+  .content {
+    padding-top: 0px !important;
+    flex-grow: 1;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  h2 {
+    font-size: 1.2em !important;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .setting-item {
+    margin-bottom: 20px;
+  }
+  
+  .toggle-switch {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+  }
+  
+  .toggle-option {
+    padding: 6px 20px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .toggle-option.active {
+    background-color: #5897f5;
+    color: white;
+    border-color: #5897f5;
+  }
+  
+  input[type='range'] {
+    width: 100%;
+    margin: 15px 0;
+    height: 8px;
+    background-color: #ddd;
+    border-radius: 15px;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  
+  input[type='range']:focus {
+    border-color: #5897f5;
+  }
+  
+  .reset-button {
+    padding: 8px 10px;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px !important;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+  }
+  
+  .reset-button:hover {
+    background-color: #f44336;
+  }
+  
