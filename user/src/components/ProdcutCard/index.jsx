@@ -122,55 +122,55 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="proCard mt-2 border rounded-2xl p-4 shadow-lg overflow-hidden">
+    <div className="proCard mt-2 border rounded-2xl p-4 shadow-lg">
       <div className="flex flex-wrap sm:flex-nowrap">
-        <div className="w-full sm:w-1/3 proImg mb-4 sm:mb-0 max-w-full">
+        <div className="w-full sm:w-1/3 proImg mb-4 sm:mb-0">
           <img
             src={product.image || "default-image.jpg"}
             alt={product.name || "Sản phẩm"}
-            className="rounded w-full h-auto object-cover"
+            className="rounded w-full h-auto"
           />
         </div>
         <div className="flex-1 p-4 ml-0 sm:ml-12">
-          <h1 className="text-left text-xl sm:text-2xl font-[500] truncate">
+          <h1 className="text-left text-xl sm:text-2xl font-[500]">
             {product.name || "Tên sản phẩm"}
           </h1>
-          <p className="text-left text-sm sm:text-lg text-black-500 ml-1 mt-2 truncate">
+          <p className="text-left text-sm sm:text-lg text-black-500 ml-1 mt-2">
             Giá bán lẻ:{" "}
             <span className="text-black-500 font-500 ml-40">
               {product.old_price ? product.old_price.toLocaleString() : "N/A"}đ
             </span>
           </p>
-          <p className="text-black-500 text-left ml-[2px] text-sm sm:text-lg mt-2 truncate">
+          <p className="text-black-500 text-left ml-[2px] text-sm sm:text-lg mt-2">
             Giá khuyến mãi:{" "}
             <span className="text-red-500 font-bold ml-[7.5rem]">
               {product.price ? product.price.toLocaleString() : "N/A"}đ
             </span>
           </p>
-          <p className="text-black-500 text-left text-sm sm:text-lg mt-2 truncate">
+          <p className="text-black-500 text-left text-sm sm:text-lg mt-2">
             Thương hiệu:{" "}
             <span className="text-black-500 font-500 ml-36">
               {product.brand || "Chưa có thông tin"}
             </span>
           </p>
-          <p className="text-black-500 text-left text-sm sm:text-lg mt-2 truncate">
+          <p className="text-black-500 text-left text-sm sm:text-lg mt-2">
             Tình trạng:{" "}
             <span className="text-black-500 font-500 ml-[10.25rem]">
               {product.stock_quantity ? "Còn hàng" : "Hết hàng"}
             </span>
           </p>
-          <p className="text-black-500 text-left text-sm sm:text-lg mt-2 truncate">
+          <p className="text-black-500 text-left text-sm sm:text-lg mt-2">
             Vận chuyển:{" "}
             <span className="text-black-500 font-500 ml-[9.5rem]">
               Miễn phí giao hàng cho đơn từ 300.000đ.
             </span>
           </p>
-          <p className="text-black-500 text-left text-sm sm:text-lg mt-2 truncate">
+          <p className="text-black-500 text-left text-sm sm:text-lg mt-2">
             <span className="text-black-500 font-500 ml-[15.8rem]">
               Giao hàng trong 2 giờ.
             </span>
           </p>
-          <p className="text-black-500 text-left text-sm sm:text-lg mt-2 truncate">
+          <p className="text-black-500 text-left text-sm sm:text-lg mt-2">
             Đơn vị:{" "}
             <span className="text-black-500 font-500 ml-[12.2rem]">
               {product.unit || "Chưa có thông tin"}

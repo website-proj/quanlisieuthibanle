@@ -33,7 +33,7 @@ const DiscountProducts = () => {
       } finally {
         setTimeout(() => {
           setLoading(false); // Thêm delay để hiển thị CardLoading lâu hơn
-        }, 2000); // 1 giây delay
+        }, 0); // 1 giây delay
       }
     };
 
@@ -156,6 +156,7 @@ const DiscountProducts = () => {
                     <img
                       src={product.image}
                       alt={product.name}
+                      loading="lazy"
                       className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                     />
                   </div>

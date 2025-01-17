@@ -167,6 +167,7 @@ const NewProducts = () => {
                     <img
                       src={product.image}
                       alt={product.name}
+                      loading="lazy"
                       className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                     />
                   </div>

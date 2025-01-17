@@ -20,11 +20,13 @@ import CardLoading from "../../components/CardLoading";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { cartCount, incrementCartCount } = useContext(CartContext);
 
   // Lấy thông tin sản phẩm
   useEffect(() => {
     const fetchDiscountProducts = async () => {
+      setLoading(true); // Hiển thị trạng thái tải
       try {
         const response = await axios({
           method: SummaryApi.flash_sale.method,
@@ -42,12 +44,15 @@ const Home = () => {
       } catch (error) {
         console.error("Error fetching discount products:", error);
         setProducts([]);
+      } finally {
+        setLoading(false); // Kết thúc trạng thái tải
       }
     };
 
     fetchDiscountProducts();
   }, []);
 
+  // Hàm thêm sản phẩm vào giỏ hàng
   const handleAddToCart = async (e, product, quantity = 1) => {
     try {
       // Tạo hiệu ứng hoạt hình cho hình ảnh
@@ -126,18 +131,6 @@ const Home = () => {
       console.error("Error adding product to cart:", error);
     }
   };
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true); // Bắt đầu tải
-      // Giả lập thời gian tải dữ liệu (thay bằng API thực tế nếu cần)
-      setTimeout(() => {
-        setLoading(false); // Dữ liệu đã tải xong
-      }, 4000); // Thời gian giả lập tải dữ liệu (2 giây)
-    };
-
-    fetchProducts();
-  }, []);
 
   return (
     <>
@@ -173,6 +166,7 @@ const Home = () => {
                                 <img
                                   src={product.image}
                                   alt={product.name}
+                                  loading="lazy"
                                   className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                                 />
                               </div>

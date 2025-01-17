@@ -344,7 +344,7 @@ const Product = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full lg:w-4/5 pl-4 mb-6 Cart">
+            <div className="w-full lg:w-4/5 sm:pl-4 pl-0 sm:pr-0 pr-7 mb-6 Cart">
               <div className="flex flex-wrap items-center justify-start space-x-4 mb-4">
                 <Button
                   variant="contained"
@@ -375,7 +375,7 @@ const Product = () => {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-12 productList">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 productList">
                 {products.slice(0, visibleProducts).map((product) => (
                   <div
                     className="border flex flex-col justify-between rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 ease-in-out transform product_item"
