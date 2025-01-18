@@ -198,7 +198,7 @@ const Home = () => {
                               onClick={(e) => handleAddToCart(e, product, 1)} // Sử dụng số lượng mặc định là 1
                               className="productCart flex items-center whitespace-nowrap"
                             >
-                              <FiShoppingCart className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 xl:w-10 xl:h-10  mt-auto pr-2" />
+                              {/* <FiShoppingCart className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 xl:w-10 xl:h-10  mt-auto pr-2" /> */}
                               Thêm vào giỏ hàng
                             </Button>
                           </div>

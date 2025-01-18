@@ -8,9 +8,9 @@ footer {
 }
 .topInfo {
   display: flex;
-  /* padding: 1em 1em; */
+  padding: 1em 1em;
   justify-content: space-between;
-  /* gap: 1em; */
+  gap: 1em;
   text-align: center;
   background: #f5f5f5;
 }
@@ -121,60 +121,78 @@ footer {
   width: 1.25em;
   height: 1.25em;
 }
-/* Responsive: Điều chỉnh khi màn hình nhỏ */
-@media (max-width: 768px) {
-  .topInfo {
+
+/* Mobile styles (max-width: 46.1875em) */
+@media (max-width: 46.1875em) {
+  footer .topInfo {
     flex-direction: row;
-    gap: 0.625em;
+    text-align: center;
   }
 
-  .footer-item {
-    margin-bottom: 0.625em;
+  footer .info {
+    flex-direction: row;
+  }
+
+  footer .info-bot {
+    margin-bottom: 1rem;
+  }
+
+  footer .social {
+    justify-content: center;
   }
 }
-/* Định dạng chữ mặc định */
 
-/* Khi màn hình nhỏ hơn 1024px (Tablet) */
-@media (max-width: 1024px) {
-  footer {
-    font-size: 14px; /* Kích thước chữ nhỏ hơn trên Tablet */
-  }
-  .footer-info h4 {
-    font-size: 15px; /* Tiêu đề nhỏ hơn */
-  }
-  .footer-info ul li a {
-    font-size: 12px; /* Chữ trong danh sách nhỏ hơn */
-  }
-  .topInfo {
-    flex-wrap: wrap; /* Cho phép wrap khi màn hình trung bình */
+/* Tablet styles (min-width: 46.25em) and (max-width: 63.9375em) */
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+  footer .topInfo {
+    flex-wrap: wrap;
     justify-content: space-between;
-    margin-top: 0.5em;
   }
-  .footer-item span {
-    font-size: 0.6em;
+
+  footer .info {
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
-  .social svg {
-    width: 1em;
-    height: 1em;
+
+  footer .info-bot {
+    width: 48%;
+  }
+
+  footer .social {
+    justify-content: flex-start;
   }
 }
 
-/* Khi màn hình nhỏ hơn 768px (Mobile) */
-@media (max-width: 768px) {
+/* Desktop styles (min-width: 64em) */
+@media (min-width: 64em) {
+  footer .topInfo {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  footer .info {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  footer .info-bot {
+    width: 30%;
+  }
+
+  footer .social {
+    justify-content: flex-start;
+  }
+}
+/* Ẩn toàn bộ footer trên màn hình nhỏ hơn sm (640px) */
+@media (max-width: 39.9375em) {
   footer {
-    font-size: 12px; /* Kích thước chữ nhỏ hơn trên Mobile */
+    display: none;
   }
-  .footer-info h4 {
-    font-size: 8px !important  ; /* Tiêu đề nhỏ hơn */
-    margin-bottom: 0;
-  }
-  .footer-info ul li a {
-    font-size: 7px; /* Chữ trong danh sách nhỏ hơn */
-  }
-  .info-bot {
-    padding: 0 !important;
-  }
-  .footer-info span {
-    font-size: 6px;
+}
+
+/* Ẩn chỉ các phần tử trong .topInfo và giữ lại các phần khác */
+@media (max-width: 39.9375em) {
+  footer .topInfo {
+    display: none;
   }
 }

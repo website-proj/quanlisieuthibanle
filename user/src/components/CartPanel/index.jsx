@@ -64,10 +64,6 @@ const CartPanel = () => {
     fetchCartData();
   }, []);
 
-  if (loading) {
-    return <div>Đang tải dữ liệu .</div>;
-  }
-
   const deleteCartItem = async (product_id) => {
     const token = localStorage.getItem("token")?.split(" ")[1];
 

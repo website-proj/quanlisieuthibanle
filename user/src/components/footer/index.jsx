@@ -27,7 +27,7 @@ const Footer = () => {
       <footer>
         <div className="container">
           <div className="topInfo row">
-            <div className="col1 d-flex align-items-center footer-item">
+            <div className="col1 d-flex align-items-center footer-item ">
               <img src={Mienphi} />
               <span>Miễn phí giao hàng từ 300.000đ</span>
             </div>
@@ -49,12 +49,12 @@ const Footer = () => {
               <img src={Logo} />
 
               <span>
-                <FaLocationDot className="text-sm text-red-500 mr-2  whitespace-nowrap" />
+                <FaLocationDot className="text-sm text-red-500 mr-2" />
                 Số 334 Nguyễn Trãi, Thanh Xuân, Hà Nội
               </span>
             </div>
             <div className="info-bot">
-              <div className="col  footer-info  whitespace-nowrap">
+              <div className="col  footer-info whitespace-nowrap">
                 <h4>Về chúng tôi</h4>
                 <ul>
                   <li>
@@ -77,7 +77,7 @@ const Footer = () => {
             </div>
 
             <div className="info-bot">
-              <div className="col  footer-info  whitespace-nowrap">
+              <div className="col  footer-info whitespace-nowrap">
                 <h4>Hỗ trợ khách hàng</h4>
                 <ul>
                   <li>
@@ -164,7 +164,7 @@ const Footer = () => {
         className="w-[30em] cartPanel"
       >
         <div className="flex items-center justify-between py-3 px-4 gap-3 border-b overflow-hidden">
-          <h4 className="font-[600] text-lg uppercase">Giỏ hàng (1)</h4>
+          <h4 className="font-[600] text-lg uppercase">Giỏ hàng</h4>
           <IoCloseSharp
             className="text-[1.5em] cursor-pointer"
             onClick={context.toggleCartPanel(false)}

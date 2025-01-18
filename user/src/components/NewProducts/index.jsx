@@ -188,7 +188,7 @@ const NewProducts = () => {
                   onClick={(e) => handleAddToCart(e, product, 1)}
                   className="productCart flex items-center whitespace-nowrap"
                 >
-                  <FiShoppingCart className="text-[2em] pr-2" />
+                  {/* <FiShoppingCart className="text-[2em] pr-2" /> */}
                   Thêm vào giỏ hàng
                 </Button>
               </div>
