@@ -5,6 +5,19 @@ Dự án web bán hàng siêu thị bán lẻ được thiết kế để cung c
 
 ---
 
+Lưu ý:  
+Do chi phí sử dụng Amazon ElastiCache Redis, nhóm đã dừng sử dụng dịch vụ này. Vì vậy, chức năng đăng ký tài khoản sẽ không khả dụng trong phiên bản hiện tại.
+
+Để truy cập website, vui lòng sử dụng tài khoản được cấp sẵn:
+
+- **SuperAdmin**:  
+  - Tài khoản: `thong@gmail.com`  
+  - Mật khẩu: `1`
+
+- **Admin**:  
+  - Tài khoản: `admin@admin.com`  
+  - Mật khẩu: `1`
+
 ## 2. Quy Trình Cài Đặt
 
 ### 2.1. Yêu cầu hệ thống
