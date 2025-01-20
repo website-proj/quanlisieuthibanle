@@ -5,6 +5,12 @@ Dự án web bán hàng siêu thị bán lẻ được thiết kế để cung c
 
 ---
 
+## Truy Cập Website 
+- [Pimart](http://pimart.site/home)
+
+## Truy Cập Website dành cho quản trị viên
+- [Pimart](http://admin.pimart.site/home)
+
 Lưu ý:  
 Do chi phí sử dụng Amazon ElastiCache Redis, nhóm đã dừng sử dụng dịch vụ này. Vì vậy, chức năng đăng ký tài khoản sẽ không khả dụng trong phiên bản hiện tại.
 
