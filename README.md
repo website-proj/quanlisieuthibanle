@@ -1,7 +1,7 @@
 # Cài Đặt và Hướng Dẫn Sử Dụng
 
 ## 1. Giới Thiệu
-Dự án web bán hàng siêu thị bán lẻ được thiết kế để cung cấp giao diện quản lý sản phẩm, đơn hàng, và hệ thống API tích hợp.
+Dự án web bán hàng siêu thị bán lẻ được thiết kế để cung cấp giao diện người dùng khi mua hàng và quản lý sản phẩm, đơn hàng...
 
 ---
 
