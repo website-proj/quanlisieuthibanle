@@ -1,0 +1,11 @@
+.breadcrumbs {
+  margin-left: 5%;
+  margin-right: 5%;
+  background: #dfdcff44 !important;
+}
+
+.breadcrumbs nav {
+  background: #f5f4ff !important;
+  border-bottom: 0 !important;
+  height: 0.8em !important;
+}

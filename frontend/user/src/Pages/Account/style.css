@@ -1,0 +1,23 @@
+.setting {
+  margin-left: 4%;
+}
+.setPro {
+  margin-left: 0.5em;
+  background: #ffffff;
+}
+
+/* Đồng nhất font style và font weight */
+input,
+select {
+  font-family: inherit; /* Thừa kế font từ cha */
+  font-size: 0.9rem; /* Đồng nhất kích thước chữ */
+  font-weight: normal; /* Đảm bảo độ đậm là normal */
+  color: #9ca3af; /* Màu chữ nhất quán */
+}
+/* button svg {
+  width: 1.25em;
+  height: 1.25em;
+} */
+input {
+  color: #000;
+}

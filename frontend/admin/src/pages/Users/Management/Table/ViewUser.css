@@ -1,0 +1,65 @@
+/* Mobile styles (max-width: 46.1875em) */
+@media (max-width: 46.1875em) {
+    .view-user-box {
+      width: 90%; /* Make the modal fit well on small screens */
+      padding: 16px;
+    }
+  
+    .view-user-box .title {
+      font-size: 1.2em;
+    }
+  
+    .view-user-box .button {
+      padding: 10px 20px;
+      font-size: 0.9em;
+    }
+  
+    .view-user-box .content {
+      flex-direction: column;
+    }
+  }
+  
+  /* Tablet styles (min-width: 46.25em and max-width: 63.9375em) */
+  @media (min-width: 46.25em) and (max-width: 63.9375em) {
+    .view-user-box {
+      width: 80%;
+      padding: 20px;
+    }
+  
+    .view-user-box .title {
+      font-size: 1.4em;
+    }
+  
+    .view-user-box .button {
+      padding: 12px 24px;
+      font-size: 1em;
+    }
+  
+    .view-user-box .content {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+  
+  /* Desktop styles (min-width: 64em) */
+  @media (min-width: 64em) {
+    .view-user-box {
+      width: 500px;
+      padding: 32px;
+    }
+  
+    .view-user-box .title {
+      font-size: 1.6em;
+    }
+  
+    .view-user-box .button {
+      padding: 14px 28px;
+      font-size: 1.1em;
+    }
+  
+    .view-user-box .content {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+  

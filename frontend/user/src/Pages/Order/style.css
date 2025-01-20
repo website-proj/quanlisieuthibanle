@@ -1,0 +1,23 @@
+.tabs_ nav {
+  border-bottom: none !important;
+  margin-bottom: 0em !important;
+  margin-left: 1em;
+  margin-right: 1em;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 0.5em;
+  background-image: linear-gradient(to bottom, #1d4ed8, #bce6ff);
+  color: rgb(197, 46, 46);
+}
+.btn-buy-again {
+  background-color: #fd5353;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-buy-again:hover {
+  background-color: #fe2020;
+}
