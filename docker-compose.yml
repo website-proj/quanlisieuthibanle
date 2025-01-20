@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17.2
+    volumes:
+      - ./docker/db:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    environment:
+      - POSTGRES_DB=web
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      PROJECT_NAME: ${PROJECT_NAME}
+      DATABASE_URL: postgresql://postgres:1@db/web
+      SECRET_KEY: ${SECRET_KEY}
+      API_PREFIX: ${API_PREFIX}
+      Client_id: ${Client_id}
+      Client_secret: ${Client_secret}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    restart: unless-stopped
+
+  user-frontend:
+    build:
+      context: ./frontend/user
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+
+  admin-frontend:
+    build:
+      context: ./frontend/admin
+      dockerfile: Dockerfile
+    ports:
+      - "5174:5174"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  alembic:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: [ "alembic", "upgrade", "head" ]
+    environment:
+      DATABASE_URL: postgresql://postgres:1@db/web
+    depends_on:
+      - db
+    restart: on-failure

@@ -9,7 +9,7 @@ services:
     expose:
       - 5432
     environment:
-      - POSTGRES_DB=wepdb
+      - POSTGRES_DB=web
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1
     ports:
@@ -19,14 +19,14 @@ services:
   alembic:
     image: fastapi-base:latest
     environment:
-      SQL_DATABASE_URL: postgresql://postgres:1@host.docker.internal/wepdb  # Đã sửa lại địa chỉ
+      SQL_DATABASE_URL: postgresql://postgres:1@host.docker.internal/web # Đã sửa lại địa chỉ
       SECRET_KEY: ${SECRET_KEY}
       API_PREFIX: ${API_PREFIX}
       BACKEND_CORS_ORIGINS: ${BACKEND_CORS_ORIGINS}
       ACCESS_TOKEN_EXPIRE_SECONDS: ${ACCESS_TOKEN_EXPIRE_SECONDS}
       SECURITY_ALGORITHM: ${SECURITY_ALGORITHM}
       LOGGING_CONFIG_FILE: ${LOGGING_CONFIG_FILE}
-    command: ["alembic", "upgrade", "head"]
+    command: [ "alembic", "upgrade", "head" ]
     depends_on:
       - db
     restart: on-failure
@@ -35,7 +35,7 @@ services:
     image: fastapi-base:latest
     environment:
       PROJECT_NAME: ${PROJECT_NAME}
-      SQL_DATABASE_URL: postgresql://postgres:1@host.docker.internal/wepdb  # Đã sửa lại địa chỉ
+      SQL_DATABASE_URL: postgresql://postgres:1@host.docker.internal/wepdb # Đã sửa lại địa chỉ
       SECRET_KEY: ${SECRET_KEY}
       API_PREFIX: ${API_PREFIX}
       BACKEND_CORS_ORIGINS: ${BACKEND_CORS_ORIGINS}
