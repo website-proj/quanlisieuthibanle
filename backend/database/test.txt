@@ -1,0 +1,91 @@
+Users (Người dùng)
+user_id: VARCHAR(50), Khóa chính, Tự động tạo giá trị mới bằng cách ghép tiền tố 'user' và một giá trị tiếp theo từ user_id_seq.
+username: VARCHAR(50), Không NULL, Tên người dùng.
+password: VARCHAR(255), Không NULL, Mật khẩu người dùng.
+email: VARCHAR(100), Không NULL, Địa chỉ email (đảm bảo duy nhất).
+phone_number: VARCHAR(15), Số điện thoại người dùng.
+address: VARCHAR(255), Địa chỉ người dùng.
+account_type: account_type, Loại tài khoản, mặc định là 'Customer' (Khách hàng).
+membership_status: membership_status_type, Trạng thái thẻ thành viên (Silver, Gold, Diamond).
+created_at: TIMESTAMP, Thời gian tạo tài khoản.
+updated_at: TIMESTAMP, Thời gian cập nhật tài khoản.
+Categories (Danh mục sản phẩm)
+category_id: VARCHAR(50), Khóa chính, Tự động tạo giá trị mới bằng cách ghép tiền tố 'cat' và một giá trị tiếp theo từ category_id_seq.
+category_name: VARCHAR(100), Tên danh mục sản phẩm.
+parent_category_id: VARCHAR(50), Khóa ngoại đến chính bảng Categories (Nếu có danh mục cha).
+start_category: BOOLEAN, Trạng thái danh mục có nổi bật hay không (mặc định là FALSE).
+Products (Sản phẩm)
+product_id: VARCHAR(50), Khóa chính, Tự động tạo giá trị mới bằng cách ghép tiền tố 'prod' và một giá trị tiếp theo từ product_id_seq.
+name: VARCHAR(100), Tên sản phẩm.
+name_brand: VARCHAR(100), Tên thương hiệu.
+description: TEXT, Mô tả sản phẩm.
+price: DECIMAL(10,2), Giá sản phẩm.
+old_price: DECIMAL(10,2), Giá cũ của sản phẩm (nếu có).
+discount: DECIMAL(5,2), Giảm giá sản phẩm (0 đến 100).
+unit: VARCHAR(50), Đơn vị sản phẩm.
+stock_quantity: INT, Số lượng tồn kho.
+category_id: VARCHAR(50), Khóa ngoại đến bảng Categories (Danh mục sản phẩm).
+image: VARCHAR(255), URL hình ảnh sản phẩm.
+is_active: BOOLEAN, Trạng thái hoạt động của sản phẩm (mặc định TRUE).
+start_product: BOOLEAN, Trạng thái nổi bật của sản phẩm (mặc định FALSE).
+date_created: TIMESTAMP, Ngày tạo sản phẩm.
+updated_at: TIMESTAMP, Ngày cập nhật sản phẩm.
+expiration_date: DATE, Ngày hết hạn (nếu có).
+Orders (Đơn hàng)
+order_id: VARCHAR(50), Khóa chính, Tự động tạo giá trị mới bằng cách ghép tiền tố 'order' và một giá trị tiếp theo từ order_id_seq.
+user_id: VARCHAR(50), Khóa ngoại đến bảng Users (Người dùng tạo đơn hàng).
+order_date: TIMESTAMP, Ngày đặt đơn hàng.
+status: order_status_type, Trạng thái đơn hàng (Processing, Delivered, Canceled).
+total_amount: DECIMAL(10,2), Tổng số tiền đơn hàng.
+Order_Items (Chi tiết đơn hàng)
+order_item_id: VARCHAR(50), Khóa chính, Tự động tạo giá trị mới bằng cách ghép tiền tố 'item' và một giá trị tiếp theo từ order_item_id_seq.
+order_id: VARCHAR(50), Khóa ngoại đến bảng Orders (Đơn hàng).
+product_id: VARCHAR(50), Khóa ngoại đến bảng Products (Sản phẩm).
+quantity: INT, Số lượng sản phẩm trong đơn hàng.
+price: DECIMAL(10,2), Giá của sản phẩm tại thời điểm đơn hàng.
+Payments (Thanh toán)
+payment_id: VARCHAR(50), Khóa chính, Tự động tạo giá trị mới bằng cách ghép tiền tố 'pay' và một giá trị tiếp theo từ payment_id_seq.
+user_id: VARCHAR(50), Khóa ngoại đến bảng Users (Người thanh toán).
+order_id: VARCHAR(50), Khóa ngoại đến bảng Orders (Đơn hàng đã thanh toán).
+voucher_id: VARCHAR(50), Khóa ngoại đến bảng Vouchers (Phiếu giảm giá, nếu có).
+amount: DECIMAL(10,2), Số tiền thanh toán.
+payment_method: payment_method, Phương thức thanh toán (Credit Card, Debit Card, Card).
+payment_date: TIMESTAMP, Ngày thanh toán.
+status: payment_status_type, Trạng thái thanh toán (Successful, Failed, Pending).
+Vouchers (Phiếu giảm giá)
+voucher_id: VARCHAR(50), Khóa chính, Tự động tạo giá trị mới bằng cách ghép tiền tố 'vouch' và một giá trị tiếp theo từ voucher_id_seq.
+code: VARCHAR(50), Mã voucher (duy nhất).
+discount_rate: DECIMAL(5,2), Mức giảm giá của voucher.
+membership_required: membership_required_type, Loại thẻ thành viên cần có để sử dụng voucher (Silver, Gold, Diamond).
+start_date: DATE, Ngày bắt đầu hiệu lực của voucher.
+expiration_date: DATE, Ngày hết hạn của voucher.
+usage_limit: INT, Số lần sử dụng tối đa voucher.
+times_used: INT, Số lần voucher đã được sử dụng.
+status: voucher_status_type, Trạng thái của voucher (Active, Inactive).
+Cart (Giỏ hàng)
+cart_id: VARCHAR(50), Khóa chính, Tự động tạo giá trị mới bằng cách ghép tiền tố 'cart' và một giá trị tiếp theo từ cart_id_seq.
+user_id: VARCHAR(50), Khóa ngoại đến bảng Users (Người dùng sở hữu giỏ hàng).
+Cart_Items (Chi tiết giỏ hàng)
+cart_item_id: VARCHAR(50), Khóa chính, Tự động tạo giá trị mới bằng cách ghép tiền tố 'cart_item' và một giá trị tiếp theo từ cart_item_id_seq.
+cart_id: VARCHAR(50), Khóa ngoại đến bảng Cart (Giỏ hàng).
+product_id: VARCHAR(50), Khóa ngoại đến bảng Products (Sản phẩm trong giỏ).
+quantity: INT, Số lượng sản phẩm trong giỏ.
+price_at_add: DECIMAL(10,2), Giá sản phẩm tại thời điểm thêm vào giỏ hàng.
+added_date: TIMESTAMP, Ngày thêm sản phẩm vào giỏ.
+Reviews (Đánh giá sản phẩm)
+review_id: VARCHAR(50), Khóa chính, Tự động tạo giá trị mới bằng cách ghép tiền tố 'review' và một giá trị tiếp theo từ review_id_seq.
+product_id: VARCHAR(50), Khóa ngoại đến bảng Products (Sản phẩm được đánh giá).
+user_id: VARCHAR(50), Khóa ngoại đến bảng Users (Người đánh giá).
+rating: INT, Đánh giá từ 1 đến 5.
+comment: TEXT, Nhận xét của người dùng về sản phẩm.
+review_date: TIMESTAMP, Ngày đăng đánh giá.
+Addresses (Địa chỉ giao hàng)
+address_id: VARCHAR(50), Khóa chính, Tự động tạo giá trị mới bằng cách ghép tiền tố 'addr' và một giá trị tiếp theo từ address_id_seq.
+user_id: VARCHAR(50), Khóa ngoại đến bảng Users (Người dùng sở hữu địa chỉ).
+house_number: VARCHAR(50), Số nhà.
+street: VARCHAR(255), Tên đường.
+ward: VARCHAR(100), Phường/xã.
+district: VARCHAR(100), Quận/huyện.
+city: VARCHAR(100), Thành phố.
+state: VARCHAR(100), Tỉnh.
+phone_number: VARCHAR(15), Số điện thoại giao hàng.

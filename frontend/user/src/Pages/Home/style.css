@@ -1,0 +1,162 @@
+.homeProducts {
+  padding-left: 3%;
+  margin-bottom: 1em;
+  cursor: pointer;
+  margin-top: 5em;
+  margin-right: 3%;
+}
+.banner {
+  overflow: hidden;
+}
+.banner img {
+  height: 41.5em;
+  border-radius: 0.5em;
+}
+.see_more {
+  margin-left: 0 !important;
+  border-width: 2px !important;
+  border-color: #3b82f6 !important; /* Màu xanh */
+  background-color: #0096ff !important;
+  color: #ffffff !important; /* Màu chữ trắng */
+  font-weight: 600; /* Đậm vừa */
+  font-size: 1.125em !important; /* 18px - text-lg */
+  padding: 0.5em 1.5em !important; /* px-6 py-2 */
+  border-radius: 0.8em !important; /* rounded */
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06); /* shadow */
+  transition: all 0.3s ease-in-out !important; /* duration-300 và transition-all */
+}
+
+.productSale {
+  padding-left: 2%;
+}
+.productList {
+  margin-top: 1em;
+  margin-left: 0em !important;
+}
+
+.all_pro button {
+  background-color: #ffffff;
+  border-radius: 1em;
+}
+.all_pro button:hover {
+  background-image: linear-gradient(to bottom, #1565c0, #33b8e69e);
+}
+.text_list {
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 2.25em;
+}
+
+.productListSale {
+  margin-left: 4%;
+  margin-right: 4%;
+}
+
+.productListSale .product_item {
+  background: #ffffff;
+}
+.productList .product_item {
+  background: #ffffff;
+  height: 100% !important;
+}
+
+.product_item:hover {
+  border: 1px solid #1a73e8;
+}
+
+.productCart {
+  background: #1a73e8 !important;
+  color: #ffffff !important;
+  margin-top: 0.5em !important;
+  width: 100% !important;
+  margin-left: 0em !important;
+  justify-content: center !important;
+  font-size: 1em !important;
+  border-radius: 0.8em !important;
+}
+
+.all_pro_bot {
+  margin-top: 2em;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+.all_pro_bot button {
+  background: #1a73e8;
+  font-size: 1.25em;
+  justify-content: center !important;
+  align-items: center !important;
+  color: #ffffff !important;
+  border-radius: 1em;
+  width: 20%;
+}
+.all_pro_bot .css-1588512-MuiButtonBase-root-MuiButton-root {
+  margin-left: 0em !important;
+}
+
+.botBanner {
+  padding-left: 4%;
+  padding-right: 4%;
+  margin-top: 3em;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.scroll-to-top:hover {
+  background-color: #1558b0;
+  transform: scale(1.1);
+}
+
+.scroll-to-top svg {
+  width: 24px;
+  height: 24px;
+}
+.shadow-text {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Đổ bóng nhẹ */
+}
+/* Pulsating effect */
+.pulsating-button {
+  animation: pulsate 1.5s ease-in-out infinite;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.pulsating-button:hover {
+  background-color: #1669c1;
+  transform: scale(1.05);
+}

@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17.2
+    volumes:
+      - ./docker/db:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_DB=wepdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  alembic:
+    image: fastapi-base:latest
+    environment:
+      SQL_DATABASE_URL: postgresql://postgres:1@host.docker.internal/wepdb  # Đã sửa lại địa chỉ
+      SECRET_KEY: ${SECRET_KEY}
+      API_PREFIX: ${API_PREFIX}
+      BACKEND_CORS_ORIGINS: ${BACKEND_CORS_ORIGINS}
+      ACCESS_TOKEN_EXPIRE_SECONDS: ${ACCESS_TOKEN_EXPIRE_SECONDS}
+      SECURITY_ALGORITHM: ${SECURITY_ALGORITHM}
+      LOGGING_CONFIG_FILE: ${LOGGING_CONFIG_FILE}
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      - db
+    restart: on-failure
+
+  app:
+    image: fastapi-base:latest
+    environment:
+      PROJECT_NAME: ${PROJECT_NAME}
+      SQL_DATABASE_URL: postgresql://postgres:1@host.docker.internal/wepdb  # Đã sửa lại địa chỉ
+      SECRET_KEY: ${SECRET_KEY}
+      API_PREFIX: ${API_PREFIX}
+      BACKEND_CORS_ORIGINS: ${BACKEND_CORS_ORIGINS}
+      ACCESS_TOKEN_EXPIRE_SECONDS: ${ACCESS_TOKEN_EXPIRE_SECONDS}
+      SECURITY_ALGORITHM: ${SECURITY_ALGORITHM}
+      LOGGING_CONFIG_FILE: ${LOGGING_CONFIG_FILE}
+      CLIENT_ID: ${Client_id}
+      CLIENT_SECRET: ${Client_secret}
+      EMAIL: ${email}
+      PASSWORD_EMAIL: ${password_email}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    depends_on:
+      - db
+      - alembic

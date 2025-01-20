@@ -1,0 +1,25 @@
+nav {
+  background: #ffffff;
+  border-bottom: 1px solid #000;
+  height: 3em;
+  margin-bottom: 2em;
+}
+
+.css-1588512-MuiButtonBase-root-MuiButton-root {
+  display: flex !important;
+  justify-content: flex-start !important;
+  margin-left: 13% !important;
+}
+.navigationMenu.css-1588512-MuiButtonBase-root-MuiButton-root {
+  margin-left: 0em !important;
+}
+
+.nav_menu {
+  margin-left: 0em !important;
+  background-color: transparent; /* Nền mặc định */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển đổi */
+}
+.nav_menu:hover {
+  background-color: #3b82f6; /* Nền khi hover */
+  color: white !important; /* Màu chữ khi hover */
+}

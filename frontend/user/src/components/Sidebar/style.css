@@ -1,0 +1,9 @@
+.sideBar {
+  margin-left: 5%;
+}
+.sideBar .css-imrjgg-MuiButtonBase-root-MuiCheckbox-root {
+  padding: 0;
+}
+.sideBar .range-slider .range-slider__thumb {
+  width: 1em;
+}

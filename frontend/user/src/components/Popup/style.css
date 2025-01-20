@@ -1,0 +1,11 @@
+.blur {
+  filter: blur(5px); /* Hiệu ứng mờ với giá trị 5px */
+}
+
+.blur-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.5); /* Overlay màu đen mờ */
+  backdrop-filter: blur(5px); /* Làm mờ phía sau overlay */
+}
